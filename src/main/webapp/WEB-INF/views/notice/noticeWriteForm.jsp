@@ -6,6 +6,98 @@
 <head>
 <meta charset="UTF-8">
 <title>first</title>
+<style>
+body{
+   /*  background-color:#f5f6f7;  */  
+}
+
+h1 {
+    text-align: center;
+    padding: 10px 10px;
+    padding-bottom: 30px;
+    border-bottom:1px solid #848484;
+}
+
+.form-0 {
+    position: relative;
+}
+
+.board-top {
+    width : 80%;
+    height: 50px;
+    margin: 0 auto;
+    max-width: 100%;
+}
+
+hr{
+    width: 100%;
+}
+
+.form-1 {
+    display: flex;
+    flex-direction: column;
+    width: 1200px;
+    margin: 0 auto;
+}
+
+.write-1 { 
+    height: 50px;
+    border : none;
+    font-size: 40px;
+    background-color: #f5f6f7;
+    outline: none;
+}
+
+.write-2 {
+    margin-top: 30px;
+    font-size: 15px;
+    border: none;
+    background-color: #f5f6f7;
+    outline: none;
+}
+
+.write-3 {
+    margin-top: 10px;
+}
+
+.write-4 {
+    margin-top: 10px;
+
+    width: 70px;
+    height: 30px;
+    border: none;
+    background-color: rgb(250, 180, 49);
+    Cursor:pointer;
+}
+
+.write-5 {
+    position: absolute;
+    bottom: 0;
+    left: 200px;
+    width: 70px;
+    height: 30px;
+    border: none;
+    background-color: rgb(250, 180, 49);
+    Cursor:pointer;
+}
+
+/*문의 게시판 id랑 pw css class 입니다.*/
+
+.inqu-write {
+    display: flex;
+}
+
+.write-3-1 {
+    width: 100px;
+    height: 30px;
+
+    margin-right: 10px;
+}
+.write-3-2 {
+    width: 100px;
+    height: 30px;
+}
+</style>
 </head>
 <body>
  <h1>게시판 작성!</h1>
@@ -18,24 +110,16 @@
                 <input class='write-3' type="file" name="file" id="fileToUpload">
 
                 <hr>
-
-                <input class='write-4' type="submit" value="올리기">
+<button class="write-4" onclick="javascript:location.href='${pageContext.servletContext.contextPath}/nlist.do?page=1';">올리기</button>
             </form>
 
-            <form action="board.php"> 
-                <input class='write-5' type="submit" value="돌아가기">
-            </form>
+	<button class="listbtn" onclick="javascript:location.href='${pageContext.servletContext.contextPath}/nlist.do?page=1';">목록</button>
 
-            <?php session_start();
-                    if (isset($_SESSION['write_error'])) {
-                        echo $_SESSION['write_error'];
-                        unset($_SESSION['write_error']);
-                    }
-            ?>
+
 
         </div>
 
-<h1 align="center">게시 원글 등록 페이지</h1>
+<%-- <h1 align="center">게시 원글 등록 페이지</h1>
 <br>
 
 <!-- form 에서 입력값들과 파일을 함께 전송하려면 반드시 속성 추가해야 함 :  
@@ -73,7 +157,7 @@
 		</th>		
 	</tr>
 </table>
-</form>
+</form> --%>
 <br>
 
 <hr>
