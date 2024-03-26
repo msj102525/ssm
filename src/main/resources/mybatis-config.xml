@@ -13,10 +13,11 @@
 	
 	<!-- 존재하지 않는 클래스와 매퍼파일을 먼저 등록 설정하면 톰캣 구동 안함 : 에러 발생함 -->
 	<typeAliases>
-		
+		<typeAlias type="com.sdm.ssm.admin.model.vo.Notice" alias="Notice"/>
+		<typeAlias type="com.sdm.ssm.common.Paging" alias="Paging"/>
 	</typeAliases>
 		
 	<mappers>
-		
+		<mapper resource="mapper/notice-mapper.xml"/>
 	</mappers>
 </configuration>
