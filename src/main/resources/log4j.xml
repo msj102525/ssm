@@ -81,7 +81,7 @@
 	<logger name="org.springframework.web">
 		<level value="info" />
 	</logger>
-
+	<!-- 테스트입니다 -->
 	<!-- Root Logger -->
 	<root>
 		<priority value="warn" />
