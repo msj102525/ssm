@@ -44,7 +44,7 @@
 					<ul>
 						<li><a href="#">공지사항</a></li>
 						<li><a href="#">불편사항</a></li>
-						<li><a href="#">매장관리</a></li>
+						<li><a href="${pageContext.servletContext.contextPath }/glist.do?page=1">매장관리</a></li>
 						<li><a href="#">매장관리</a></li>
 					</ul>
 				</div>

@@ -31,6 +31,53 @@ form.sform {
 	left: 400px;
 	display: none;  /* 안 보이게 함 */
 }
+
+h1{
+	color:black;
+	font-size: 30px;
+}
+
+body {
+  color: #666;
+  font: 14px/24px "Open Sans", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", Sans-Serif;
+}
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+}
+th,
+td {
+  padding: 6px 15px;
+}
+th {
+  background: rgb(250, 180, 49);
+  color: #000;
+  text-align: left;
+}
+tr:first-child th:first-child {
+  border-top-left-radius: 6px;
+}
+tr:first-child th:last-child {
+  border-top-right-radius: 6px;
+}
+td {
+  border-right: 1px solid #c6c9cc;
+  border-bottom: 1px solid #c6c9cc;
+}
+td:first-child {
+  border-left: 1px solid #c6c9cc;
+}
+tr:nth-child(even) td {
+  background: #eaeaed;
+}
+tr:last-child td:first-child {
+  border-bottom-left-radius: 6px;
+}
+tr:last-child td:last-child {
+  border-bottom-right-radius: 6px;
+}
+
 </style>
 <script type="text/javascript" src="/first/resources/js/jquery-3.7.0.min.js"></script>
 <script type="text/javascript">
@@ -54,13 +101,16 @@ $(function(){
 </script>
 </head>
 <body>
+<c:import url="/WEB-INF/views/common/header.jsp" />
 <hr>
+<br>
 <h1 align="center">상품 목록</h1>
 <div style="align:center;text-align:center;">
+<br>
 </div>
 
 <%-- 조회된 상품 목록 출력 --%>
-<table align="center" border="1" cellspacing="0" width="700">
+<table align="center" border="1" cellspacing="25" width="1000">
 	<tr>
 		<th>번호</th>
 		<th>상품명</th>
@@ -72,7 +122,7 @@ $(function(){
 		<th>발주 연락처</th>
 		<th>원산지</th>
 	</tr>
-	<c:forEach items="${ requestScope.goodslist }" var="goods" varStatus="status">>
+	<c:forEach items="${ requestScope.goodslist }" var="goods" varStatus="status">
 		<tr>
 			<td align="center">${ goods.goodsNo }</td>
 			<td align="center">${ goods.goodsName }</td>
@@ -87,7 +137,9 @@ $(function(){
 	</c:forEach>
 </table>
 <br>
+<c:import url="/WEB-INF/views/common/pagingView.jsp" />
 
-
+<hr>
+<c:import url="/WEB-INF/views/common/footer.jsp" />
 </body>
 </html>

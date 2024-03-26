@@ -5,7 +5,7 @@ public class Inventory {
 	private int goodsNo;
 	private int pdQuantity;
 	private int minAlarmQuantity;
-	private int minProduceQuantity;
+	private int minOrderQuantity;
 	
 	public Inventory() {
 		super();
@@ -18,12 +18,12 @@ public class Inventory {
 	}
 	
 	
-	public Inventory(int goodsNo, int pdQuantity, int minAlarmQuantity, int minProduceQuantity) {
+	public Inventory(int goodsNo, int pdQuantity, int minAlarmQuantity, int minOrderQuantity) {
 		super();
 		this.goodsNo = goodsNo;
 		this.pdQuantity = pdQuantity;
 		this.minAlarmQuantity = minAlarmQuantity;
-		this.minProduceQuantity = minProduceQuantity;
+		this.minOrderQuantity = minOrderQuantity;
 	}
 
 	public int getGoodsNo() {
@@ -50,18 +50,18 @@ public class Inventory {
 		this.minAlarmQuantity = minAlarmQuantity;
 	}
 
-	public int getMinProduceQuantity() {
-		return minProduceQuantity;
+	public int getMinOrderQuantity() {
+		return minOrderQuantity;
 	}
 
-	public void setMinProduceQuantity(int minProduceQuantity) {
-		this.minProduceQuantity = minProduceQuantity;
+	public void setMinOrderQuantity(int minOrderQuantity) {
+		this.minOrderQuantity = minOrderQuantity;
 	}
 
 	@Override
 	public String toString() {
 		return "Inventory [goodsNo=" + goodsNo + ", pdQuantity=" + pdQuantity + ", minAlarmQuantity=" + minAlarmQuantity
-				+ ", minProduceQuantity=" + minProduceQuantity + "]";
+				+ ", minOrderQuantity=" + minOrderQuantity + "]";
 	}
 	
 	

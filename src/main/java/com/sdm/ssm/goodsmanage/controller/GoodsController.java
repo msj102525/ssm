@@ -5,15 +5,17 @@ import java.util.ArrayList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.sdm.ssm.common.Paging;
 import com.sdm.ssm.goodsmanage.model.service.GoodsService;
-import com.sdm.ssm.goodsmanage.model.service.GoodsServiceImpl;
 import com.sdm.ssm.goodsmanage.model.vo.Goods;
 
+@Controller
 public class GoodsController {
 
 	private static final Logger logger = LoggerFactory.getLogger(GoodsController.class);
@@ -21,8 +23,7 @@ public class GoodsController {
 	@Autowired
 	private GoodsService goodsService;
 
-	// ¸ñ·Ï º¸±â
-	@RequestMapping("glist.do")
+	@RequestMapping(value="glist.do", method = RequestMethod.GET)
 	public String boardListMethod(@RequestParam(name = "page", required = false) String page,
 			@RequestParam(name = "limit", required = false) String slimit, Model model) {
 
@@ -33,28 +34,26 @@ public class GoodsController {
 
 		int limit = 10;
 		if (slimit != null) {
-			limit = Integer.parseInt(slimit); // Àü¼Û¹ÞÀº ÇÑ ÆäÀÌÁö¿¡ Ãâ·ÂÇÒ ¸ñ·Ï °¹¼ö¸¦ Àû¿ë
+			limit = Integer.parseInt(slimit); 
 		}
 
-		// ÃÑ ÆäÀÌÁö¼ö °è»êÀ» À§ÇØ °Ô½Ã±Û ÀüÃ¼ °¹¼ö Á¶È¸ÇØ ¿È
 		int listCount = goodsService.selectListCount();
-		// ÆäÀÌÂ¡ °è»ê Ã³¸® ½ÇÇà
+		
+		
 		Paging paging = new Paging(listCount, currentPage, limit, "glist.do");
 		paging.calculate();
 
-		// Ãâ·ÂÇÒ ÆäÀÌÁö¿¡ ´ëÇÑ ¸ñ·Ï Á¶È¸
 		ArrayList<Goods> list = goodsService.selectList(paging);
 
-		// ¹ÞÀº °á°ú·Î ¼º°ø/½ÇÆÐ ÆäÀÌÁö ³»º¸³¿
 		if (list != null && list.size() > 0) {
 			model.addAttribute("list", list);
 			model.addAttribute("paging", paging);
 			model.addAttribute("currentPage", currentPage);
 			model.addAttribute("limit", limit);
 
-			return "board/boardListView";
+			return "goods/goodsListView";
 		} else {
-			model.addAttribute("message", currentPage + " ÆäÀÌÁö ¸ñ·Ï Á¶È¸ ½ÇÆÐ!");
+			model.addAttribute("message", currentPage + "ì‹¤íŒ¨!");
 			return "common/error";
 		}
 
