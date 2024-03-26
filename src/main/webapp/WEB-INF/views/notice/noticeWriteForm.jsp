@@ -8,6 +8,32 @@
 <title>first</title>
 </head>
 <body>
+ <h1>게시판 작성!</h1>
+        <div class='form-0'>
+
+            <form class='form-1' action="#" method="POST"  enctype="multipart/form-data">
+                <input class='write-1' type="text" name="noticeTitle" maxlegth="44" placeholder="제목 입력, 최대 44자까지 가능합니다" required>
+                <hr>
+                <textarea class='write-2' name="noticeContent" rows="20" cols="20" maxlength="254" placeholder="내용 작성,최대 254자 가능합니다" required></textarea>
+                <input class='write-3' type="file" name="file" id="fileToUpload">
+
+                <hr>
+
+                <input class='write-4' type="submit" value="올리기">
+            </form>
+
+            <form action="board.php"> 
+                <input class='write-5' type="submit" value="돌아가기">
+            </form>
+
+            <?php session_start();
+                    if (isset($_SESSION['write_error'])) {
+                        echo $_SESSION['write_error'];
+                        unset($_SESSION['write_error']);
+                    }
+            ?>
+
+        </div>
 
 <h1 align="center">게시 원글 등록 페이지</h1>
 <br>
