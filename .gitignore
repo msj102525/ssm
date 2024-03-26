@@ -1,0 +1,17 @@
+/.metadata/
+
+/*.xml/
+
+/target/
+
+/Server/
+
+/.settings/
+
+/.project/
+
+/.springBeans/
+
+/.classpath/
+
+/test/
