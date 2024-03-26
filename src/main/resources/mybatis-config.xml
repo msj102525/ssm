@@ -15,9 +15,13 @@
 	<typeAliases>
 		<typeAlias type="com.sdm.ssm.admin.model.vo.Notice" alias="Notice"/>
 		<typeAlias type="com.sdm.ssm.common.Paging" alias="Paging"/>
+		<typeAlias type="com.sdm.ssm.goodsManage.model.vo.Goods" alias="Goods"/>
+		<typeAlias type="com.sdm.ssm.goodsManage.model.vo.Inventory" alias="Inventory"/>
+		<typeAlias type="com.sdm.ssm.goodsManage.model.vo.Produce" alias="Produce"/>
 	</typeAliases>
 		
 	<mappers>
 		<mapper resource="mapper/notice-mapper.xml"/>
+		<mapper resource="mapper/goods-mapper.xml"/>
 	</mappers>
 </configuration>

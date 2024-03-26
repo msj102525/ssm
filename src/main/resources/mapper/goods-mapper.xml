@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC
+"-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="goodsMapper">
+	
+	<resultMap id="GoodsResultList" type="Goods">
+		<result property="goodsNo" column="GOODS_NO" />
+		<result property="goodsName" column="GOODS_NAME" />
+		<result property="goodsUnit" column="GOODS_UNIT" />
+		<result property="goodsPrice" column="GOODS_PRICE" />
+		<result property="nation" column="NATION" />
+	</resultMap>
+	
+	<resultMap id="InventoryResultList" type="Inventory">
+		<result property="goodsNo" column="GOODS_NO" />
+		<result property="pdQuantity" column="PD_QUANTITY" />
+		<result property="minAlarmQuantity" column="MIN_ALARM_QUANTITY" />
+		<result property="minProduceQuantity" column="MIN_PRODUCE_QUANTITY" />
+	</resultMap>
+	
+	<resultMap id="ProduceResultList" type="Produce">
+		<result property="goodsNo" column="GOODS_NO" />
+		<result property="pdNo" column="PD_NO" />
+		<result property="pdName" column="PD_NAME" />
+		<result property="producer" column="PRODUCER" />
+		<result property="pdPhone" column="PD_PHONE" />
+		<result property="pdAdress" column="PD_ADDRESS" />
+	</resultMap>
+	
+	<select id="selectList" parameterType="paging" resultMap="GoodsResultList,InventoryResultList,ProduceResultList">
+	    SELECT GOODS_NO, GOODS_NAME, PD_QUANTITY, MIN_PRODUCE_QUANTITY,
+	    		  MIN_ALARM_QUANTITY, PD_NAME, PD_PHONE, NATION
+	    FROM GOODS 
+	    LEFT JOIN INVENTORY USING (GOODS_NO)
+	    LEFT JOIN PRODUCE USING (GOODS_NO)
+	</select>
+	
+	
+
+</mapper>
