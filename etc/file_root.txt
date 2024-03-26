@@ -1,7 +1,8 @@
-log4j.xml 
-// ssm/src/main/resources
+* 아래 폴더로 copy 해서 사용하세요(제외된 파일입니다.
+1. log4j.xml 
+  1)  /ssm/src/main/resources
 
-pom.xml 
-// ssm/
+2. pom.xml 
+   1)  /ssm/
 
 
