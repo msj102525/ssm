@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC
+"-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="noticeMapper">
+
+	<resultMap type="Notice" id="resultTop3">
+		<result property="noticeNo" column="NOTICENO" />
+		<result property="noticeTitle" column="NOTICETITLE" />
+		<result property="noticeDate" column="NOTICEDATE" />
+	</resultMap>
+	<resultMap type="Notice" id="resultList">
+		<result property="noticeNo" column="NOTICE_NO" />
+		<result property="writer" column="USER_ID" />
+		<result property="noticeTitle" column="NOTICE_TITLE" />
+		<result property="noticeContent" column="NOTICE_CONTENT" />
+		<result property="writeDate" column="WRITE_DATE" />
+		<result property="modifyDate" column="MODIFY_DATE" />
+		<result property="readCount" column="READ_COUNT" />
+		<result property="importancy" column="IMPORTANCY" />
+	</resultMap>
+	
+	<select id="selectTop3" resultMap="resultTop3">
+		SELECT * FROM (SELECT ROWNUM RNUM, NOTICENO, NOTICETITLE, NOTICEDATE 
+								 FROM ( SELECT * FROM NOTICE WHERE IMPORTANCE = 'N' 
+											  ORDER BY NOTICEDATE DESC)) 
+		 WHERE RNUM BETWEEN 1 AND 3
+	</select>
+	<select id ="selectListCount" resultType ="_int">
+		select Count(*) FROM TB_NOTICE
+	</select>
+	<select id="selectList" parameterType ="Paging" resultMap="resultList">
+			select * from (select rownum rnum, NOTICE_NO, WRITER, NOTICE_TITLE, NOTICE_CONTENT, WRITE_DATE, MODIFY_DATE, READ_COUNT, IMPORTANCY, user_id
+       					 from(select * from tb_notice  left join TB_USER  ON (Writer = id)
+                       	 order by write_date desc) )
+	where rnum between #{startRow} and #{endRow}
+	</select>
+</mapper>

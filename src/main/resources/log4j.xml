@@ -61,7 +61,7 @@
 	 -->
 	
 	<!-- Application Loggers -->
-	<logger name="org.myweb.first">
+	<logger name="com.sdm.ssm">
 		<level value="info" />
 	</logger>
 	
