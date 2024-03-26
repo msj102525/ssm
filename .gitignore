@@ -16,7 +16,7 @@
 
 /test/
 
-/log/
+/logs/
 
 !/mybatis-config.xml/
 
