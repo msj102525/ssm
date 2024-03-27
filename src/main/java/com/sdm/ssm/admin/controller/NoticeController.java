@@ -20,7 +20,16 @@ public class NoticeController {
 
 	@Autowired
 	private NoticeService noticeService;
-
+	
+	//뷰 페이지 내보내기용 메소드 작성부-------------------------------------------
+	
+	//새 게시글 등록 페이지 내보내기용 메소드
+	@RequestMapping("nwform.do")
+	public String moveBoardWritePage() {
+		return "notice/noticeWriteForm";
+	}
+	
+	//리스트내보내기
 	@RequestMapping("nlist.do")
 	public String boardListMethod(@RequestParam(name = "page", required = false) String page,
 			@RequestParam(name = "limit", required = false) String slimit, Model model) {
@@ -55,4 +64,6 @@ public class NoticeController {
 			return "common/error";
 		}
 	}
+	
+	
 }

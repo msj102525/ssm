@@ -13,7 +13,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>first</title>
+<title>공지사항</title>
 <style type="text/css">
 fieldset#ss {
 	width: 600px;
@@ -30,6 +30,113 @@ form.sform {
 	left: 400px;
 	display: none;  /* 안 보이게 함 */
 }
+table {
+  border-collapse: collapse;
+  width: 1300px;
+  margin: 1rem auto;
+  background-color: white;
+}
+
+thead{
+  box-shadow: 4px 4px 10px rgba(0,0,0,0.1);
+}
+
+/* 테이블 행 */
+td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+}
+
+th {
+  padding: 8px;
+  text-align: left;
+  text-align: center;
+  border-top: 2px solid #000;
+  border-bottom: 2px solid #000;
+  color: #000;
+}
+
+/* 테이블 올렸을 때 */
+tbody tr:hover {
+  background-color: #d3d3d3;
+  opacity: 0.9;
+  cursor: pointer;
+}
+
+/* 테이블 비율 */
+th:nth-child(1),
+td:nth-child(1) {
+  width: 5%;
+}
+
+th:nth-child(2),
+td:nth-child(2) {
+  width: 55%;
+}
+
+th:nth-child(3),
+td:nth-child(3) {
+  width: 10%;
+}
+
+th, td {
+  border-left: none;
+  border-right: none;
+}
+/*목록*/
+div.listdiv{
+  height: 40px;
+  width: 1300px;
+  margin: 20px auto; 
+  display: flex;
+  /* padding-left:400px; */
+  justify-content: center;
+  position: relative;
+}
+button.listbtn{
+	position : absolute;
+	right : 0;	
+}
+/*검색창 CSS*/
+input:-ms-input-placeholder{color:#a8a8a8;}
+input:-webkit-input-placeholder{color:#a8a8a8;}
+input:-moz-input-placeholder{color:#a8a8a8;}
+div.searchdiv{
+  height: 40px;
+  width: 1300px;
+  margin: 20px auto; 
+  display: flex;
+  /* padding-left:400px; */
+  justify-content: center;
+  position: relative;
+}
+
+.searchdiv > button.writerB {
+	position: absolute;
+	right: 0;
+}
+
+.searchdiv > input {
+  font-size: 16px;
+  width: 325px;
+  padding: 10px;
+  border: 1px solid rgb(250, 180, 49);
+  outline: none;
+  float: left;
+  height: 20px;
+  margin-right: 2px; 
+}
+button {
+  width: 100px;
+  height: 40px;
+  border: none;
+  background: rgb(250, 180, 49);
+  color: #ffffff;
+  font-size: 16px;
+}
+
 </style>
 <script type="text/javascript" src="/first/resources/js/jquery-3.7.0.min.js"></script>
 <script type="text/javascript">
@@ -49,36 +156,63 @@ $(function(){
 		});  //each
 	});  //on
 });  //document ready
-</script>
 function showWriteForm(){
 	//게시글 원글 쓰기 페이지로 이동 요청
-	location.href = "${ pageContext.servletContext.contextPath }/bwform.do";
+	location.href = "${ pageContext.servletContext.contextPath }/nwform.do";
 }
 </script>
 </head>
 <body>
 <%-- <%@ include file="../common/menubar.jsp" %> --%>
 <c:import url="/WEB-INF/views/common/header.jsp" />
+<c:import url="/WEB-INF/views/admin/sidebar.jsp" />
 <hr>
-<h1 align="center">공지글 목록</h1>
+<h3 align="center">공지사항</h1>
 
-<%-- 공지글 쓰기는 관리자만 가능함 --%>
-<%-- <% if(loginMember != null){ %> --%>
-<c:if test="${ !empty sessionScope.loginMember&& sessionScope.loginMember.adminOK == Y }">
-<div style="align:center;text-align:center;">
-	<button onclick="showWriteForm();">글쓰기</button>
-</div>
 <%-- <% } %> --%>
-</c:if>
+<%-- </c:if> --%>
 <br>
-
-<center>
-	<button onclick="${ pageContext.servletContext.contextPath }/nlist.do?page=1';">목록</button>
-</center>
 <br>
+<%-- 조회된 게시글 목록 출력 --%>
+<div class="listdiv">
+<button class="listbtn" onclick="javascript:location.href='${pageContext.servletContext.contextPath}/nlist.do?page=1';">목록</button>
+</div>
+<table>
+	<tr>
+		<th>번호</th>
+		<th>제목</th>
+		<th>작성자</th>
+		<th>날짜</th>
+		<th>조회수</th>
+	</tr>
+	<c:forEach items="${ requestScope.list }" var="n">
+		<tr>
+			
+			<td>${n.noticeNo}</td>
+			<c:url var="mvndetail" value="ndetail.do">
+				<c:param name="nno" value="${ n.noticeNo }" />
+				<c:param name="page"  value="${ nowpage }"/>
+			</c:url>
+			<td>
+			<a href="${mvndetail}">${n.noticeTitle }</a>
+			</td>
+			<td>${n.writer }</td>
+			<td>${n.writeDate }</td>
+			<td>${n.readCount }</td>
+		</tr>
+<%-- 	<% } %> --%>
+	</c:forEach>
+</table>
+<div class="searchdiv">
+	<input type="text" placeholder="검색어 입력">
+	<button>검색</button>
+	<button class="writerB" onclick="showWriteForm();">글쓰기</button>
+</div>
+<%-- 공지글 쓰기는 관리자만 가능함 --%>
+<%-- <c:if test="${ !empty sessionScope.loginMember&& sessionScope.loginMember.adminOK == Y }"> --%>
 
 <%-- 항목별 검색 기능 추가 --%>
-<fieldset id="ss">
+<%-- <%-- <fieldset id="ss">
 	<legend>검색할 항목을 선택하세요.</legend>
 	<input type="radio" name="item" id="title"> 제목 &nbsp;
 	<input type="radio" name="item" id="writer"> 작성자 &nbsp;	
@@ -86,8 +220,8 @@ function showWriteForm(){
 </fieldset>
 <br>
 
-<%-- 검색 항목별 값 입력 전송용 폼 만들기 --%>
-<%-- 제목 검색 폼 --%>
+검색 항목별 값 입력 전송용 폼 만들기
+제목 검색 폼
 <form id="titleform" class="sform" action="bsearchTitle.do" method="post">
 	<input type="hidden" name="action" value="title">	
 <fieldset>
@@ -103,7 +237,7 @@ function showWriteForm(){
 </fieldset>
 </form>
 
-<%-- 작성자 검색 폼 --%>
+작성자 검색 폼
 <form id="writerform" class="sform" action="bsearchWriter.do" method="post">
 	<input type="hidden" name="action" value="writer">	
 <fieldset>
@@ -119,7 +253,7 @@ function showWriteForm(){
 </fieldset>
 </form>
 
-<%-- 등록날짜 검색 폼 --%>
+등록날짜 검색 폼
 <form id="dateform" class="sform" action="bsearchDate.do" method="post">
 	<input type="hidden" name="action" value="date">	
 <fieldset>
@@ -133,36 +267,7 @@ function showWriteForm(){
 	</select> &nbsp;
 	<input type="submit" value="검색">
 </fieldset>
-</form>
-
-
-<%-- 조회된 게시글 목록 출력 --%>
-<table align="center" border="1" cellspacing="0" width="700">
-	<tr>
-		<th>번호</th>
-		<th>제목</th>
-		<th>작성자</th>
-		<th>날짜</th>
-		<th>조회수</th>
-	</tr>
-	<c:forEach items="${ requestScope.list }" var="n">
-		<tr>
-			
-			<td align="center">${n.noticeNo}</td>
-			<c:url var="mvndetail" value="ndetail.do">
-				<c:param name="nno" value="${ n.noticeNo }" />
-				<c:param name="page"  value="${ nowpage }"/>
-			</c:url>
-			<td>
-			<a href="${mvndetail}">${n.noticeTitle }</a>
-			</td>
-			<td align="center">${n.writer }</td>
-			<td align="center">${n.writeDate }</td>
-			<td align="center">${n.readCount }</td>
-		</tr>
-<%-- 	<% } %> --%>
-	</c:forEach>
-</table>
+</form> --%>
 <br>
 
 <%-- 페이징 처리 뷰 포함 처리 --%>
