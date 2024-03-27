@@ -18,6 +18,8 @@
 		<typeAlias type="com.sdm.ssm.goodsmanage.model.vo.Goods" alias="Goods"/>
 		<typeAlias type="com.sdm.ssm.goodsmanage.model.vo.Inventory" alias="Inventory"/>
 		<typeAlias type="com.sdm.ssm.goodsmanage.model.vo.Produce" alias="Produce"/>
+		<typeAlias type="com.sdm.ssm.common.SearchDate" alias="SearchDate"/>
+		<typeAlias type="com.sdm.ssm.common.Search" alias="Search"/>
 	</typeAliases>
 		
 	<mappers>
