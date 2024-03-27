@@ -14,71 +14,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
+
 <title>goodsListView</title>
-<style type="text/css">
-fieldset#ss {
-	width: 600px;
-	position: relative;
-	left: 450px;
-}
-form fieldset {
-	width: 600px;	
-}
-form.sform {
-	background: lightgray;
-	width: 630px;
-	position: relative;
-	left: 400px;
-	display: none;  /* 안 보이게 함 */
-}
 
-h1{
-	color:black;
-	font-size: 30px;
-}
-
-body {
-  color: #666;
-  font: 14px/24px "Open Sans", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", Sans-Serif;
-}
-table {
-  border-collapse: separate;
-  border-spacing: 0;
-  width: 100%;
-}
-th,
-td {
-  padding: 6px 15px;
-}
-th {
-  background: rgb(250, 180, 49);
-  color: #000;
-  text-align: left;
-}
-tr:first-child th:first-child {
-  border-top-left-radius: 6px;
-}
-tr:first-child th:last-child {
-  border-top-right-radius: 6px;
-}
-td {
-  border-right: 1px solid #c6c9cc;
-  border-bottom: 1px solid #c6c9cc;
-}
-td:first-child {
-  border-left: 1px solid #c6c9cc;
-}
-tr:nth-child(even) td {
-  background: #eaeaed;
-}
-tr:last-child td:first-child {
-  border-bottom-left-radius: 6px;
-}
-tr:last-child td:last-child {
-  border-bottom-right-radius: 6px;
-}
-
-</style>
 <script type="text/javascript" src="/first/resources/js/jquery-3.7.0.min.js"></script>
 <script type="text/javascript">
 $(function(){
@@ -107,36 +45,53 @@ $(function(){
 <h1 align="center">상품 목록</h1>
 <div style="align:center;text-align:center;">
 <br>
+<br>
+<br>
 </div>
 
 <%-- 조회된 상품 목록 출력 --%>
 <div style="margin-left: auto; margin-right: auto; width: 950px;">
-<table align="center" border="1" cellspacing="25" width="100%" >
-	<tr>
-		<th>번호</th>
-		<th>상품명</th>
-		<th>수량</th>
-		<th>단위</th>
-		<th>발주 최소 수량</th>
-		<th>알림 최소 수량</th>
-		<th>발주처</th>
-		<th>발주 연락처</th>
-		<th>원산지</th>
-	</tr>
-	<c:forEach items="${ requestScope.goodslist }" var="goods" varStatus="status">
-		<tr>
-			<td align="center">${ goods.goodsNo }</td>
-			<td align="center">${ goods.goodsName }</td>
-			<td align="center">${ goods.pdQuantity }</td>
-			<td align="center">${ goods.Unit }</td>
-			<td align="center">${goods.minOrderQuantity}</td>
-	        <td align="center">${goods.minAlarmQuantity}</td>
-	        <td align="center">${goods.pdName}</td>
-	        <td align="center">${goods.pdPhone}</td>
-	        <td align="center">${goods.Nation}</td>
-		</tr>
-	</c:forEach>
-</table>
+    <table align="center" border="1" cellspacing="25" width="100%">
+        <tr>
+            <th style="text-align: center; white-space: nowrap;">번호</th>
+            <th style="text-align: center; white-space: nowrap;">상품명</th>
+            <th style="text-align: center; white-space: nowrap;">수량</th>
+            <th style="text-align: center; white-space: nowrap;">단위</th>
+            <th style="text-align: center; white-space: nowrap;">발주 최소 수량</th>
+            <th style="text-align: center; white-space: nowrap;">알림 최소 수량</th>
+            <th style="text-align: center; white-space: nowrap;">발주처</th>
+            <th style="text-align: center; white-space: nowrap;">발주 연락처</th>
+            <th style="text-align: center; white-space: nowrap;">원산지</th>
+        </tr>
+        <c:forEach items="${ requestScope.list }" var="goodsPrint">
+            <tr>
+                <td align="center" style="white-space: nowrap;">${ goodsPrint.goodsNo }</td>
+                <td align="center" style="white-space: nowrap;">${ goodsPrint.goodsName }</td>
+                <td align="center" style="white-space: nowrap;">
+                    <div style="display: inline-block;">            
+                        <input type="number" value="${ goodsPrint.pdQuantity }" name="pdQuantity" style="width: 50px; margin-right: 0px; vertical-align: middle;" />
+                        <span style="vertical-align: middle;">${ goodsPrint.goodsUnit }</span>
+                    </div>
+                </td>
+                <td align="center" style="white-space: nowrap;">${ goodsPrint.goodsUnit }</td>
+                <td align="center" style="white-space: nowrap;">
+                    <div style="display: inline-block;">
+                        <input type="number" value="${ goodsPrint.minOrderQuantity }" name="minOrderQuantity" style="width: 50px; margin-right: 5px; vertical-align: middle;" />
+                        <span style="vertical-align: middle;">${ goodsPrint.goodsUnit }</span>
+                    </div>
+                </td>
+                <td align="center" style="white-space: nowrap;">
+                    <div style="display: inline-block;">
+                        <input type="number" value="${ goodsPrint.minAlarmQuantity }" name="minAlarmQuantity" style="width: 50px; margin-right: 5px; vertical-align: middle;" />
+                        <span style="vertical-align: middle;">${ goodsPrint.goodsUnit }</span>
+                    </div>
+                </td>
+                <td align="center" style="white-space: nowrap;">${ goodsPrint.pdName }</td>
+                <td align="center" style="white-space: nowrap;">${ goodsPrint.pdPhone }</td>
+                <td align="center" style="white-space: nowrap;">${ goodsPrint.nation }</td>
+            </tr>
+        </c:forEach>
+    </table>
 </div>
 <br>
 <c:import url="/WEB-INF/views/common/pagingView.jsp" />

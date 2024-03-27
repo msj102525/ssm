@@ -3,46 +3,53 @@
 "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="goodsMapper">
-	
-	<resultMap id="GoodsResultList" type="Goods">
+
+	<resultMap id="GoodsResultList1" type="GoodsPrint">
 		<result property="ID" column="ID" />
 		<result property="goodsNo" column="GOODS_NO" />
 		<result property="goodsName" column="GOODS_NAME" />
+		<result property="pdQuantity" column="PD_QUANTITY" />
 		<result property="goodsUnit" column="GOODS_UNIT" />
+		<result property="minAlarmQuantity" column="MIN_ALARM_QUANTITY" />
+		<result property="minOrderQuantity" column="MIN_ORDER_QUANTITY" />
+		<result property="pdNo" column="PD_NO" />
+		<result property="pdName" column="PD_NAME" />
+		<result property="pdPhone" column="PD_PHONE" />
 		<result property="goodsPrice" column="GOODS_PRICE" />
 		<result property="nation" column="NATION" />
 	</resultMap>
 	
-	<resultMap id="InventoryResultList" type="Inventory">
+	<resultMap id="GoodsResultList" type="GoodsPrint">
 		<result property="goodsNo" column="GOODS_NO" />
+		<result property="goodsName" column="GOODS_NAME" />
 		<result property="pdQuantity" column="PD_QUANTITY" />
+		<result property="goodsUnit" column="GOODS_UNIT" />
 		<result property="minAlarmQuantity" column="MIN_ALARM_QUANTITY" />
 		<result property="minOrderQuantity" column="MIN_ORDER_QUANTITY" />
-	</resultMap>
-	
-	<resultMap id="ProduceResultList" type="Produce">
-		<result property="goodsNo" column="GOODS_NO" />
-		<result property="pdNo" column="PD_NO" />
 		<result property="pdName" column="PD_NAME" />
-		<result property="producer" column="PRODUCER" />
 		<result property="pdPhone" column="PD_PHONE" />
-		<result property="pdAdress" column="PD_ADDRESS" />
+		<result property="goodsPrice" column="GOODS_PRICE" />
+		<result property="nation" column="NATION" />
 	</resultMap>
-	
+
 	<select id="selectListCount" resultType="int">
 		SELECT COUNT(*)
-		FROM TB_GOODS_123
+		FROM
+		TB_GOODS_123
 	</select>
-	
-	<select id="selectList" parameterType="paging" resultMap="GoodsResultList">
-	    SELECT <!-- g.ID,  -->g.GOODS_NO, g.GOODS_NAME, i.PD_QUANTITY, i.MIN_ORDER_QUANTITY,
-	              MIN_ALARM_QUANTITY, p.PD_NAME, p.PD_PHONE, g.GOODS_PRICE, g.NATION
+
+	<select id="selectGoodsPrint" parameterType="Paging" resultMap="GoodsResultList">
+	    SELECT <!-- g.ID, -->
+		    g.GOODS_NO, g.GOODS_NAME, i.PD_QUANTITY, g.GOODS_UNIT, 
+		    i.MIN_ORDER_QUANTITY, i.MIN_ALARM_QUANTITY, 
+		    p.PD_NAME, p.PD_PHONE, g.GOODS_PRICE, g.NATION
 	    FROM TB_GOODS_123 g
 	    LEFT JOIN TB_INVENTORY_123 i ON g.GOODS_NO = i.GOODS_NO
 	    LEFT JOIN TB_PRODUCE_123 p ON g.GOODS_NO = p.GOODS_NO
 	</select>
 
-	
-	
+
+
+
 
 </mapper>
