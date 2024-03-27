@@ -1,23 +1,25 @@
+pom.xml
+
 /.metadata/
 
-/*.xml/
+*.xml
 
-/target/
+target/
 
-/Server/
+Server/
 
-/.settings/
+.settings/
 
-/.project/
+.project/
 
-/.springBeans/
+.springBeans/
 
-/.classpath/
+.classpath
 
-/test/
+test/
 
-/logs/
+logs/
 
-!/mybatis-config.xml/
+!mybatis-config.xml
 
-!/mapper/
+!mapper/
