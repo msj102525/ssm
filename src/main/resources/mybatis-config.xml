@@ -18,10 +18,12 @@
 		<typeAlias type="com.sdm.ssm.goodsmanage.model.vo.Goods" alias="Goods"/>
 		<typeAlias type="com.sdm.ssm.goodsmanage.model.vo.Inventory" alias="Inventory"/>
 		<typeAlias type="com.sdm.ssm.goodsmanage.model.vo.Produce" alias="Produce"/>
+		<typeAlias type="com.sdm.ssm.user.model.vo.User" alias="User"/>
 	</typeAliases>
 		
 	<mappers>
 		<mapper resource="mapper/notice-mapper.xml"/>
 		<mapper resource="mapper/goods-mapper.xml"/>
+		<mapper resource="mapper/user-mapper.xml"/>
 	</mappers>
 </configuration>
