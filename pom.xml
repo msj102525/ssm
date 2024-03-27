@@ -16,7 +16,6 @@
 	<dependencies>
 		<!-- Spring -->
 		<!-- 테스트입니다 -->
-		<!-- 테스트입니다 2-->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
