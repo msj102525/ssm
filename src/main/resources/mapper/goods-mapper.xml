@@ -5,6 +5,7 @@
 <mapper namespace="goodsMapper">
 	
 	<resultMap id="GoodsResultList" type="Goods">
+		<result property="ID" column="ID" />
 		<result property="goodsNo" column="GOODS_NO" />
 		<result property="goodsName" column="GOODS_NAME" />
 		<result property="goodsUnit" column="GOODS_UNIT" />
@@ -34,7 +35,7 @@
 	</select>
 	
 	<select id="selectList" parameterType="paging" resultMap="GoodsResultList">
-	    SELECT g.GOODS_NO, g.GOODS_NAME, i.PD_QUANTITY, i.MIN_ORDER_QUANTITY,
+	    SELECT <!-- g.ID,  -->g.GOODS_NO, g.GOODS_NAME, i.PD_QUANTITY, i.MIN_ORDER_QUANTITY,
 	              MIN_ALARM_QUANTITY, p.PD_NAME, p.PD_PHONE, g.GOODS_PRICE, g.NATION
 	    FROM TB_GOODS_123 g
 	    LEFT JOIN TB_INVENTORY_123 i ON g.GOODS_NO = i.GOODS_NO

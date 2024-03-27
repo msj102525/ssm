@@ -110,7 +110,8 @@ $(function(){
 </div>
 
 <%-- 조회된 상품 목록 출력 --%>
-<table align="center" border="1" cellspacing="25" width="1000">
+<div style="margin-left: auto; margin-right: auto; width: 950px;">
+<table align="center" border="1" cellspacing="25" width="100%" >
 	<tr>
 		<th>번호</th>
 		<th>상품명</th>
@@ -136,6 +137,7 @@ $(function(){
 		</tr>
 	</c:forEach>
 </table>
+</div>
 <br>
 <c:import url="/WEB-INF/views/common/pagingView.jsp" />
 
