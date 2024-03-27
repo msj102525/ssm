@@ -100,7 +100,7 @@ hr{
 </style>
 </head>
 <body>
- <h1>게시판 작성!</h1>
+ <h1>공지사항 작성</h1>
         <div class='form-0'>
 
             <form class='form-1' action="#" method="POST"  enctype="multipart/form-data">
@@ -110,7 +110,7 @@ hr{
                 <input class='write-3' type="file" name="file" id="fileToUpload">
 
                 <hr>
-<button class="write-4" onclick="javascript:location.href='${pageContext.servletContext.contextPath}/nlist.do?page=1';">올리기</button>
+			<input class="write-4" onclick="javascript:location.href='${pageContext.servletContext.contextPath}/nwrite.do?page=1;">올리기</input>
             </form>
 
 	<button class="listbtn" onclick="javascript:location.href='${pageContext.servletContext.contextPath}/nlist.do?page=1';">목록</button>
