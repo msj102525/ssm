@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import com.sdm.ssm.admin.dao.NoticeDao;
 import com.sdm.ssm.admin.model.vo.Notice;
 import com.sdm.ssm.common.Paging;
+import com.sdm.ssm.common.Search;
+import com.sdm.ssm.common.SearchDate;
 
 @Service("noticeService")
 public class NoticeServiceImpl implements NoticeService {
@@ -23,6 +25,47 @@ public class NoticeServiceImpl implements NoticeService {
 	@Override
 	public ArrayList<Notice> selectList(Paging paging) {
 		return noticeDao.selectList(paging);
+	}
+
+	@Override
+	public int selectSearchTitleCount(String keyword) {
+		return noticeDao.selectSearchTitleCount(keyword);
+	}
+
+	@Override
+	public int selectSearchWriterCount(String keyword) {
+		// TODO Auto-generated method stub
+		return noticeDao.selectSearchWriterCount(keyword);
+	}
+
+	@Override
+	public int selectSearchDateCount(SearchDate searchDate) {
+		return noticeDao.selectSearchDateCount(searchDate);
+	}
+
+	@Override
+	public ArrayList<Notice> selectSearchTitle(Search search) {
+		return noticeDao.selectSearchTitle(search);
+	}
+
+	@Override
+	public ArrayList<Notice> selectSearchWriter(Search search) {
+		return noticeDao.selectSearchWriter(search);
+	}
+
+	@Override
+	public ArrayList<Notice> selectSearchDate(Search search) {
+		return noticeDao.selectSearchDate(search);
+	}
+
+	@Override
+	public void updateAddReadCount(int noticeNo) {
+		noticeDao.updateAddReadCount(noticeNo);
+	}
+
+	@Override
+	public Notice selectNotice(int noticeNo) {
+		return noticeDao.selectNotice(noticeNo);
 	}
 	
 }

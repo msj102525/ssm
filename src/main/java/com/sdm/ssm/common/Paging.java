@@ -13,6 +13,7 @@ public class Paging implements java.io.Serializable{
 	private int startPage;		//페이지 그룹의 시작값
 	private int endPage;		//페이지 그룹의 끝 값
 	private String urlMapping; //페이지 숫자 클릭시 요청할 url 저장용
+	private int id;
 
 	//기본생성자 없음
 	
@@ -152,6 +153,14 @@ public class Paging implements java.io.Serializable{
 		return "Paging [startRow=" + startRow + ", endRow=" + endRow + ", listCount=" + listCount + ", limit=" + limit
 				+ ", currentPage=" + currentPage + ", maxPage=" + maxPage + ", startPage=" + startPage + ", endPage="
 				+ endPage + ", urlMapping=" + urlMapping + "]";
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 

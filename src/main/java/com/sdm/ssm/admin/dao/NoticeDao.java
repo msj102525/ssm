@@ -11,6 +11,8 @@ import org.springframework.stereotype.Repository;
 
 import com.sdm.ssm.admin.model.vo.Notice;
 import com.sdm.ssm.common.Paging;
+import com.sdm.ssm.common.Search;
+import com.sdm.ssm.common.SearchDate;
 
 @Repository("noticeDao")
 public class NoticeDao {
@@ -23,6 +25,34 @@ public class NoticeDao {
 	public ArrayList<Notice> selectList(Paging paging) {
 		List<Notice> list = sqlSessionTemplate.selectList("noticeMapper.selectList",paging);
 		return (ArrayList<Notice>)list;
+	}
+	public int selectSearchTitleCount(String keyword) {
+
+		return sqlSessionTemplate.selectOne("noticeMapper.selectSearchTitleCount", keyword);
+	}
+	public int selectSearchWriterCount(String keyword) {
+		return sqlSessionTemplate.selectOne("noticeMapper.selectSearchWriterCount", keyword);
+	}
+	public int selectSearchDateCount(SearchDate searchDate) {
+		return sqlSessionTemplate.selectOne("noticeMapper.selectSearchDateCount", searchDate);
+	}
+	public ArrayList<Notice> selectSearchTitle(Search search) {
+		List<Notice> list =sqlSessionTemplate.selectList("noticeMapper.selectSearchTitle", search);
+		return (ArrayList<Notice>)list;
+	}
+	public ArrayList<Notice> selectSearchWriter(Search search) {
+		List<Notice> list =sqlSessionTemplate.selectList("noticeMapper.selectSearchWriter", search);
+		return (ArrayList<Notice>)list;
+	}
+	public ArrayList<Notice> selectSearchDate(Search search) {
+		List<Notice> list =sqlSessionTemplate.selectList("noticeMapper.selectSearchDate", search);
+		return (ArrayList<Notice>)list;
+	}
+	public void updateAddReadCount(int noticeNo) {
+		sqlSessionTemplate.update("noticeMapper.updateAddReadCount", noticeNo);
+	}
+	public Notice selectNotice(int noticeNo) {
+		return sqlSessionTemplate.selectOne("noticeMapper.selectNotice", noticeNo);
 	}
 
 }
