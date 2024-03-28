@@ -16,9 +16,9 @@ Server/
 
 .classpath
 
-test/
+src/test/
 
-logs/
+src/main/resources/logs/
 
 !mybatis-config.xml
 
