@@ -18,7 +18,7 @@
 	</resultMap>
 
 	<select id="selectRsrvListCount" resultType="_int">
-		SELECT count(*) FROM tb_reservateaion_${ id }
+		SELECT count(*) FROM TB_RESERVATION_${ id }
 		WHERE rsrv_date = #{ rsrvDate }
 	</select>
 	
@@ -30,7 +30,7 @@
 					,rsrv_name, rsrv_telno, rsrv_inwon
 					,rsrv_subject, rsrv_memo
 					,writer, write_date
-		FROM (SELECT * FROM tb_reservateaion_${ id }
+		FROM (SELECT * FROM TB_RESERVATION_${ id }
 				WHERE rsrv_date = #{ keyword }
 		     ORDER BY rsrv_date desc, rsrv_time desc))
 		WHERE rnum BETWEEN #{ startRow } AND #{ endRow }
@@ -38,27 +38,27 @@
 	
 	<select id="selectRsrvDetail" parameterType="Reserve" resultMap="resultList">
 		SELECT *
-		FROM tb_reservateaion_200
+		FROM TB_RESERVATION_${ id }
 		WHERE rsrv_num = #{ rsrvNum }
 	</select>
 	
 	<!-- dml *************************************************************** -->
 	<insert id="insertReserve" parameterType="Reserve">
-		INSERT INTO tb_reservateaion_${ id }
+		INSERT INTO TB_RESERVATION_${ id }
 					(rsrv_num
 					,rsrv_date, rsrv_time
 					,rsrv_name, rsrv_telno, rsrv_inwon
 					,rsrv_subject, rsrv_memo
 					,writer, write_date)
-		VALUES ((SELECT max(board_num) + 1 FROM tb_reservateaion_200)
+		VALUES ((SELECT nvl(max(rsrv_num), 0) + 1 FROM TB_RESERVATION_${ id })
 				,#{ rsrvDate }, #{ rsrvTime }
 				,#{ rsrvName }, #{ rsrvTelno }, #{ rsrvInwon }
 				,#{ rsrvSubject }, #{ rsrvMemo }
 				,#{ writer }, default)
 	</insert>
 	
-	<update id="updateReserve" parameterType="_int">
-		UPDATE tb_reservateaion_${ id }
+<!-- 	<update id="updateReserve" parameterType="_int">
+		UPDATE TB_RESERVATION_${ id }
 		   SET rsrv_date = #{ rsrvDate }
 		   		,rsrv_time = #{ rsrvTime }
 		   		,rsrv_name = #{ rsrvName }
@@ -74,6 +74,6 @@
 	<delete id="deleteReserve" parameterType="Reserve">
 		DELETE FROM tb_reservateaion_${ id } 
 		WHERE rsrv_num = #{ rsrvNum }
-	</delete>
+	</delete> -->
 	
 </mapper>

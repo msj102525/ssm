@@ -6,9 +6,11 @@ header {
 }
 
 header .inner-header {
+	max-width: 1600px;
+	margin: 0 auto;
     border: 1px solid #000;
     display: flex;
-    padding: 10px 60px 10px 30px;
+    padding: 0px;
 }
 
 header .inner-header nav {

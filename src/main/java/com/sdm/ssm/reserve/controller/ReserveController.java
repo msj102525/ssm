@@ -20,18 +20,34 @@ public class ReserveController {
 	@Autowired
 	private ReserveService reserveService;
 	
+	
+	//예약이동 페이지
+	@RequestMapping("moveRsrvPage.do")
+	public String moveWritePage() {
+		return "reserve/reserve_input";
+	}
+
 	//예약등록
 	@RequestMapping(value="rsrvinsert.do", method=RequestMethod.POST)
 	public String reserveInsertMethod(Reserve reserve, 
 					Model model) {
+
+		Reserve rsrv = new Reserve();
 		
-		if(reserveService.insertReserve(reserve) > 0) {
+		//rsrv.setRsrvNum(1);
+		rsrv.setRsrvName(reserve.getRsrvName());
+		rsrv.setRsrvDate(reserve.getRsrvDate());
+		rsrv.setRsrvInwon(reserve.getRsrvInwon());
+		
+		rsrv.setId(200);
+		
+		if(reserveService.insertReserve(rsrv) > 0) {
 			//return "redirect:blist.do?page=" + page;
+			return "redirect:moveRsrvPage.do";
 		} else {
 			model.addAttribute("message", "예약 등록 실패");
 			return "common/error";
 		}
-		return "";
 	}
 	
 	//예약수정
@@ -87,18 +103,18 @@ public class ReserveController {
 		}
 	}
 	
-	@RequestMapping("myinfo.do")
-	public String memberDetailMethod(@RequestParam("userId") String userId, Model model) {
-		//서비스 메소드로 아이디 전달하고, 해당 회원정보 받기
-		Member member = memberService.selectMember(userId);
-		
-		if(member != null) {
-			model.addAttribute("member", member);
-			return "member/myInfoPage";
-		}else {
-			model.addAttribute("message", userId + "에 대한 회원 정보 조회 실패");
-			return "common/error";
-		}
-	}
+//	@RequestMapping("myinfo.do")
+//	public String memberDetailMethod(@RequestParam("userId") String userId, Model model) {
+//		//서비스 메소드로 아이디 전달하고, 해당 회원정보 받기
+//		Member member = memberService.selectMember(userId);
+//		
+//		if(member != null) {
+//			model.addAttribute("member", member);
+//			return "member/myInfoPage";
+//		}else {
+//			model.addAttribute("message", userId + "에 대한 회원 정보 조회 실패");
+//			return "common/error";
+//		}
+//	}
 
 }
