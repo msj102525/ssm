@@ -15,17 +15,25 @@
 	<typeAliases>
 		<typeAlias type="com.sdm.ssm.admin.model.vo.Notice" alias="Notice"/>
 		<typeAlias type="com.sdm.ssm.common.Paging" alias="Paging"/>
+		<typeAlias type="com.sdm.ssm.common.Search" alias="Search"/>
+		<typeAlias type="com.sdm.ssm.common.SearchDate" alias="SearchDate"/>
 		<typeAlias type="com.sdm.ssm.goodsmanage.model.vo.Goods" alias="Goods"/>
+		<typeAlias type="com.sdm.ssm.goodsmanage.model.vo.GoodsPrint" alias="GoodsPrint"/>
 		<typeAlias type="com.sdm.ssm.goodsmanage.model.vo.Inventory" alias="Inventory"/>
 		<typeAlias type="com.sdm.ssm.goodsmanage.model.vo.Produce" alias="Produce"/>
+<<<<<<< HEAD
 		<typeAlias type="com.sdm.ssm.goodsmanage.model.vo.GoodsPrint" alias="GoodsPrint"/>
 		<typeAlias type="com.sdm.ssm.common.SearchDate" alias="SearchDate"/>
 		<typeAlias type="com.sdm.ssm.common.
 		Search" alias="Search"/>
+=======
+		<typeAlias type="com.sdm.ssm.user.model.vo.User" alias="User"/>
+>>>>>>> branch 'main' of https://github.com/msj102525/ssm.git
 	</typeAliases>
 		
 	<mappers>
 		<mapper resource="mapper/notice-mapper.xml"/>
 		<mapper resource="mapper/goods-mapper.xml"/>
+		<mapper resource="mapper/user-mapper.xml"/>
 	</mappers>
 </configuration>

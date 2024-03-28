@@ -8,11 +8,11 @@ target/
 
 Server/
 
-.settings/
+.settings
 
-.project/
+.project
 
-.springBeans/
+.springBeans
 
 .classpath
 
@@ -23,3 +23,5 @@ logs/
 !mybatis-config.xml
 
 !mapper/
+
+!etc/

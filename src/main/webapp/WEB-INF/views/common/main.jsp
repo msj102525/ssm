@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>ssm</title>
-<link rel="stylesheet" href="resources/css/common/main.css" />
+<link rel="stylesheet" href="resources/css/common/main.css?after1" />
 <%-- jquery 파일 로드 --%>
 <script type="text/javascript"
 	src="/ssm/resources/js/jquery-3.7.0.min.js"></script>

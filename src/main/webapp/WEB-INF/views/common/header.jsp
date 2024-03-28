@@ -6,7 +6,18 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="resources/css/common/header.css" />
+<link rel="stylesheet" href="resources/css/common/header.css?after" />
+<script type="text/javascript" src="/ssm/resources/js/jquery-3.7.0.min.js"></script>
+<script type="text/javascript">
+	$(()=> {
+		
+	}) // document ready
+	
+	const logout = () => {
+		location.href='logout.do';
+		alert("로그아웃");
+	}
+</script>
 </head>
 <body>
 	<header>
@@ -26,7 +37,7 @@
 				</div>
 				<div class="login-box">
 					<div class="login-button-box">
-						<button type="button">로그인</button>
+						<button onclick="location.href='goLogin.do'">로그인</button>
 					</div>
 				</div>
 			</nav>
@@ -53,7 +64,7 @@
 						<img src="#" alt="프로필">
 					</div>
 					<div class="login-button-box">
-						<button type="button">로그아웃</button>
+						<button onclick="logout()">로그아웃</button>
 					</div>
 				</div>
 			</nav>
@@ -80,7 +91,7 @@
 						<img src="#" alt="프로필">
 					</div>
 					<div class="login-button-box">
-						<button type="button">로그아웃</button>
+						<button onclick="logout()">로그아웃</button>
 					</div>
 				</div>
 			</nav>
