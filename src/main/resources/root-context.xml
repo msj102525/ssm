@@ -80,7 +80,7 @@
 	
 	
 	<aop:config proxy-target-class="true">
-		<aop:pointcut expression="execution(* org.myweb.first..*Impl.*(..))" id="serviceMethod" />
+		<aop:pointcut expression="execution(* com.sdm.ssm..*Impl.*(..))" id="serviceMethod" />
 		<aop:advisor advice-ref="txAdvice" id="transactionAdvisor" pointcut-ref="serviceMethod" />
 	</aop:config>
 	
