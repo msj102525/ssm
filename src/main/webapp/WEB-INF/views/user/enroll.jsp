@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="resources/css/user/login.css?ver46">
+<link rel="stylesheet" href="resources/css/user/enroll.css?ver46">
 <script type="text/javascript">
 
 	
@@ -48,6 +48,27 @@
 					<ul>
 						<li>
 							<input type="text" name="userId" id="uid" placeholder="아이디">
+						</li>
+						<li>
+							<input type="password" name="passWd" id="upd" placeholder="비밀번호">
+						</li>
+						<li>
+							<input type="password" name="passWd" id="upd" placeholder="비밀번호">
+						</li>
+						<li>
+							<input type="password" name="passWd" id="upd" placeholder="비밀번호">
+						</li>
+						<li>
+							<input type="password" name="passWd" id="upd" placeholder="비밀번호">
+						</li>
+						<li>
+							<input type="password" name="passWd" id="upd" placeholder="비밀번호">
+						</li>
+						<li>
+							<input type="password" name="passWd" id="upd" placeholder="비밀번호">
+						</li>
+						<li>
+							<input type="password" name="passWd" id="upd" placeholder="비밀번호">
 						</li>
 						<li>
 							<input type="password" name="passWd" id="upd" placeholder="비밀번호">

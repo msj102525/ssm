@@ -16,7 +16,7 @@ Server/
 
 .classpath
 
-src/test/
+src/test/*
 
 src/main/resources/logs/
 
@@ -24,4 +24,4 @@ src/main/resources/logs/
 
 !src/main/resources/mapper/*
 
-!etc/
+!etc/*
