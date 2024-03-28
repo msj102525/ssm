@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.sdm.ssm.common.Paging;
-import com.sdm.ssm.common.Search;
 import com.sdm.ssm.goodsmanage.controller.GoodsPrintController;
 import com.sdm.ssm.goodsmanage.model.vo.GoodsPrint;
 
@@ -26,26 +25,6 @@ public class GoodsPrintDao {
 
 	public ArrayList<GoodsPrint> selectGoodsPrint(Paging paging){
 		List<GoodsPrint>list =sqlSessionTemplate.selectList("goodsMapper.selectGoodsPrint", paging);
-		return (ArrayList<GoodsPrint>)list;
-	}
-
-	// 상품명 검색
-	public int selectSearchGoodsNameCount(String keyword) {
-		return sqlSessionTemplate.selectOne("goodsMapper.selectSearchGoodsNameCount", keyword);
-	}
-
-	public ArrayList<GoodsPrint> selecSearchGoodsName(Search search) {
-		List<GoodsPrint>list =sqlSessionTemplate.selectList("goodsMapper.selectSearchGoodsName", search);
-		return (ArrayList<GoodsPrint>)list;
-	}
-
-	// 발주처 검색
-	public int selectSearchPdNameCount(String keyword) {
-		return sqlSessionTemplate.selectOne("goodsMapper.selectSearchPdNameCount", keyword);
-	}
-
-	public ArrayList<GoodsPrint> selectSearchPdName(Search search) {
-		List<GoodsPrint>list =sqlSessionTemplate.selectList("goodsMapper.selectSearchPdName", search);
 		return (ArrayList<GoodsPrint>)list;
 	}
 	

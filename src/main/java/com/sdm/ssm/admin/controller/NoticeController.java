@@ -68,7 +68,7 @@ public class NoticeController {
 	public String noticeListMethod(@RequestParam(name = "page", required = false) String page,
 			@RequestParam(name = "limit", required = false) String slimit, Model model) {
 		int currentPage = 1;
-		if (page != null) {
+		if (page != null && page.length()>0) {
 			currentPage = Integer.parseInt(page);
 		}
 
@@ -104,7 +104,7 @@ public class NoticeController {
 	public String noticeSearch(@RequestParam("action") String action, Search search,
 			@RequestParam(name = "page", required = false) String page, Model model) {
 		int currentPage = 1;
-		if (page != null) {
+		if (page != null&& page.length()>0) {
 			currentPage = Integer.parseInt(page);
 		}
 		int listCount = 0;

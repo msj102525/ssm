@@ -13,7 +13,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>공지사항</title>
+<title>불편사항</title>
 <style type="text/css">
 fieldset#ss {
 	width: 600px;
@@ -23,14 +23,6 @@ fieldset#ss {
 
 form fieldset {
 	width: 600px;
-}
-
-form.sform {
-	background: lightgray;
-	width: 630px;
-	position: relative;
-	left: 400px;
-	display: none; /* 안 보이게 함 */
 }
 
 table {
@@ -173,7 +165,7 @@ button {
 	<c:import url="/WEB-INF/views/common/header.jsp" />
 	<hr>
 
-	<h3 align="center">공지사항</h3>
+<h3 align="center">불편사항</h3>
 
 		<%-- <% } %> --%>
 		<%-- </c:if> --%>
@@ -181,7 +173,7 @@ button {
 		<%-- 조회된 게시글 목록 출력 --%>
 		<div class="listdiv">
 			<button class="listbtn"
-				onclick="javascript:location.href='${pageContext.servletContext.contextPath}/nlist.do?page=1';">목록</button>
+				onclick="javascript:location.href='${pageContext.servletContext.contextPath}/inconvlist.do?page=1';">목록</button>
 		</div>
 		<table>
 			<tr>
@@ -191,24 +183,24 @@ button {
 				<th>날짜</th>
 				<th>조회수</th>
 			</tr>
-			<c:forEach items="${ requestScope.list }" var="n">
-				<c:url var="ndetail" value="ndetail.do">
-					<c:param name="nno" value="${ n.noticeNo }" />
+			<c:forEach items="${ requestScope.list }" var="i">
+				<c:url var="inconvdetail" value="inconvdetail.do">
+					<c:param name="ino" value="${ i.boardNo }" />
 					<c:param name="page" value="${ nowpage }" />
 				</c:url>
 
-				<tr onclick="location.href='${ndetail}';">
-					<td>${n.noticeNo}</td>
-					<td><a href="${mvndetail}">${n.noticeTitle }</a></td>
-					<td>${n.writer }</td>
-					<td>${n.writeDate }</td>
-					<td>${n.readCount }</td>
+				<tr onclick="location.href='${inconvdetail}';">
+					<td>${i.boardNo}</td>
+					<td>${i.boardTitle }</a></td>
+					<td>${i.writer }</td>
+					<td>${i.writeDate }</td>
+					<td>${i.status }</td>
 				</tr>
 				<%-- 	<% } %> --%>
 			</c:forEach>
 		</table>
 		<div class="searchdiv">
-			<form action="nsearch.do" method="get">
+			<form action="inconvsearch.do" method="get">
 				<select style="height: 35px; width: 80px;" name="action"
 					id="searchselect">
 					<option value="title">제목</option>
@@ -221,13 +213,13 @@ button {
 			</form>
 		<button class="writerB" onclick="showWriteForm();">글쓰기</button>
 		</div>
-		<c:url var="nwf" value="nwform.do">
+		<c:url var="iwf" value="iwform.do">
 			<c:param name="page" value="${nowpage}" />
 		</c:url>
 		<script type="text/javascript">
 			function showWriteForm() {
 			//게시글 원글 쓰기 페이지로 이동 요청
-			location.href = "${ pageContext.servletContext.contextPath}/${nwf}";
+			location.href = "${ pageContext.servletContext.contextPath}/${iwf}";
 			}
 			$(document).ready(function() {
 				// 셀렉트 요소에서 옵션을 선택했을 때 이벤트 핸들러
@@ -247,69 +239,9 @@ button {
 				});
 			});
 		</script>
-		<%-- 공지글 쓰기는 관리자만 가능함 --%>
-		<%-- <c:if test="${ !empty sessionScope.loginMember&& sessionScope.loginMember.adminOK == Y }"> --%>
-
-		<%-- 항목별 검색 기능 추가 --%>
-		<%-- <%-- <fieldset id="ss">
-	<legend>검색할 항목을 선택하세요.</legend>
-	<input type="radio" name="item" id="title"> 제목 &nbsp;
-	<input type="radio" name="item" id="writer"> 작성자 &nbsp;	
-	<input type="radio" name="item" id="date"> 등록날짜 &nbsp;	
-</fieldset>
-<br>
-
-검색 항목별 값 입력 전송용 폼 만들기
-제목 검색 폼
-<form id="titleform" class="sform" action="bsearchTitle.do" method="post">
-	<input type="hidden" name="action" value="title">	
-<fieldset>
-	<legend>검색할 제목을 입력하세요.</legend>
-	<input type="search" name="keyword"> &nbsp;
-	한 페이지에 출력할 목록 갯수 : 
-	<select name="limit">
-		<option value="10" selected>10</option>
-		<option value="15" select>15</option>
-		<option value="20" select>20</option>
-	</select> &nbsp;
-	<input type="submit" value="검색">
-</fieldset>
-</form>
-
-작성자 검색 폼
-<form id="writerform" class="sform" action="bsearchWriter.do" method="post">
-	<input type="hidden" name="action" value="writer">	
-<fieldset>
-	<legend>검색할 작성자를 입력하세요.</legend>
-	<input type="search" name="keyword"> &nbsp;
-	한 페이지에 출력할 목록 갯수 : 
-	<select name="limit">
-		<option value="10" selected>10</option>
-		<option value="15" select>15</option>
-		<option value="20" select>20</option>
-	</select> &nbsp;
-	<input type="submit" value="검색">
-</fieldset>
-</form>
-
-등록날짜 검색 폼
-<form id="dateform" class="sform" action="bsearchDate.do" method="post">
-	<input type="hidden" name="action" value="date">	
-<fieldset>
-	<legend>검색할 등록날짜를 선택하세요.</legend>
-	<input type="date" name="begin"> ~ <input type="date" name="end"> &nbsp;
-	한 페이지에 출력할 목록 갯수 : 
-	<select name="limit">
-		<option value="10" selected>10</option>
-		<option value="15" select>15</option>
-		<option value="20" select>20</option>
-	</select> &nbsp;
-	<input type="submit" value="검색">
-</fieldset>
-</form> --%>
 		<br>
 
-
+		<c:set var="urlMapping" value="${ requestScope.paging.urlMapping }" />
 		<c:import url="/WEB-INF/views/common/pagingView.jsp" />
 		<hr> 
 		<c:import url="/WEB-INF/views/common/footer.jsp" />
