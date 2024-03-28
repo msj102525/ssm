@@ -30,11 +30,11 @@
         	[맨처음] &nbsp;
         </c:if>
         <c:if test="${ currentPage gt 1 }">
-        	<a href="/first/${urlMapping}?page=1">[맨처음]</a> &nbsp;
+        	<a href="/ssm/${urlMapping}?page=1">[맨처음]</a> &nbsp;
         </c:if>
         <%-- 이전 그룹 페이지 링크 --%>
         <c:if test="${ (startPage - 10) ge 1 }">
-            <a href="/first/${urlMapping}?page=${ startPage - 10 }">[이전그룹]</a> &nbsp;
+            <a href="/ssm/${urlMapping}?page=${ startPage - 10 }">[이전그룹]</a> &nbsp;
         </c:if>
         <c:if test="${ startPage - 10 lt 1 }">
             [이전그룹] &nbsp;
@@ -49,22 +49,22 @@
                 </c:when>
                 <c:otherwise>
                     <%-- 다른 페이지는 링크로 표시 --%>
-                    <a href="/first/${urlMapping}?page=${ p }">${ p }</a>
+                    <a href="/ssm/${urlMapping}?page=${ p }">${ p }</a>
                 </c:otherwise>
             </c:choose>
         </c:forEach>
 
         <%-- 다음 그룹 페이지 링크 --%>
         <c:if test="${ startPage + 10 le maxPage }">
-            <a href="/first/${urlMapping}?page=${ startPage + 10 }">[다음그룹]</a> &nbsp;
+            <a href="/ssm/${urlMapping}?page=${ startPage + 10 }">[다음그룹]</a> &nbsp;
         </c:if>
         <c:if test="${ startPage + 10 gt maxPage }">
             [다음그룹] &nbsp;
         </c:if>
 
         <%-- 맨 마지막 페이지 링크 --%>
-        <c:if test="${ currentPage le maxPage }">
-            <a href="/first/${urlMapping}?page=${ maxPage }">[맨끝]</a> &nbsp;
+        <c:if test="${ currentPage lt maxPage }">
+            <a href="/ssm/${urlMapping}?page=${ maxPage }">[맨끝]</a> &nbsp;
         </c:if>
         <c:if test="${ currentPage eq maxPage }">
         	[맨끝] &nbsp;
@@ -82,13 +82,13 @@
 	</c:if>
 	<%-- <% }else{ //currentPage > 1 %> --%>
 	<c:if test="${ currentPage gt 1 }">
-		<a href="/first/${ urlMapping }?page=1&action=${ action }&keyword=${ keyword }">[맨처음]</a> &nbsp;
+		<a href="/ssm/${ urlMapping }?page=1&action=${ action }&keyword=${ keyword }">[맨처음]</a> &nbsp;
 	</c:if>
 	<%-- <% } %> --%>
 	<%-- 이전 페이지 그룹으로 이동 --%>
 	<%-- <% if((currentPage - 10) < startPage && (currentPage - 10) > 1){  //이전그룹이 있다면 %> --%>
 	<c:if test="${ (currentPage - 10) le startPage and (currentPage - 10) ge 1 }">
-		<a href="/first/${ urlMapping }?page=${ startPage - 10 }&action=${ action }&keyword=${ keyword }">[이전그룹]</a> &nbsp;
+		<a href="/ssm/${ urlMapping }?page=${ startPage - 10 }&action=${ action }&keyword=${ keyword }">[이전그룹]</a> &nbsp;
 	</c:if>
 	<%-- <% }else{ //이전그룹이 없다면 %> --%>
 	<c:if test="${ !((currentPage - 10) le startPage && (currentPage - 10) ge 1) }">
@@ -106,14 +106,14 @@
 		</c:if>
 	<%-- <%     }else{ %> --%>
 		<c:if test="${ p ne currentPage }">
-			<a href="/first/${ urlMapping }?page=${ p }&action=${ action }&keyword=${ keyword }">${ p }</a>
+			<a href="/ssm/${ urlMapping }?page=${ p }&action=${ action }&keyword=${ keyword }">${ p }</a>
 		</c:if>
 	</c:forEach>
 	<%-- <% }} %> --%>
 	<%-- 다음 페이지 그룹으로 이동 --%>
 	<%-- <% if((currentPage + 10) > endPage && (currentPage + 10) < maxPage){  //다음그룹이 있다면 %> --%>
 	<c:if test="${ (currentPage + 10) gt endPage and (currentPage + 10) lt maxPage }">
-		<a href="/first/${ urlMapping }?page=${ startPage + 10 }&action=${ action }&keyword=${ keyword }">[다음그룹]</a> &nbsp;
+		<a href="/ssm/${ urlMapping }?page=${ startPage + 10 }&action=${ action }&keyword=${ keyword }">[다음그룹]</a> &nbsp;
 	</c:if>
 	<%-- <% }else{ //다음그룹이 없다면 %> --%>
 	<c:if test="${ !((currentPage + 10) gt endPage and (currentPage + 10) lt maxPage) }">
@@ -127,7 +127,7 @@
 	</c:if>
 	<%-- <% }else{ //currentPage < maxPage  %> --%>
 	<c:if test="${ currentPage lt maxPage }">
-		<a href="/first/${ urlMapping }?page=${ maxPage }&action=${ action }&keyword=${ keyword }">[맨끝]</a> &nbsp;
+		<a href="/ssm/${ urlMapping }?page=${ maxPage }&action=${ action }&keyword=${ keyword }">[맨끝]</a> &nbsp;
 	</c:if>
 	<%-- <% } %> --%>
 </div>
@@ -144,13 +144,13 @@
 	</c:if>
 	<%-- <% }else{ //currentPage > 1 %> --%>
 	<c:if test="${ currentPage gt 1 }">
-		<a href="/first/${ urlMapping }?page=1&action=${ action }&begin=${ begin }&end=${ end }">[맨처음]</a> &nbsp;
+		<a href="/ssm/${ urlMapping }?page=1&action=${ action }&begin=${ begin }&end=${ end }">[맨처음]</a> &nbsp;
 	</c:if>
 	<%-- <% } %> --%>
 	<%-- 이전 페이지 그룹으로 이동 --%>
 	<%-- <% if((currentPage - 10) < startPage && (currentPage - 10) > 1){  //이전그룹이 있다면 %> --%>
 	<c:if test="${ (currentPage - 10) lt startPage and (currentPage - 10) gt 1 }">
-		<a href="/first/${ urlMapping }?page=${ startPage - 10 }&action=${ action }&begin=${ begin }&end=${ end }">[이전그룹]</a> &nbsp;
+		<a href="/ssm/${ urlMapping }?page=${ startPage - 10 }&action=${ action }&begin=${ begin }&end=${ end }">[이전그룹]</a> &nbsp;
 	</c:if>
 	<%-- <% }else{ //이전그룹이 없다면 %> --%>
 	<c:if test="${ !((currentPage - 10) lt startPage and (currentPage - 10) gt 1) }">
@@ -168,7 +168,7 @@
 		</c:if>
 	<%-- <%     }else{ %> --%>
 		<c:if test="${ p != currentPage }">
-			<a href="/first/${ urlMapping }?page=${ p }&action=${ action }&begin=${ begin }&end=${ end }">${ p }</a>
+			<a href="/ssm/${ urlMapping }?page=${ p }&action=${ action }&begin=${ begin }&end=${ end }">${ p }</a>
 		</c:if>
 	</c:forEach>
 	<%-- <% }} %> --%>
@@ -176,7 +176,7 @@
 	<%-- 다음 페이지 그룹으로 이동 --%>
 	<%-- <% if((currentPage + 10) > endPage && (currentPage + 10) < maxPage){  //다음그룹이 있다면 %> --%>
 	<c:if test="${ (currentPage + 10) gt endPage and (currentPage + 10) lt maxPage }">
-		<a href="/first/${ urlMapping }?page=${ startPage + 10 }">[다음그룹]</a> &nbsp;
+		<a href="/ssm/${ urlMapping }?page=${ startPage + 10 }">[다음그룹]</a> &nbsp;
 	</c:if>
 	<%-- <% }else{ //다음그룹이 없다면 %> --%>
 	<c:if test="${ !((currentPage + 10) gt endPage and (currentPage + 10) lt maxPage) }">
@@ -190,7 +190,7 @@
 	</c:if>
 	<%-- <% }else{ //currentPage < maxPage  %> --%>
 	<c:if test="${ currentPage lt maxPage }">
-		<a href="/first/${ urlMapping }?page=${ maxPage }&action=${ action }&begin=${ begin }&end=${ end }">[맨끝]</a> &nbsp;
+		<a href="/ssm/${ urlMapping }?page=${ maxPage }&action=${ action }&begin=${ begin }&end=${ end }">[맨끝]</a> &nbsp;
 	</c:if>
 	<%-- <% } %> --%>
 </div>

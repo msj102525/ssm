@@ -1,7 +1,6 @@
 package com.sdm.ssm.goodsmanage.controller;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,9 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.sdm.ssm.common.Paging;
+import com.sdm.ssm.common.Search;
 import com.sdm.ssm.goodsmanage.model.service.GoodsPrintService;
 import com.sdm.ssm.goodsmanage.model.vo.GoodsPrint;
 
@@ -23,6 +25,8 @@ public class GoodsPrintController {
 	@Autowired
 	private GoodsPrintService goodsPrintService;
 
+	
+	// 재고 보기 서비스
 	@RequestMapping("glist.do") // GET이니까 METHOD 생략,
 	public String boardListMethod(
 			@RequestParam(name = "page", required = false) String page,
@@ -44,7 +48,7 @@ public class GoodsPrintController {
 		if (slimit != null) {
 			limit = Integer.parseInt(slimit); // 전송받은 한 페이지에 출력할 목록 갯수를 적용
 		}
-
+		
 		// 총 페이지수 계산을 위해 게시글 전체 갯수 조회해 옴
 		int listCount = goodsPrintService.selectListCount();
 		// 페이징 계산 처리 실행
@@ -60,14 +64,74 @@ public class GoodsPrintController {
 			model.addAttribute("paging", paging);
 			model.addAttribute("currentPage", currentPage);
 			model.addAttribute("limit", limit);
-
 			return "goods/goodsListView";
 		} else {
 			model.addAttribute("message", currentPage + " 페이지 목록 조회 실패!");
 			return "common/error";
 		}
+	}
 
+		//  검색용 (페이징 처리 포함)
+	@RequestMapping("gsearch.do")
+	public String noticeSearch(
+			@RequestParam("action") String action, 
+			Search search,
+			@RequestParam(name = "page", required = false) 
+			String page, 
+			Model model) {
+
+			// 검색 결과에 대한 페이징 처리를 위한 페이지 지정
+			int currentPage = 1;
+			if (page != null) {
+				currentPage = Integer.parseInt(page);
+			}
+
+			// 뷰 페이지에 사용할 페이징 관련 값들 계산 처리
+			int listCount = 0;
+			Paging paging = new Paging(listCount, currentPage, 10, "gsearch.do");
+			paging.calculate();
+			
+			ArrayList<GoodsPrint>list = null;
+
+			if(action.equals("goodsName")) {
+				listCount = goodsPrintService.selectSearchGoodsNameCount(search.getKeyword());
+				paging.setListCount(listCount);
+				paging.calculate();
+				search.setStartRow(paging.getStartRow());
+				search.setEndRow(paging.getEndRow());
+				list = goodsPrintService.selectSearchGoodsName(search);
+				
+			} else if(action.equals("pdName")) {
+				listCount = goodsPrintService.selectSearchPdNameCount(search.getKeyword());
+				paging.setListCount(listCount);
+				paging.calculate();
+				search.setStartRow(paging.getStartRow());
+				search.setEndRow(paging.getEndRow());
+				list = goodsPrintService.selectSearchPdName(search);
+			}
+				model.addAttribute("list", list);
+				model.addAttribute("paging", paging);
+				model.addAttribute("currentPage", currentPage);
+				model.addAttribute("action", action);
+				
+				if (list != null && list.size() > 0) {
+					return "goods/goodsListView";
+				} else {
+					model.addAttribute("message", search.getKeyword() + "조회 실패!");
+					return "common/error";
+				}
+		}
+
+	
+	
+	
+	
+	// 뷰 페이지 내보내기용
+	@RequestMapping("ginsert.do")
+	public String moveGoodsInsertPage() {
+		return "goods/goodsInsert";
 	}
 
 
+	
 }
