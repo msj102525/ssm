@@ -20,28 +20,7 @@
 				</h1>
 			</div>
 			<div class="form-box">
-				<form action="login.do" method="post">
-					<ul>
-						<li>
-							<input type="text" name="userId" id="uid" placeholder="아이디">
-						</li>
-						<li>
-							<input type="password" name="passWd" id="upd" placeholder="비밀번호">
-						</li>
-						<li>
-							<input type="submit" value="로그인" class="login">
-						</li>
-					</ul>
-				</form>
 				<ul class="go-page">
-					<li>
-						<a href="#">비밀번호 찾기</a> | 
-						 <a href="#">아이디 찾기</a>
-						 <c:url var="goEnroll" value="goEnroll.do" /> | 
-						 <a href="${ goEnroll }">회원가입</a></li>
-					<li>
-						<p>------------------- 또는 --------------------</p>
-					</li>
 					<li>
 						<ul class="sns">
 							<li>
@@ -65,6 +44,20 @@
 						</ul>
 					</li>
 				</ul>
+				<form action="login.do" method="post">
+					<ul>
+						<li>
+							<input type="text" name="userId" id="uid" placeholder="아이디">
+						</li>
+						<li>
+							<input type="password" name="passWd" id="upd" placeholder="비밀번호">
+						</li>
+						<li>
+							<input type="submit" value="로그인" class="login">
+						</li>
+					</ul>
+				</form>
+				
 			</div>
 		</div>
 	</div>

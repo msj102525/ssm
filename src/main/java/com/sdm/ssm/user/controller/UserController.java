@@ -27,6 +27,11 @@ public class UserController {
 	public String goLogin() {
 		return "user/login";
 	}
+	
+	@RequestMapping("goEnroll.do")
+	public String goEnroll() {
+		return "user/enroll";
+	}
 
 	@RequestMapping("logout.do")
 	public String logoutMethod(HttpServletRequest request, Model model) {
