@@ -25,11 +25,13 @@
 		<typeAlias type="com.sdm.ssm.common.SearchDate" alias="SearchDate"/>
 		<typeAlias type="com.sdm.ssm.common.Search" alias="Search"/>
 		<typeAlias type="com.sdm.ssm.user.model.vo.User" alias="User"/>
+		<typeAlias type="com.sdm.ssm.reserve.model.vo.Reserve" alias="Reserve"/>
 	</typeAliases>
 		
 	<mappers>
 		<mapper resource="mapper/notice-mapper.xml"/>
 		<mapper resource="mapper/goods-mapper.xml"/>
 		<mapper resource="mapper/user-mapper.xml"/>
+		<mapper resource="mapper/reserve-mapper.xml"/>
 	</mappers>
 </configuration>
