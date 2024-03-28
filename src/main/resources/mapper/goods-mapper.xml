@@ -32,6 +32,8 @@
 		<result property="nation" column="NATION" />
 	</resultMap>
 
+
+	<!-- 전체 보기 -->
 	<select id="selectListCount" resultType="int">
 		SELECT COUNT(*)
 		FROM
@@ -39,17 +41,74 @@
 	</select>
 
 	<select id="selectGoodsPrint" parameterType="Paging" resultMap="GoodsResultList">
-	    SELECT <!-- g.ID, -->
-		    g.GOODS_NO, g.GOODS_NAME, i.PD_QUANTITY, g.GOODS_UNIT, 
-		    i.MIN_ORDER_QUANTITY, i.MIN_ALARM_QUANTITY, 
-		    p.PD_NAME, p.PD_PHONE, g.GOODS_PRICE, g.NATION
-	    FROM TB_GOODS_123 g
-	    LEFT JOIN TB_INVENTORY_123 i ON g.GOODS_NO = i.GOODS_NO
-	    LEFT JOIN TB_PRODUCE_123 p ON g.GOODS_NO = p.GOODS_NO
+	    select *
+	    from
+		    (SELECT 
+    			ROWNUM rnum, GOODS_NO, GOODS_NAME, PD_QUANTITY, GOODS_UNIT, 
+    			MIN_ORDER_QUANTITY, MIN_ALARM_QUANTITY, 
+    			PD_NAME, PD_PHONE, GOODS_PRICE, NATION 
+			FROM (SELECT 
+        			  GOODS_NO, GOODS_NAME, PD_QUANTITY, GOODS_UNIT, 
+         			  MIN_ORDER_QUANTITY, MIN_ALARM_QUANTITY, 
+        			  PD_NAME, PD_PHONE, GOODS_PRICE, NATION
+    				  FROM TB_GOODS_123 
+    				  LEFT JOIN TB_INVENTORY_123 USING (GOODS_NO)
+    				  LEFT JOIN TB_PRODUCE_123 USING (GOODS_NO)
+    				  ORDER BY GOODS_NO ASC))
+		where rnum between #{startRow} and #{endRow}	
 	</select>
 
+	<!-- 상품명 검색 -->
+	<select id="selectSearchGoodsNameCount" parameterType="string" resultType="int">
+		SELECT COUNT(*)
+		FROM TB_GOODS_123
+		WHERE GOODS_NAME LIKE '%' || #{ keyword } || '%'
+	</select>
 
+	<select id="selectSearchGoodsName" parameterType="Search" resultMap="GoodsResultList">
+	    select *
+	    from
+		    (SELECT 
+    			ROWNUM rnum, GOODS_NO, GOODS_NAME, PD_QUANTITY, GOODS_UNIT, 
+    			MIN_ORDER_QUANTITY, MIN_ALARM_QUANTITY, 
+    			PD_NAME, PD_PHONE, GOODS_PRICE, NATION 
+			FROM (SELECT 
+        			  GOODS_NO, GOODS_NAME, PD_QUANTITY, GOODS_UNIT, 
+         			  MIN_ORDER_QUANTITY, MIN_ALARM_QUANTITY, 
+        			  PD_NAME, PD_PHONE, GOODS_PRICE, NATION
+    				  FROM TB_GOODS_123 
+    				  LEFT JOIN TB_INVENTORY_123 USING (GOODS_NO)
+    				  LEFT JOIN TB_PRODUCE_123 USING (GOODS_NO)
+    				  WHERE GOODS_NAME LIKE '%' || #{ keyword } || '%'
+    				  ORDER BY GOODS_NO ASC))
+		where rnum between #{startRow} and #{endRow}    
+	</select>
 
+	<!-- 발주처 검색 -->
+	<select id="selectSearchPdNameCount" parameterType="string" resultType="int">
+		SELECT COUNT(*)
+		FROM TB_GOODS_123
+		LEFT JOIN TB_PRODUCE_123 USING (GOODS_NO)
+		WHERE PD_NAME LIKE '%' || #{ keyword } || '%'
+	</select>
 
+	<select id="selectSearchPdName" parameterType="Search" resultMap="GoodsResultList">
+	    select *
+	    from
+		    (SELECT 
+    			ROWNUM rnum, GOODS_NO, GOODS_NAME, PD_QUANTITY, GOODS_UNIT, 
+    			MIN_ORDER_QUANTITY, MIN_ALARM_QUANTITY, 
+    			PD_NAME, PD_PHONE, GOODS_PRICE, NATION 
+			FROM (SELECT 
+        			  GOODS_NO, GOODS_NAME, PD_QUANTITY, GOODS_UNIT, 
+         			  MIN_ORDER_QUANTITY, MIN_ALARM_QUANTITY, 
+        			  PD_NAME, PD_PHONE, GOODS_PRICE, NATION
+    				  FROM TB_GOODS_123 
+    				  LEFT JOIN TB_INVENTORY_123 USING (GOODS_NO)
+    				  LEFT JOIN TB_PRODUCE_123 USING (GOODS_NO)
+    				  WHERE PD_NAME LIKE '%' || #{ keyword } || '%'
+    				  ORDER BY GOODS_NO ASC))
+		where rnum between #{startRow} and #{endRow}    
+	</select>
 
 </mapper>
