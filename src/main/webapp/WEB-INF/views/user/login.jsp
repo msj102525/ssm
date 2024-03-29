@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="resources/css/user/login.css?ver46">
+<link rel="stylesheet" href="resources/css/user/login.css">
 <script type="text/javascript">
 
 	

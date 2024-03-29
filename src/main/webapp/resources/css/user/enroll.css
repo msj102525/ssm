@@ -2,24 +2,23 @@
 
 @import url("../common/reset.css");
 
-.login-box {
-	border: 1px solid #000;
+.enroll-box {
+	/* border: 1px solid #000; */
+	
 }
 
-.login-box .inner-box {
+.enroll-box .inner-box {
 	max-width: 1000px;
 	margin: 0 auto;
-	border: 1px solid #000;
+	padding: 0 0 30px 0;
 }
 
-.login-box .inner-box .logo-box {
-	border: 1px solid #000;
+.enroll-box .inner-box .logo-box {
 	display: flex;
 	justify-content: center;
 }
 
-.login-box .inner-box .logo-box img {
-	border: 1px solid #000;
+.enroll-box .inner-box .logo-box img {
 	display: block;
 	width: 200px;
 }
@@ -27,10 +26,9 @@
 .form-box {
 	max-width: 500px;
 	margin: 0 auto;
-	border: 1px solid #000;
 	padding: 80px 20px;
+	box-shadow: 0px 0px 1px #000;
 }
-
 
 .form-box ul {
 	display: flex;
@@ -38,22 +36,69 @@
 	flex-direction: column;
 	align-items: center;
 	gap: 35px;
-	
 	padding: 10px 0px
-	
 }
 
 .form-box ul li {
 	/* border: 1px solid #000; */
+	
 }
 
 .form-box ul li input {
-	height: 40px;
-	border: 1px solid #aaa;
+	line-height: 40px;
+	font-size: 14px;
 }
+
 .form-box ul li input {
-    width: 280px;
-    
+	width: 280px;
+	border-radius: 2px;
+	border: 0;
+	box-shadow: 0px 0px 1px #000;
+}
+
+input:focus {
+	box-shadow: 0 0 3px #000 !important;
+}
+
+.form-box ul li.auth {
+	width: 300px;
+	display: flex;
+	justify-content: space-between;
+	gap: 10px;
+}
+
+.form-box ul li.relative {
+	position: relative;
+}
+
+/* .form-box ul li.relative::after {
+	content: "아이디를 입력해주세요";
+	display: block;
+	position: absolute;
+	left: 0;
+	top: -18px;
+	font-size: 12px;
+} */
+.form-box ul li.relative p {
+	display: block;
+	position: absolute;
+	left: 0;
+	top: -18px;
+	font-size: 12px;
+	color: #f00;
+}
+
+.form-box ul li.auth input:first-child {
+	flex: 7;
+}
+
+.form-box ul li.auth input:last-child {
+	flex: 1;
+	padding: 0 2px;
+	background-color: orange;
+	color: #fff;
+	box-shadow: 0px 0px 0px #000;
+	cursor: pointer;
 }
 
 .form-box ul li input {
@@ -68,7 +113,7 @@
 	border: 0;
 }
 
-.form-box ul li img { 
+.form-box ul li img {
 	display: block;
 	height: 45px;
 }
@@ -77,36 +122,19 @@
 	width: 300px
 }
 
-.form-box ul.go-page a {
-	transition: all 0.15s ease-in-out;
-}
-
-.form-box ul.go-page a:hover {
-	color: orange;
-}
-
 .form-box ul.go-page a img {
 	display: block;
 	width: 45px;
 }
 
 .form-box ul.go-page ul.sns {
+	width: 300px;
 	display: flex;
 	justify-content: space-between;
 	flex-direction: row;
-	
 }
 
 .form-box ul.go-page ul.sns li {
 	width: 45px;
-	
-	color: red;	
+	color: red;
 }
-
-
-
-
-
-
-
-

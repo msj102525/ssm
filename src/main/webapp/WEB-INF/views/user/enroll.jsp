@@ -4,14 +4,153 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="resources/css/user/enroll.css?ver46">
+<link rel="stylesheet" href="resources/css/user/enroll.css">
+<script type="text/javascript" src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.7.0.min.js"></script>
 <script type="text/javascript">
+const dupIDCheck =() => {
+	const userId = $("#userId").val().trim();
+	console.log(userId);
+	
+	if(userId != null && userId != "") {
+	$.ajax({
+		url: "idchk.do",
+		type: "post",
+		data: {userId: $("#userId").val() },
+		success: (data) => {
+			console.log("success!!!!!, data: " + data);
+			
+			if(data == "ok") {
+				alert("사용 가능한 아이디입니다.");
+				$("#userpwd").focus();
+			} else {
+				alert("이미 사용중인 아이디입니다.");
+				$("#userId").val("");
+				$("#userId").select();
+			}
+		},
+		error: (jqXHR, textStatus, errorThrown) => {
+			console.log("error : " + jqXHR + ", " + textStatus + ", " + errorThrown);
+		}
+	});
+	return false;
+	} else {
+		alert("아이디를 입력하세요.");
+		$("#userId").focus();
+	}
+}
 
+const emailAuth = () => {
+	$.ajax({
+		url: "emailAuth.do",
+		data: {userEmail : $("#email").val()},
+		type : "post",
+		dataType : "json",
+		success : (data) => {
+			console.log("result : " + data);
+			code = result;
+			alret("인증 코드가 입력하신 이메일로 전송 되었습니다");
+		},
+		error: (jqXHR, textStatus, errorThrown) => {
+			console.log("error : " + jqXHR + ", " + textStatus + ", " + errorThrown);
+		}
+	}) // ajax
+}
+
+
+$(()=> {
+	console.log($("#userId"));
+	console.log($("li.relative").eq(0));
+	console.log($("li.relative > p").eq(0));
+	/* $("li.relative > p").eq(0).html("아이디를 입력하세요"); */
+
+/* $("userId").on("keyup", ()=> {
+	console.log("keyup!!!!");
+	
+	if($("userId").val().length() < 4 || $("userId").val().length() > 12) {
+		$("li.relative > p").eq(0).html("아이디를 입력하세요");
+	}
+}) */
+
+$("#userId").on("keyup", () => {
+    const userIdLength = $("#userId").val().length;
+    const message = "아이디는 5자리이상 16자리 이하로 입력해주세요";
+    
+    if (userIdLength < 5 || userIdLength > 16) {
+    	$("li.relative > p").eq(0).html(message).css("color", "red");
+    } else {
+        $("li.relative > p").eq(0).html(message).css("color", "orange");
+    }
+});
+	
+$("#passWd").on("keyup", () => {
+    const pw = $("#passWd").val();
+    const message = "최소 8자이상 특수문자, 대문자 하나 포함하세요";
+    const regex = /^(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.{8,})/;
+    
+    if (!regex.test(pw)) {
+        $("li.relative > p").eq(1).html(message).css("color", "red");
+    } else {
+        $("li.relative > p").eq(1).html(message).css("color", "orange");
+    }
+});
+
+$("#passWd2").on("keyup", () => {
+    const pw = $("#passWd").val();
+    const chkPw = $("#passWd2").val();
+    const message = "비밀번호를 확인해 주세요";
+    
+    if (chkPw !== pw) {
+        $("li.relative > p").eq(2).html(message).css("color", "red");
+    } else {
+        $("li.relative > p").eq(2).html("").css("color", "orange");
+    }
+});
+
+$("#email").on("keyup", () => {
+    const email = $("#email").val();
+    const message = "이메일 형식을 확인해주세요";
+    const regex = /^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+    
+    if (!regex.test(email)) {
+        $("li.relative > p").eq(3).html(message).css("color", "red");
+        $("#chkEMail").css("display", "none");
+    } else {
+        $("li.relative > p").eq(3).html(message).css("color", "orange");
+        $("#chkEMail").css("display", "block");
+    }
+});
+
+$("#userNo").on("keyup", () => {
+    const userNo = $("#userNo").val();
+    const message = "주민등록번호 형식을 확인해주세요";
+    const regex = /^(?:[0-9]{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[1,2][0-9]|3[0,1]))-[1-4][0-9]{6}$/;
+    
+    if (!regex.test(userNo)) {
+        $("li.relative > p").eq(5).html(message).css("color", "red");
+    } else {
+        $("li.relative > p").eq(5).html(message).css("color", "orange");
+    }
+});
+
+$("#phone").on("keyup", () => {
+    const phone = $("#phone").val();
+    const message = "전화번호 형식을 확인해주세요";
+    const regex = /\d{3}-\d{3,4}-\d{4}/;
+    
+    if (!regex.test(phone)) {
+        $("li.relative > p").eq(6).html(message).css("color", "red");
+    } else {
+        $("li.relative > p").eq(6).html(message).css("color", "orange");
+    }
+});
+
+	
+}); // doc ready;
 	
 </script>
 </head>
 <body>
-	<div class="login-box">
+	<div class="enroll-box">
 		<div class="inner-box">
 			<div class="logo-box">
 				<h1 class="logo">
@@ -44,37 +183,51 @@
 						</ul>
 					</li>
 				</ul>
-				<form action="login.do" method="post">
+				<form action="enroll.do" method="post">
 					<ul>
-						<li>
-							<input type="text" name="userId" id="uid" placeholder="아이디">
+						<li class="auth relative first">
+							<p></p>
+							<input type="text" name="userId" id="userId" placeholder="아이디">
+							<input type="button" value="중복검사" onclick="return dupIDCheck();">
+						</li>
+						<li class="relative">
+							<p></p>
+							<input type="password" name="passWd" id="passWd" placeholder="비밀번호">
+						</li>
+						<li class="relative">
+							<p></p>
+							<input type="password"id="passWd2" placeholder="비밀번호 확인">
+						</li>
+						<li class="auth relative">
+							<p></p>
+							<input type="email" name="email" id="email" placeholder="이메일">
+							<input type="button" value="이메일 인증" id="chkEMail" onclick="emailAuth();">
+						</li>
+						<li class="auth relative">
+							<p></p>
+							<input type="text"  id="chkEmailAuth" placeholder="인증번호">
+							<input type="button" value="이메일 인증 확인">
+						</li>
+						<li class="relative">
+							<p></p>
+							<input type="text" name="userNo" id="userNo" placeholder="주민번호 (ex.123456-*******)">
+						</li>
+						<li class="relative">
+							<p></p>
+							<input type="tel" name="phone" id="phone" placeholder="전화번호 (ex.010-1234-5678)">
+						</li>
+						<li class="auth relative">
+							<p></p>
+							<input type="text" name="businessNo" id="businessNo" placeholder="사업자 번호">
+							<input type="button" value="사업자 인증">
+						</li>
+						<li class="auth relative">
+							<p></p>
+							<input type="text" name="accountNumber" id="accountNumber" placeholder="계좌번호">
+							<input type="button" value="계좌번호">
 						</li>
 						<li>
-							<input type="password" name="passWd" id="upd" placeholder="비밀번호">
-						</li>
-						<li>
-							<input type="password" name="passWd" id="upd" placeholder="비밀번호">
-						</li>
-						<li>
-							<input type="password" name="passWd" id="upd" placeholder="비밀번호">
-						</li>
-						<li>
-							<input type="password" name="passWd" id="upd" placeholder="비밀번호">
-						</li>
-						<li>
-							<input type="password" name="passWd" id="upd" placeholder="비밀번호">
-						</li>
-						<li>
-							<input type="password" name="passWd" id="upd" placeholder="비밀번호">
-						</li>
-						<li>
-							<input type="password" name="passWd" id="upd" placeholder="비밀번호">
-						</li>
-						<li>
-							<input type="password" name="passWd" id="upd" placeholder="비밀번호">
-						</li>
-						<li>
-							<input type="submit" value="로그인" class="login">
+							<input type="submit" value="회원가입" class="enroll">
 						</li>
 					</ul>
 				</form>
