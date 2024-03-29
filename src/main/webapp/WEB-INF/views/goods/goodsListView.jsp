@@ -86,8 +86,8 @@ $(function(){
             </tr>
             <c:forEach items="${ requestScope.list }" var="goodsPrint">
                 <tr>               	
-                    <td align="center" style="white-space: nowrap;">${ goodsPrint.goodsNo }</td>
-                    <td align="center" style="white-space: nowrap;">${ goodsPrint.goodsName }</td>
+                    <td align="center" style="white-space: nowrap;">${ goodsPrint.goodsNo+1 }</td>
+                    <td align="center" style="white-space: nowrap; placeholder="검색어 입력"">${ goodsPrint.goodsName }</td>
                     <td align="center" style="white-space: nowrap;">
                         <div style="display: inline-block;">            
                             <input type="number" value="${ goodsPrint.pdQuantity }" name="pdQuantity" style="width: 50px; margin-right: 0px; vertical-align: middle;" />
