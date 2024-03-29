@@ -158,93 +158,97 @@ button {
 	font-size: 16px;
 }
 </style>
-<script type="text/javascript" src="/ssm/resources/js/jquery-3.7.0.min.js" ></script>
+<script type="text/javascript"
+	src="/ssm/resources/js/jquery-3.7.0.min.js"></script>
 </head>
 <body>
 	<%-- <%@ include file="../common/menubar.jsp" %> --%>
 	<c:import url="/WEB-INF/views/common/header.jsp" />
 	<hr>
 
-<h3 align="center">불편사항</h3>
+	<h3 align="center">불편사항</h3>
 
-		<%-- <% } %> --%>
-		<%-- </c:if> --%>
-		<br> <br>
-		<%-- 조회된 게시글 목록 출력 --%>
-		<div class="listdiv">
-			<button class="listbtn"
-				onclick="javascript:location.href='${pageContext.servletContext.contextPath}/inconvlist.do?page=1';">목록</button>
-		</div>
-		<table>
-			<tr>
-				<th>번호</th>
-				<th>제목</th>
-				<th>작성자</th>
-				<th>날짜</th>
-				<th>조회수</th>
+	<%-- <% } %> --%>
+	<%-- </c:if> --%>
+	<br>
+	<br>
+	<%-- 조회된 게시글 목록 출력 --%>
+	<div class="listdiv">
+		<button class="listbtn"
+			onclick="javascript:location.href='${pageContext.servletContext.contextPath}/inconvlist.do?page=1';">목록</button>
+	</div>
+	<table>
+		<tr>
+			<th>번호</th>
+			<th>제목</th>
+			<th>작성자</th>
+			<th>날짜</th>
+			<th>조회수</th>
+		</tr>
+		<c:forEach items="${ requestScope.list }" var="i">
+			<c:url var="inconvdetail" value="inconvdetail.do">
+				<c:param name="ino" value="${ i.boardNo }" />
+				<c:param name="page" value="${ nowpage }" />
+			</c:url>
+
+			<tr onclick="location.href='${inconvdetail}';">
+				<td>${i.boardNo}</td>
+				<td>${i.boardTitle }</a></td>
+				<td>${i.writer }</td>
+				<td>${i.writeDate }</td>
+				<td>${i.status }</td>
 			</tr>
-			<c:forEach items="${ requestScope.list }" var="i">
-				<c:url var="inconvdetail" value="inconvdetail.do">
-					<c:param name="ino" value="${ i.boardNo }" />
-					<c:param name="page" value="${ nowpage }" />
-				</c:url>
-
-				<tr onclick="location.href='${inconvdetail}';">
-					<td>${i.boardNo}</td>
-					<td>${i.boardTitle }</a></td>
-					<td>${i.writer }</td>
-					<td>${i.writeDate }</td>
-					<td>${i.status }</td>
-				</tr>
-				<%-- 	<% } %> --%>
-			</c:forEach>
-		</table>
-		<div class="searchdiv">
-			<form action="inconvsearch.do" method="get">
-				<select style="height: 35px; width: 80px;" name="action"
-					id="searchselect">
-					<option value="title">제목</option>
-					<option value="writer">작성자</option>
-					<option id="date" value="date">날짜</option>
-				</select> <input type="date" name="begin"> <input type="date"
-					name="end"> <input style="height: 30px; width: 325px;"
-					type="text" id="searchtext" name="keyword" placeholder="검색어 입력">
-				<input type="submit" class="searchbtn" value="검색"> <br>
-			</form>
-		<button class="writerB" onclick="showWriteForm();">글쓰기</button>
-		</div>
-		<c:url var="iwf" value="iwform.do">
-			<c:param name="page" value="${nowpage}" />
-		</c:url>
-		<script type="text/javascript">
-			function showWriteForm() {
+			<%-- 	<% } %> --%>
+		</c:forEach>
+	</table>
+	<div class="searchdiv">
+		<form action="inconvsearch.do" method="get">
+			<select style="height: 35px; width: 80px;" name="action"
+				id="searchselect">
+				<option value="title">제목</option>
+				<option value="writer">작성자</option>
+				<option id="date" value="date">날짜</option>
+			</select> <input type="date" name="begin"> <input type="date"
+				name="end"> <input style="height: 30px; width: 325px;"
+				type="text" id="searchtext" name="keyword" placeholder="검색어 입력">
+			<input type="submit" class="searchbtn" value="검색"> <br>
+		</form>
+		<c:if test="${ !empty loginUser &&  loginUser.adminOk eq 'N'}">
+			<button class="writerB" onclick="showWriteForm();">글쓰기</button>
+		</c:if>
+	</div>
+	<c:url var="iwf" value="iwform.do">
+		<c:param name="page" value="${nowpage}" />
+	</c:url>
+	<script type="text/javascript">
+		function showWriteForm() {
 			//게시글 원글 쓰기 페이지로 이동 요청
 			location.href = "${ pageContext.servletContext.contextPath}/${iwf}";
-			}
-			$(document).ready(function() {
-				// 셀렉트 요소에서 옵션을 선택했을 때 이벤트 핸들러
-				$("input[type='date']").hide();
-				$('#searchselect').change(function() {
-					// 선택된 옵션 값 확인
-					var selectedValue = $(this).val();
+		}
+		$(document).ready(function() {
+			// 셀렉트 요소에서 옵션을 선택했을 때 이벤트 핸들러
+			$("input[type='date']").hide();
+			$('#searchselect').change(function() {
+				// 선택된 옵션 값 확인
+				var selectedValue = $(this).val();
 
-					// 만약 선택된 값이 '날짜'일 경우 달력 표시
-					if (selectedValue === 'date') {
-						$("#searchtext").hide()
-						$("input[type='date']").show(); // 달력 보이기
-					} else {
-						$("#searchtext").show()
-						$("input[type='date']").hide(); // 다른 경우 달력 숨기기
-					}
-				});
+				// 만약 선택된 값이 '날짜'일 경우 달력 표시
+				if (selectedValue === 'date') {
+					$("#searchtext").hide()
+					$("input[type='date']").show(); // 달력 보이기
+				} else {
+					$("#searchtext").show()
+					$("input[type='date']").hide(); // 다른 경우 달력 숨기기
+				}
 			});
-		</script>
-		<br>
+		});
+	</script>
+	<br>
 
-		<c:set var="urlMapping" value="${ requestScope.paging.urlMapping }" />
-		<c:import url="/WEB-INF/views/common/pagingView.jsp" />
-		<hr> 
-		<c:import url="/WEB-INF/views/common/footer.jsp" />
+	<c:set var="urlMapping" value="${ requestScope.paging.urlMapping }" />
+	<c:import url="/WEB-INF/views/common/pagingView.jsp" />
+	<hr>
+	<c:import url="/WEB-INF/views/common/footer.jsp" />
 </body>
 </html>
 

@@ -67,4 +67,24 @@ public class InconvinienceServiceImpl implements InconvinienceService {
 
 		return inconvDao.selectSearchDate(search);
 	}
+
+	@Override
+	public int insertInconvBoard(InconvinienceBoard inconvBoard) {
+		return inconvDao.insertInconvBoard(inconvBoard);
+	}
+
+	@Override
+	public int selectMostResentInconvNo(int id) {
+		return inconvDao.selectMostResentInconvNo(id);
+	}
+
+	@Override
+	public int deleteInconvBoard(int inconvNo) {
+		return inconvDao.deleteInconvBoard(inconvNo);
+	}
+
+	@Override
+	public int updateinconvBoard(InconvinienceBoard inconvBoard) {
+		return inconvDao.updateinconvBoard(inconvBoard);
+	}
 }

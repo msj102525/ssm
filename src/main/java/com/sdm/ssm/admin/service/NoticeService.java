@@ -27,4 +27,13 @@ public interface NoticeService {
 	void updateAddReadCount(int noticeNo);
 
 	Notice selectNotice(int noticeNo);
+
+	int insertNotice(Notice notice);
+
+	int selectMostResentNoticeNo(int id);
+
+	int deleteNotice(int noticeNo);
+
+	int updateNotice(Notice notice);
+
 }

@@ -30,10 +30,6 @@
 
 		<div class="view-btn">
 
-			<form action="nwform.do" method="POST">
-				<button name="write">게시판 작성</button>
-			</form>
-
 
 			<c:url var="nlist" value="nlist.do">
 				<c:param name="page" value='${currentPage}' />
@@ -43,17 +39,19 @@
 
 
 
+			<c:if test="${sessionScope.loginUser.adminOk eq 'Y' }">
+				<form method='GET' action='mvupdaten.do'>
+					<input type='hidden' name='noticeNo' value='${notice.noticeNo}'>
+					<input type='hidden' name='page' value='${currentPage }'>
+					<button>게시물 수정</button>
+				</form>
 
-			<form method='GET' action='fix_board.php'>
-				<input type='hidden' name='board_id' value='".$row['board_id']."'>
-				<button>게시물 수정</button>
-			</form>
-
-			<form method='POST' action='delete_board.php'>
-				<input type='hidden' name='board_id' value='".$row['board_id']."'>
-				<button>삭제</button>
-			</form>
-
+				<form method='POST' action='deleten.do'>
+					<input type='hidden' name='noticeNo' value='${notice.noticeNo }'>
+					<input type='hidden' name='page' value='${page }'>
+					<button>삭제</button>
+				</form>
+			</c:if>
 		</div>
 
 

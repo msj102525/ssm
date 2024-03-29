@@ -58,4 +58,20 @@ public class InconvinienceDao {
 		return (ArrayList<InconvinienceBoard>)list;
 	}
 
+	public int insertInconvBoard(InconvinienceBoard inconvBoard) {
+		return sqlSessionTemplate.insert("inconvMapper.insertInconvBoard", inconvBoard);
+	}
+
+	public int selectMostResentInconvNo(int id) {
+		return sqlSessionTemplate.selectOne("inconvMapper.selectMostResentInconvNo", id);
+	}
+
+	public int deleteInconvBoard(int inconvNo) {
+		return sqlSessionTemplate.selectOne("inconvMapper.deleteInconvBoard", inconvNo);
+	}
+
+	public int updateinconvBoard(InconvinienceBoard inconvBoard) {
+		return sqlSessionTemplate.selectOne("inconvMapper.updateinconvBoard", inconvBoard);
+	}
+
 }

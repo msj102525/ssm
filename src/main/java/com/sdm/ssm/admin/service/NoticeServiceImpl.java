@@ -67,5 +67,27 @@ public class NoticeServiceImpl implements NoticeService {
 	public Notice selectNotice(int noticeNo) {
 		return noticeDao.selectNotice(noticeNo);
 	}
+
+	@Override
+	public int insertNotice(Notice notice) {
+		
+		return noticeDao.insertNotice(notice);
+	}
+
+	@Override
+	public int selectMostResentNoticeNo(int id) {
+		return noticeDao.selectMostResentNoticeNo(id);
+	}
+
+	@Override
+	public int deleteNotice(int noticeNo) {
+		return noticeDao.deleteNotice(noticeNo);
+	}
+
+	@Override
+	public int updateNotice(Notice notice) {
+
+		return noticeDao.updateNotice(notice);
+	}
 	
 }

@@ -98,8 +98,7 @@ button.mv {
 			<input type='hidden' name="writer"
 				value="${sessionScope.loginUser.id }">
 			<hr>
-			 <br> <input class="mv" type="submit"
-				value="올리기">
+			 <br> <input class="mv" type="submit" value="올리기">
 		</form>
 
 

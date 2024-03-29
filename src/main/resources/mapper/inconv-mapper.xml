@@ -15,7 +15,7 @@
 	</resultMap>
 
 	<select id ="selectInconv" parameterType="_int" resultMap ="resultList">
-		select * from TB_INCONVINIENCE_BOARD left join TB_user on writer=id where board_no = #{boardno};
+		select * from TB_INCONVINIENCE_BOARD left join TB_user on writer=id where board_no = #{boardno}
 	</select>
 	<select id ="selectListCount" resultType ="_int">
 select count(*) from TB_INCONVINIENCE_BOARD left join TB_user on writer=id
@@ -54,4 +54,18 @@ select count(*) from TB_INCONVINIENCE_BOARD left join TB_user on writer=id
                             order by write_date desc) )
 	where rnum between #{startRow} and #{endRow}
 	</select>
+	<select id="selectMostResentInconvNo" parameterType="_int" resultType="InconvinienceBoard">
+	select MAX(BOARD_NO) from TB_INCONVINIENCE_BOARD where writer = #{userid}
+	</select>
+	<insert id="insertInconvBoard" parameterType="InconvinienceBoard">
+	insert into tb_notice values(INCONVINIENCE_SEQ.NEXTVAL,${writer},#{boardTitle},#{boardContent},
+	sysdate,sysdate,0,1)
+	</insert>
+		<delete id="deleteInconvBoard" parameterType="_int">
+	delete tb_InconvinienceBoard where BOARD_NO=#{boardNo}
+	</delete>
+	<update id="updateinconvBoard" parameterType="InconvinienceBoard">
+	UPDATE tb_notice SET BOARD_TITLE = #{boardTitle}, BOARD_CONTENT = #{boardContent}, MODIFY_DATE = sysdate
+    where BOARD_NO = #{boardNo}
+	</update>
 </mapper>

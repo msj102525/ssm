@@ -54,5 +54,18 @@ public class NoticeDao {
 	public Notice selectNotice(int noticeNo) {
 		return sqlSessionTemplate.selectOne("noticeMapper.selectNotice", noticeNo);
 	}
+	public int insertNotice(Notice notice) {
+				
+		return sqlSessionTemplate.insert("noticeMapper.insertNotice", notice);
+	}
+	public int selectMostResentNoticeNo(int id) {
+		return sqlSessionTemplate.selectOne("noticeMapper.selectMostResentNoticeNo", id);
+	}
+	public int deleteNotice(int noticeNo) {
+		return sqlSessionTemplate.delete("noticeMapper.deleteNotice", noticeNo);
+	}
+	public int updateNotice(Notice notice) {
+		return sqlSessionTemplate.update("noticeMapper.updateNotice", notice);
+	}
 
 }

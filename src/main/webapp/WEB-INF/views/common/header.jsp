@@ -33,7 +33,7 @@
 					</h1>
 					<div class="gnb">
 						<ul>
-							<li></li>
+							<li><a href="${pageContext.servletContext.contextPath }/nlist.do?page=1">공지사항</a></li>
 							<li></li>
 							<li></li>
 							<li></li>
@@ -63,8 +63,8 @@
 					</h1>
 					<div class="gnb">
 						<ul>
-							<li><a href="#">공지사항</a></li>
-							<li><a href="#">불편사항</a></li>
+							<li><a href="${pageContext.servletContext.contextPath }/nlist.do?page=1">공지사항</a></li>
+							<li><a href="${pageContext.servletContext.contextPath }/inconvlist.do?page=1">불편사항</a></li>
 							<li><a href="${pageContext.servletContext.contextPath }/glist.do?page=1">매장관리</a></li>
 							<li><a href="#">매장관리</a></li>
 						</ul>
@@ -97,7 +97,7 @@
 						<ul>
 							<li><a href="${pageContext.servletContext.contextPath }/nlist.do?page=1">공지글 관리</a>
 							<li><a href="mvulist.do">사용자 관리</a></li>
-							<li><a href="mvinconv.do">불편사항 관리</a></li>
+							<li><a href="${pageContext.servletContext.contextPath }/inconvlist.do?page=1">불편사항 관리</a></li>
 							<li><a href="msubscribe.do">구독상품 관리</a></li>
 						</ul>
 					</div>

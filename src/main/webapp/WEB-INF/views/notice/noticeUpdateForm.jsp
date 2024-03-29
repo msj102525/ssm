@@ -134,27 +134,41 @@ label {
 </style>
 </head>
 <body>
-	<h1>공지사항 작성</h1>
+	<h1>공지사항 수정</h1>
+	<c:set var="Notice" value="${notice }" />
 	<div class='form-0'>
 
 		<form class='form-1'
-			action="nwrite.do"
+			action="nupdate.do"
 			method="POST">
 			<input class='write-1' type="text" name="noticeTitle" maxlegth="44"
-				placeholder="제목 입력, 최대 44자까지 가능합니다" required>
+				placeholder="제목 입력, 최대 44자까지 가능합니다"  value=" ${notice.noticeTitle }"required>
 			<hr>
 			<textarea class='write-2' name="noticeContent" rows="20" cols="20"
-				maxlength="254" placeholder="내용 작성,최대 254자 가능합니다" required></textarea>
+				maxlength="254" placeholder="내용 작성,최대 254자 가능합니다"  required>${notice.noticeContent }</textarea>
 			<input type='hidden' name="writer"
 				value="${sessionScope.loginUser.id }">
+			<input type='hidden' name="page" value="${page}">
+			<input type='hidden' name="noticeNo" value="${notice.noticeNo }">
 			<hr>
-			<label style="width: 100px;"><input type="radio"
-				name="importancy" value=1 checked>1</label> <label style="width: 100px;"><input
+			<label style="width: 100px;"><p>중요도 : </p><input type="radio"
+				name="importancy" value=1>1</label> <label style="width: 100px;"><input
 				type="radio" name="importancy" value=2>2</label> <label
 				style="width: 100px;"><input type="radio" name="importancy"
 				value=3>3</label> <br> <input class="mv" type="submit"
 				value="올리기">
 		</form>
+		<script>
+		$(document).ready(function(){
+		    var ni = "${notice.importancy}"; 
+		    $("input[type='radio']").each(function(){
+		        if($(this).val() == ni){ 
+		            $(this).prop('checked', true); 
+		        }
+		    });
+		}); // document ready
+
+		</script>
 
 
 		<c:url var="lb" value="nlist.do">

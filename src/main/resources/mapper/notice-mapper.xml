@@ -67,7 +67,24 @@
 	<select id="selectNotice" parameterType ="_int" resultMap="resultList">
 	select * from tb_notice left join tb_user on (writer = id ) where notice_no = #{no}
 	</select>
+	<select id="selectMostResentNoticeNo" parameterType="_int" resultType="_int">
+	select max(notice_no) from tb_notice where writer=#{id}
+	</select>
+	
+	<!-- DML -->
+	<insert id="insertNotice" parameterType="Notice" >
+	insert into tb_notice values(notice_seq.NEXTVAL,${writer},#{noticeTitle},#{noticeContent},
+	sysdate,sysdate,0,#{importancy})
+	</insert>
 	<update id="updateAddReadCount" parameterType="_int">
 	update tb_notice set read_count = read_count + 1 where notice_no = #{no}
+	</update>
+	<delete id="deleteNotice" parameterType="_int">
+	delete tb_notice where notice_no=#{noticeNo}
+	</delete>
+	<update id="updateNotice" parameterType="Notice">
+	UPDATE tb_notice SET notice_title = #{noticeTitle}, notice_content = #{noticeContent}, modify_date = sysdate, 
+    importancy = #{importancy}
+    where notice_no = #{noticeNo}
 	</update>
 </mapper>
