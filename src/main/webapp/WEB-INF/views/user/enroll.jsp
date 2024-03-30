@@ -39,6 +39,8 @@ const dupIDCheck =() => {
 	}
 }
 
+let code = "" ;
+
 const emailAuth = () => {
 	$.ajax({
 		url: "emailAuth.do",
@@ -47,8 +49,17 @@ const emailAuth = () => {
 		dataType : "json",
 		success : (data) => {
 			console.log("result : " + data);
-			code = result;
-			alret("인증 코드가 입력하신 이메일로 전송 되었습니다");
+			
+			const objStr = JSON.stringify(data);
+			const parseJson = JSON.parse(objStr);
+			
+			code = parseJson.authCode;
+			
+			console.log(code);
+			
+			alert("인증 코드가 입력하신 이메일로 전송 되었습니다");
+			
+			$("li.chkEmailAuth").css("display", "block");
 		},
 		error: (jqXHR, textStatus, errorThrown) => {
 			console.log("error : " + jqXHR + ", " + textStatus + ", " + errorThrown);
@@ -58,18 +69,6 @@ const emailAuth = () => {
 
 
 $(()=> {
-	console.log($("#userId"));
-	console.log($("li.relative").eq(0));
-	console.log($("li.relative > p").eq(0));
-	/* $("li.relative > p").eq(0).html("아이디를 입력하세요"); */
-
-/* $("userId").on("keyup", ()=> {
-	console.log("keyup!!!!");
-	
-	if($("userId").val().length() < 4 || $("userId").val().length() > 12) {
-		$("li.relative > p").eq(0).html("아이디를 입력하세요");
-	}
-}) */
 
 $("#userId").on("keyup", () => {
     const userIdLength = $("#userId").val().length;
@@ -120,6 +119,20 @@ $("#email").on("keyup", () => {
     }
 });
 
+$("#chkEmailAuth").on("keyup", () => {
+	 const chkEmailAuth = $("#chkEmailAuth").val();
+	 const message = "인증번호가 ";
+	 
+	if (chkEmailAuth != code) {
+        $("li.relative > p").eq(4).html(message + "일치하지 않습니다").css("color", "red");
+        $("#chkEMail").css("display", "block");
+    } else {
+        $("li.relative > p").eq(4).html(message + "일치합니다").css("color", "orange");
+        $("#chkEMail").css("display", "none");
+    }
+})	;
+
+
 $("#userNo").on("keyup", () => {
     const userNo = $("#userNo").val();
     const message = "주민등록번호 형식을 확인해주세요";
@@ -143,6 +156,7 @@ $("#phone").on("keyup", () => {
         $("li.relative > p").eq(6).html(message).css("color", "orange");
     }
 });
+
 
 	
 }); // doc ready;
@@ -201,12 +215,12 @@ $("#phone").on("keyup", () => {
 						<li class="auth relative">
 							<p></p>
 							<input type="email" name="email" id="email" placeholder="이메일">
-							<input type="button" value="이메일 인증" id="chkEMail" onclick="emailAuth();">
+							<input type="button" value="이메일 인증" class="chkEMail" id="chkEMail" onclick="emailAuth();">
 						</li>
-						<li class="auth relative">
+						<li class="auth relative chkEmailAuth">
 							<p></p>
 							<input type="text"  id="chkEmailAuth" placeholder="인증번호">
-							<input type="button" value="이메일 인증 확인">
+							<!-- <input type="button" value="이메일 인증 확인"> -->
 						</li>
 						<li class="relative">
 							<p></p>
@@ -224,7 +238,7 @@ $("#phone").on("keyup", () => {
 						<li class="auth relative">
 							<p></p>
 							<input type="text" name="accountNumber" id="accountNumber" placeholder="계좌번호">
-							<input type="button" value="계좌번호">
+							<input type="button" value="계좌인증">
 						</li>
 						<li>
 							<input type="submit" value="회원가입" class="enroll">

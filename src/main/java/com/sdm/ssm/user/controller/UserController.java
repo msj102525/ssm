@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.SessionStatus;
 
 import com.sdm.ssm.user.model.service.UserService;
@@ -114,8 +116,9 @@ public class UserController {
 	// 이메일 인증
 
 	@RequestMapping(value = "emailAuth.do", method = RequestMethod.POST)
-	public void emailAuthMethod(@RequestParam("userEmail") String email) {
-		logger.info("유저 이메일 주소 : " + email);
+	@ResponseBody
+	public String emailAuthMethod(
+			@RequestParam("userEmail") String email) {
 		// 난수의 범위 111111 ~ 999999 (6자리 난수)
 		Random random = new Random();
 		int checkNum = random.nextInt(888888) + 111111;
@@ -125,8 +128,6 @@ public class UserController {
 		String toMail = email;
 		String title = "회원가입 인증 이메일 입니다.";
 		String content = "인증 코드는 " + checkNum + " 입니다." + "<br>" + "해당 인증 코드를 인증 코드 확인란에 기입하여 주세요.";
-
-		logger.info("유저 이메일 주소 : " + toMail);
 		
 		try {
 			MimeMessage message = mailSender.createMimeMessage(); // Spring에서 제공하는 mail API
@@ -143,6 +144,11 @@ public class UserController {
 		}
 
 		logger.info("랜덤숫자 : " + checkNum);
+		
+		JSONObject jOb = new JSONObject();
+		jOb.put("authCode", checkNum);
+		
+		return jOb.toJSONString();
 	}
 	
 
