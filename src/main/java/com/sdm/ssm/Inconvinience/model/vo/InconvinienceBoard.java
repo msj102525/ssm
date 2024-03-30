@@ -13,8 +13,9 @@ public class InconvinienceBoard implements java.io.Serializable {
 	private Date writeDate;
 	private Date modifyDate;
 	private String status;
+	private int id;
 	public InconvinienceBoard(int boardNo, String writer, String boardTitle, String boardContent, Date writeDate,
-			Date modifyDate, String status) {
+			Date modifyDate, String status, int id) {
 		super();
 		this.boardNo = boardNo;
 		this.writer = writer;
@@ -23,6 +24,7 @@ public class InconvinienceBoard implements java.io.Serializable {
 		this.writeDate = writeDate;
 		this.modifyDate = modifyDate;
 		this.status = status;
+		this.id = id;
 	}
 	public InconvinienceBoard() {
 		super();
@@ -71,6 +73,12 @@ public class InconvinienceBoard implements java.io.Serializable {
 	}
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
 	}
 	
 	

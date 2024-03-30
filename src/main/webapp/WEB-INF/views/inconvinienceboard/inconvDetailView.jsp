@@ -6,53 +6,71 @@
 <head>
 <meta charset="utf-8">
 <link rel="stylesheet" href="resources/css/notice/noticeDetail.css">
-<title>게시물 보는중</title>
+<title>불편사항상세</title>
+<script type="text/javascript" src="/ssm/resources/js/jquery-3.7.0.min.js"></script>
 </head>
 <body>
-	<h1>공지사항</h1>
+	<h1>불편사항</h1>
 	<div class="view-top">
 
-		<div class="view-top-title">${notice.noticeTitle }</div>
+		<div class="view-top-title">${inconvBoard.boardTitle }</div>
 
 		<div class="view-top2">
-			<div>${notice.writer }</div>
+			<div>${inconvBoard.writer }</div>
+			<script type="text/javascript">
+			$(function(){
+			    switch (${inconvBoard.status}) {
+			        case 1:
+			            $('#status').html($('#status').html() + "조치전");
+			            break;
+			        case 2:
+			            $('#status').html($('#status').html() + "조치중");
+			            break;
+			        case 3:
+			            $('#status').html($('#status').html() + "조치완료");
+			            break;
+			    }
+			});
+			</script>
+			<div id="status">조치상태: </div>
 
-			<div>조회수: ${notice.readCount }</div>
 
-			<div>중요도: ${notice.importancy }</div>
-
-			<div>Date: ${notice.writeDate }</div>
+			<div>Date: ${inconvBoard.writeDate }</div>
 		</div>
 		<hr>
-		<div class="view-mid">${notice.noticeContent }</div>
+		<div class="view-mid">${inconvBoard.boardContent }</div>
 		<hr>
 
 
 		<div class="view-btn">
 
-			<form action="nwform.do" method="POST">
+			<form action="iwform.do" method="POST">
 				<button name="write">게시판 작성</button>
 			</form>
 
 
-			<c:url var="nlist" value="nlist.do">
+			<c:url var="ilist" value="inconvlist.do">
 				<c:param name="page" value='${currentPage}' />
 			</c:url>
-			<button onclick="location.href='${nlist}';">목록으로</button>
+			<button onclick="location.href='${ilist}';">목록으로</button>
 
 
 
 
 
-			<form method='GET' action='fix_board.php'>
-				<input type='hidden' name='board_id' value='".$row['board_id']."'>
-				<button>게시물 수정</button>
-			</form>
+	<c:if test="${sessionScope.loginUser.id eq inconvBoard.id }">
+				<form method='GET' action='mvupdatei.do'>
+					<input type='hidden' name='boardNo' value='${inconvBoard.boardNo}'>
+					<input type='hidden' name='page' value='${currentPage }'>
+					<button>게시물 수정</button>
+				</form>
 
-			<form method='POST' action='delete_board.php'>
-				<input type='hidden' name='board_id' value='".$row['board_id']."'>
-				<button>삭제</button>
-			</form>
+				<form method='POST' action='deletei.do'>
+					<input type='hidden' name='boardNo' value='${inconvBoard.boardNo }'>
+					<input type='hidden' name='page' value='${page }'>
+					<button>삭제</button>
+				</form>
+			</c:if>
 
 		</div>
 

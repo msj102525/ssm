@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.sdm.ssm.admin.model.vo.Notice;
@@ -36,10 +37,19 @@ public class NoticeController {
 	}
 
 	// 뷰 페이지 내보내기용 메소드 작성부-------------------------------------------
-
+	@RequestMapping("mvupdaten.do")
+	public String moveNoticeUpdateMethod(@RequestParam("page") String page,@RequestParam("noticeNo") int noticeNo, Model model) {
+		Notice notice=noticeService.selectNotice(noticeNo);
+		model.addAttribute("notice", notice);
+		model.addAttribute("page", page);
+		return "notice/noticeUpdateForm";
+	}
+	
+	
 	// 새 게시글 등록 페이지 내보내기용 메소드
 	@RequestMapping("nwform.do")
-	public String moveNoticeWritePage() {
+	public String moveNoticeWritePage(@RequestParam("page") String page, Model model) {
+		model.addAttribute("page", page);
 		return "notice/noticeWriteForm";
 	}
 	@RequestMapping("ndetail.do")
@@ -64,7 +74,7 @@ public class NoticeController {
 	
 	}
 	// 리스트내보내기
-	@RequestMapping("nlist.do")
+	@RequestMapping(value="nlist.do", method= {RequestMethod.POST, RequestMethod.GET})
 	public String noticeListMethod(@RequestParam(name = "page", required = false) String page,
 			@RequestParam(name = "limit", required = false) String slimit, Model model) {
 		int currentPage = 1;
@@ -86,17 +96,12 @@ public class NoticeController {
 		ArrayList<Notice> list = noticeService.selectList(paging);
 		logger.info("리스트카운트 : " + listCount);
 		// 받은 결과로 성공/실패 페이지 내보냄
-		if (list != null && list.size() > 0) {
 			model.addAttribute("list", list);
 			model.addAttribute("paging", paging);
 			model.addAttribute("currentPage", currentPage);
 			model.addAttribute("limit", limit);
 
 			return "notice/noticeListView";
-		} else {
-			model.addAttribute("message", currentPage + " 페이지 목록 조회 실패!");
-			return "common/error";
-		}
 	}
 	// 검색용
 
@@ -145,5 +150,48 @@ public class NoticeController {
 
 		return "notice/noticeListView";
 	}
+	@RequestMapping(value="nwrite.do", method=RequestMethod.POST)
+	public String noticeWriteMethod(Model model, Notice notice,@RequestParam(name = "page", required = false) String page ) {
+		logger.info(notice.toString());
+		if(noticeService.insertNotice(notice)>0) {
+			//게시글 등록 성공시 방금 작성한 글로 이동
+			int noticeNo = noticeService.selectMostResentNoticeNo(Integer.parseInt(notice.getWriter()));
+			model.addAttribute("nno", noticeNo);
+			return "redirect:ndetail.do";
+	}else {
+			model.addAttribute("message", "공지사항 등록 실패");
+			return "common/error";
+	}
+	}
+	@RequestMapping(value="deleten.do", method=RequestMethod.POST)
+	public String noticeDeleteMethod(@RequestParam("noticeNo") int noticeNo,
+			@RequestParam("page") String page, Model model) {
+		int currentPage = 1;
+		if(page!=null&&page.length()>0) {
+			currentPage=Integer.parseInt(page);
+		}
+		
+		if(noticeService.deleteNotice(noticeNo)>0) {
+			model.addAttribute("currentPage", page);
+			return "redirect:nlist.do";
+		}{
+			model.addAttribute("message", "공지사항 삭제 실패!");
+			return "common/error";}
 
-}
+	}
+	@RequestMapping(value="nupdate.do", method=RequestMethod.POST)
+	public String noticeUpdateMethod(Notice notice, @RequestParam("page") String page, Model model)
+	{
+		if(noticeService.updateNotice(notice)>0) {	
+			//게시글 수정 성공시 방금 작성한 글로 이동
+			model.addAttribute("nno", notice.getNoticeNo());
+			model.addAttribute("page", page);
+			return "redirect:ndetail.do";
+	}else {
+			model.addAttribute("message", "공지사항 수정 실패");
+			return "common/error";
+	}
+	}
+	}
+
+

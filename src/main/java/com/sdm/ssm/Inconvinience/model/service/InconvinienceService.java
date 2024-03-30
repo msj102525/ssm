@@ -31,4 +31,12 @@ public interface InconvinienceService {
 
 	ArrayList<InconvinienceBoard> selectSearchDate(Search search);
 
+	int insertInconvBoard(InconvinienceBoard inconvBoard);
+
+	int selectMostResentInconvNo(int id);
+
+	int deleteInconvBoard(int inconvNo);
+
+	int updateinconvBoard(InconvinienceBoard inconvBoard);
+
 }

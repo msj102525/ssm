@@ -13,11 +13,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.sdm.ssm.Inconvinience.model.service.InconvinienceService;
 import com.sdm.ssm.Inconvinience.model.vo.InconvinienceBoard;
 import com.sdm.ssm.admin.controller.NoticeController;
+import com.sdm.ssm.admin.model.vo.Notice;
 import com.sdm.ssm.common.Paging;
 import com.sdm.ssm.common.Search;
 import com.sdm.ssm.common.SearchDate;
@@ -34,7 +36,13 @@ public class InconvinienceController {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
 	}
-	
+	@RequestMapping("mvupdatei.do")
+	public String moveNoticeUpdateMethod(@RequestParam("page") String page,@RequestParam("boardNo") int boardNo, Model model) {
+		InconvinienceBoard inconvBoard=inconvService.selectInconv(boardNo);
+		model.addAttribute("inconvBoard", inconvBoard);
+		model.addAttribute("page", page);
+		return "inconvinienceboard/inconvUpdateForm";
+	}
 		@RequestMapping("iwform.do")
 		public String moveInconvWritePage() {
 			return "inconvinienceboard/inconvWriteForm";
@@ -62,7 +70,7 @@ public class InconvinienceController {
 		// 리스트내보내기
 		@RequestMapping("inconvlist.do")
 		public String noticeListMethod(@RequestParam(name = "page", required = false) String page,
-				@RequestParam(name = "limit", required = false) String slimit, Model model) {
+			 Model model) {
 			int currentPage = 1;
 			if (page != null && page.length()>0) {
 				currentPage = Integer.parseInt(page);
@@ -138,5 +146,47 @@ public class InconvinienceController {
 			model.addAttribute("search", search);
 
 			return "inconvinienceboard/inconvListView";
+		}
+		@RequestMapping(value="iwrite.do", method=RequestMethod.POST)
+		public String noticeWriteMethod(Model model, InconvinienceBoard inconvBoard,@RequestParam(name = "page", required = false) String page ) {
+			logger.info(inconvBoard.toString());
+			if(inconvService.insertInconvBoard(inconvBoard)>0) {
+				//게시글 등록 성공시 방금 작성한 글로 이동
+				int inconvNo = inconvService.selectMostResentInconvNo(inconvBoard.getId());
+				model.addAttribute("ino", inconvNo);
+				return "redirect:idetail.do";
+		}else {
+				model.addAttribute("message", "공지사항 등록 실패");
+				return "common/error";
+		}
+		}
+		@RequestMapping(value="deletei.do", method=RequestMethod.POST)
+		public String noticeDeleteMethod(@RequestParam("inconvNo") int inconvNo,
+				@RequestParam("page") String page, Model model) {
+			int currentPage = 1;
+			if(page!=null&&page.length()>0) {
+				currentPage=Integer.parseInt(page);
+			}
+			
+			if(inconvService.deleteInconvBoard(inconvNo)>0) {
+				model.addAttribute("currentPage", page);
+				return "redirect:ilist.do";
+			}{
+				model.addAttribute("message", "공지사항 삭제 실패!");
+				return "common/error";}
+
+		}
+		@RequestMapping(value="iupdate.do", method=RequestMethod.POST)
+		public String noticeUpdateMethod(InconvinienceBoard inconvBoard, @RequestParam("page") String page, Model model)
+		{
+			if(inconvService.updateinconvBoard(inconvBoard)>0) {	
+				//게시글 수정 성공시 방금 작성한 글로 이동
+				model.addAttribute("ino", inconvBoard.getBoardNo());
+				model.addAttribute("page", page);
+				return "redirect:idetail.do";
+		}else {
+				model.addAttribute("message", "불편사항 수정 실패");
+				return "common/error";
+		}
 		}
 }

@@ -219,7 +219,9 @@ button {
 					type="text" id="searchtext" name="keyword" placeholder="검색어 입력">
 				<input type="submit" class="searchbtn" value="검색"> <br>
 			</form>
+		<c:if test="${ !empty loginUser &&  loginUser.adminOk eq 'Y'}">
 		<button class="writerB" onclick="showWriteForm();">글쓰기</button>
+		</c:if>
 		</div>
 		<c:url var="nwf" value="nwform.do">
 			<c:param name="page" value="${nowpage}" />
@@ -247,66 +249,6 @@ button {
 				});
 			});
 		</script>
-		<%-- 공지글 쓰기는 관리자만 가능함 --%>
-		<%-- <c:if test="${ !empty sessionScope.loginMember&& sessionScope.loginMember.adminOK == Y }"> --%>
-
-		<%-- 항목별 검색 기능 추가 --%>
-		<%-- <%-- <fieldset id="ss">
-	<legend>검색할 항목을 선택하세요.</legend>
-	<input type="radio" name="item" id="title"> 제목 &nbsp;
-	<input type="radio" name="item" id="writer"> 작성자 &nbsp;	
-	<input type="radio" name="item" id="date"> 등록날짜 &nbsp;	
-</fieldset>
-<br>
-
-검색 항목별 값 입력 전송용 폼 만들기
-제목 검색 폼
-<form id="titleform" class="sform" action="bsearchTitle.do" method="post">
-	<input type="hidden" name="action" value="title">	
-<fieldset>
-	<legend>검색할 제목을 입력하세요.</legend>
-	<input type="search" name="keyword"> &nbsp;
-	한 페이지에 출력할 목록 갯수 : 
-	<select name="limit">
-		<option value="10" selected>10</option>
-		<option value="15" select>15</option>
-		<option value="20" select>20</option>
-	</select> &nbsp;
-	<input type="submit" value="검색">
-</fieldset>
-</form>
-
-작성자 검색 폼
-<form id="writerform" class="sform" action="bsearchWriter.do" method="post">
-	<input type="hidden" name="action" value="writer">	
-<fieldset>
-	<legend>검색할 작성자를 입력하세요.</legend>
-	<input type="search" name="keyword"> &nbsp;
-	한 페이지에 출력할 목록 갯수 : 
-	<select name="limit">
-		<option value="10" selected>10</option>
-		<option value="15" select>15</option>
-		<option value="20" select>20</option>
-	</select> &nbsp;
-	<input type="submit" value="검색">
-</fieldset>
-</form>
-
-등록날짜 검색 폼
-<form id="dateform" class="sform" action="bsearchDate.do" method="post">
-	<input type="hidden" name="action" value="date">	
-<fieldset>
-	<legend>검색할 등록날짜를 선택하세요.</legend>
-	<input type="date" name="begin"> ~ <input type="date" name="end"> &nbsp;
-	한 페이지에 출력할 목록 갯수 : 
-	<select name="limit">
-		<option value="10" selected>10</option>
-		<option value="15" select>15</option>
-		<option value="20" select>20</option>
-	</select> &nbsp;
-	<input type="submit" value="검색">
-</fieldset>
-</form> --%>
 		<br>
 
 

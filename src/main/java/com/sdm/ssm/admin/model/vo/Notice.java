@@ -13,6 +13,7 @@ public class Notice implements java.io.Serializable{
 	private Date modifyDate;
 	private int readCount;
 	private String importancy;
+	private int id;
 	public Notice(int noticeNo, String writer, String noticeTitle, String noticeContent, Date writeDate, Date modifyDate,
 			int readCount, String importancy) {
 		super();
@@ -83,7 +84,13 @@ public class Notice implements java.io.Serializable{
 	public String toString() {
 		return "Notice [noticeNo=" + noticeNo + ", writer=" + writer + ", noticeTitle=" + noticeTitle
 				+ ", noticeContent=" + noticeContent + ", writeDate=" + writeDate + ", modifyDate=" + modifyDate
-				+ ", readCount=" + readCount + ", importancy=" + importancy + "]";
+				+ ", readCount=" + readCount + ", importancy=" + importancy +", id ="+id + "]";
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
 	}
 	
 }
