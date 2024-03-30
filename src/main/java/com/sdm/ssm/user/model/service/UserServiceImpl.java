@@ -17,5 +17,10 @@ public class UserServiceImpl implements UserService{
 		return userDao.selectUserById(userId);
 		
 	}
+
+	@Override
+	public int selectUserCountById(String userId) {
+		return userDao.selectUserCountById(userId);
+	}
 	
 }	
