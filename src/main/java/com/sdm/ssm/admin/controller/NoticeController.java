@@ -163,7 +163,7 @@ public class NoticeController {
 			return "common/error";
 	}
 	}
-	@RequestMapping(value="deleten.do", method=RequestMethod.POST)
+	@RequestMapping("deleten.do")
 	public String noticeDeleteMethod(@RequestParam("noticeNo") int noticeNo,
 			@RequestParam("page") String page, Model model) {
 		int currentPage = 1;

@@ -3,17 +3,20 @@ package com.sdm.ssm.Inconvinience.model.vo;
 import java.sql.Date;
 
 public class InconvinienceBoardReply implements java.io.Serializable {
+	private static final long serialVersionUID = 204928466647188379L;
 	private int boardNo;
 	private String user;
 	private Date writeDate;
 	private String commentContent;
+	private int id;
 	
-	public InconvinienceBoardReply(int boardNo, String user, Date writeDate, String commentContent) {
+	public InconvinienceBoardReply(int boardNo, String user, Date writeDate, String commentContent, int id) {
 		super();
 		this.boardNo = boardNo;
 		this.user = user;
 		this.writeDate = writeDate;
 		this.commentContent = commentContent;
+		this.id = id;
 	}
 	public InconvinienceBoardReply() {
 		super();
@@ -46,6 +49,12 @@ public class InconvinienceBoardReply implements java.io.Serializable {
 	public String toString() {
 		return "InconvinienceBoardReply [boardNo=" + boardNo + ", user=" + user + ", writeDate=" + writeDate
 				+ ", commentContent=" + commentContent + "]";
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
 	}
 	
 	

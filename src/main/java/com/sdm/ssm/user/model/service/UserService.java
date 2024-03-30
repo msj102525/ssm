@@ -10,8 +10,6 @@ import com.sdm.ssm.user.model.vo.User;
 public interface UserService {
 
 	User selectUserById(String userId);
-
-	int selectUserCountById(String userId);
 	
 	
 }

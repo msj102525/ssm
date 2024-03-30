@@ -9,77 +9,102 @@
 <script type="text/javascript"
 	src="/ssm/resources/js/jquery-3.7.0.min.js"></script>
 <style>
-h1 {
-	text-align: center;
-	padding: 10px 10px;
-	padding-bottom: 30px;
-	border-bottom: 1px solid #848484;
+* {
+    margin: 0;
+    padding: 0;
 }
 
-.form-0 {
-	position: relative;
+.container {
+    font-family: Arial, sans-serif;
+    font-size: 18px;
+    padding: 20px;
+    margin: 25px auto;
+    width: 800px;
+    outline: dashed 1px black;
 }
 
-.board-top {
-	width: 80%;
-	height: 50px;
-	margin: 0 auto;
-	max-width: 100%;
+h3 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 10px;
 }
 
-hr {
-	width: 100%;
+.contentbox {
+    font-size: 18px; 
+    line-height: 1.5;
+    margin-bottom: 20px;
+    min-height: 400px;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
 }
 
-.form-1 {
-	width: 1200px;
-	margin: 0 auto;
+.btnbox {
+    margin-top: 20px;
 }
 
-.write-1 {
-	height: 50px;
-	width: 1200px;
-	border: none;
-	font-size: 40px;
-	background-color: #f5f6f7;
-	outline: none;
+.btnbox button,
+.btnbox a {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-right: 10px;
+    background-color: rgb(250, 180, 49);
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
 }
 
-.write-2 {
-	margin-top: 30px;
-	width: 1200px;
-	font-size: 15px;
-	border: none;
-	background-color: #f5f6f7;
-	outline: none;
-}
-
-.write-3 {
-	margin-top: 10px;
-}
-
-button.mv {
-	
+.btnbox button:hover,
+.btnbox a:hover {
+    background-color: orange;
 }
 
 .mv {
-	margin-top: 10px;
-	width: 70px;
-	height: 30px;
-	border: none;
-	background-color: rgb(250, 180, 49);
-	Cursor: pointer;
+    display: inline-block;
+    padding: 10px 15px; /* 수정된 부분: 패딩값을 줄임 */
+    margin-top: 20px;
+    background-color: rgb(250, 180, 49);
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
 }
 
-.write-5 {
-	position: absolute;
-	bottom: 0;
-	left: 200px;
-	width: 70px;
-	height: 30px;
-	border: none;
-	background-color: rgb(250, 180, 49);
-	Cursor: pointer;
+.mv:hover {
+    background-color: orange;
+}
+.mv:hover {
+    background-color: orange;
+}
+
+.title-input {
+    font-size: 24px;
+    font-weight: bold;
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+.modify-button {
+	font-size: 12px;
+    display: inline-block;
+    padding: 15px 25px;
+    margin-top: 20px;
+    background-color: rgb(250, 180, 49);
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+.modify-button:hover {
+    background-color: orange;
 }
 /*라디오*/
 label {
@@ -134,18 +159,13 @@ label {
 </style>
 </head>
 <body>
-	<h1>공지사항 수정</h1>
-	<c:set var="Notice" value="${notice }" />
-	<div class='form-0'>
-
-		<form class='form-1'
-			action="nupdate.do"
-			method="POST">
-			<input class='write-1' type="text" name="noticeTitle" maxlegth="44"
-				placeholder="제목 입력, 최대 44자까지 가능합니다"  value=" ${notice.noticeTitle }"required>
+<div class="container">
+<hr>
+		<form id='modifyForm' action="nupdate.do" method="POST">
+			<input class="title-input"type="text" name="noticeTitle" maxlegth="44"  value=" ${notice.noticeTitle }"required>
 			<hr>
-			<textarea class='write-2' name="noticeContent" rows="20" cols="20"
-				maxlength="254" placeholder="내용 작성,최대 254자 가능합니다"  required>${notice.noticeContent }</textarea>
+			<textarea class="contentbox"name="noticeContent" rows="20" cols="20" maxlength="254"  required>${notice.noticeContent }</textarea>
+			<hr>
 			<input type='hidden' name="writer"
 				value="${sessionScope.loginUser.id }">
 			<input type='hidden' name="page" value="${page}">
@@ -155,9 +175,14 @@ label {
 				name="importancy" value=1>1</label> <label style="width: 100px;"><input
 				type="radio" name="importancy" value=2>2</label> <label
 				style="width: 100px;"><input type="radio" name="importancy"
-				value=3>3</label> <br> <input class="mv" type="submit"
-				value="올리기">
+				value=3>3</label> <br> 
 		</form>
+		 <c:url var="lb" value="ndetail.do">
+                <c:param name="page" value="${page}" />
+                <c:param name="nno" value="${notice.noticeNo}" />
+            </c:url>
+            <a onclick="submitForm()" class="mv">수정하기</a>
+            <a href="${pageContext.servletContext.contextPath}/${lb}" class="mv">돌아가기</a>
 		<script>
 		$(document).ready(function(){
 		    var ni = "${notice.importancy}"; 
@@ -167,56 +192,16 @@ label {
 		        }
 		    });
 		}); // document ready
-
+		function submitForm() {
+	        document.getElementById("modifyForm").submit();
+	    }
 		</script>
 
 
 		<c:url var="lb" value="nlist.do">
 			<c:param name="page" value="${page}" />
 		</c:url>
-
-		<button class="mv"
-			onclick="javascript:location.href='${pageContext.servletContext.contextPath}/${lb}';">목록</button>
 	</div>
-	<%-- <h1 align="center">게시 원글 등록 페이지</h1>
-<br>
-
-<!-- form 에서 입력값들과 파일을 함께 전송하려면 반드시 속성 추가해야 함 :  
-	enctype="multipart/form-data"
-	파일을 첨부해서 보낼 때는 POST
--->
-<form action="ninsert.do" method="get" >
-<table align="center" width="500" border="1" cellspacing="0" cellpadding="5">
-	<tr>
-		<th>제 목</th>
-		<td><input type="text" name="noticeTitle" size="50"></td>
-	</tr>
-	<tr>
-		<th>작성자</th>
-		<td><input type="text" name="writer" readonly value="#"></td>
-	</tr>
-	<tr>
-		<th>중요도</th>
-		<td><input type="checkbox" name="importancy"></td>
-	</tr>
-	<tr>
-		<th>내 용</th>
-		<td><textarea rows="5" cols="50" name="noticeContent"></textarea></td>
-	</tr>
-	<tr>
-		<c:url var="nl" value="nlist.do">
-				<c:param name="page" value="1"/>
-		</c:url>
-	
-		<th colspan="2">
-			<input type="submit" value="등록하기"> &nbsp; 
-			<input type="reset" value="작성취소"> &nbsp;
-			<input type="button" value="목록" 
-			onclick="javascript:location.href='${nl}'; return false;">
-		</th>		
-	</tr>
-</table>
-</form> --%>
 	<br>
 
 	<hr>

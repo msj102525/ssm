@@ -5,125 +5,131 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>first</title>
-<script type="text/javascript"
-	src="/ssm/resources/js/jquery-3.7.0.min.js"></script>
+<title>불편사항 수정</title>
 <style>
-h1 {
-	text-align: center;
-	padding: 10px 10px;
-	padding-bottom: 30px;
-	border-bottom: 1px solid #848484;
+* {
+    margin: 0;
+    padding: 0;
 }
 
-.form-0 {
-	position: relative;
+.container {
+    font-family: Arial, sans-serif;
+    font-size: 18px;
+    padding: 20px;
+    margin: 25px auto;
+    width: 800px;
+    outline: dashed 1px black;
 }
 
-.board-top {
-	width: 80%;
-	height: 50px;
-	margin: 0 auto;
-	max-width: 100%;
+h3 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 10px;
 }
 
-hr {
-	width: 100%;
+.contentbox {
+    font-size: 18px; 
+    line-height: 1.5;
+    margin-bottom: 20px;
+    min-height: 400px;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
 }
 
-.form-1 {
-	width: 1200px;
-	margin: 0 auto;
+.btnbox {
+    margin-top: 20px;
 }
 
-.write-1 {
-	height: 50px;
-	width: 1200px;
-	border: none;
-	font-size: 40px;
-	background-color: #f5f6f7;
-	outline: none;
+.btnbox button,
+.btnbox a {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-right: 10px;
+    background-color: rgb(250, 180, 49);
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
 }
 
-.write-2 {
-	margin-top: 30px;
-	width: 1200px;
-	font-size: 15px;
-	border: none;
-	background-color: #f5f6f7;
-	outline: none;
-}
-
-.write-3 {
-	margin-top: 10px;
-}
-
-button.mv {
-	
+.btnbox button:hover,
+.btnbox a:hover {
+    background-color: orange;
 }
 
 .mv {
-	margin-top: 10px;
-	width: 70px;
-	height: 30px;
-	border: none;
-	background-color: rgb(250, 180, 49);
-	Cursor: pointer;
+    display: inline-block;
+    padding: 10px 15px; /* 수정된 부분: 패딩값을 줄임 */
+    margin-top: 20px;
+    background-color: rgb(250, 180, 49);
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
 }
 
-.write-5 {
-	position: absolute;
-	bottom: 0;
-	left: 200px;
-	width: 70px;
-	height: 30px;
-	border: none;
-	background-color: rgb(250, 180, 49);
-	Cursor: pointer;
+.mv:hover {
+    background-color: orange;
+}
+.mv:hover {
+    background-color: orange;
+}
+
+.title-input {
+    font-size: 24px;
+    font-weight: bold;
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+.modify-button {
+	font-size: 12px;
+    display: inline-block;
+    padding: 15px 25px;
+    margin-top: 20px;
+    background-color: rgb(250, 180, 49);
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+.modify-button:hover {
+    background-color: orange;
 }
 </style>
 </head>
 <body>
-	<h1>불편사항 작성</h1>
-	<div class='form-0'>
-
-		<form class='form-1'
-			action="iwrite.do"
-			method="POST">
-			<input class='write-1' type="text" name="boardTitle" maxlegth="44"
-				placeholder="제목 입력, 최대 44자까지 가능합니다" required>
-			<hr>
-			<textarea class='write-2' name="boardContent" rows="20" cols="20"
-				maxlength="254" placeholder="내용 작성,최대 254자 가능합니다" required></textarea>
-			<input type='hidden' name="writer"
-				value="${sessionScope.loginUser.id }">
-			<hr>
-			 <br> <input class="mv" type="submit" value="올리기">
-		</form>
-
-
-		<c:url var="lb" value="inconvlist.do">
-			<c:param name="page" value="${page}" />
-		</c:url>
-
-		<button class="mv"
-			onclick="javascript:location.href='${pageContext.servletContext.contextPath}/${lb}';">목록</button>
-	</div>>
-	<br>
-
-	<hr>
-	<c:import url="/WEB-INF/views/common/footer.jsp" />
+    <div class="container">
+        <hr>
+        <form id="modifyForm" action="iupdate.do" method="POST">
+            <input type="text" name="boardTitle" maxlength="44" class="title-input"  required value="${inconvBoard.boardTitle}">
+            <hr>
+            <textarea name="boardContent" class="contentbox" rows="20" cols="20" maxlength="254" required>${inconvBoard.boardContent }</textarea>
+            <hr>
+            <input type="hidden" name="boardNo" value="${inconvBoard.boardNo }">
+        </form>
+            <c:url var="lb" value="inconvdetail.do">
+                <c:param name="page" value="${page}" />
+                <c:param name="ino" value="${inconvBoard.boardNo}" />
+            </c:url>
+            <a onclick="submitForm()" class="mv">수정하기</a>
+            <a href="${pageContext.servletContext.contextPath}/${lb}" class="mv">돌아가기</a>
+    </div>
+    <script>
+    function submitForm() {
+        document.getElementById("modifyForm").submit();
+    }
+</script>
+    <br>
+    <hr>
+    <c:import url="/WEB-INF/views/common/footer.jsp" />
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-

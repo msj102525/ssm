@@ -165,11 +165,6 @@ button {
 	<%-- <%@ include file="../common/menubar.jsp" %> --%>
 	<c:import url="/WEB-INF/views/common/header.jsp" />
 	<hr>
-
-	<h3 align="center">불편사항</h3>
-
-	<%-- <% } %> --%>
-	<%-- </c:if> --%>
 	<br>
 	<br>
 	<%-- 조회된 게시글 목록 출력 --%>
@@ -183,7 +178,7 @@ button {
 			<th>제목</th>
 			<th>작성자</th>
 			<th>날짜</th>
-			<th>조회수</th>
+			<th>조치상태</th>
 		</tr>
 		<c:forEach items="${ requestScope.list }" var="i">
 			<c:url var="inconvdetail" value="inconvdetail.do">
@@ -196,7 +191,11 @@ button {
 				<td>${i.boardTitle }</a></td>
 				<td>${i.writer }</td>
 				<td>${i.writeDate }</td>
-				<td>${i.status }</td>
+				<td>
+				<c:if test="${i.status==1}">조치전</c:if>
+				<c:if test="${i.status==2}">조치중</c:if>
+				<c:if test="${i.status==3}">조치완료</c:if>
+				</td>
 			</tr>
 			<%-- 	<% } %> --%>
 		</c:forEach>

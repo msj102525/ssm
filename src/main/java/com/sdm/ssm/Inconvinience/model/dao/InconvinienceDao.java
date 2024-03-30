@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.sdm.ssm.Inconvinience.model.vo.InconvinienceBoard;
+import com.sdm.ssm.Inconvinience.model.vo.InconvinienceBoardReply;
 import com.sdm.ssm.common.Paging;
 import com.sdm.ssm.common.Search;
 import com.sdm.ssm.common.SearchDate;
@@ -67,11 +68,36 @@ public class InconvinienceDao {
 	}
 
 	public int deleteInconvBoard(int inconvNo) {
-		return sqlSessionTemplate.selectOne("inconvMapper.deleteInconvBoard", inconvNo);
+		sqlSessionTemplate.delete("inconvMapper.deleteInconvBoardReply", inconvNo);
+		return sqlSessionTemplate.delete("inconvMapper.deleteInconvBoard", inconvNo);
 	}
 
 	public int updateinconvBoard(InconvinienceBoard inconvBoard) {
-		return sqlSessionTemplate.selectOne("inconvMapper.updateinconvBoard", inconvBoard);
+		return sqlSessionTemplate.update("inconvMapper.updateinconvBoard", inconvBoard);
+	}
+
+	public void updateinconvStatus(InconvinienceBoard inconvBoard) {
+		sqlSessionTemplate.update("inconvMapper.updateinconvStatus", inconvBoard);
+		
+	}
+
+	public int insertInconvBoardReply(InconvinienceBoardReply inconvBoardReply) {
+		
+		return sqlSessionTemplate.insert("inconvMapper.insertInconvBoardReply", inconvBoardReply);
+	}
+
+	public int deleteInconvBoardReply(int boardNo) {
+		
+		return sqlSessionTemplate.delete("inconvMapper.deleteInconvBoardReply", boardNo);
+	}
+
+	public int updateinconvBoardReply(InconvinienceBoardReply inconvinienceBoardReply) {
+		
+		return sqlSessionTemplate.update("inconvMapper.updateinconvBoardReply", inconvinienceBoardReply);
+	}
+
+	public InconvinienceBoardReply selectInconvReply(int inconvNo) {
+		return sqlSessionTemplate.selectOne("inconvMapper.selectInconvReply", inconvNo);
 	}
 
 }

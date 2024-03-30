@@ -5,57 +5,96 @@
 <html>
 <head>
 <meta charset="utf-8">
-<link rel="stylesheet" href="resources/css/notice/noticeDetail.css">
-<title>게시물 보는중</title>
+<title>공지사항상세</title>
+<style>
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+	font-family: arial;
+	font-size: 18px;
+	padding: 20px;
+	margin: 25px auto;
+	width: 800px;
+	outline: dashed 1px black;
+}
+
+h3 {
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.container span {
+    color: #666;
+}
+
+.contentbox {
+    font-size: 18px; 
+    line-height: 1.5;
+    margin-bottom: 20px;
+    min-height: 400px;
+}
+
+.btnbox {
+    margin-top: 20px;
+}
+
+.btnbox button,
+.btnbox a {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-right: 10px;
+    background-color: rgb(250, 180, 49);
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    border: none;
+}
+
+.btnbox button:hover,
+.btnbox a:hover {
+    background-color: orange;
+}
+</style>
 </head>
 <body>
-	<h1>공지사항</h1>
-	<div class="view-top">
-
-		<div class="view-top-title">${notice.noticeTitle }</div>
-
-		<div class="view-top2">
-			<div>${notice.writer }</div>
-
-			<div>조회수: ${notice.readCount }</div>
-
-			<div>중요도: ${notice.importancy }</div>
-
-			<div>Date: ${notice.writeDate }</div>
-		</div>
+	<c:import url="/WEB-INF/views/common/header.jsp" />
+	<div class="container">
+		<br>
+		<h3>${notice.noticeTitle }</h3>
+		<br> <span>${notice.writer }</span> &nbsp; &nbsp; &nbsp;
+		&nbsp;&nbsp; 조회수: ${notice.readCount } &nbsp; &nbsp; <span>중요도:
+			${notice.importancy }</span> &nbsp; &nbsp;&nbsp;&nbsp; &nbsp; <span>Date:
+			${notice.writeDate}</span> <br>
 		<hr>
-		<div class="view-mid">${notice.noticeContent }</div>
+		<br>
+		<div class="contentbox">${notice.noticeContent }</div>
 		<hr>
 
 
-		<div class="view-btn">
-
-
+		<div class="btnbox">
 			<c:url var="nlist" value="nlist.do">
 				<c:param name="page" value='${currentPage}' />
 			</c:url>
-			<button onclick="location.href='${nlist}';">목록으로</button>
-
-
-
+			<a href=${nlist }>목록으로</button>
 
 			<c:if test="${sessionScope.loginUser.adminOk eq 'Y' }">
-				<form method='GET' action='mvupdaten.do'>
-					<input type='hidden' name='noticeNo' value='${notice.noticeNo}'>
-					<input type='hidden' name='page' value='${currentPage }'>
-					<button>게시물 수정</button>
-				</form>
+					<c:url var="aupdate" value="mvupdaten.do">
+						<c:param name="noticeNo" value='${notice.noticeNo}'/>
+						<c:param name="page" value='${currentPage }' />
+					</c:url>
+					<a href='${aupdate }'>수정</a>
 
-				<form method='POST' action='deleten.do'>
-					<input type='hidden' name='noticeNo' value='${notice.noticeNo }'>
-					<input type='hidden' name='page' value='${page }'>
-					<button>삭제</button>
-				</form>
+				<c:url var="adelete" value="deleten.do">
+					<c:param name="page" value='${currentPage}' />
+					<c:param name="noticeNo" value='${notice.noticeNo }' />
+				</c:url>
+				<a href=${adelete}>삭제</a>
 			</c:if>
 		</div>
-
-
 	</div>
-	<!--view-top의 div 종료점 입니다.-->
+	<c:import url="/WEB-INF/views/common/footer.jsp" />
 </body>
 </html>

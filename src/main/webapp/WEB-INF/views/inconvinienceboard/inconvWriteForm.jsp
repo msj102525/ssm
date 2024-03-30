@@ -95,7 +95,7 @@ button.mv {
 			<hr>
 			<textarea class='write-2' name="boardContent" rows="20" cols="20"
 				maxlength="254" placeholder="내용 작성,최대 254자 가능합니다" required></textarea>
-			<input type='hidden' name="writer"
+			<input type='hidden' name="id"
 				value="${sessionScope.loginUser.id }">
 			<hr>
 			 <br> <input class="mv" type="submit"

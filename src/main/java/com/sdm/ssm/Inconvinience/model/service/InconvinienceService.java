@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.springframework.stereotype.Service;
 
 import com.sdm.ssm.Inconvinience.model.vo.InconvinienceBoard;
+import com.sdm.ssm.Inconvinience.model.vo.InconvinienceBoardReply;
 import com.sdm.ssm.admin.model.vo.Notice;
 import com.sdm.ssm.common.Paging;
 import com.sdm.ssm.common.Search;
@@ -38,5 +39,15 @@ public interface InconvinienceService {
 	int deleteInconvBoard(int inconvNo);
 
 	int updateinconvBoard(InconvinienceBoard inconvBoard);
+
+	void updateInconvStatus(InconvinienceBoard inconvBoard);
+
+	int insertInconvBoardReply(InconvinienceBoardReply inconvBoardReply);
+
+	int deleteInconvBoardReply(int boardNo);
+
+	int updateinconvBoardReply(InconvinienceBoardReply inconvinienceBoardReply);
+
+	InconvinienceBoardReply selectInconvReply(int inconvNo);
 
 }
