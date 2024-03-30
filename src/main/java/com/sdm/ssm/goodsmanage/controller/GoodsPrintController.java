@@ -30,11 +30,13 @@ public class GoodsPrintController {
 	@RequestMapping(value="glist.do", 
 			method=RequestMethod.GET) 
 	public String goodsListMethod(						
-			@RequestParam(name = "id", required = true) int id,
+			@RequestParam(name = "id", required = false) int id,
 			@RequestParam(name = "page", required = false) String page,
 			@RequestParam(name = "limit", required = false) String slimit, 
 			Model model) {
 
+		logger.info("12jti2i3gt1");
+		
 		int currentPage = 1;
 		if (page != null) {
 			currentPage = Integer.parseInt(page);
@@ -132,7 +134,7 @@ public class GoodsPrintController {
 		return "goods/popup";
 	}
 	
-	// 재고 등록 창
+	// 팝업 창
 	@RequestMapping("ginsert.do")
 	public String moveGoodsInsertPage() {
 		return "goods/goodsInsert";

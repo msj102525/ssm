@@ -8,7 +8,7 @@
 <c:set var="startPage" value="${ requestScope.paging.startPage }" />
 <c:set var="endPage" value="${ requestScope.paging.endPage }" />
 <c:set var="maxPage" value="${ requestScope.paging.maxPage }" />
-
+<c:set var="id" value="${ requestScope.id }" />
 <c:set var="action" value="${ requestScope.action }" />
 <c:set var="keyword" value="${ requestScope.keyword }" />
 <c:set var="begin" value="${ requestScope.begin }" />

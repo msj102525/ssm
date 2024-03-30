@@ -180,8 +180,8 @@ body {
     <li>
       <a href="#"><i class="fa-solid fa-cat"></i> 재고 관리</a>
       <ul>
-        <li><a href="${pageContext.servletContext.contextPath}/glist.do?page=1">재고 현황</a></li>
-        <li><a href="${pageContext.servletContext.contextPath}/ginsert.do">재고 등록</a></li>
+        <li><a href="${pageContext.servletContext.contextPath }/glist.do?page=1&id=${loginUser.id}">매장관리</a>재고 현황</a></li>
+        <li><a href="${pageContext.servletContext.contextPath}/ginsert.do?id=${loginUser.id}">재고 등록</a></li>
         <li><a href="#">text3</a></li>
         <li><a href="#">text4</a></li>
       </ul>

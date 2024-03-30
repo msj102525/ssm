@@ -23,11 +23,26 @@
 <br>
 </div>
 
-<div style="margin-left: auto; margin-right: auto; width: 1400px;">
+<style>
+	.popup {
+	margin: 0 auto; /* 좌우 마진을 자동으로 설정하여 가운데 정렬 */
+	width: fit-content; /* 내용에 맞게 자동으로 너비 설정 */
+	}
+</style>
+
+<div class="popup">
+	<button type="submit"
+		, onclick="window.open('http://localhost:8080/ssm/popup.do','_blank','width=350, height=150, top=150, left=50, scrollbars=no')">
+		<a href="#pop_info_1" class="btn_open">추가</a>
+	</button>
+</div>
+<br>
+<br>
+	<div style="margin-left: auto; margin-right: auto; width: 1400px;">
     <form action="/your-submit-url" method="post">
         <table align="center" border="1" cellspacing="25" width="100%">
             <tr>
-                <th style="text-align: center; white-space: nowrap;">번호</th>
+            	<th style="text-align: center; white-space: nowrap;"></th>
                 <th style="text-align: center; white-space: nowrap;">상품명</th>
                 <th style="text-align: center; white-space: nowrap;">수량</th>
                 <th style="text-align: center; white-space: nowrap;">단위</th>
@@ -37,9 +52,11 @@
                 <th style="text-align: center; white-space: nowrap;">발주 연락처</th>
                 <th style="text-align: center; white-space: nowrap;">원산지</th>
             </tr>
-            <tr>               	
-                    <td align="center" style="white-space: nowrap;">${ goodsPrint.goodsNo } +1</td>
-                    <td align="center" style="white-space: nowrap;">
+            <tr>
+					<td>
+						<button>+</button>
+					</td>
+					<td align="center" style="white-space: nowrap;">
 						<input type="text" maxlength='100' name="goodsName" style="width: 50px; margin-right: 0px; vertical-align: middle;" />                     
 					</td>
                     <td align="center" style="white-space: nowrap;">
@@ -62,8 +79,7 @@
 					</td>
 					<td align="center" style="white-space: nowrap;">
 						<input type="text" maxlength='10'  name="nation"  style="width: 50px; margin-right: 0px; vertical-align: middle;" />                      
-					</td>
-					
+					</td>					
               </tr>
         </table>
     </form>

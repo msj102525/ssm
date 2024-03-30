@@ -547,7 +547,7 @@ BEGIN
 END;
 /
 -------------- 상품 테이블 --------------- 
- create or replace PROCEDURE create_goods_table (
+CREATE OR REPLACE PROCEDURE create_goods_table (
     p_user_id IN NUMBER
 )
 IS
@@ -555,23 +555,23 @@ IS
 BEGIN
     -- 유저 아이디를 이용하여 테이블 이름 생성
     v_table_name := 'TB_GOODS_' || p_user_id;
-    BEGIN
-        EXECUTE IMMEDIATE 'CREATE TABLE ' || v_table_name || '(
-                            GOODS_NO NUMBER NOT NULL CONSTRAINT PK_GOODS PRIMARY KEY,
-                            GOODS_NAME VARCHAR2(300) NOT NULL,
-                            GOODS_UNIT VARCHAR2(30),
-                            GOODS_PRICE NUMBER,
-                            NATION VARCHAR2(30) DEFAULT NULL
-                            )'
-                            ;
-    EXCEPTION
-        WHEN OTHERS THEN
-            NULL; 
-    END;
+
+    -- 테이블 생성
+    EXECUTE IMMEDIATE 'CREATE TABLE ' || v_table_name || '(
+        ID NUMBER,
+        GOODS_NO NUMBER NOT NULL PRIMARY KEY,
+        GOODS_NAME VARCHAR2(300) NOT NULL,
+        GOODS_UNIT VARCHAR2(30),
+        GOODS_PRICE NUMBER,
+        NATION VARCHAR2(30) DEFAULT NULL
+    )';
+EXCEPTION
+    WHEN OTHERS THEN
+        NULL; 
 END;
 
 /
-
+-- 재고 테이블
 CREATE OR REPLACE PROCEDURE create_inventory_table (
     p_user_id IN NUMBER
 )
@@ -580,14 +580,13 @@ IS
 BEGIN
     -- 유저 아이디를 이용하여 테이블 이름 생성
     v_table_name := 'TB_INVENTORY_' || p_user_id;
-    
+
     -- 동적 SQL 실행
     EXECUTE IMMEDIATE 'CREATE TABLE ' || v_table_name || '(
-                        GOODS_NO NUMBER,
+                        GOODS_NO NUMBER PRIMARY KEY,
                         PD_QUANTITY NUMBER NOT NULL,
                         MIN_ALARM_QUANTITY NUMBER,
                         MIN_ORDER_QUANTITY NUMBER,
-                        CONSTRAINT PK_TB_INVENTORY PRIMARY KEY (GOODS_NO),
                         FOREIGN KEY (GOODS_NO) REFERENCES TB_GOODS_' || p_user_id || '(GOODS_NO)
                     )';
 EXCEPTION
@@ -597,6 +596,7 @@ END;
 
 /
 
+-- 발주처 테이블
 CREATE OR REPLACE PROCEDURE create_produce_table (
     p_user_id IN NUMBER
 )
@@ -605,25 +605,23 @@ IS
 BEGIN
     -- 유저 아이디를 이용하여 테이블 이름 생성
     v_table_name := 'TB_PRODUCE_' || p_user_id;
-    
+
     -- 동적 SQL 실행
-    EXECUTE IMMEDIATE '
-        CREATE TABLE ' || v_table_name || '(
-            GOODS_NO NUMBER CONSTRAINT PK_TB_PRODUCE PRIMARY KEY,
+    EXECUTE IMMEDIATE 'CREATE TABLE ' || v_table_name || '(
+            GOODS_NO NUMBER PRIMARY KEY,
             PD_NO NUMBER,
             PD_NAME VARCHAR2(300) NOT NULL,
             PRODUCER VARCHAR2(20),
             PD_PHONE VARCHAR2(30),
             PD_ADDRESS VARCHAR2(255),
-            CONSTRAINT FK_TB_PRODUCE FOREIGN KEY (GOODS_NO) REFERENCES TB_GOODS_' || p_user_id ||
+            FOREIGN KEY (GOODS_NO) REFERENCES TB_GOODS_' || p_user_id || '(GOODS_NO)
         )';
-EXCEPTION
-    WHEN OTHERS THEN
-        NULL; 
 END;
+
 
 /
 
+-- 명세서 테이블
 create or replace PROCEDURE create_specify_table (
     p_user_id IN NUMBER
 )
@@ -636,7 +634,7 @@ BEGIN
     -- 동적 SQL 실행
     EXECUTE IMMEDIATE '
         CREATE TABLE ' || v_table_name || '(
-            SPECIFY_NO NUMBER CONSTRAINT PK_TB_PRODUCE_LIST PRIMARY KEY,
+            SPECIFY_NO NUMBER PRIMARY KEY,
             GOODS_NO NUMBER NOT NULL,
             PD_DATE DEFAULT SYSDATE
             ORDER_QUANTITY NUMBER

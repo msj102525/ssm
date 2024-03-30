@@ -55,13 +55,21 @@ $(function(){
 
 <hr>
 <br>
-<%-- <c:import url="/WEB-INF/views/common/sidebar.jsp" /> --%>
-<h1 align="left">재고 현황</h1>
+<c:import url="/WEB-INF/views/common/sidebar.jsp" /> 
+<h1 style="text-align: center;">재고 현황</h1>
 <div style="align:center;text-align:center;">
 <br>
 <br>
 <br>
 </div>
+<style>
+    .searchdiv {
+        margin: 0 auto; /* 좌우 마진을 자동으로 설정하여 가운데 정렬 */
+        width: fit-content; /* 내용에 맞게 자동으로 너비 설정 */
+    }
+</style>
+
+
 	<div class="searchdiv">
 		<form action="gsearch.do" method="get">
 			<select style="height: 35px; width: 80px;" name="action"
@@ -73,7 +81,7 @@ $(function(){
 			<input style="height: 30px; width: 325px;"
 				type="text" id="searchtext" name="keyword" placeholder="검색어 입력">
 			<input type="submit" class="searchbtn" value="검색">
-			<button type="submit", onclick="window.open('http://localhost:8080/ssm/popup.do','_blank','width=350, height=200, top=150, left=50, scrollbars=no')">
+			<button type="submit", onclick="window.open('http://localhost:8080/ssm/popup.do','_blank','width=350, height=150, top=150, left=50, scrollbars=no')">
 				<a href="#pop_info_1" class="btn_open">저장</a>
 			</button>
 			 <br>
