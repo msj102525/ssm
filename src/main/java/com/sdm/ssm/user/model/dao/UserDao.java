@@ -22,8 +22,4 @@ public class UserDao {
 		return sqlSessionTemplate.selectOne("userMapper.selectUserById", userId);
 	}
 
-	public int selectUserCountById(String userId) {
-		return sqlSessionTemplate.selectOne("userMapper.selectUserCountById", userId);
-	}
-
 }

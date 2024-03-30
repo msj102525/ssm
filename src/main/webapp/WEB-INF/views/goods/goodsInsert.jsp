@@ -40,13 +40,13 @@
             <tr>               	
                     <td align="center" style="white-space: nowrap;">${ goodsPrint.goodsNo } +1</td>
                     <td align="center" style="white-space: nowrap;">
-						<input type="text" maxlength='100' name="goodsName" style="width: 50px; margin-right: 0px; vertical-align: middle;" />                     
+						<input type="text"  name="goodsName" style="width: 50px; margin-right: 0px; vertical-align: middle;" />                     
 					</td>
                     <td align="center" style="white-space: nowrap;">
 						<input type="number" name="pdQuantity" style="width: 50px; margin-right: 0px; vertical-align: middle;" />                          
 					</td>
 					<td align="center" style="white-space: nowrap;">
-						<input type="text" maxlength='10' name="goodsUnit" style="width: 50px; margin-right: 0px; vertical-align: middle;" />                            
+						<input type="text" name="goodsUnit" style="width: 50px; margin-right: 0px; vertical-align: middle;" />                            
 					</td>
 					<td align="center" style="white-space: nowrap;">
 						<input type="number" name="minOrderQuantity" name="goodsName" style="width: 50px; margin-right: 0px; vertical-align: middle;" />                           
@@ -55,13 +55,13 @@
 						<input type="number" name="minAlarmQuantity" style="width: 50px; margin-right: 0px; vertical-align: middle;" />                          
 					</td>
 					<td align="center" style="white-space: nowrap;">
-						<input type="text" maxlength='100'  name="pdName"  style="width: 50px; margin-right: 0px; vertical-align: middle;" />                         
+						<input type="text" name="pdName"  style="width: 50px; margin-right: 0px; vertical-align: middle;" />                         
 					</td>
 					<td align="center" style="white-space: nowrap;">
-						<input type="text" maxlength='30' name="pdPhone"  style="width: 50px; margin-right: 0px; vertical-align: middle;" />                          
+						<input type="text" name="pdPhone"  style="width: 50px; margin-right: 0px; vertical-align: middle;" />                          
 					</td>
 					<td align="center" style="white-space: nowrap;">
-						<input type="text" maxlength='10'  name="nation"  style="width: 50px; margin-right: 0px; vertical-align: middle;" />                      
+						<input type="text" name="nation"  style="width: 50px; margin-right: 0px; vertical-align: middle;" />                      
 					</td>
 					
               </tr>

@@ -4,6 +4,19 @@
     list-style: none; 
     box-sizing: border-box;
 }
+.container{
+  font-family: arial;
+  font-size: 24px;
+  padding: 100px;
+  margin: 25px;
+ width: 1200px;
+  height: 200px;
+  outline: dashed 1px black;
+   display: flex;
+  justify-content: center;
+  margin-left: auto;
+  margin-right:auto;
+}
 
 body{
     background-color:#f5f6f7;   

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.sdm.ssm.Inconvinience.model.dao.InconvinienceDao;
 import com.sdm.ssm.Inconvinience.model.vo.InconvinienceBoard;
+import com.sdm.ssm.Inconvinience.model.vo.InconvinienceBoardReply;
 import com.sdm.ssm.admin.model.vo.Notice;
 import com.sdm.ssm.common.Paging;
 import com.sdm.ssm.common.Search;
@@ -86,5 +87,31 @@ public class InconvinienceServiceImpl implements InconvinienceService {
 	@Override
 	public int updateinconvBoard(InconvinienceBoard inconvBoard) {
 		return inconvDao.updateinconvBoard(inconvBoard);
+	}
+
+	@Override
+	public void updateInconvStatus(InconvinienceBoard inconvBoard) {
+			inconvDao.updateinconvStatus(inconvBoard);
+	}
+
+	@Override
+	public int insertInconvBoardReply(InconvinienceBoardReply inconvBoardReply) {
+		return inconvDao.insertInconvBoardReply(inconvBoardReply);
+	}
+
+	@Override
+	public int deleteInconvBoardReply(int boardNo) {
+		return inconvDao.deleteInconvBoardReply(boardNo);
+	}
+
+	@Override
+	public int updateinconvBoardReply(InconvinienceBoardReply inconvinienceBoardReply) {
+		return inconvDao.updateinconvBoardReply(inconvinienceBoardReply);
+	}
+
+	@Override
+	public InconvinienceBoardReply selectInconvReply(int inconvNo) {
+		
+		return inconvDao.selectInconvReply(inconvNo);
 	}
 }

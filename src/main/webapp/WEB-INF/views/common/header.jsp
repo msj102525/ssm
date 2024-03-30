@@ -63,16 +63,9 @@
 					</h1>
 					<div class="gnb">
 						<ul>
-<<<<<<< HEAD
-						
-							<li><a href="#">공지사항</a></li>
-							<li><a href="#">불편사항</a></li>
-							<li><a href="${pageContext.servletContext.contextPath }/glist.do?page=1&id=${loginUser.id}">매장관리</a></li>
-=======
 							<li><a href="${pageContext.servletContext.contextPath }/nlist.do?page=1">공지사항</a></li>
 							<li><a href="${pageContext.servletContext.contextPath }/inconvlist.do?page=1">불편사항</a></li>
 							<li><a href="${pageContext.servletContext.contextPath }/glist.do?page=1">매장관리</a></li>
->>>>>>> f4a247eb63528d5598f9fa5fdface90e99aac4a1
 							<li><a href="#">매장관리</a></li>
 						</ul>
 					</div>

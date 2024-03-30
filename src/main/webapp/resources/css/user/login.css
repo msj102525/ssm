@@ -3,28 +3,31 @@
 @import url("../common/reset.css");
 
 .login-box {
+	border: 1px solid #000;
 }
 
 .login-box .inner-box {
 	max-width: 1000px;
 	margin: 0 auto;
-	padding: 0 0 30px 0;
+	border: 1px solid #000;
 }
 
 .login-box .inner-box .logo-box {
+	border: 1px solid #000;
 	display: flex;
 	justify-content: center;
 }
 
 .login-box .inner-box .logo-box img {
+	border: 1px solid #000;
 	display: block;
 	width: 200px;
 }
 
 .form-box {
-	max-width: 450px;
+	max-width: 500px;
 	margin: 0 auto;
-	box-shadow: 0px 0px 1px #000;
+	border: 1px solid #000;
 	padding: 80px 20px;
 }
 
@@ -41,16 +44,21 @@
 }
 
 .form-box ul li {
+	/* border: 1px solid #000; */
 }
 
 .form-box ul li input {
-	width: 280px;
 	height: 40px;
-	padding: 0 10px;
-	border: 0;
-	box-shadow: 0 0 1px #000;
+	border: 1px solid #aaa;
+}
+.form-box ul li input {
+    width: 280px;
+    
 }
 
+.form-box ul li input {
+	padding: 0 10px
+}
 
 .form-box ul li input[type="submit"] {
 	width: 300px;

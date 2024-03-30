@@ -25,15 +25,6 @@ public class Paging implements java.io.Serializable{
 		this.urlMapping = urlMapping;
 	}
 	
-	// ID 값 있는 매개변수 있는 생성자
-		public Paging(int id, int listCount, int currentPage, int limit, String urlMapping) {
-			this.id = id;
-			this.listCount = listCount;
-			this.currentPage = currentPage;
-			this.limit = limit;
-			this.urlMapping = urlMapping;
-		}
-	
 	//페이지 계산 메소드
 	public void calculate() {
 		//총 페이지수 계산
@@ -171,6 +162,6 @@ public class Paging implements java.io.Serializable{
 	public void setId(int id) {
 		this.id = id;
 	}
-	
+
 
 }
