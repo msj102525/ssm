@@ -28,6 +28,12 @@
 		WHERE USER_ID = #{userId}
 	</select>
 	
+	<!-- 중복검사용 쿼리 -->
+	<select id="selectUserCountById" parameterType="string" resultType="_int">
+		SELECT COUNT(*) FROM TB_USER 
+		WHERE USER_ID = #{userId}
+	</select>
+	
 	
 	
 
