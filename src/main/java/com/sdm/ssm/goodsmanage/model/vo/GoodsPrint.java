@@ -2,7 +2,7 @@ package com.sdm.ssm.goodsmanage.model.vo;
 
 public class GoodsPrint implements java.io.Serializable{
 
-	private int ID;
+	private int id;
 	private int goodsNo;
 	private String goodsName;
 	
@@ -16,7 +16,23 @@ public class GoodsPrint implements java.io.Serializable{
 	private int pdNo;
 	private String pdName;
 	private String pdPhone;
-	
+	private String pdAddress;
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getPdAddress() {
+		return pdAddress;
+	}
+
+	public void setPdAddress(String pdAddress) {
+		this.pdAddress = pdAddress;
+	}
+
 	private int goodsPrice;
 	private String nation;
 	
@@ -39,10 +55,10 @@ public class GoodsPrint implements java.io.Serializable{
 		this.nation = nation;
 	}
 
-	public GoodsPrint(int ID, int goodsNo, String goodsName, int pdQuantity, String goodsUnit, int minAlarmQuantity,
+	public GoodsPrint(int id, int goodsNo, String goodsName, int pdQuantity, String goodsUnit, int minAlarmQuantity,
 			int minOrderQuantity, int pdNo, String pdName, String pdPhone, int goodsPrice, String nation) {
 		super();
-		this.ID = ID;
+		this.id = id;
 		this.goodsNo = goodsNo;
 		this.goodsName = goodsName;
 		this.pdQuantity = pdQuantity;
@@ -57,11 +73,11 @@ public class GoodsPrint implements java.io.Serializable{
 	}
 
 	public int getID() {
-		return ID;
+		return id;
 	}
 
-	public void setID(int iD) {
-		ID = iD;
+	public void setID(int id) {
+		this.id = id;
 	}
 
 	public int getGoodsNo() {
@@ -154,7 +170,7 @@ public class GoodsPrint implements java.io.Serializable{
 
 	@Override
 	public String toString() {
-		return "GoodsPrint [ID=" + ID + ", goodsNo=" + goodsNo + ", goodsName=" + goodsName + ", pdQuantity="
+		return "GoodsPrint [id=" + id + ", goodsNo=" + goodsNo + ", goodsName=" + goodsName + ", pdQuantity="
 				+ pdQuantity + ", goodsUnit=" + goodsUnit + ", minAlarmQuantity=" + minAlarmQuantity
 				+ ", minOrderQuantity=" + minOrderQuantity + ", pdNo=" + pdNo + ", pdName=" + pdName + ", pdPhone="
 				+ pdPhone + ", goodsPrice=" + goodsPrice + ", nation=" + nation + "]";

@@ -125,15 +125,12 @@ $("#deleteButton").click(function() {
         <table align="center" border="1" cellspacing="25" width="100%">
         	<thead>
             	<th class="table-head"><input type="checkbox" id="checkBoxAll"></th>
-                <th style="text-align: center; white-space: nowrap;">번호</th>
-                <th style="text-align: center; white-space: nowrap;">상품명</th>
-                <th style="text-align: center; white-space: nowrap;">수량</th>
-                <th style="text-align: center; white-space: nowrap;">단위</th>
-                <th style="text-align: center; white-space: nowrap;">가격</th>
-                <th style="text-align: center; white-space: nowrap;">발주 최소 수량</th>
-                <th style="text-align: center; white-space: nowrap;">알림 최소 수량</th>
                 <th style="text-align: center; white-space: nowrap;">발주처</th>
-                <th style="text-align: center; white-space: nowrap;">발주 연락처</th>
+                <th style="text-align: center; white-space: nowrap;">연락처</th>
+                <th style="text-align: center; white-space: nowrap;">주소</th>
+                <th style="text-align: center; white-space: nowrap;">상품명</th>
+                <th style="text-align: center; white-space: nowrap;">가격</th>
+                <th style="text-align: center; white-space: nowrap;">단위</th>
                 <th style="text-align: center; white-space: nowrap;">원산지</th>
             </tr>
             <thead>
@@ -142,37 +139,17 @@ $("#deleteButton").click(function() {
                 	<td class="table-data">
                 	<input type="checkbox" class="chkCheckBoxId checkbox" value="${goodsPrint.goodsNo}">
                 	</td>
-                    <td align="center" style="white-space: nowrap;">${ goodsPrint.goodsNo }</td>
+                	<td align="center" style="white-space: nowrap;">${ goodsPrint.pdName }</td>
+                    <td align="center" style="white-space: nowrap;">${ goodsPrint.pdPhone }</td>
+                	<td align="center" style="white-space: nowrap;">${ goodsPrint.pdAddress }</td>
                     <td align="center" style="white-space: nowrap;">${ goodsPrint.goodsName }</td>
-                    <td align="center" style="white-space: nowrap;">
-                        <div style="display: inline-block;">            
-                            <input type="number" value="${ goodsPrint.pdQuantity }" name="pdQuantity" style="width: 50px; margin-right: 0px; vertical-align: middle;" />
-                            <span style="vertical-align: middle;">${ goodsPrint.goodsUnit }</span>
-                        </div>
-                    </td>
-                    <td align="center" style="white-space: nowrap;">${ goodsPrint.goodsUnit }</td>
-                    
                     <td align="center" style="white-space: nowrap;">
                         <div style="display: inline-block;">            
                             <input type="number" value="${ goodsPrint.goodsPrice }" name="goodsPrice" style="width: 50px; margin-right: 0px; vertical-align: middle;" />
                         </div>
                     </td>
-                    
-                    <td align="center" style="white-space: nowrap;">
-                        <div style="display: inline-block;">
-                            <input type="number" value="${ goodsPrint.minOrderQuantity }" name="minOrderQuantity" style="width: 50px; margin-right: 5px; vertical-align: middle;" />
-                            <span style="vertical-align: middle;">${ goodsPrint.goodsUnit }</span>
-                        </div>
-                    </td>
-                    <td align="center" style="white-space: nowrap;">
-                        <div style="display: inline-block;">
-                            <input type="number" value="${ goodsPrint.minAlarmQuantity }" name="minAlarmQuantity" style="width: 50px; margin-right: 5px; vertical-align: middle;" />
-                            <span style="vertical-align: middle;">${ goodsPrint.goodsUnit }</span>
-                        </div>
-                    </td>
-                    <td align="center" style="white-space: nowrap;">${ goodsPrint.pdName }</td>
-                    <td align="center" style="white-space: nowrap;">${ goodsPrint.pdPhone }</td>
-                    <td align="center" style="white-space: nowrap;">${ goodsPrint.nation }</td>
+                    <td align="center" style="white-space: nowrap;">${ goodsPrint.goodsUnit }</td>
+                    <td align="center" style="white-space: nowrap;">${ goodsPrint.nation }</td>     
                 </tr>
             </c:forEach>
         </table>
