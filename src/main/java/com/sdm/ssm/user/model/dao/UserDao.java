@@ -26,4 +26,8 @@ public class UserDao {
 		return sqlSessionTemplate.selectOne("userMapper.selectUserCountById", userId);
 	}
 
+	public int insertUser(User user) {
+		return sqlSessionTemplate.insert("userMapper.insertUser");
+	}
+
 }

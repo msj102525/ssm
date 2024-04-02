@@ -13,6 +13,6 @@ public interface UserService {
 
 	int selectUserCountById(String userId);
 
-	
-	
+	int insertUser(User user);
+
 }
