@@ -23,7 +23,6 @@ public class UserServiceImpl implements UserService{
 		return userDao.selectUserCountById(userId);
 	}
 
-<<<<<<< HEAD
 	@Override
 	public int insertUser(User user) {
 		return userDao.insertUser(user);
