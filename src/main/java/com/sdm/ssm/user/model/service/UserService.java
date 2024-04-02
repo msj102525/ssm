@@ -12,6 +12,7 @@ public interface UserService {
 	User selectUserById(String userId);
 
 	int selectUserCountById(String userId);
+
 	
 	
 }

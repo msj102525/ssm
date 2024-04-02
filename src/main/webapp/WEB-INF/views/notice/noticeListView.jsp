@@ -15,23 +15,6 @@
 <meta charset="UTF-8">
 <title>공지사항</title>
 <style type="text/css">
-fieldset#ss {
-	width: 600px;
-	position: relative;
-	left: 450px;
-}
-
-form fieldset {
-	width: 600px;
-}
-
-form.sform {
-	background: lightgray;
-	width: 630px;
-	position: relative;
-	left: 400px;
-	display: none; /* 안 보이게 함 */
-}
 
 table {
 	border-collapse: collapse;
@@ -62,8 +45,8 @@ th {
 }
 
 /* 테이블 올렸을 때 */
-tbody tr:hover {
-	background-color: #d3d3d3;
+tbody tr:not(#titlerow):hover {
+	background-color: rgb(255, 221, 102);
 	opacity: 0.9;
 	cursor: pointer;
 }
@@ -172,19 +155,13 @@ button {
 	<%-- <%@ include file="../common/menubar.jsp" %> --%>
 	<c:import url="/WEB-INF/views/common/header.jsp" />
 	<hr>
-
-	<h3 align="center">공지사항</h3>
-
-		<%-- <% } %> --%>
-		<%-- </c:if> --%>
 		<br> <br>
-		<%-- 조회된 게시글 목록 출력 --%>
 		<div class="listdiv">
 			<button class="listbtn"
 				onclick="javascript:location.href='${pageContext.servletContext.contextPath}/nlist.do?page=1';">목록</button>
 		</div>
 		<table>
-			<tr>
+			<tr id="titlerow">
 				<th>번호</th>
 				<th>제목</th>
 				<th>작성한관리자</th>
@@ -199,12 +176,11 @@ button {
 
 				<tr onclick="location.href='${ndetail}';">
 					<td>${n.noticeNo}</td>
-					<td><a href="${mvndetail}">${n.noticeTitle }</a></td>
+					<td>${n.noticeTitle }</td>
 					<td>${n.writer }</td>
 					<td>${n.writeDate }</td>
 					<td>${n.readCount }</td>
 				</tr>
-				<%-- 	<% } %> --%>
 			</c:forEach>
 		</table>
 		<div class="searchdiv">

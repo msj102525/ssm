@@ -89,5 +89,11 @@ public class NoticeServiceImpl implements NoticeService {
 
 		return noticeDao.updateNotice(notice);
 	}
+
+	@Override
+	public ArrayList<Notice> selectTop5() {
+		
+		return noticeDao.selectTop5();
+	}
 	
 }

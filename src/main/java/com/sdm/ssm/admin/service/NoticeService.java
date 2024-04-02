@@ -36,4 +36,6 @@ public interface NoticeService {
 
 	int updateNotice(Notice notice);
 
+	ArrayList<Notice> selectTop5();
+
 }

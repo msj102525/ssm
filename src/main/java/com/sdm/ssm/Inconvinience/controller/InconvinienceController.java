@@ -1,9 +1,13 @@
 package com.sdm.ssm.Inconvinience.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +25,7 @@ import com.sdm.ssm.Inconvinience.model.service.InconvinienceService;
 import com.sdm.ssm.Inconvinience.model.vo.InconvinienceBoard;
 import com.sdm.ssm.Inconvinience.model.vo.InconvinienceBoardReply;
 import com.sdm.ssm.admin.controller.NoticeController;
+import com.sdm.ssm.admin.model.vo.Notice;
 import com.sdm.ssm.common.Paging;
 import com.sdm.ssm.common.Search;
 import com.sdm.ssm.common.SearchDate;
@@ -70,6 +75,43 @@ public class InconvinienceController {
 			}
 		
 		}
+		//inconv10개
+		@RequestMapping(value="inconvtop10.do", method=RequestMethod.POST)
+		@ResponseBody
+		public String inconvTop10Method() throws UnsupportedEncodingException {
+			
+			//조치안된 불편사항 오래된거 10개
+			ArrayList<InconvinienceBoard> list = inconvService.selectTop10();
+			
+			for(InconvinienceBoard ib : list) {
+			logger.info(ib.toString());};
+			//전송용 json 객체 준비
+			JSONObject sendJson = new JSONObject();
+			//list 저장할 json 배열 객체 준비
+			JSONArray jarr = new JSONArray();
+			
+			//list 를 jarr 로 옮기기
+			for(InconvinienceBoard inconv : list) {
+				//notice 의 각 필드값 저장할 json 객체 생성
+				JSONObject job = new JSONObject();
+				
+				job.put("ino", inconv.getBoardNo());
+				job.put("iwriter", inconv.getWriter());
+				job.put("status", inconv.getStatus());
+				//한글에 대해서는 인코딩해서 json에 담음 (한글 깨짐 방지)
+				job.put("ititle", URLEncoder.encode(inconv.getBoardTitle(), "utf-8"));			
+				//job 를 jarr 에 추가함
+				jarr.add(job);
+			}
+			
+			//전송용 객체에 jarr 을 담음
+			sendJson.put("ilist", jarr);
+			
+			//전송용 json 을 json string 으로 바꿔서 전송되게 함
+			return sendJson.toJSONString();  //뷰리졸버로 리턴함
+			//servlet-context.xml 에 jsonString 내보내는 JSONView 라는 뷰리졸버를 추가 등록해야 함
+		}
+		
 		// 리스트내보내기
 		@RequestMapping("inconvlist.do")
 		public String noticeListMethod(@RequestParam(name = "page", required = false) String page,
@@ -89,17 +131,13 @@ public class InconvinienceController {
 			// 출력할 페이지에 대한 목록 조회
 			ArrayList<InconvinienceBoard> list = inconvService.selectList(paging);
 			// 받은 결과로 성공/실패 페이지 내보냄
-			if (list != null && list.size() > 0) {
 				model.addAttribute("list", list);
 				model.addAttribute("paging", paging);
 				model.addAttribute("currentPage", currentPage);
 				model.addAttribute("limit", limit);
 
 				return "inconvinienceboard/inconvListView";
-			} else {
-				model.addAttribute("message", currentPage + " 페이지 목록 조회 실패!");
-				return "common/error";
-			}
+	
 		}
 		// 검색용
 
@@ -157,9 +195,9 @@ public class InconvinienceController {
 				//게시글 등록 성공시 방금 작성한 글로 이동
 				int inconvNo = inconvService.selectMostResentInconvNo(inconvBoard.getId());
 				model.addAttribute("ino", inconvNo);
-				return "redirect:idetail.do";
+				return "redirect:inconvdetail.do";
 		}else {
-				model.addAttribute("message", "공지사항 등록 실패");
+				model.addAttribute("message", "불편사항 등록 실패");
 				return "common/error";
 		}
 		}

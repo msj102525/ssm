@@ -54,8 +54,8 @@ th {
 }
 
 /* 테이블 올렸을 때 */
-tbody tr:hover {
-	background-color: #d3d3d3;
+tbody tr:not(#titlerow):hover {
+	background-color: rgb(255, 221, 102);
 	opacity: 0.9;
 	cursor: pointer;
 }
@@ -162,18 +162,16 @@ button {
 	src="/ssm/resources/js/jquery-3.7.0.min.js"></script>
 </head>
 <body>
-	<%-- <%@ include file="../common/menubar.jsp" %> --%>
 	<c:import url="/WEB-INF/views/common/header.jsp" />
 	<hr>
 	<br>
 	<br>
-	<%-- 조회된 게시글 목록 출력 --%>
 	<div class="listdiv">
 		<button class="listbtn"
 			onclick="javascript:location.href='${pageContext.servletContext.contextPath}/inconvlist.do?page=1';">목록</button>
 	</div>
 	<table>
-		<tr>
+		<tr id="titlerow">
 			<th>번호</th>
 			<th>제목</th>
 			<th>작성자</th>
@@ -188,7 +186,7 @@ button {
 
 			<tr onclick="location.href='${inconvdetail}';">
 				<td>${i.boardNo}</td>
-				<td>${i.boardTitle }</a></td>
+				<td>${i.boardTitle }</td>
 				<td>${i.writer }</td>
 				<td>${i.writeDate }</td>
 				<td>
@@ -197,7 +195,6 @@ button {
 				<c:if test="${i.status==3}">조치완료</c:if>
 				</td>
 			</tr>
-			<%-- 	<% } %> --%>
 		</c:forEach>
 	</table>
 	<div class="searchdiv">

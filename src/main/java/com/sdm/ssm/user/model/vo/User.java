@@ -2,9 +2,9 @@ package com.sdm.ssm.user.model.vo;
 
 import java.sql.Date;
 
-public class User implements java.io.Serializable{
+public class User implements java.io.Serializable {
 	private static final long serialVersionUID = -6769960477240315696L;
-	
+
 	private int id;
 	private String userId;
 	private String passWd;
@@ -20,14 +20,15 @@ public class User implements java.io.Serializable{
 	private java.sql.Date lastModified;
 	private java.sql.Date serviceDate;
 	private String businessNo;
-	
+	private String businessStoreName;
+
 	public User() {
 		super();
 	}
-	
+
 	public User(int id, String userId, String passWd, String email, String userNo, String phone, String accountNumber,
 			String bankName, String profileUrl, String isQuit, String adminOk, String loginOk, Date lastModified,
-			Date serviceDate, String businessNo) {
+			Date serviceDate, String businessNo, String businessStoreName) {
 		super();
 		this.id = id;
 		this.userId = userId;
@@ -44,6 +45,7 @@ public class User implements java.io.Serializable{
 		this.lastModified = lastModified;
 		this.serviceDate = serviceDate;
 		this.businessNo = businessNo;
+		this.businessStoreName = businessStoreName;
 	}
 
 	public int getId() {
@@ -166,6 +168,14 @@ public class User implements java.io.Serializable{
 		this.businessNo = businessNo;
 	}
 
+	public String getBusinessStoreName() {
+		return businessStoreName;
+	}
+
+	public void setBusinessStoreName(String businessStoreName) {
+		this.businessStoreName = businessStoreName;
+	}
+
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
@@ -176,8 +186,7 @@ public class User implements java.io.Serializable{
 				+ userNo + ", phone=" + phone + ", accountNumber=" + accountNumber + ", bankName=" + bankName
 				+ ", profileUrl=" + profileUrl + ", isQuit=" + isQuit + ", adminOk=" + adminOk + ", loginOk=" + loginOk
 				+ ", lastModified=" + lastModified + ", serviceDate=" + serviceDate + ", businessNo=" + businessNo
-				+ "]";
+				+ ", businessStoreName=" + businessStoreName + "]";
 	}
-	
-	
+
 }

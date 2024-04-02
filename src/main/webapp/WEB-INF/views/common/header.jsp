@@ -100,7 +100,7 @@
 					<div class="gnb">
 						<ul>
 							<li><a href="${pageContext.servletContext.contextPath }/nlist.do?page=1">공지글 관리</a>
-							<li><a href="mvulist.do">사용자 관리</a></li>
+							<li><a href="${pageContext.servletContext.contextPath }/ulist.do?page=1">사용자 관리</a></li>
 							<li><a href="${pageContext.servletContext.contextPath }/inconvlist.do?page=1">불편사항 관리</a></li>
 							<li><a href="msubscribe.do">구독상품 관리</a></li>
 						</ul>

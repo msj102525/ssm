@@ -32,5 +32,6 @@
 		<mapper resource="mapper/user-mapper.xml"/>
 		<mapper resource="mapper/reserve-mapper.xml"/>
 		<mapper resource="mapper/inconv-mapper.xml"/>
+		<mapper resource="mapper/usermanage-mapper.xml" />
 	</mappers>
 </configuration>
