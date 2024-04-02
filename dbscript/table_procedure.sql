@@ -512,7 +512,7 @@ BEGIN
       EXECUTE IMMEDIATE v_str;
 
       EXECUTE IMMEDIATE ' ALTER TABLE ' || v_table_name || 
-                        ' ADD CONSTRAINT PK_TB_RESERVATION_' || v_table_name ||
+                        ' ADD CONSTRAINT PK_' || v_table_name ||
                         '   PRIMARY KEY (RSRV_NUM)';
 
       EXECUTE IMMEDIATE 'COMMENT ON TABLE ' || v_table_name || ' IS ''예약관리''';
