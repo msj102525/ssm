@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC
 "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="userMapper">
+<mapper namespace="userManageMapper">
 
 	<resultMap type="User" id="resultUser">
 		<result property="id" column="ID"/>
@@ -22,28 +22,11 @@
 		<result property="businessNo" column="BUSINESS_NO"/>
 		<result property="businessStoreName" column="BUSINESS_STORE_NAME"/>
 	</resultMap>
-	
-	<!-- 로그인용 쿼리 -->
-	<select id="selectUserById" parameterType="string" resultMap="resultUser">
-		SELECT * FROM TB_USER 
-		WHERE USER_ID = #{userId}
-	</select>
-	
-	<!-- 중복검사용 쿼리 -->
-	<select id="selectUserCountById" parameterType="string" resultType="_int">
-		SELECT COUNT(*) FROM TB_USER 
-		WHERE USER_ID = #{userId}
-	</select>
-	<!-- 전체 유저 수 -->
-	<select id="selectListCount" resultType="_int">
-	select Count(*) FROM TB_USER
-	</select>
-	<!-- 페이지 전체유저 출력 -->
-	<select id="selectList" parameterType="Paging" resultMap="resultUser">
-		select * from (select rownum rnum, ID, USER_ID, USER_NO, LOGIN_OK, EMAIL,BUSINESS_STORE_NAME 
-       					 from(select * from tb_user where admin_OK = 'N'
-                       	 order by LAST_MODIFIED desc) )
-	where rnum between #{startRow} and #{endRow}
-	</select>
+	<update id="updateUserAccountSuspendMethod" parameterType="_int">
+	update tb_user set login_ok = 'N' where id = #{id}
+	</update>
+	<update id="updateUserAccountActivateMethod" parameterType="_int">
+	update tb_user set login_ok = 'Y' where id = #{id}
+	</update>
 
 </mapper>

@@ -191,13 +191,11 @@ label {
 		            $(this).prop('checked', true); 
 		        }
 		    });
-		}); // document ready
+		}); // document ready 기존 체크되어있던 중요도로 체크
 		function submitForm() {
 	        document.getElementById("modifyForm").submit();
 	    }
 		</script>
-
-
 		<c:url var="lb" value="nlist.do">
 			<c:param name="page" value="${page}" />
 		</c:url>

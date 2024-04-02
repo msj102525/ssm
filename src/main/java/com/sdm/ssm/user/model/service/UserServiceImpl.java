@@ -22,5 +22,6 @@ public class UserServiceImpl implements UserService{
 	public int selectUserCountById(String userId) {
 		return userDao.selectUserCountById(userId);
 	}
+
 	
 }	
