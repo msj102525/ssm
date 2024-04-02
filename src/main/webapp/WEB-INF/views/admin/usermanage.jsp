@@ -151,7 +151,7 @@ input[type='date'] {
 	font-size: 16px;
 }
 
-button {
+button.listbtn {
 	width: 100px;
 	height: 40px;
 	border: none;
@@ -170,6 +170,7 @@ button {
 	margin-right: auto;
 	padding-left: 20px;
 	padding-right: 20px;
+
 }
 
 .user-info-parents {
@@ -235,12 +236,13 @@ button {
 
 /* 계정 정지 버튼 스타일 */
 .suspend-account-button {
-	width: 100px;
-	height: 40px;
+	width: 200px;
+	height: 80px;
 	border: none;
 	background: red;
 	color: #ffffff;
-	font-size: 16px;
+	font-size: 20px;
+	font-weight: border;
 	cursor: pointer;
 	margin-top: 10px; /* 버튼 위 여백 추가 */
 }
@@ -248,15 +250,17 @@ button {
 .suspend-account-button:hover {
 	background: darkred;
 }
+
 .activate-account-button {
-	width: 100px;
-	height: 40px;
+	width: 200px;
+	height: 80px;
 	border: none;
 	background: rgb(0, 128, 0);
 	color: #ffffff;
-	font-size: 16px;
-	cursor: pointer;
-	margin-top: 10px; /* 버튼 위 여백 추가 */
+	font-size: 20px;
+	font-weight: border; cursor : pointer;
+	margin-top: 10px;
+	cursor: pointer; /* 버튼 위 여백 추가 */
 }
 
 .activate-account-button:hover {
@@ -272,6 +276,92 @@ button {
 .suspend-account-button:hover {
 	background: darkred;
 }
+/*모달팝업 박스CSS*/
+.popup-wrap{
+  background-color:rgba(0,0,0,.7); 
+  justify-content:center;
+  align-items:center;
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  display:none;
+  padding:15px;
+  flex-wrap: wrap;
+}
+.popup{
+  width:100%;
+  max-width:400px;
+  border-radius:10px;
+  overflow:hidden;
+background-color: rgb(180, 180, 180);
+  box-shadow: 5px 10px 10px 1px rgba(0,0,0,.3);
+  margin:auto;
+}
+.body-contentbox{
+  word-break:break-word;
+  overflow-y:auto;
+  text-align:center;
+   font-size: 16px; 
+}
+.contentbox {
+    font-size: 16px; 
+    line-height: 1;
+    margin-bottom: 20px;
+    min-height: 300px;
+    max-height: 300px;
+    width: 80%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+select.suspend {
+    padding: 8px; 
+    font-size: 16px; 
+    border: 1px solid #ccc; 
+    border-radius: 5px; 
+    background-color: #fff; 
+    width: 200px; 
+    cursor: pointer; 
+    margin: 20px;
+}
+.popup-foot {
+  margin-top: 10px; 
+  margin-bottom: 10px;
+  text-align: center; 
+}
+.popup-foot a {
+  display: inline-block;
+  width : 80px;
+  height: 30px;
+  padding: 10px 20px;
+  margin-right: 10px; 
+  border-radius: 5px; 
+  text-decoration: none; 
+  font-weight: bold; 
+  font-size: 20px;
+}
+
+.popup-foot a:nth-child(1) {
+  background-color: red; 
+  color: white; 
+}
+
+.popup-foot a:nth-child(2) {
+  background-color: #333; 
+  color: white; 
+}
+
+.popup-foot a:hover {
+  opacity: 0.8;
+}
+.body-contentbox p {
+   margin: 10px;
+}
+.body-contentbox p#suspendUserInfo {
+   margin-top : 20px;
+}
 </style>
 <script type="text/javascript"
 	src="/ssm/resources/js/jquery-3.7.0.min.js"></script>
@@ -283,7 +373,7 @@ button {
 	<br>
 	<div class="listdiv">
 		<button class="listbtn"
-			onclick="javascript:location.href='${pageContext.servletContext.contextPath}/ulist.do?page=1';">목록</button>
+			onclick="javascript:location.href='${pageContext.servletContext.contextPath}/ulist.do?page=1';">1페이지로</button>
 	</div>
 	<table>
 		<tr id="titlerow">
@@ -329,71 +419,81 @@ button {
 		</form>
 	</div>
 	<script type="text/javascript">
-	 var suspendButton = $("<button class='suspend-account-button' onclick='suspendUser();'>계정 정지</button>");
-	 var activationButton = $("<button class='activate-account-button' onclick='activateUser();'>계정 활성화</button>");
-	function showUserDetail(id) {
-	    $.ajax({
-	        url: 'userManageDetail.do',
-	        type: 'post', 
-	        data: { userId : id },
-	        dataType: "json",  
-	        success: function(objUser) {
-	            console.log('user : ' + objUser); 
-	            
-	            $('span#id').html(objUser.id);
-	            $('span#userId').html(objUser.userId);
-	            $('span#businessStoreName').html(decodeURIComponent(objUser.businessStoreName).replace(/\+/gi, " "));
-	            $('span#phone').html(objUser.phone);
-	            $('span#email').html(objUser.email);
-	            $('span#userNo').html(objUser.userNo);
-	            $('span#bankNameAndaccountNumber').html(objUser.bankName + " : " + objUser.accountNumber);
-	            $('span#serviceDate').html("<br>"+objUser.serviceDate);
-	            $('span#lastModified').html(objUser.lastModified);
-	            if (objUser.loginOk == 'Y') {
-	                // '계정 정지' 버튼을 생성하여 해당 요소에 추가
-	                $('ul#userServiceList').append("<li id='buttonspace'>"+suspendButton+"</li>");
-	            }else{
-	            	$('ul#userServiceList').append("<li id='buttonspace'>"+activationButton+"</li>");
-	            }
-	          
-	        },
-	        error: function(request, status, errorData) {
-	            console.log("error code : " + request.status
-	                    + "\nMessage : " + request.responseText
-	                    + "\nError : " + errorData);
-	        }
-	    });
-	};
-	function suspendUser(){
-	    var userId = $('span#id').text(); // 사용자 ID 가져오기
-	    $.ajax({
-	        url: 'ususpend.do',
-	        type: 'post', 
-	        data: { Id : userId }, // 사용자 ID를 데이터로 전송
-	        success: function(response) {
-	            console.log('User suspended successfully');
-	            $('li#buttonspace').html(activationButton);
-	        },
-	        error: function(request, status, errorData) {
-	            console.log("Error: " + errorData);
-	        }
-	    });
-	};
-	function activateUser(){
-	    var userId = $('span#id').text(); // 사용자 ID 가져오기
-	    $.ajax({
-	        url: 'uactivate.do',
-	        type: 'post', 
-	        data: { Id : userId }, // 사용자 ID를 데이터로 전송
-	        success: function(response) {
-	            console.log('User activated successfully');
-	            $('li#buttonspace').html(suspendButton);
-	        },
-	        error: function(request, status, errorData) {
-	            console.log("Error: " + errorData);
-	        }
-	    });
-	};
+		var suspendButton = "<button class='suspend-account-button' onclick='suspendModal();'>계정 정지</button>";
+		var activationButton = "<button class='activate-account-button' onclick='activateUser();'>계정 활성화</button>";
+		function showUserDetail(id) {
+			$.ajax({
+				url : 'userManageDetail.do',
+				type : 'post',
+				data : {
+					userId : id
+				},
+				dataType : "json",
+				success : function(objUser) {
+					console.log('user : ' + objUser);
+
+					$('span#id').html(objUser.id);
+					$('span#userId').html(objUser.userId);
+					$('span#businessStoreName').html(
+							decodeURIComponent(objUser.businessStoreName)
+									.replace(/\+/gi, " "));
+					$('span#phone').html(objUser.phone);
+					$('span#email').html(objUser.email);
+					$('span#userNo').html(objUser.userNo);
+					$('span#bankNameAndaccountNumber').html(
+							objUser.bankName + " : " + objUser.accountNumber);
+					$('span#serviceDate').html("<br>" + objUser.serviceDate);
+					$('span#lastModified').html(objUser.lastModified);
+					if (objUser.loginOk == 'Y') {
+						// '계정 정지' 버튼을 생성하여 해당 요소에 추가
+						$('li#buttonspace').html(suspendButton);
+					} else {
+						$('li#buttonspace').html(activationButton);
+					}
+
+				},
+				error : function(request, status, errorData) {
+					console.log("error code : " + request.status
+							+ "\nMessage : " + request.responseText
+							+ "\nError : " + errorData);
+				}
+			});
+		};
+		function suspendUser() {
+			var userId = $('span#id').text(); // 사용자 ID 가져오기
+			$.ajax({
+				url : 'ususpend.do',
+				type : 'post',
+				data : {
+					Id : userId
+				}, // 사용자 ID를 데이터로 전송
+				success : function(response) {
+					console.log('User suspended successfully');
+					$('li#buttonspace').html(activationButton);
+					closeModal();//모달창닫기
+				},
+				error : function(request, status, errorData) {
+					console.log("Error: " + errorData);
+				}
+			});
+		};
+		function activateUser() {
+			var userId = $('span#id').text(); // 사용자 ID 가져오기
+			$.ajax({
+				url : 'uactivate.do',
+				type : 'post',
+				data : {
+					Id : userId
+				}, // 사용자 ID를 데이터로 전송
+				success : function(response) {
+					console.log('User activated successfully');
+					$('li#buttonspace').html(suspendButton);
+				},
+				error : function(request, status, errorData) {
+					console.log("Error: " + errorData);
+				}
+			});
+		};
 	</script>
 	<br>
 	<c:import url="/WEB-INF/views/common/pagingView.jsp" />
@@ -416,8 +516,10 @@ button {
 			<div class="user-info-section">
 				<ul id="userServiceList">
 					<li><strong>이용중인 서비스 기한:</strong> <span id="serviceDate"></span></li>
-					<li><strong>등록 계좌:</strong> <span id="bankNameAndaccountNumber"></span></li>
-					<li><strong>가입일시:</strong> <span id="lastModified"></span></li>		
+					<li><strong>등록 계좌:</strong> <span
+						id="bankNameAndaccountNumber"></span></li>
+					<li><strong>가입일시:</strong> <span id="lastModified"></span></li>
+					<li id='buttonspace'></li>
 				</ul>
 			</div>
 		</div>
@@ -437,7 +539,60 @@ button {
 			</table>
 		</div>
 	</div>
+	<!-- 모달 팝업창  -->
+	<div class="container">
+		<div class="popup-wrap" id="popup">
+			<div class="popup">
+			<form>
+				<div class="body-contentbox">
+					<p id="suspendUserInfo" style="font-size: 20px; margin-bottom:0px;"></p>
+					<br>
+					<h2 style="margin:10px;">사유를 선택해주세요</h2>
+					<select class="suspend">
+						<option>게시글 도배</option>
+						<option>비정상적인 이용</option>
+						<option>기타</option>
+					</select>
+					<br>
+					<textarea class="contentbox" placeholder="상세사유를 입력해주세요."></textarea>
+					<div class="popup-foot">
+					<a onclick='suspendUser();'>정지</a>
+					<a onclick='closeModal();'>취소</a>
+					</div>
+				</div>
+			</form>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		function disableScroll() {
+			// body 요소의 overflow를 hidden으로 변경하여 스크롤 비활성화
+			document.body.style.overflow = 'hidden';
+		}
 
+		function enableScroll() {
+			// body 요소의 overflow를 다시 visible로 변경하여 스크롤 활성화
+			document.body.style.overflow = 'visible';
+		}
+		//유저 정지 모달 띄우는 펑션
+		function suspendModal() {
+			$('#suspendUserInfo').html('<span style="font-size:25px;color: red; font-weight: bold;">' + $('span#id').text() + '</span>' + "번 유저를 정지합니다");
+
+			$("#popup").css('display', 'flex').hide().fadeIn();
+			disableScroll();
+			//팝업을 flex속성으로 바꿔준 후 hide()로 숨기고 다시 fadeIn()으로 효과
+		};
+		
+		function closeModal() {
+			$("#popup").fadeOut();
+			enableScroll();
+			//컨펌 이벤트 처리
+		};
+		$("#close").click(function() {
+			modalClose(); //모달 닫기 함수 호출
+			enableScroll();
+		});
+	</script>
 	<hr>
 	<c:import url="/WEB-INF/views/common/footer.jsp" />
 </body>
