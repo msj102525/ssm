@@ -22,5 +22,10 @@ public class UserServiceImpl implements UserService{
 	public int selectUserCountById(String userId) {
 		return userDao.selectUserCountById(userId);
 	}
+
+	@Override
+	public int insertUser(User user) {
+		return userDao.insertUser(user);
+	}
 	
 }	

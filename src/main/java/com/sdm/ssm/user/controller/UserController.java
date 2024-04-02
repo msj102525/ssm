@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,6 +36,9 @@ public class UserController {
 
 	@Autowired
 	private JavaMailSenderImpl mailSender;
+	
+	@Autowired
+	private BCryptPasswordEncoder bcryptPwEncoder;
 
 	// 뷰 페이지 내보내기
 	@RequestMapping("goLogin.do")
@@ -149,6 +153,20 @@ public class UserController {
 		jOb.put("authCode", checkNum);
 		
 		return jOb.toJSONString();
+	}
+	
+	// 회원 가입 요청
+	@RequestMapping(value="enroll.do", method=RequestMethod.POST)
+	public String memberInsertMethod(User user, Model model) {
+		user.setPassWd(bcryptPwEncoder.encode(user.getPassWd()));
+		
+		if(userService.insertUser(user) > 0) {
+			return "user/login.jsp";
+		} else {
+			return "common/error";
+		}
+		
+		
 	}
 	
 
