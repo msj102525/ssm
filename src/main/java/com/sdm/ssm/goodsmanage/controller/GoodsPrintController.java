@@ -2,24 +2,29 @@ package com.sdm.ssm.goodsmanage.controller;
 
 import java.util.ArrayList;
 
-import javax.servlet.http.HttpServletRequest;
-
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.sdm.ssm.admin.model.vo.Notice;
 import com.sdm.ssm.common.Paging;
 import com.sdm.ssm.common.Search;
 import com.sdm.ssm.goodsmanage.model.service.GoodsPrintService;
 import com.sdm.ssm.goodsmanage.model.vo.GoodsPrint;
+
+
 
 @Controller
 public class GoodsPrintController {
@@ -32,7 +37,7 @@ public class GoodsPrintController {
 	
 	// 재고 보기 서비스
 	@RequestMapping(value="glist.do", 
-			method=RequestMethod.GET) 
+			method= {RequestMethod.GET, RequestMethod.POST}) 
 	public String goodsListMethod(						
 			@RequestParam(name = "id", required = false) int id,
 			@RequestParam(name = "page", required = false) String page,
@@ -68,8 +73,8 @@ public class GoodsPrintController {
 			  model.addAttribute("currentPage",currentPage); 
 			  model.addAttribute("limit", limit); 
 			  return "goods/goodsListView"; } 
-		  else { model.addAttribute("message", currentPage +" 페이지 목록 조회 실패!"); 
-		  	return "common/error"; 
+		  else { model.addAttribute("message"," 등록된 상품이 없습니다. 상품을 먼저 등록해주세요 "); 
+		  	return "goods/goodsListError"; 
 		  	}
 	}
 
@@ -129,108 +134,118 @@ public class GoodsPrintController {
 		}
 
 	
-	
-	
-	
-	// 팝업 창 이동 - 저장
-	@RequestMapping("savepopup.do")
-	public String movesavePopupPage() {
-		return "goods/savepopup";
-	}
-	
-	// 팝업 창 이동 - 삭제
-	@RequestMapping("deletepopup.do")
-	public String movedeletePopupPage(@RequestParam("selectedGoods") String selectedGoods, Model model) {
-	    model.addAttribute("selectedGoods", selectedGoods); // 선택된 상품 정보를 모델에 추가하여 JSP에 전달
-	    return "goods/deletepopup"; // 팝업 페이지의 경로
-	}
-	
 	// 상품 추가 페이지 이동
 	@RequestMapping("gmoveinsert.do")
-	public String moveGoodsInsertPage(@RequestParam(name = "id", required = false) int id, Model model) {
-		model.addAttribute("id", id);
+	public String moveGoodsInsertPage() {
 		return "goods/goodsInsert";
 	}
 
+	@RequestMapping("specify.do")
+	public String moveSpecifyPage() {
+		return "goods/specify";
+	}
 	
 	
 	// 상품 추가
 	@RequestMapping(value = "ginsert.do", method = RequestMethod.POST)
-	public String goodsInsertMethod(GoodsPrint goodsPrint, 
-			Model model, 
-			@RequestParam(name = "id", required = false) int id) {
-		
+	public String InsertgoodsMethod(
+			@RequestParam(name = "id") int id,
+			GoodsPrint goodsPrint, 
+			Model model) {
 		logger.info("ginsert.do : " + goodsPrint);
-		goodsPrint.setID(id);
 		
-		if(goodsPrintService.insertGoods(goodsPrint) > 0) {
-			return "redirect:glist.do";
-		}else {
-			model.addAttribute("message", "새 상품 등록 실패!");
+		goodsPrint.setId(id);
+		if(goodsPrintService.insertGoods(goodsPrint)>0) {
+			return "goods/goodsInsert";
+			}
+		else {
+			model.addAttribute("message", "새 상품 등록 실패");
 			return "common/error";
 		}
 	}
+		
 	
-		// 상품 삭제
-		@RequestMapping(value = "gdelete.do", method = { RequestMethod.POST, RequestMethod.GET})
-		public String goodsdeleteMethod(
-				Model model, 
-				GoodsPrint goodsPrint,
-				@RequestParam(name = "id") int id,
-                @RequestParam(name = "goodsNo") int goodsNo) {
-			
-			logger.info("gdelete.do : " + goodsPrint);
-			goodsPrint.setID(id);
-			
-			if(goodsPrintService.deleteGoods(goodsPrint) > 0) {
-				return "redirect:glist.do";
-			}else {
-				model.addAttribute("message", "새 상품 등록 실패!");
-				return "common/error";
-			}
-		}
-	
-		// 발주처 보기 서비스
-		@RequestMapping(value="plist.do", 
-				method=RequestMethod.GET) 
-		public String produceListMethod(						
-				@RequestParam(name = "id", required = false) int id,
-				@RequestParam(name = "page", required = false) String page,
-				@RequestParam(name = "limit", required = false) String slimit, 
-				Model model) {
+	// 상품 삭제
+	@RequestMapping(value="gdelete.do", method=RequestMethod.POST)
+	public ResponseEntity<String> goodsdeleteMethod(
+			@RequestBody String param) throws ParseException {
 
-			logger.info("12jti2i3gt1");
-			
-			int currentPage = 1;
-			if (page != null) {
-				currentPage = Integer.parseInt(page);
-			}
+		JSONParser jparser = new JSONParser();
+		JSONArray jarr = (JSONArray)jparser.parse(param);
 
-			// 한 페이지에 게시글 10개씩 출력되게 한다면
-			int limit = 10;
-			if (slimit != null) {
-				limit = Integer.parseInt(slimit); // 전송받은 한 페이지에 출력할 목록 갯수를 적용
-			}
+		for(int i = 0; i < jarr.size(); i++) {
+			JSONObject job = (JSONObject)jarr.get(i);
 			
-			  // 총 페이지수 계산을 위해 게시글 전체 갯수 조회해 옴 
-			int listCount = goodsPrintService.selectListCount(id); 
-			  
-			  // 페이징 계산 처리 실행 Paging paging = new
-			  Paging paging = new Paging(listCount, currentPage, limit, "glist.do"); 
-			  paging.calculate(); 
-			  //출력할 페이지에 대한 목록 조회 
-			  paging.setId(id);
-			  ArrayList<GoodsPrint> list = goodsPrintService.selectProducePrint(paging); 
-			  // 받은 결과로 성공/실패 페이지 내보냄 
-			  if (list!= null && list.size() > 0) {
-				  model.addAttribute("list", list);
-				  model.addAttribute("paging", paging); 
-				  model.addAttribute("currentPage",currentPage); 
-				  model.addAttribute("limit", limit); 
-				  return "goods/produceListView"; } 
-			  else { model.addAttribute("message", currentPage +" 페이지 목록 조회 실패!"); 
-			  	return "common/error"; 
-			  	}
+			GoodsPrint goodsPrint = new GoodsPrint();
+			goodsPrint.setId(Integer.parseInt(job.get("id").toString()));
+			goodsPrint.setGoodsNo(Integer.parseInt(job.get("goodsNo").toString()));
+			// 상품 삭제 메소드 작성
+			int result = goodsPrintService.deleteGoods(goodsPrint);
+			
+			// 에러 발생 시 
+			if(result <= 0) {
+				return new ResponseEntity<String>("failed", HttpStatus.REQUEST_TIMEOUT);
+			}			
 		}
+		return new ResponseEntity<String>("success", HttpStatus.OK);
+	}
 	
+	
+	 // 발주처 보기 서비스
+	@RequestMapping(value = "plist.do", method = RequestMethod.GET)
+	public String produceListMethod(@RequestParam(name = "id", required = false) int id,
+			@RequestParam(name = "page", required = false) String page,
+			@RequestParam(name = "limit", required = false) String slimit, Model model) {
+
+		logger.info("12jti2i3gt1");
+
+		int currentPage = 1;
+		if (page != null) {
+			currentPage = Integer.parseInt(page);
+		}
+
+		// 한 페이지에 게시글 10개씩 출력되게 한다면
+		int limit = 10;
+		if (slimit != null) {
+			limit = Integer.parseInt(slimit); // 전송받은 한 페이지에 출력할 목록 갯수를 적용 }
+		}
+
+		// 총 페이지수 계산을 위해 게시글 전체 갯수 조회해 옴
+		int listCount = goodsPrintService.selectListCount(id);
+
+		// 페이징 계산 처리 실행
+		Paging paging = new Paging(listCount, currentPage, limit, "plist.do");
+		paging.calculate(); // 출력할 페이지에 대한 목록 조회
+		paging.setId(id);
+		ArrayList<GoodsPrint> list = goodsPrintService.selectProducePrint(paging);
+		// 받은 결과로 성공/실패 페이지 내보냄
+		if (list != null && list.size() > 0) {
+			model.addAttribute("list", list);
+			model.addAttribute("paging", paging);
+			model.addAttribute("currentPage", currentPage);
+			model.addAttribute("limit", limit);
+			return "goods/produceListView";
+		} else {
+			model.addAttribute("message", currentPage + " 페이지 목록 조회 실패!");
+			return "common/error";
+		}
+	}
+		
+	@RequestMapping(value = "goodsNameSearch.do")	
+	public String boardSearchTitleMethod(
+			@RequestParam(name = "id", required = false) int id,
+			@RequestParam("action") String action, 
+			Model model,
+			Search search) {
+
+		search.setId(id);
+		
+		ArrayList<GoodsPrint>list = null;
+		list = goodsPrintService.selectSSearchGoodsName(search);
+		model.addAttribute("list", list);
+		
+		return "goods/specify";
+		
+	}	
+		
 }

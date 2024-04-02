@@ -68,6 +68,12 @@ public class GoodsPrintServiceImpl implements GoodsPrintService{
 		return goodsPrintDao.selectProducePrint(paging);
 	}
 
+	// 명세서
+	@Override
+	public ArrayList<GoodsPrint> selectSSearchGoodsName(Search search) {
+		return goodsPrintDao.selectSSearchGoodsName(search);
+	}
+
 	
 	
 	

@@ -62,13 +62,10 @@
 					</h1>
 					</h1>
 					<div class="gnb">
-						<ul>
-
-						
+						<ul>			
 							<li><a href="#">공지사항</a></li>
-							<li><a href="#">불편사항</a></li>
-							<li><a href="${pageContext.servletContext.contextPath }/glist.do?page=1&id=${loginUser.id}">매장관리</a></li>
-
+							<li><a href="#">불편사항</a></li>							
+							<li><a href="${pageContext.servletContext.contextPath}/gmoveinsert.do">매장관리</a></li>
 							<li><a href="${pageContext.servletContext.contextPath }/nlist.do?page=1">공지사항</a></li>
 							<li><a href="${pageContext.servletContext.contextPath }/inconvlist.do?page=1">불편사항</a></li>
 							<li><a href="${pageContext.servletContext.contextPath }/glist.do?page=1">매장관리</a></li>

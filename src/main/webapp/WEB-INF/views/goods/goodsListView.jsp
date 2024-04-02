@@ -43,9 +43,6 @@ $(function(){
 	         $(".chkCheckBoxId").prop("checked", false)
 	       }
 	     });
-	
-	
-	
 });  //document ready
 
 </script>
@@ -57,7 +54,7 @@ $(function(){
 
 <hr>
 <br>
-<c:import url="/WEB-INF/views/common/sidebar.jsp" /> 
+<c:import url="/WEB-INF/views/common/sidebar.jsp" />
 <h1 style="text-align: center;">재고 현황</h1>
 <div style="align:center;text-align:center;">
 <br>
@@ -70,6 +67,7 @@ $(function(){
         width: fit-content; /* 내용에 맞게 자동으로 너비 설정 */
     }
 </style>
+
 <script type="text/javascript">
 $('#checkBoxAll').click(function () {
     if ($(this).is(":checked")) {
@@ -79,49 +77,120 @@ $('#checkBoxAll').click(function () {
     }
   });
 </script>
-
+	
 	<div class="searchdiv">
 		<form action="gsearch.do" method="get">
+			<input type="hidden" id = "id" name="id" value="${ loginUser.id }">
 			<select style="height: 35px; width: 80px;" name="action"
 				id="searchselect">
 				<option value="goodsName">상품명</option>
 				<option value="pdName">발주처</option>
 			</select>  
-			<input type="hidden" name="id", value="${ loginUser.id }">
 			<input style="height: 30px; width: 325px;"
 				type="text" id="searchtext" name="keyword" placeholder="검색어 입력">
 			<input type="submit" class="searchbtn" value="검색">
-			<button type="submit", onclick="window.open('http://localhost:8080/ssm/savepopup.do','_blank','width=350, height=150, top=150, left=50, scrollbars=no')">
-				<a href="#pop_info_1" class="btn_open">저장</a>
-			</button>
-			<button type="button" id="deleteButton" class="btn_open">삭제</button>
+			
+			<c:forEach items="${goodsList}" var="goodsPrint">
+				<input type="checkbox" class="chkCheckBoxId checkbox"
+					value="${goodsPrint.goodsNo}">
+			</c:forEach>		
 		</form>
-		<button onclick="javascript:location.href='${pageContext.servletContext.contextPath}/glist.do?page=1&id=${loginUser.id}';">목록</button>
+<br>	
+<button onclick="checkSelectedGoods();">확인</button>			
+<button onclick="updateSelectedGoods();">저장</button>			
+<button onclick="deleteSelectedGoods();">삭제</button>
+<button onclick="javascript:location.href='${pageContext.servletContext.contextPath}/glist.do?page=1&id=${loginUser.id}';">목록</button>
+<br>
+
+<script>
+    function checkSelectedGoods() {
+        var selectedGoodsNos = [];
+        var id = document.getElementById("id").value;
+        
+        // 선택된 체크박스에서 goodsNo 추출
+        $(".chkCheckBoxId:checked").each(function() {
+            selectedGoodsNos.push($(this).val());
+        });
+
+        // ID와 선택된 goodsNo를 확인하는 알럿 표시
+        var message = "ID: " + id + "\n";
+        message += "선택된 goodsNo: ";
+        if (selectedGoodsNos.length > 0) {
+            message += selectedGoodsNos.join(", ");
+        } else {
+            message += "없음";
+        }
+        alert(message);
+    }
+</script>
+
+
+<!-- 삭제 버튼 -->
+<script>
+    function deleteSelectedGoods() {
+    	var jarr = new Array();
+    	
+        // 선택된 체크박스에서 goodsNo 추출
+        $(".chkCheckBoxId:checked").each(function() {
+        	 var job = new Object();
+        	 job.id = parseInt(${loginUser.id});
+        	 job.goodsNo = $(this).val();
+        	 /* var goodsObj = { id: id , goodsNo: goodsNo }; */
+        	 jarr.push(job
+        			 );
+        });
+          
+        $.ajax({
+            type  : "POST",
+            url    : "gdelete.do",
+            data: JSON.stringify(jarr),
+            contentType: "application/json; charset=utf-8",
+            success: function(result){
+            	location.reload(); 
+            },
+            error: function(request, status, errorData){
+            	console.log(jarr); 
+            	console.log(jarr); 
+				console.log("error code : " + request.status
+						+ "\nMessage : " + request.responseText
+						+ "\nError : " + errorData);
+			} 
+         });      
+    }
+</script>		
+		
+		
+		
+		
+		
 		<br>
 	</div>
 
-<script>
+<!-- <script>
 $("#deleteButton").click(function() {
     var selectedGoods = [];
-    var id = "${loginUser.id}"; 
+    var id = parseInt($("#id").val());
+    console.log("아이이이" + id);
+    selectedGoods.push(id);
     $(".chkCheckBoxId:checked").each(function() {
         var goodsNo = $(this).val();           
-        selectedGoods.push({ goodsNo: goodsNo, id: id }); // id 값을 함께 추가
+        selectedGoods.push(goodsNo); // id 값을 함께 추가
     });
-
+    
     console.log(selectedGoods);
 
     var popupUrl = "http://localhost:8080/ssm/deletepopup.do?selectedGoods=" + encodeURIComponent(JSON.stringify(selectedGoods));
     window.open(popupUrl, "_blank", "width=350, height=150, top=150, left=50, scrollbars=no");
 });
-</script>
+</script> -->
 
 
 
 
 	<%-- 조회된 상품 목록 출력 --%>
 <div style="margin-left: auto; margin-right: auto; width: 1400px;">
-    <form action="/your-submit-url" method="post">
+    <form action="gsearch.do" method="post">
+    	<input type="hidden" id = "id" name="id", value="${ loginUser.id }">
         <table align="center" border="1" cellspacing="25" width="100%">
         	<thead>
             	<th class="table-head"><input type="checkbox" id="checkBoxAll"></th>
@@ -140,7 +209,7 @@ $("#deleteButton").click(function() {
             <c:forEach items="${ requestScope.list }" var="goodsPrint">
                 <tr>               	
                 	<td class="table-data">
-                	<input type="checkbox" class="chkCheckBoxId checkbox" value="${goodsPrint.goodsNo}">
+                	<input type="checkbox" class="chkCheckBoxId" value="${goodsPrint.goodsNo}">
                 	</td>
                     <td align="center" style="white-space: nowrap;">${ goodsPrint.goodsNo }</td>
                     <td align="center" style="white-space: nowrap;">${ goodsPrint.goodsName }</td>
