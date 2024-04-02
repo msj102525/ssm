@@ -580,7 +580,7 @@ BEGIN
                         PD_QUANTITY NUMBER NOT NULL,
                         MIN_ALARM_QUANTITY NUMBER,
                         MIN_ORDER_QUANTITY NUMBER,
-                        FOREIGN KEY (GOODS_NO) REFERENCES TB_GOODS_' || p_user_id || '(GOODS_NO)
+                        FOREIGN KEY (GOODS_NO) REFERENCES TB_GOODS_' || p_user_id || '(GOODS_NO) ON DELETE CASCADE
                     )';
 EXCEPTION
     WHEN OTHERS THEN
@@ -607,7 +607,7 @@ BEGIN
             PRODUCER VARCHAR2(20),
             PD_PHONE VARCHAR2(30),
             PD_ADDRESS VARCHAR2(255),
-            FOREIGN KEY (GOODS_NO) REFERENCES TB_GOODS_' || p_user_id || '(GOODS_NO)
+            FOREIGN KEY (GOODS_NO) REFERENCES TB_GOODS_' || p_user_id || '(GOODS_NO) ON DELETE CASCADE
         )';
 END;
 
@@ -631,7 +631,7 @@ BEGIN
             GOODS_NO NUMBER NOT NULL,
             PD_DATE DEFAULT SYSDATE
             ORDER_QUANTITY NUMBER
-            FOREIGN KEY (GOODS_NO) REFERENCES TB_GOODS_' || p_user_id || '(GOODS_NO)
+            FOREIGN KEY (GOODS_NO) REFERENCES TB_GOODS_' || p_user_id || '(GOODS_NO) ON DELETE CASCADE
         )';
 EXCEPTION
     WHEN OTHERS THEN

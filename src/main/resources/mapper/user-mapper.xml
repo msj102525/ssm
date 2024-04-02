@@ -20,6 +20,7 @@
 		<result property="lastModified" column="LAST_MODIFIED"/>
 		<result property="serviceDate" column="SERVICE_DATE"/>
 		<result property="businessNo" column="BUSINESS_NO"/>
+		<result property="businessStoreName" column="BUSINESS_STORE_NAME"/>
 	</resultMap>
 	
 	<!-- 로그인용 쿼리 -->
@@ -33,6 +34,7 @@
 		SELECT COUNT(*) FROM TB_USER 
 		WHERE USER_ID = #{userId}
 	</select>
+<<<<<<< HEAD
 	
 	<!-- 회원가입용 쿼리 -->
 	<insert id="insertUser" parameterType="User">
@@ -46,5 +48,18 @@
 	
 	
 	
+=======
+	<!-- 전체 유저 수 -->
+	<select id="selectListCount" resultType="_int">
+	select Count(*) FROM TB_USER
+	</select>
+	<!-- 페이지 전체유저 출력 -->
+	<select id="selectList" parameterType="Paging" resultMap="resultUser">
+		select * from (select rownum rnum, ID, USER_ID, USER_NO, LOGIN_OK, EMAIL,BUSINESS_STORE_NAME 
+       					 from(select * from tb_user where admin_OK = 'N'
+                       	 order by LAST_MODIFIED desc) )
+	where rnum between #{startRow} and #{endRow}
+	</select>
+>>>>>>> branch 'main' of https://github.com/msj102525/ssm.git
 
 </mapper>

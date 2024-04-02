@@ -67,5 +67,9 @@ public class NoticeDao {
 	public int updateNotice(Notice notice) {
 		return sqlSessionTemplate.update("noticeMapper.updateNotice", notice);
 	}
+	public ArrayList<Notice> selectTop5() {
+		List<Notice> list = sqlSessionTemplate.selectList("noticeMapper.selectTop5");
+		return (ArrayList<Notice>)list;
+	}
 
 }

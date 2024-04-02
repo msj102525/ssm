@@ -118,20 +118,31 @@
 	<!-- 상품 등록 -->
 	<insert id="insertGoods" parameterType="goodsPrint">
 	INSERT ALL
+    
     INTO TB_GOODS_${id} (ID, GOODS_NO, GOODS_NAME, GOODS_UNIT, GOODS_PRICE, NATION)
-    VALUES (${id}, (select max(GOODS_NO)+1 from TB_GOODS_${ id }), #{goodsName}, #{goodsUnit}, #{goodsPrice}, #{nation})
+    VALUES (${id}, 
+    		   (select max(GOODS_NO)+1 from TB_GOODS_${ id }), 
+    		   #{goodsName}, #{goodsUnit}, #{goodsPrice}, #{nation})
+    
     INTO TB_INVENTORY_${id} (GOODS_NO, PD_QUANTITY, MIN_ALARM_QUANTITY, MIN_ORDER_QUANTITY)
-    VALUES ((select max(GOODS_NO)+1 from TB_GOODS_${ id }), #{pdQuantity}, #{minAlarmQuantity}, #{minOrderQuantity})
+    VALUES ((select max(GOODS_NO)+1 from TB_GOODS_${ id }), 
+    			#{pdQuantity}, 
+    			#{minAlarmQuantity}, 
+    			#{minOrderQuantity})
+  
     INTO TB_PRODUCE_${id} (GOODS_NO, PD_NO, PD_NAME, PD_PHONE)
-    VALUES ((select max(GOODS_NO)+1 from TB_GOODS_${ id }), 100, #{pdName}, #{pdPhone})
-	SELECT * FROM DUAL;
+    VALUES ((select max(GOODS_NO)+1 from TB_GOODS_${ id }), 
+    			(select max(PD_NO)+1 from TB_PRODUCE_${ id }), 
+    			#{pdName},
+    			#{pdPhone})
+
+	SELECT * FROM DUAL
 	</insert>
 	
 	<!-- 상품 제거 -->
 	<delete id="deleteGoods" parameterType="goodsPrint" >
 	DELETE FROM TB_GOODS_${id}
 	WHERE GOODS_NO = #{goodsNo}
-	AND ID = #{id};
 	</delete>
 	
 	<select id="selectProducePrint" parameterType="Paging" resultMap="GoodsResultList">
@@ -151,6 +162,19 @@
     				  WHERE ID = ${ id }
     				  ORDER BY GOODS_NO ASC))
 		where rnum between #{startRow} and #{endRow}	
+	</select>
+	
+	<!-- 명세서 -->
+	<select id="selectSSearchGoodsName" parameterType="Search" resultMap="GoodsResultList">
+	   SELECT GOODS_NO, GOODS_NAME, PD_QUANTITY, GOODS_UNIT, 
+         		  MIN_ORDER_QUANTITY, MIN_ALARM_QUANTITY, 
+        		  PD_NAME, PD_PHONE, GOODS_PRICE, NATION
+       FROM TB_GOODS_${ id }
+       LEFT JOIN TB_INVENTORY_${ id } USING (GOODS_NO)
+       LEFT JOIN TB_PRODUCE_${ id } USING (GOODS_NO)
+       WHERE ID = ${ id }
+       AND GOODS_NAME LIKE '%' || #{ keyword } || '%'
+       ORDER BY GOODS_NO ASC 
 	</select>
 	
 	

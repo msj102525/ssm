@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC
+"-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="userManageMapper">
+
+	<resultMap type="User" id="resultUser">
+		<result property="id" column="ID"/>
+		<result property="userId" column="USER_ID"/>
+		<result property="passWd" column="PASSWD"/>
+		<result property="email" column="EMAIL"/>
+		<result property="userNo" column="USER_NO"/>
+		<result property="phone" column="PHONE"/>
+		<result property="accountNumber" column="ACCOUNT_NUMBER"/>
+		<result property="bankName" column="BANK_NAME"/>
+		<result property="profileUrl" column="PROFILE_URL"/>
+		<result property="isQuit" column="IS_QUIT"/>
+		<result property="adminOk" column="ADMIN_OK"/>
+		<result property="loginOk" column="LOGIN_OK"/>
+		<result property="lastModified" column="LAST_MODIFIED"/>
+		<result property="serviceDate" column="SERVICE_DATE"/>
+		<result property="businessNo" column="BUSINESS_NO"/>
+		<result property="businessStoreName" column="BUSINESS_STORE_NAME"/>
+	</resultMap>
+	<update id="updateUserAccountSuspendMethod" parameterType="_int">
+	update tb_user set login_ok = 'N' where id = #{id}
+	</update>
+	<update id="updateUserAccountActivateMethod" parameterType="_int">
+	update tb_user set login_ok = 'Y' where id = #{id}
+	</update>
+
+</mapper>

@@ -114,4 +114,10 @@ public class InconvinienceServiceImpl implements InconvinienceService {
 		
 		return inconvDao.selectInconvReply(inconvNo);
 	}
+
+	@Override
+	public ArrayList<InconvinienceBoard> selectTop10() {
+		
+		return inconvDao.selectTop10();
+	}
 }

@@ -100,4 +100,9 @@ public class InconvinienceDao {
 		return sqlSessionTemplate.selectOne("inconvMapper.selectInconvReply", inconvNo);
 	}
 
+	public ArrayList<InconvinienceBoard> selectTop10() {
+		List<InconvinienceBoard> list = sqlSessionTemplate.selectList("inconvMapper.selectTop10");
+		return (ArrayList<InconvinienceBoard>)list;
+	}
+
 }

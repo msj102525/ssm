@@ -88,25 +88,10 @@ h3 {
     border-radius: 5px;
     margin-bottom: 10px;
 }
-.modify-button {
-	font-size: 12px;
-    display: inline-block;
-    padding: 15px 25px;
-    margin-top: 20px;
-    background-color: rgb(250, 180, 49);
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-    border: none;
-    cursor: pointer;
-}
-
-.modify-button:hover {
-    background-color: orange;
-}
 </style>
 </head>
 <body>
+	<c:import url="/WEB-INF/views/common/header.jsp" />
     <div class="container">
         <hr>
         <form id="modifyForm" action="iupdate.do" method="POST">

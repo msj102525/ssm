@@ -50,4 +50,6 @@ public interface InconvinienceService {
 
 	InconvinienceBoardReply selectInconvReply(int inconvNo);
 
+	ArrayList<InconvinienceBoard> selectTop10();
+
 }

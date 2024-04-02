@@ -40,6 +40,15 @@ public class GoodsPrint implements java.io.Serializable{
 		super();
 	}
 
+	
+	
+	
+	public GoodsPrint(int id, int goodsNo) {
+		super();
+		this.id = id;
+		this.goodsNo = goodsNo;
+	}
+
 	public GoodsPrint(int goodsNo, String goodsName, int pdQuantity, String goodsUnit, int minAlarmQuantity,
 			int minOrderQuantity, String pdName, String pdPhone, int goodsPrice, String nation) {
 		super();

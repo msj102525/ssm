@@ -62,6 +62,12 @@ public class GoodsPrintDao {
 		List<GoodsPrint>list =sqlSessionTemplate.selectList("goodsMapper.selectProducePrint", paging);
 		return (ArrayList<GoodsPrint>)list;
 	}
+
+	// 명세서
+	public ArrayList<GoodsPrint> selectSSearchGoodsName(Search search) {
+		List<GoodsPrint>list =sqlSessionTemplate.selectList("goodsMapper.selectSSearchGoodsName", search);
+		return (ArrayList<GoodsPrint>)list;
+	}
 	
 
 	
