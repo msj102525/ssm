@@ -13,10 +13,6 @@ public interface UserService {
 
 	int selectUserCountById(String userId);
 
-<<<<<<< HEAD
 	int insertUser(User user);
-=======
->>>>>>> branch 'main' of https://github.com/msj102525/ssm.git
-	
-	
+
 }

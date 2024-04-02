@@ -34,21 +34,7 @@
 		SELECT COUNT(*) FROM TB_USER 
 		WHERE USER_ID = #{userId}
 	</select>
-<<<<<<< HEAD
-	
-	<!-- 회원가입용 쿼리 -->
-	<insert id="insertUser" parameterType="User">
-		INSERT INTO TB_USER (ID, USER_ID, PASSWD, EMAIL, USER_NO, PHONE, ACCOUNT_NUMBER, BANK_NAME, BUSINESS_NO, BUSINESS_STORE_NAME, IS_QUIT, ADMIN_OK, LOGIN_OK, LAST_MODIFIED, SERVICE_DATE) 
-		VALUES (USER_SEQ.NEXTVAL, 
-		#{userId}, #{userPw}, #{email},
-		#{userNo}, #{phone}, #{accountNumber},
-		#{bankName}, #{businessNo}, #{businessStoreName},
-		DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT); 
-	</insert>
-	
-	
-	
-=======
+
 	<!-- 전체 유저 수 -->
 	<select id="selectListCount" resultType="_int">
 	select Count(*) FROM TB_USER
@@ -60,6 +46,16 @@
                        	 order by LAST_MODIFIED desc) )
 	where rnum between #{startRow} and #{endRow}
 	</select>
->>>>>>> branch 'main' of https://github.com/msj102525/ssm.git
+	
+	<!-- 회원가입용 쿼리 -->
+	<insert id="insertUser" parameterType="User">
+		INSERT INTO TB_USER (ID, USER_ID, PASSWD, EMAIL, USER_NO, PHONE, ACCOUNT_NUMBER, BANK_NAME, BUSINESS_NO, BUSINESS_STORE_NAME, IS_QUIT, ADMIN_OK, LOGIN_OK, LAST_MODIFIED, SERVICE_DATE) 
+		VALUES (USER_SEQ.NEXTVAL, 
+		#{userId}, #{userPw}, #{email},
+		#{userNo}, #{phone}, #{accountNumber},
+		#{bankName}, #{businessNo}, #{businessStoreName},
+		DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT); 
+	</insert>
+
 
 </mapper>
