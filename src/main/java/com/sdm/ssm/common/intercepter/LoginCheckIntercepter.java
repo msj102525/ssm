@@ -24,9 +24,9 @@ public class LoginCheckIntercepter extends HandlerInterceptorAdapter {
 			Object handler) throws Exception {
 		//session 안에 저장된 loginMember 라는 이름의 저장 객체가 존재하는지 확인
 		HttpSession session = request.getSession();
-		User loginMember = (User)session.getAttribute("loginMember");
+		User loginUser = (User)session.getAttribute("loginUser");
 		
-		if(loginMember != null) {
+		if(loginUser != null) {
 			logger.info("로그인 상태 : " + request.getRequestURI() + " 요청");
 		}else {
 			logger.info("비로그인 상태 : " + request.getRequestURI() + " 요청");
