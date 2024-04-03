@@ -38,8 +38,23 @@ public interface GoodsPrintService {
 	// 명세서 - 발주처
 	ArrayList<GoodsPrint> selectSSearchpdName(Search search);
 
-	
-	
+	// 발주처 등록
+	int insertProduce(GoodsPrint goodsPrint);
+
+	// 발주처 삭제
+	int deleteProduce(GoodsPrint goodsPrint);
+
+	// 상품 수정 - 상품 테이블
+	int updateGoodsGT(GoodsPrint goodsPrint);
+
+	// 상품 수정 - 재고 테이블
+	int updateGoodsIT(GoodsPrint goodsPrint);
+
+	// 발주처 수정 - 상품 테이블
+	int updateProduceGT(GoodsPrint goodsPrint);
+
+	// 발주처 수정 - 발주처 테이블
+	int updateProducePT(GoodsPrint goodsPrint);
 	
 
 }

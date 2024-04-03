@@ -54,25 +54,57 @@ public class GoodsPrintDao {
 		return sqlSessionTemplate.insert("goodsMapper.insertGoods", goodsPrint);
 	}
 
+	// 상품 삭제
 	public int deleteGoods(GoodsPrint goodsPrint) {
 		return sqlSessionTemplate.delete("goodsMapper.deleteGoods", goodsPrint);
 	}
 
+	// 발주처 보기
 	public ArrayList<GoodsPrint> selectProducePrint(Paging paging) {
 		List<GoodsPrint>list =sqlSessionTemplate.selectList("goodsMapper.selectProducePrint", paging);
 		return (ArrayList<GoodsPrint>)list;
 	}
 
-	// 명세서
+	// 명세서 - 상품 이름 검색
 	public ArrayList<GoodsPrint> selectSSearchGoodsName(Search search) {
 		List<GoodsPrint>list =sqlSessionTemplate.selectList("goodsMapper.selectSSearchGoodsName", search);
 		return (ArrayList<GoodsPrint>)list;
 	}
 
+	// 명세서 - 발주처 이름 검색
 	public ArrayList<GoodsPrint> selectSSearchpdName(Search search) {
 		List<GoodsPrint>list =sqlSessionTemplate.selectList("goodsMapper.selectSSearchpdName", search);
 		return (ArrayList<GoodsPrint>)list;
 	}
+
+	// 발주처 등록
+	public int insertProduce(GoodsPrint goodsPrint) {
+		return sqlSessionTemplate.insert("goodsMapper.insertProduce", goodsPrint);
+	}
+
+	public int deleteProduce(GoodsPrint goodsPrint) {
+		return sqlSessionTemplate.delete("goodsMapper.deleteProduce", goodsPrint);
+	}
+
+	// 상품 수정 - 상품 테이블
+	public int updateGoodsGT(GoodsPrint goodsPrint) {
+		return sqlSessionTemplate.update("goodsMapper.updateGoodsGT", goodsPrint);
+	}
+
+	// 상품 수정 - 재고 테이블
+	public int updateGoodsIT(GoodsPrint goodsPrint) {
+		return sqlSessionTemplate.update("goodsMapper.updateGoodsIT", goodsPrint);
+	}
+
+	public int updateProduceGT(GoodsPrint goodsPrint) {
+		return sqlSessionTemplate.update("goodsMapper.updateProduceGT", goodsPrint);
+	}
+
+	public int updateProducePT(GoodsPrint goodsPrint) {
+		return sqlSessionTemplate.update("goodsMapper.updateProducePT", goodsPrint);
+	}
+
+	
 	
 
 	

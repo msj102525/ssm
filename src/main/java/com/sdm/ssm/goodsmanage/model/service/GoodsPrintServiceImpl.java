@@ -63,21 +63,61 @@ public class GoodsPrintServiceImpl implements GoodsPrintService{
 		return goodsPrintDao.deleteGoods(goodsPrint);
 	}
 
+	// 발주처 보기
 	@Override
 	public ArrayList<GoodsPrint> selectProducePrint(Paging paging) {
 		return goodsPrintDao.selectProducePrint(paging);
 	}
 
-	// 명세서
+	// 명세서 - 상품 이름 검색
 	@Override
 	public ArrayList<GoodsPrint> selectSSearchGoodsName(Search search) {
 		return goodsPrintDao.selectSSearchGoodsName(search);
 	}
 
+	// 명세서 - 발주처 검색
 	@Override
 	public ArrayList<GoodsPrint> selectSSearchpdName(Search search) {
 		return goodsPrintDao.selectSSearchpdName(search);
 	}
+
+	// 발주처 등록
+	@Override
+	public int insertProduce(GoodsPrint goodsPrint) {
+		return goodsPrintDao.insertProduce(goodsPrint);
+	}
+
+	// 발주처 삭제
+	@Override
+	public int deleteProduce(GoodsPrint goodsPrint) {
+		return goodsPrintDao.deleteProduce(goodsPrint);
+	}
+
+	// 상품 수정 - 상품 테이블
+	@Override
+	public int updateGoodsGT(GoodsPrint goodsPrint) {
+		return goodsPrintDao.updateGoodsGT(goodsPrint);
+	}
+
+	// 상품 수정 - 재고 테이블
+	@Override
+	public int updateGoodsIT(GoodsPrint goodsPrint) {
+		return goodsPrintDao.updateGoodsIT(goodsPrint);
+	}
+
+	// 발주처 수정 - 상품 테이블
+	@Override
+	public int updateProduceGT(GoodsPrint goodsPrint) {
+		return goodsPrintDao.updateProduceGT(goodsPrint);
+	}
+
+	// 발주처 수정 - 발주처 테이블
+	@Override
+	public int updateProducePT(GoodsPrint goodsPrint) {
+		return goodsPrintDao.updateProducePT(goodsPrint);
+	}
+
+	
 
 	
 	

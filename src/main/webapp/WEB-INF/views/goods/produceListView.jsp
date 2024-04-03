@@ -58,7 +58,7 @@ $(function(){
 <hr>
 <br>
 <c:import url="/WEB-INF/views/common/sidebar.jsp" /> 
-<h1 style="text-align: center;">재고 현황</h1>
+<h1 style="text-align: center;">발주처 현황</h1>
 <div style="align:center;text-align:center;">
 <br>
 <br>
@@ -80,48 +80,129 @@ $('#checkBoxAll').click(function () {
   });
 </script>
 
-	<div class="searchdiv">
-		<form action="gsearch.do" method="get">
+<div class="searchdiv">
+		<form action="psearch.do" method="get">
+			<input type="hidden" id = "id" name="id" value="${ loginUser.id }">
 			<select style="height: 35px; width: 80px;" name="action"
 				id="searchselect">
 				<option value="goodsName">상품명</option>
 				<option value="pdName">발주처</option>
 			</select>  
-			<input type="hidden" name="id", value="${ loginUser.id }">
 			<input style="height: 30px; width: 325px;"
 				type="text" id="searchtext" name="keyword" placeholder="검색어 입력">
 			<input type="submit" class="searchbtn" value="검색">
-			<button type="submit", onclick="window.open('http://localhost:8080/ssm/savepopup.do','_blank','width=350, height=150, top=150, left=50, scrollbars=no')">
-				<a href="#pop_info_1" class="btn_open">저장</a>
-			</button>
-			<button type="button" id="deleteButton" class="btn_open">삭제</button>
+			
+			<c:forEach items="${goodsList}" var="goodsPrint">
+				<input type="checkbox" class="chkCheckBoxId checkbox"
+					value="${goodsPrint.goodsNo}">
+			</c:forEach>		
 		</form>
-		<button onclick="javascript:location.href='${pageContext.servletContext.contextPath}/glist.do?page=1&id=${loginUser.id}';">목록</button>
-		<br>
+<br>			
+<button onclick="updateSelectedGoods();">저장</button>			
+<button onclick="deleteSelectedGoods();">삭제</button>
+<button onclick="javascript:location.href='${pageContext.servletContext.contextPath}/plist.do?page=1&id=${loginUser.id}';">목록</button>
+<br>
+
+<!-- 저장 버튼 -->
+<script>
+    function updateSelectedGoods() {
+        // 체크된 행을 가져오기
+        var checkedRows = document.querySelectorAll('.chkCheckBoxId:checked');
+        
+        // 변경된 내용을 저장할 배열
+        var updatedGoods = [];
+
+        // 각 체크된 행에 대해
+        checkedRows.forEach(function(row) {
+            var rowIndex = row.closest('tr').rowIndex - 1; // 첫 번째 행은 헤더이므로 -1
+            var rowData = {
+                id: ${loginUser.id}, // loginUser.id 값 가져오기
+                goodsNo: row.value, // 체크된 체크박스의 값(상품 번호) 가져오기
+                pdPhone: document.getElementById('pdPhone_' + rowIndex).value,
+                pdAddress: document.getElementById('pdAddress_' + rowIndex).value,
+                goodsUnit: document.getElementById('goodsUnit_' + rowIndex).value,
+                nation: document.getElementById('nation_' + rowIndex).value,
+            };
+            updatedGoods.push(rowData);
+        });
+
+        // 알림 대화 상자 표시
+        var confirmMessage = "변경된 내용을 저장 하시겠습니까?";
+        if (confirm(confirmMessage)) {
+            // 변경된 내용을 서버로 전송
+            $.ajax({
+                type: "POST",
+                url: "pupdate.do",
+                data: JSON.stringify(updatedGoods),
+                contentType: "application/json; charset=utf-8",
+                success: function(result) {
+                    location.reload(); 
+                },
+                error: function(request, status, errorData) {
+                    console.log("error code : " + request.status
+                        + "\nMessage : " + request.responseText
+                        + "\nError : " + errorData);
+                } 
+            });  
+        } else {
+            console.log("수정이 취소되었습니다.");
+        }
+    }
+</script>
+
+
+
+<!-- 삭제 버튼 -->
+<script>
+    function deleteSelectedGoods() {
+    	var jarr = new Array();
+    	
+        // 선택된 체크박스에서 goodsNo 추출
+        $(".chkCheckBoxId:checked").each(function() {
+        	 var job = new Object();
+        	 job.id = parseInt(${loginUser.id});
+        	 job.goodsNo = $(this).val();
+        	 /* var goodsObj = { id: id , goodsNo: goodsNo }; */
+        	 jarr.push(job
+        			 );
+        });
+          
+        var confirmMessage = "선택한 발주처를 삭제하시겠습니까?";
+        if (confirm(confirmMessage)) {
+            $.ajax({
+                type: "POST",
+                url: "gdelete.do",
+                data: JSON.stringify(jarr),
+                contentType: "application/json; charset=utf-8",
+                success: function(result) {
+                    location.reload(); 
+                },
+                error: function(request, status, errorData) {
+                    console.log("error code : " + request.status
+                        + "\nMessage : " + request.responseText
+                        + "\nError : " + errorData);
+                } 
+            });      
+        } else {
+            console.log("삭제가 취소되었습니다.");
+        }
+    }
+</script>	
+		
+		
+		
+		
+		
+	<br>
 	</div>
 
-<script>
-$("#deleteButton").click(function() {
-    var selectedGoods = [];
-    var id = "${loginUser.id}"; 
-    $(".chkCheckBoxId:checked").each(function() {
-        var goodsNo = $(this).val();           
-        selectedGoods.push({ goodsNo: goodsNo, id: id }); // id 값을 함께 추가
-    });
-
-    console.log(selectedGoods);
-
-    var popupUrl = "http://localhost:8080/ssm/deletepopup.do?selectedGoods=" + encodeURIComponent(JSON.stringify(selectedGoods));
-    window.open(popupUrl, "_blank", "width=350, height=150, top=150, left=50, scrollbars=no");
-});
-</script>
 
 
 
 
 	<%-- 조회된 상품 목록 출력 --%>
 <div style="margin-left: auto; margin-right: auto; width: 1400px;">
-    <form action="/your-submit-url" method="post">
+    <form action="psearch.do" method="post">
         <table align="center" border="1" cellspacing="25" width="100%">
         	<thead>
             	<th class="table-head"><input type="checkbox" id="checkBoxAll"></th>
@@ -134,22 +215,42 @@ $("#deleteButton").click(function() {
                 <th style="text-align: center; white-space: nowrap;">원산지</th>
             </tr>
             <thead>
-            <c:forEach items="${ requestScope.list }" var="goodsPrint">
+            <c:forEach items="${requestScope.list}" var="goodsPrint" varStatus="loop">
                 <tr>               	
                 	<td class="table-data">
-                	<input type="checkbox" class="chkCheckBoxId checkbox" value="${goodsPrint.goodsNo}">
+                		<input type="checkbox" class="chkCheckBoxId checkbox" value="${goodsPrint.goodsNo}">
                 	</td>
                 	<td align="center" style="white-space: nowrap;">${ goodsPrint.pdName }</td>
-                    <td align="center" style="white-space: nowrap;">${ goodsPrint.pdPhone }</td>
-                	<td align="center" style="white-space: nowrap;">${ goodsPrint.pdAddress }</td>
-                    <td align="center" style="white-space: nowrap;">${ goodsPrint.goodsName }</td>
                     <td align="center" style="white-space: nowrap;">
-                        <div style="display: inline-block;">            
-                            <input type="number" value="${ goodsPrint.goodsPrice }" name="goodsPrice" style="width: 50px; margin-right: 0px; vertical-align: middle;" />
-                        </div>
-                    </td>
-                    <td align="center" style="white-space: nowrap;">${ goodsPrint.goodsUnit }</td>
-                    <td align="center" style="white-space: nowrap;">${ goodsPrint.nation }</td>     
+						<div style="display: inline-block;">
+							<input type="text" id="pdPhone_${loop.index}"
+										value="${goodsPrint.pdPhone}" name="pdPhone"
+										style="width: 100px; margin-right: 0px; vertical-align: middle;" />
+						</div>
+					</td>
+                	<td align="center" style="white-space: nowrap;">
+						<div style="display: inline-block;">
+							<input type="text" id="pdAddress_${loop.index}"
+										value="${goodsPrint.pdAddress}" name="pdAddress"
+										style="width: 250px; margin-right: 0px; vertical-align: middle;" />
+						</div>
+					</td>
+                    <td align="center" style="white-space: nowrap;">${ goodsPrint.goodsName }</td>
+                    <td align="center" style="white-space: nowrap;">${ goodsPrint.goodsPrice }</td>
+                    <td align="center" style="white-space: nowrap;">
+						<div style="display: inline-block;">
+							<input type="text" id="goodsUnit_${loop.index}"
+										value="${goodsPrint.goodsUnit}" name="goodsUnit"
+										style="width: 70px; margin-right: 0px; vertical-align: middle;" />
+						</div>
+					</td>        
+                    <td align="center" style="white-space: nowrap;">
+						<div style="display: inline-block;">
+							<input type="text" id="nation_${loop.index}"
+										value="${goodsPrint.nation}" name="nation"
+										style="width: 70px; margin-right: 0px; vertical-align: middle;" />
+						</div>
+					</td>       
                 </tr>
             </c:forEach>
         </table>
