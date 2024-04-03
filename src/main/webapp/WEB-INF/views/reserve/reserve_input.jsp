@@ -10,6 +10,27 @@
 <link rel="stylesheet" href="resources/css/reserve/reserve.css" />
 <title>ssm</title>
 <script type="text/javascript" src="/ssm/resources/js/jquery-3.7.0.min.js"></script>
+<script type="text/javascript">
+$(function(){
+	var today = new Date();
+	
+	var year = today.getFullYear();
+	var month = ('0' + (today.getMonth() + 1)).slice(-2);
+	var day = ('0' + today.getDate()).slice(-2);
+	var todayFormat = year + '-' + month  + '-' + day;
+	
+	var hours = ('0' + today.getHours()).slice(-2); 
+	var minutes = ('0' + today.getMinutes()).slice(-2);
+	var seconds = ('0' + today.getSeconds()).slice(-2);
+	
+	var timeFormat = hours + ':' + minutes  + ':' + seconds;
+	
+	$('#rsrvdate').val(todayFormat);
+	$('#rsrvtime').val(timeFormat);
+	//document.getElementById('currentTime').value = new Date().toISOString().slice(11, 16);
+	//document.getElementById('rsrvdate').value= new Date().toISOString().slice(0, 10);
+});
+</script>
 </head>
 <body>
 <c:import url="/WEB-INF/views/common/header.jsp" />
@@ -18,10 +39,10 @@
 <form action="rsrvinsert.do" method="post">
 	<table align="center" width="500" border="1" cellspacing="0" cellpadding="5">
 		<tr><th>예약일자</th>
-			<td><input type="text" name="rsrvDate"></td>
+			<td><input type="text" id="rsrvdate" name="rsrvDate"></td>
 		</tr>
 		<tr><th>예약시간</th>
-			<td><input type="text" name="rsrvTime"></td>
+			<td><input type="text" id="rsrvtime" name="rsrvTime"></td>
 		</tr>
 		<tr><th>예약자명</th>
 			<td><input type="text" name="rsrvName"></td>
