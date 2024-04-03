@@ -62,14 +62,11 @@ $(function(){
 }
 
 @media print {
-	input {
-		visibility: none !important;
-	}
 
-	/* 입력된 값이 있는 입력(input) 태그는 보이도록 합니다 */
-	input[value] {
-		visibility: visible !important;
-	}
+    /* 입력된 값이 있는 입력(input) 태그는 보이도록 합니다 */
+    input[value] {
+        visibility: visible !important;
+    }
 	header, footer, sidebar, button {
 		display: none !important;
 	}
@@ -117,13 +114,13 @@ $(function(){
 	
 <div style="text-align: center;">
 	<button onclick="exportToExcel()">엑셀로 저장</button>&nbsp;
-	<button onclick="printTable()">인쇄 및 pdf로 저장</button>
+	<button onclick="printTable()">인쇄 및 pdf로 저장</button>&nbsp;
+	<button onclick="calcSum()">합계</button>&nbsp;
 </div>
 <br>	
 
 
 <div style="margin-left: auto; margin-right: auto; width: 1400px;">
-
         <table id=specifysave align="center" border="1" cellspacing="25" width="100%">
         	<tr>
                 <th style="text-align: center; white-space: nowrap;">일자</th>
@@ -131,7 +128,6 @@ $(function(){
         			<input type="date" id="date" name="date" required>
         		</th>
                 <th style="text-align: center; white-space: nowrap;">성명</th>
-                <th style="text-align: center; white-space: nowrap;"></th>
                 <th style="text-align: center; white-space: nowrap;">받는분</th>
                 <th style="text-align: center; white-space: nowrap;">성명</th>
             </tr>
@@ -142,21 +138,17 @@ $(function(){
 				</td>
                 <td style="text-align: center; white-space: nowrap;">
 					<input type="text" id="username" name="username">
-			    </td>
-                <td style="text-align: center; white-space: nowrap;"></td>
-             
+			    </td>         
                 <td style="text-align: center; white-space: nowrap;">${ goodsPrint.pdName }</td>
                 <td style="text-align: center; white-space: nowrap;">
 					<input type="text" id="producer" name="producer">
-				</td>
-            
+				</td>           
             </tr>
             <tr>             	
                 <td style="text-align: center; white-space: nowrap;">주소</td>
                 <td colspan='2' style="text-align: center; white-space: nowrap;">
 					<input type="text" id="address" name="address">
 				</td>  
-                <td style="text-align: center; white-space: nowrap;"></td>
                 <td colspan='2' style="text-align: center; white-space: nowrap;">${ goodsPrint.pdAddress }</td>
             </tr>
             <tr>             	
@@ -165,7 +157,6 @@ $(function(){
                 <td style="text-align: center; white-space: nowrap;">수량</td>
                 <td style="text-align: center; white-space: nowrap;">단가</td>
                 <td style="text-align: center; white-space: nowrap;">금액</td>
-                <td style="text-align: center; white-space: nowrap;">총금액</td>
             </tr>
 			<c:forEach items="${list}" var="goodsPrint" varStatus="loop">
             <tr>
@@ -178,12 +169,17 @@ $(function(){
                 <td align="center" style="white-space: nowrap;">
                 	<span id="goodstotalprice_${ loop.index }"></span>
                 </td>
-                <td align="center" style="white-space: nowrap;">${ goodsPrint.goodsPrice }</td>
             </tr>
             </c:forEach>   
+            <tr>
+            	<td style="text-align: center; white-space: nowrap;">합계</td>
+            	<td style="text-align: center; white-space: nowrap;"></td>
+            	<td style="text-align: center; white-space: nowrap;"></td>
+            	<td style="text-align: center; white-space: nowrap;"></td>
+            	<td id="sum" style="text-align: center; white-space: nowrap;"></td>
+            </tr>
         </table>
 </div>
-
 
 <!-- 상품당 총 가격 덧셈 -->
 <script>
@@ -191,7 +187,7 @@ $(function(){
 	var quantityInput_${loop.index} = document.getElementById('oq_${loop.index}');
 	var goodsPriceCell_${loop.index} = document.getElementById('goodsPriceCell_${loop.index}');
 	var goodstotalprice_${loop.index} = document.getElementById('goodstotalprice_${loop.index}');
-
+	
 	quantityInput_${loop.index}.addEventListener('change', function() {
     // 사용자가 입력한 수량
     	var quantity = parseInt(this.value);
@@ -200,12 +196,28 @@ $(function(){
 
     // 총 가격 계산
     	var totalPrice = quantity * goodsPrice;
+    	
     // 결과를 화면에 출력
-    	goodstotalprice_${loop.index}.textContent = totalPrice;     
+    	goodstotalprice_${loop.index}.textContent = totalPrice;  
     });
 </c:forEach>
 </script>
 
+<script>
+function calcSum() {
+	  // table element 찾기
+	  const table = document.getElementById('specifysave');
+	  
+	  // 합계 계산
+	  let sum = 0;
+	  for(let i = 4; i < table.rows.length; i++)  {
+	    sum += Number(table.rows[i].cells[4].textContent);
+	  }
+	  
+	  // 합계 출력
+	  document.getElementById('sum').textContent = sum;	  
+	}
+</script>
 
 
 
@@ -246,25 +258,11 @@ $(function(){
 <!-- 출력 -->
 <script>
         function printTable() {
-        	
-        	
-        	
+	
             var table = document.getElementById("specifysave");
-
-            // 모든 요소를 보이지 않도록 설정
-            var elements = document.body.getElementsByTagName("*");
-           
-
-            // 테이블만 보이도록 설정
-            table.style.display = "table";
 
             // 인쇄 실행
             window.print();
-
-            // 인쇄 후 모든 요소를 다시 보이도록 설정
-            for (var i = 0; i < elements.length; i++) {
-                elements[i].style.display = "";
-            }
         }
 </script>
 <br>
