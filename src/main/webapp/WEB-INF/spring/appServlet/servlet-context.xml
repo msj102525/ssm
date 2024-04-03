@@ -52,29 +52,29 @@
 	<aop:aspectj-autoproxy proxy-target-class="true" />
 	
 	<!-- mvc 탭에서 등록 처리함 -->
-	<!-- <interceptors>
-		로그인 상태에서 요청하는 서비스 체크용 인터셉터
+	<interceptors>
+		<!-- 로그인 상태에서 요청하는 서비스 체크용 인터셉터 -->
 		<interceptor>
 			<mapping path="/bwform.do" />
 			<mapping path="/myinfo.do" />
 			<mapping path="/moveup.do" />
 			<mapping path="/breplyform.do" />
 		
-			<beans:bean class="org.myweb.first.common.intercepter.LoginCheckIntercepter" 
+			<beans:bean class="com.sdm.ssm.common.intercepter.LoginCheckIntercepter" 
 						id="loginCheckIntercepter" />
 		</interceptor>
 		
-		인터셉터 작동 위치 확인용 로그 인터셉터
+		<!-- 인터셉터 작동 위치 확인용 로그 인터셉터 -->
 		<interceptor>
-			모든 요청
+			<!-- 모든 요청 -->
 			<mapping path="/**" />
-			제외 처리
+			<!-- 제외 처리 -->
 			<exclude-mapping path="/main.do" />
 			
-			<beans:bean class="org.myweb.first.common.intercepter.LoggerIntercepter" 
+			<beans:bean class="com.sdm.ssm.common.intercepter.LoggerInterceptor" 
 			id="loggerIntercepter" />
 		</interceptor>
-	</interceptors> -->
+	</interceptors>
 	
 	
 </beans:beans>
