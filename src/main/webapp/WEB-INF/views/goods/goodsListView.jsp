@@ -95,32 +95,56 @@ $('#checkBoxAll').click(function () {
 					value="${goodsPrint.goodsNo}">
 			</c:forEach>		
 		</form>
-<br>	
-<button onclick="checkSelectedGoods();">확인</button>			
+<br>		
 <button onclick="updateSelectedGoods();">저장</button>			
 <button onclick="deleteSelectedGoods();">삭제</button>
 <button onclick="javascript:location.href='${pageContext.servletContext.contextPath}/glist.do?page=1&id=${loginUser.id}';">목록</button>
 <br>
 
+<!-- 저장 버튼 -->
 <script>
-    function checkSelectedGoods() {
-        var selectedGoodsNos = [];
-        var id = document.getElementById("id").value;
+    function updateSelectedGoods() {
+        // 체크된 행을 가져오기
+        var checkedRows = document.querySelectorAll('.chkCheckBoxId:checked');
         
-        // 선택된 체크박스에서 goodsNo 추출
-        $(".chkCheckBoxId:checked").each(function() {
-            selectedGoodsNos.push($(this).val());
+        // 변경된 내용을 저장할 배열
+        var updatedGoods = [];
+
+        // 각 체크된 행에 대해
+        checkedRows.forEach(function(row) {
+            var rowIndex = row.closest('tr').rowIndex - 1; // 첫 번째 행은 헤더이므로 -1
+            var rowData = {
+                id: ${loginUser.id}, // loginUser.id 값 가져오기
+                goodsNo: row.value, // 체크된 체크박스의 값(상품 번호) 가져오기
+                pdQuantity: document.getElementById('pdQuantity_' + rowIndex).value,
+                goodsPrice: document.getElementById('goodsPrice_' + rowIndex).value,
+                minOrderQuantity: document.getElementById('minOrderQuantity_' + rowIndex).value,
+                minAlarmQuantity: document.getElementById('minAlarmQuantity_' + rowIndex).value
+            };
+            updatedGoods.push(rowData);
         });
 
-        // ID와 선택된 goodsNo를 확인하는 알럿 표시
-        var message = "ID: " + id + "\n";
-        message += "선택된 goodsNo: ";
-        if (selectedGoodsNos.length > 0) {
-            message += selectedGoodsNos.join(", ");
+        // 알림 대화 상자 표시
+        var confirmMessage = "변경된 내용을 저장 하시겠습니까?";
+        if (confirm(confirmMessage)) {
+            // 변경된 내용을 서버로 전송
+            $.ajax({
+                type: "POST",
+                url: "gupdate.do",
+                data: JSON.stringify(updatedGoods),
+                contentType: "application/json; charset=utf-8",
+                success: function(result) {
+                    location.reload(); 
+                },
+                error: function(request, status, errorData) {
+                    console.log("error code : " + request.status
+                        + "\nMessage : " + request.responseText
+                        + "\nError : " + errorData);
+                } 
+            });  
         } else {
-            message += "없음";
+            console.log("수정이 취소되었습니다.");
         }
-        alert(message);
     }
 </script>
 
@@ -136,28 +160,30 @@ $('#checkBoxAll').click(function () {
         	 job.id = parseInt(${loginUser.id});
         	 job.goodsNo = $(this).val();
         	 /* var goodsObj = { id: id , goodsNo: goodsNo }; */
-        	 jarr.push(job
-        			 );
+        	 jarr.push(job);
         });
           
-        $.ajax({
-            type  : "POST",
-            url    : "gdelete.do",
-            data: JSON.stringify(jarr),
-            contentType: "application/json; charset=utf-8",
-            success: function(result){
-            	location.reload(); 
-            },
-            error: function(request, status, errorData){
-            	console.log(jarr); 
-            	console.log(jarr); 
-				console.log("error code : " + request.status
-						+ "\nMessage : " + request.responseText
-						+ "\nError : " + errorData);
-			} 
-         });      
+        var confirmMessage = "선택한 상품을 삭제하시겠습니까?";
+        if (confirm(confirmMessage)) {
+            $.ajax({
+                type: "POST",
+                url: "gdelete.do",
+                data: JSON.stringify(jarr),
+                contentType: "application/json; charset=utf-8",
+                success: function(result) {
+                    location.reload(); 
+                },
+                error: function(request, status, errorData) {
+                    console.log("error code : " + request.status
+                        + "\nMessage : " + request.responseText
+                        + "\nError : " + errorData);
+                } 
+            });      
+        } else {
+            console.log("삭제가 취소되었습니다.");
+        }
     }
-</script>		
+</script>	
 		
 		
 		
@@ -166,87 +192,71 @@ $('#checkBoxAll').click(function () {
 		<br>
 	</div>
 
-<!-- <script>
-$("#deleteButton").click(function() {
-    var selectedGoods = [];
-    var id = parseInt($("#id").val());
-    console.log("아이이이" + id);
-    selectedGoods.push(id);
-    $(".chkCheckBoxId:checked").each(function() {
-        var goodsNo = $(this).val();           
-        selectedGoods.push(goodsNo); // id 값을 함께 추가
-    });
-    
-    console.log(selectedGoods);
-
-    var popupUrl = "http://localhost:8080/ssm/deletepopup.do?selectedGoods=" + encodeURIComponent(JSON.stringify(selectedGoods));
-    window.open(popupUrl, "_blank", "width=350, height=150, top=150, left=50, scrollbars=no");
-});
-</script> -->
-
-
-
 
 	<%-- 조회된 상품 목록 출력 --%>
 <div style="margin-left: auto; margin-right: auto; width: 1400px;">
-    <form action="gsearch.do" method="post">
-    	<input type="hidden" id = "id" name="id", value="${ loginUser.id }">
-        <table align="center" border="1" cellspacing="25" width="100%">
-        	<thead>
-            	<th class="table-head"><input type="checkbox" id="checkBoxAll"></th>
-                <th style="text-align: center; white-space: nowrap;">번호</th>
-                <th style="text-align: center; white-space: nowrap;">상품명</th>
-                <th style="text-align: center; white-space: nowrap;">수량</th>
-                <th style="text-align: center; white-space: nowrap;">단위</th>
-                <th style="text-align: center; white-space: nowrap;">가격</th>
-                <th style="text-align: center; white-space: nowrap;">발주 최소 수량</th>
-                <th style="text-align: center; white-space: nowrap;">알림 최소 수량</th>
-                <th style="text-align: center; white-space: nowrap;">발주처</th>
-                <th style="text-align: center; white-space: nowrap;">발주 연락처</th>
-                <th style="text-align: center; white-space: nowrap;">원산지</th>
-            </tr>
-            <thead>
-            <c:forEach items="${ requestScope.list }" var="goodsPrint">
-                <tr>               	
-                	<td class="table-data">
-                	<input type="checkbox" class="chkCheckBoxId" value="${goodsPrint.goodsNo}">
-                	</td>
-                    <td align="center" style="white-space: nowrap;">${ goodsPrint.goodsNo }</td>
-                    <td align="center" style="white-space: nowrap;">${ goodsPrint.goodsName }</td>
-                    <td align="center" style="white-space: nowrap;">
-                        <div style="display: inline-block;">            
-                            <input type="number" value="${ goodsPrint.pdQuantity }" name="pdQuantity" style="width: 50px; margin-right: 0px; vertical-align: middle;" />
-                            <span style="vertical-align: middle;">${ goodsPrint.goodsUnit }</span>
-                        </div>
-                    </td>
-                    <td align="center" style="white-space: nowrap;">${ goodsPrint.goodsUnit }</td>
-                    
-                    <td align="center" style="white-space: nowrap;">
-                        <div style="display: inline-block;">            
-                            <input type="number" value="${ goodsPrint.goodsPrice }" name="goodsPrice" style="width: 50px; margin-right: 0px; vertical-align: middle;" />
-                        </div>
-                    </td>
-                    
-                    <td align="center" style="white-space: nowrap;">
-                        <div style="display: inline-block;">
-                            <input type="number" value="${ goodsPrint.minOrderQuantity }" name="minOrderQuantity" style="width: 50px; margin-right: 5px; vertical-align: middle;" />
-                            <span style="vertical-align: middle;">${ goodsPrint.goodsUnit }</span>
-                        </div>
-                    </td>
-                    <td align="center" style="white-space: nowrap;">
-                        <div style="display: inline-block;">
-                            <input type="number" value="${ goodsPrint.minAlarmQuantity }" name="minAlarmQuantity" style="width: 50px; margin-right: 5px; vertical-align: middle;" />
-                            <span style="vertical-align: middle;">${ goodsPrint.goodsUnit }</span>
-                        </div>
-                    </td>
-                    <td align="center" style="white-space: nowrap;">${ goodsPrint.pdName }</td>
-                    <td align="center" style="white-space: nowrap;">${ goodsPrint.pdPhone }</td>
-                    <td align="center" style="white-space: nowrap;">${ goodsPrint.nation }</td>
-                </tr>
-            </c:forEach>
-        </table>
-    </form>
-</div>
+		<form action="gsearch.do" method="post">
+			<input type="hidden" id="id" name="id" , value="${ loginUser.id }">
+			<table align="center" border="1" cellspacing="25" width="100%">
+				<thead>
+					<th class="table-head"><input type="checkbox" id="checkBoxAll"></th>
+					<th style="text-align: center; white-space: nowrap;">번호</th>
+					<th style="text-align: center; white-space: nowrap;">상품명</th>
+					<th style="text-align: center; white-space: nowrap;">수량</th>
+					<th style="text-align: center; white-space: nowrap;">단위</th>
+					<th style="text-align: center; white-space: nowrap;">가격</th>
+					<th style="text-align: center; white-space: nowrap;">발주 최소 수량</th>
+					<th style="text-align: center; white-space: nowrap;">알림 최소 수량</th>
+					<th style="text-align: center; white-space: nowrap;">발주처</th>
+					<th style="text-align: center; white-space: nowrap;">발주 연락처</th>
+					<th style="text-align: center; white-space: nowrap;">원산지</th>
+					</tr>
+				<thead>
+					<c:forEach items="${requestScope.list}" var="goodsPrint" varStatus="loop">
+						<tr>
+							<td class="table-data"><input type="checkbox"
+								class="chkCheckBoxId" value="${goodsPrint.goodsNo}"></td>
+							<td align="center" style="white-space: nowrap;">${goodsPrint.goodsNo}</td>
+							<td align="center" style="white-space: nowrap;">${goodsPrint.goodsName}</td>
+							<td align="center" style="white-space: nowrap;">
+								<div style="display: inline-block;">
+									<input type="number" id="pdQuantity_${loop.index}"
+										value="${goodsPrint.pdQuantity}" name="pdQuantity"
+										style="width: 70px; margin-right: 0px; vertical-align: middle;" />
+								</div>
+							</td>
+							<td align="center" style="white-space: nowrap;">${goodsPrint.goodsUnit}</td>
+
+							<td align="center" style="white-space: nowrap;">
+								<div style="display: inline-block;">
+									<input type="number" id="goodsPrice_${loop.index}"
+										value="${goodsPrint.goodsPrice}" name="goodsPrice"
+										style="width: 70px; margin-right: 0px; vertical-align: middle;" />
+								</div>
+							</td>
+
+							<td align="center" style="white-space: nowrap;">
+								<div style="display: inline-block;">
+									<input type="number" id="minOrderQuantity_${loop.index}"
+										value="${goodsPrint.minOrderQuantity}" name="minOrderQuantity"
+										style="width: 70px; margin-right: 5px; vertical-align: middle;" />
+								</div>
+							</td>
+							<td align="center" style="white-space: nowrap;">
+								<div style="display: inline-block;">
+									<input type="number" id="minAlarmQuantity_${loop.index}"
+										value="${goodsPrint.minAlarmQuantity}" name="minAlarmQuantity"
+										style="width: 70px; margin-right: 5px; vertical-align: middle;" />
+								</div>
+							</td>
+							<td align="center" style="white-space: nowrap;">${goodsPrint.pdName}</td>
+							<td align="center" style="white-space: nowrap;">${goodsPrint.pdPhone}</td>
+							<td align="center" style="white-space: nowrap;">${goodsPrint.nation}</td>
+						</tr>
+					</c:forEach>
+			</table>
+		</form>
+	</div>
 
 <br>
 <c:import url="/WEB-INF/views/common/pagingView.jsp" />

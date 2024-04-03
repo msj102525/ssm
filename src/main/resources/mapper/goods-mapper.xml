@@ -31,6 +31,7 @@
 		<result property="pdPhone" column="PD_PHONE" />
 		<result property="goodsPrice" column="GOODS_PRICE" />
 		<result property="nation" column="NATION" />
+		<result property="pdAddress" column="PD_ADDRESS" />
 	</resultMap>
 
 
@@ -47,11 +48,11 @@
 		    (SELECT 
     			ROWNUM rnum, GOODS_NO, GOODS_NAME, PD_QUANTITY, GOODS_UNIT, 
     			MIN_ORDER_QUANTITY, MIN_ALARM_QUANTITY, 
-    			PD_NAME, PD_PHONE, GOODS_PRICE, NATION 
+    			PD_NAME, PD_PHONE, GOODS_PRICE, NATION, PD_ADDRESS 
 			FROM (SELECT 
         			  GOODS_NO, GOODS_NAME, PD_QUANTITY, GOODS_UNIT, 
          			  MIN_ORDER_QUANTITY, MIN_ALARM_QUANTITY, 
-        			  PD_NAME, PD_PHONE, GOODS_PRICE, NATION
+        			  PD_NAME, PD_PHONE, GOODS_PRICE, NATION, PD_ADDRESS
     				  FROM TB_GOODS_${ id } 
     				  LEFT JOIN TB_INVENTORY_${ id } USING (GOODS_NO)
     				  LEFT JOIN TB_PRODUCE_${ id } USING (GOODS_NO)
@@ -73,11 +74,11 @@
 		    (SELECT 
     			ROWNUM rnum, GOODS_NO, GOODS_NAME, PD_QUANTITY, GOODS_UNIT, 
     			MIN_ORDER_QUANTITY, MIN_ALARM_QUANTITY, 
-    			PD_NAME, PD_PHONE, GOODS_PRICE, NATION 
+    			PD_NAME, PD_PHONE, GOODS_PRICE, NATION, PD_ADDRESS 
 			FROM (SELECT 
         			  GOODS_NO, GOODS_NAME, PD_QUANTITY, GOODS_UNIT, 
          			  MIN_ORDER_QUANTITY, MIN_ALARM_QUANTITY, 
-        			  PD_NAME, PD_PHONE, GOODS_PRICE, NATION
+        			  PD_NAME, PD_PHONE, GOODS_PRICE, NATION, PD_ADDRESS
     				  FROM TB_GOODS_${ id }
     				  LEFT JOIN TB_INVENTORY_${ id } USING (GOODS_NO)
     				  LEFT JOIN TB_PRODUCE_${ id } USING (GOODS_NO)
@@ -101,11 +102,11 @@
 		    (SELECT 
     			ROWNUM rnum, GOODS_NO, GOODS_NAME, PD_QUANTITY, GOODS_UNIT, 
     			MIN_ORDER_QUANTITY, MIN_ALARM_QUANTITY, 
-    			PD_NAME, PD_PHONE, GOODS_PRICE, NATION 
+    			PD_NAME, PD_PHONE, GOODS_PRICE, NATION, PD_ADDRESS 
 			FROM (SELECT 
         			  GOODS_NO, GOODS_NAME, PD_QUANTITY, GOODS_UNIT, 
          			  MIN_ORDER_QUANTITY, MIN_ALARM_QUANTITY, 
-        			  PD_NAME, PD_PHONE, GOODS_PRICE, NATION
+        			  PD_NAME, PD_PHONE, GOODS_PRICE, NATION, PD_ADDRESS
     				  FROM TB_GOODS_${ id }
     				  LEFT JOIN TB_INVENTORY_${ id } USING (GOODS_NO)
     				  LEFT JOIN TB_PRODUCE_${ id } USING (GOODS_NO)
@@ -125,7 +126,7 @@
     		   #{goodsName}, #{goodsUnit}, #{goodsPrice}, #{nation})
     
     INTO TB_INVENTORY_${id} (GOODS_NO, PD_QUANTITY, MIN_ALARM_QUANTITY, MIN_ORDER_QUANTITY)
-    VALUES ((select max(GOODS_NO)+1 from TB_GOODS_${ id }), 
+    VALUES (select max(GOODS_NO)+1 from TB_GOODS_${ id }), 
     			#{pdQuantity}, 
     			#{minAlarmQuantity}, 
     			#{minOrderQuantity})
@@ -151,11 +152,11 @@
 		    (SELECT 
     			ROWNUM rnum, GOODS_NO, GOODS_NAME, PD_QUANTITY, GOODS_UNIT, 
     			MIN_ORDER_QUANTITY, MIN_ALARM_QUANTITY, 
-    			PD_NAME, PD_PHONE, GOODS_PRICE, NATION 
+    			PD_NAME, PD_PHONE, GOODS_PRICE, NATION, PD_ADDRESS 
 			FROM (SELECT 
         			  GOODS_NO, GOODS_NAME, PD_QUANTITY, GOODS_UNIT, 
          			  MIN_ORDER_QUANTITY, MIN_ALARM_QUANTITY, 
-        			  PD_NAME, PD_PHONE, GOODS_PRICE, NATION
+        			  PD_NAME, PD_PHONE, GOODS_PRICE, NATION, PD_ADDRESS
     				  FROM TB_GOODS_${ id } 
     				  LEFT JOIN TB_INVENTORY_${ id } USING (GOODS_NO)
     				  LEFT JOIN TB_PRODUCE_${ id } USING (GOODS_NO)
@@ -168,12 +169,12 @@
 	<select id="selectSSearchGoodsName" parameterType="Search" resultMap="GoodsResultList">
 	   SELECT GOODS_NO, GOODS_NAME, PD_QUANTITY, GOODS_UNIT, 
          		  MIN_ORDER_QUANTITY, MIN_ALARM_QUANTITY, 
-        		  PD_NAME, PD_PHONE, GOODS_PRICE, NATION
+        		  PD_NAME, PD_PHONE, GOODS_PRICE, NATION, PD_ADDRESS
        FROM TB_GOODS_${ id }
        LEFT JOIN TB_INVENTORY_${ id } USING (GOODS_NO)
        LEFT JOIN TB_PRODUCE_${ id } USING (GOODS_NO)
        WHERE ID = ${ id }
-       AND GOODS_NAME LIKE '%' || #{ keyword } || '%'
+       AND GOODS_NAME = #{ keyword } 
        ORDER BY GOODS_NO ASC 
 	</select>
 	
@@ -181,14 +182,77 @@
 	<select id="selectSSearchpdName" parameterType="Search" resultMap="GoodsResultList">
 	   SELECT GOODS_NO, GOODS_NAME, PD_QUANTITY, GOODS_UNIT, 
          		  MIN_ORDER_QUANTITY, MIN_ALARM_QUANTITY, 
-        		  PD_NAME, PD_PHONE, GOODS_PRICE, NATION
+        		  PD_NAME, PD_PHONE, GOODS_PRICE, NATION, PD_ADDRESS
        FROM TB_GOODS_${ id }
        LEFT JOIN TB_INVENTORY_${ id } USING (GOODS_NO)
        LEFT JOIN TB_PRODUCE_${ id } USING (GOODS_NO)
        WHERE ID = ${ id }
-       AND PD_NAME LIKE '%' || #{ keyword } || '%'
+       AND PD_NAME = #{ keyword } 
        ORDER BY GOODS_NO ASC 
 	</select>
+	
+	
+	
+	<!-- 발주처 등록 -->
+	<insert id="insertProduce" parameterType="goodsPrint">
+	INSERT ALL
+    
+    INTO TB_GOODS_${id} (ID, GOODS_NO, GOODS_NAME, GOODS_UNIT, GOODS_PRICE, NATION)
+    VALUES (${id}, 
+    		   (select max(GOODS_NO)+1 from TB_GOODS_${ id }), 
+    		   #{goodsName}, #{goodsUnit}, #{goodsPrice}, #{nation})
+    
+    INTO TB_INVENTORY_${id} (GOODS_NO, PD_QUANTITY )
+    VALUES ((select max(GOODS_NO)+1 from TB_GOODS_${ id }), #{pdQuantity})
+  
+    INTO TB_PRODUCE_${id} (GOODS_NO, PD_NO, PD_NAME, PD_PHONE, PD_ADDRESS)
+    VALUES ((select max(GOODS_NO)+1 from TB_GOODS_${ id }), 
+    			(select max(PD_NO)+1 from TB_PRODUCE_${ id }),
+    			#{pdName},
+    			#{pdPhone},
+    			#{pdAddress})
+
+	SELECT * FROM DUAL
+	</insert>
+	
+	<!-- 발주처 제거 -->
+	<delete id="deleteProduce" parameterType="goodsPrint" >
+	DELETE FROM TB_GOODS_${id}
+	WHERE GOODS_NO = #{goodsNo}
+	</delete>
+	
+	<!-- 상품 수정 - 상품 테이블 -->
+	<update id="updateGoodsGT" parameterType="goodsPrint" >
+	UPDATE TB_GOODS_${id} 
+	SET GOODS_PRICE = #{goodsPrice}
+	WHERE GOODS_NO = #{ goodsNo }
+	</update>
+	
+	<!-- 상품 수정 - 재고 테이블 -->
+	<update id="updateGoodsIT" parameterType="goodsPrint" >
+	UPDATE TB_INVENTORY_${id} 
+	SET PD_QUANTITY = #{pdQuantity},
+		  MIN_ORDER_QUANTITY = #{minOrderQuantity},
+		  MIN_ALARM_QUANTITY = #{minOrderQuantity}
+	WHERE GOODS_NO = #{ goodsNo }
+	</update>
+	
+	<!-- 발주처 수정 - 상품 테이블 -->
+	<update id="updateProduceGT" parameterType="goodsPrint" >
+	UPDATE TB_GOODS_${id} 
+	SET GOODS_UNIT = #{goodsUnit},
+		  NATION = #{nation}
+	WHERE GOODS_NO = #{ goodsNo }
+	</update>
+	
+	<!-- 발주처 수정 - 발주처 테이블 -->
+	<update id="updateProducePT" parameterType="goodsPrint" >
+	UPDATE TB_PRODUCE_${id} 
+	SET PD_PHONE = #{pdPhone},
+		  PD_ADDRESS = #{pdAddress}
+	WHERE GOODS_NO = #{ goodsNo }
+	</update>
+	
 	
 	
 </mapper>

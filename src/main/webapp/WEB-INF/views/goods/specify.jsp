@@ -9,7 +9,6 @@
 	<c:set var="nowpage" value="${requestScope.currentPage }" />
 </c:if>
 
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -41,6 +40,23 @@ $(function(){
 
 </script>
 
+<script>
+    var pdName = '';
+    var pdAddress = '';
+    
+    <c:forEach items="${list}" var="goodsPrint">
+        pdName = '${goodsPrint.pdName}';
+        pdAddress = '${goodsPrint.pdAddress}';
+        // 필요한 경우 다른 속성도 동일한 방식으로 설정할 수 있습니다.
+    </c:forEach>
+
+    // 페이지 로드 시 실행되는 함수
+    window.onload = function() {
+        // 알림으로 성명과 주소 표시
+        document.getElementById('pdNameSpan').innerText = pdName;
+        document.getElementById('pdAddressSpan').innerText = pdAddress;
+    };
+</script>
 
 </head>
 <body>
@@ -48,12 +64,11 @@ $(function(){
 
 <hr>
 <br>
-<%-- <c:import url="/WEB-INF/views/common/sidebar.jsp" /> --%>
+<c:import url="/WEB-INF/views/common/sidebar.jsp" />
 <h1 style="text-align: center;">발주 명세서</h1>
 <div style="align:center;text-align:center;">
 <br>
-<br>
-<br>
+
 </div>
 <style>
 .searchdiv {
@@ -62,14 +77,11 @@ $(function(){
 }
 
 @media print {
-
-    /* 입력된 값이 있는 입력(input) 태그는 보이도록 합니다 */
-    input[value] {
-        visibility: visible !important;
-    }
+   
 	header, footer, sidebar, button {
 		display: none !important;
 	}
+	
 	.searchdiv {
 		display: none !important;
 	}
@@ -115,13 +127,13 @@ $(function(){
 <div style="text-align: center;">
 	<button onclick="exportToExcel()">엑셀로 저장</button>&nbsp;
 	<button onclick="printTable()">인쇄 및 pdf로 저장</button>&nbsp;
-	<button onclick="calcSum()">합계</button>&nbsp;
+	
 </div>
 <br>	
 
 
 <div style="margin-left: auto; margin-right: auto; width: 1400px;">
-        <table id=specifysave align="center" border="1" cellspacing="25" width="100%">
+        <table id="specifysave" align="center" border="2" cellspacing="25" width="100%">
         	<tr>
                 <th style="text-align: center; white-space: nowrap;">일자</th>
                 <th style="text-align: center; white-space: nowrap;">
@@ -139,7 +151,9 @@ $(function(){
                 <td style="text-align: center; white-space: nowrap;">
 					<input type="text" id="username" name="username">
 			    </td>         
-                <td style="text-align: center; white-space: nowrap;">${ goodsPrint.pdName }</td>
+                <td style="text-align: center; white-space: nowrap;">
+					<span id="pdNameSpan"></span>
+				</td>
                 <td style="text-align: center; white-space: nowrap;">
 					<input type="text" id="producer" name="producer">
 				</td>           
@@ -149,7 +163,9 @@ $(function(){
                 <td colspan='2' style="text-align: center; white-space: nowrap;">
 					<input type="text" id="address" name="address">
 				</td>  
-                <td colspan='2' style="text-align: center; white-space: nowrap;">${ goodsPrint.pdAddress }</td>
+                <td colspan='2' style="text-align: center; white-space: nowrap;">
+                	<span id="pdAddressSpan"></span>
+                </td>
             </tr>
             <tr>             	
                 <td style="text-align: center; white-space: nowrap;">상품명</td>
@@ -176,7 +192,9 @@ $(function(){
             	<td style="text-align: center; white-space: nowrap;"></td>
             	<td style="text-align: center; white-space: nowrap;"></td>
             	<td style="text-align: center; white-space: nowrap;"></td>
-            	<td id="sum" style="text-align: center; white-space: nowrap;"></td>
+            	<td id="sum" style="text-align: center; white-space: nowrap;">
+            		<button onclick="calcSum()">합계</button>
+            	</td>
             </tr>
         </table>
 </div>
@@ -210,7 +228,7 @@ function calcSum() {
 	  
 	  // 합계 계산
 	  let sum = 0;
-	  for(let i = 4; i < table.rows.length; i++)  {
+	  for(let i = 4; i < table.rows.length-1; i++)  {
 	    sum += Number(table.rows[i].cells[4].textContent);
 	  }
 	  
@@ -257,13 +275,25 @@ function calcSum() {
 
 <!-- 출력 -->
 <script>
-        function printTable() {
-	
-            var table = document.getElementById("specifysave");
+    function printTable() {
+        // 모든 input 요소의 현재 스타일 저장
+        var inputs = document.querySelectorAll('input');
+        
+        // 인쇄 전에 테두리 없애기
+        inputs.forEach(function(input) {
+            input.style.outline = 'none';
+            input.style.border = 'none';
+        });
 
-            // 인쇄 실행
-            window.print();
-        }
+        // 테이블을 인쇄
+        window.print();
+
+        // 인쇄 후에 테두리 복원
+        inputs.forEach(function(input) {
+            input.style.outline = '';
+            input.style.border = '';
+        });
+    }
 </script>
 <br>
 <br>

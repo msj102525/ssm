@@ -140,10 +140,6 @@ public class GoodsPrintController {
 		return "goods/goodsInsert";
 	}
 
-	@RequestMapping("specify.do")
-	public String moveSpecifyPage() {
-		return "goods/specify";
-	}
 	
 	
 	// 상품 추가
@@ -163,7 +159,39 @@ public class GoodsPrintController {
 			return "common/error";
 		}
 	}
-		
+	
+	// 상품 수정
+		@RequestMapping(value="gupdate.do", method=RequestMethod.POST)
+		public ResponseEntity<String> goodsupdateMethod(
+				@RequestBody String param) throws ParseException {
+
+			JSONParser jparser = new JSONParser();
+			JSONArray jarr = (JSONArray)jparser.parse(param);
+
+			for(int i = 0; i < jarr.size(); i++) {
+				JSONObject job = (JSONObject)jarr.get(i);
+				
+				GoodsPrint goodsPrint = new GoodsPrint();
+				goodsPrint.setId(Integer.parseInt(job.get("id").toString()));
+				goodsPrint.setGoodsNo(Integer.parseInt(job.get("goodsNo").toString()));
+				goodsPrint.setGoodsPrice(Integer.parseInt(job.get("goodsPrice").toString()));
+				goodsPrint.setMinOrderQuantity(Integer.parseInt(job.get("minOrderQuantity").toString()));
+				goodsPrint.setMinAlarmQuantity(Integer.parseInt(job.get("minAlarmQuantity").toString()));
+				goodsPrint.setPdQuantity(Integer.parseInt(job.get("pdQuantity").toString()));
+				// 상품 삭제 메소드 작성
+				int result1 = goodsPrintService.updateGoodsGT(goodsPrint);
+				int result2 = goodsPrintService.updateGoodsIT(goodsPrint);
+				
+				// 에러 발생 시 
+				if(result1 <= 0 && result2 <=0) {
+					return new ResponseEntity<String>("failed", HttpStatus.REQUEST_TIMEOUT);
+				}			
+			}
+			return new ResponseEntity<String>("success", HttpStatus.OK);
+		}
+	
+	
+	
 	
 	// 상품 삭제
 	@RequestMapping(value="gdelete.do", method=RequestMethod.POST)
@@ -189,6 +217,9 @@ public class GoodsPrintController {
 		}
 		return new ResponseEntity<String>("success", HttpStatus.OK);
 	}
+	
+	
+	
 	
 	
 	 // 발주처 보기 서비스
@@ -230,7 +261,102 @@ public class GoodsPrintController {
 			return "common/error";
 		}
 	}
+	
+	
+	// 발주처 추가 페이지 이동
+	@RequestMapping("pmoveinsert.do")
+	public String moveProduceInsertPage() {
+		return "goods/produceInsert";
+	}
+	
 		
+	// 발주처 추가
+	@RequestMapping(value = "pinsert.do", method = RequestMethod.POST)
+	public String InsertproduceMethod(
+			@RequestParam(name = "id") int id,
+			GoodsPrint goodsPrint, 
+			Model model) {
+		logger.info("pinsert.do : " + goodsPrint);
+			
+		goodsPrint.setId(id);
+		if(goodsPrintService.insertProduce(goodsPrint)>0) {
+			model.addAttribute("message", "새 발주처 등록 성공");
+			return "goods/produceInsert";
+			}
+		else {
+			model.addAttribute("message", "새 발주처 등록 실패");
+			return "common/error";
+		}
+	}	
+	
+	// 발주처
+	@RequestMapping(value="pupdate.do", method=RequestMethod.POST)
+	public ResponseEntity<String> produceupdateMethod(
+			@RequestBody String param) throws ParseException {
+
+		JSONParser jparser = new JSONParser();
+		JSONArray jarr = (JSONArray)jparser.parse(param);
+
+		for(int i = 0; i < jarr.size(); i++) {
+			JSONObject job = (JSONObject)jarr.get(i);
+			
+			GoodsPrint goodsPrint = new GoodsPrint();
+			goodsPrint.setId(Integer.parseInt(job.get("id").toString()));
+			goodsPrint.setGoodsNo(Integer.parseInt(job.get("goodsNo").toString()));
+			goodsPrint.setPdPhone(job.get("pdPhone").toString());
+			goodsPrint.setPdAddress(job.get("pdAddress").toString());
+			goodsPrint.setGoodsUnit(job.get("goodsUnit").toString());
+			goodsPrint.setNation(job.get("nation").toString());
+			// 상품 삭제 메소드 작성
+			int result1 = goodsPrintService.updateProduceGT(goodsPrint);
+			int result2 = goodsPrintService.updateProducePT(goodsPrint);
+			
+			// 에러 발생 시 
+			if(result1 <= 0 && result2 <=0) {
+				return new ResponseEntity<String>("failed", HttpStatus.REQUEST_TIMEOUT);
+			}			
+		}
+		return new ResponseEntity<String>("success", HttpStatus.OK);
+	}
+
+	
+	// 발주처 삭제
+	@RequestMapping(value="pdelete.do", method=RequestMethod.POST)
+	public ResponseEntity<String> producedeleteMethod(
+			@RequestBody String param) throws ParseException {
+
+		JSONParser jparser = new JSONParser();
+		JSONArray jarr = (JSONArray)jparser.parse(param);
+
+		for(int i = 0; i < jarr.size(); i++) {
+			JSONObject job = (JSONObject)jarr.get(i);
+				
+			GoodsPrint goodsPrint = new GoodsPrint();
+			goodsPrint.setId(Integer.parseInt(job.get("id").toString()));
+			goodsPrint.setGoodsNo(Integer.parseInt(job.get("goodsNo").toString()));
+			// 상품 삭제 메소드 작성
+			int result = goodsPrintService.deleteProduce(goodsPrint);
+				
+			// 에러 발생 시 
+			if(result <= 0) {
+				return new ResponseEntity<String>("failed", HttpStatus.REQUEST_TIMEOUT);
+			}			
+		}
+		return new ResponseEntity<String>("success", HttpStatus.OK);
+	}
+	
+	
+	
+	
+	
+		
+	// 명세서 보기 페이지 이동
+	@RequestMapping("specify.do")
+	public String moveSpecifyPage() {
+		return "goods/specify";
+	}
+	
+	
 	// 명세서 보기 - 상품 이름
 	@RequestMapping(value = "goodsNameSearch.do")	
 	public String goodsNameSearchMethod(
@@ -248,7 +374,8 @@ public class GoodsPrintController {
 		return "goods/specify";
 		
 	}	
-		
+	
+	// 명세서 보기 - 발주처
 	@RequestMapping(value = "pdNameSearch.do")	
 	public String pdNameSearchMethod(
 			@RequestParam(name = "id", required = false) int id,

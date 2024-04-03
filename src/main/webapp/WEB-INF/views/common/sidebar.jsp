@@ -182,6 +182,7 @@ body {
       <ul>
       	<li><a href="${pageContext.servletContext.contextPath}/gmoveinsert.do?id=${loginUser.id}">재고 등록</a></li>
         <li><a href="${pageContext.servletContext.contextPath }/glist.do?page=1&id=${loginUser.id}">재고 현황</a></li>     
+        <li><a href="${pageContext.servletContext.contextPath}/pmoveinsert.do?id=${loginUser.id}">발주처 등록</a></li>
         <li><a href="${pageContext.servletContext.contextPath}/plist.do?page=1&id=${loginUser.id}">발주처 현황</a></li>
         <li><a href="${pageContext.servletContext.contextPath}/specify.do?id=${loginUser.id}">발주 명세서</a></li>
       </ul>
