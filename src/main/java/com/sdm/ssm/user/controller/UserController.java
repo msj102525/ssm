@@ -85,7 +85,6 @@ public class UserController {
 		// accessToken에 사용자의 로그인한 모든 정보가 들어있음
 		JsonNode accessToken = node.get("access_token");
 		logger.info("2. kcallback.do : " + accessToken);
-		
 		// 사용자 정보 추출
 		JsonNode userInfo = kakaologinAuth.getKakaoUserInfo(accessToken);
 		logger.info("3. kcallback.do : " + userInfo);
