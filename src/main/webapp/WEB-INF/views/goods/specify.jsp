@@ -56,28 +56,35 @@ $(function(){
 <br>
 </div>
 <style>
-    .searchdiv {
-        margin: 0 auto; /* 좌우 마진을 자동으로 설정하여 가운데 정렬 */
-        width: fit-content; /* 내용에 맞게 자동으로 너비 설정 */
-    }
-    
-     @media print {
-            header, footer, sidebar, button {
-                display: none !important;
-            }
-            .searchdiv {
-       			 display: none !important;
-   			 }
-            table {
-            	margin: 0 auto; /* 좌우 마진을 자동으로 설정하여 가운데 정렬 */
-        		width: fit-content;
-        		page-break-inside: avoid;
-    		}
-    }
-    
+.searchdiv {
+	margin: 0 auto; /* 좌우 마진을 자동으로 설정하여 가운데 정렬 */
+	width: fit-content; /* 내용에 맞게 자동으로 너비 설정 */
+}
+
+@media print {
+	input {
+		visibility: none !important;
+	}
+
+	/* 입력된 값이 있는 입력(input) 태그는 보이도록 합니다 */
+	input[value] {
+		visibility: visible !important;
+	}
+	header, footer, sidebar, button {
+		display: none !important;
+	}
+	.searchdiv {
+		display: none !important;
+	}
+	table {
+		margin: 0 auto; /* 좌우 마진을 자동으로 설정하여 가운데 정렬 */
+		width: fit-content;
+		page-break-inside: avoid;
+	}
+}
 </style>
-<div class="searchdiv">
-	<form action="ssearch.do" method="get" id="searchForm">
+	<div class="searchdiv">
+	<form method="get" id="searchForm">
 		<input type="hidden" id = "id" name="id" value="${ loginUser.id }">
 		<select style="height: 35px; width: 80px;" name="action"id="searchselect">
 			<option value="goodsName">상품명</option>
@@ -116,7 +123,7 @@ $(function(){
 
 
 <div style="margin-left: auto; margin-right: auto; width: 1400px;">
-	<c:forEach items="${list}" var="goodsPrint">
+
         <table id=specifysave align="center" border="1" cellspacing="25" width="100%">
         	<tr>
                 <th style="text-align: center; white-space: nowrap;">일자</th>
@@ -129,7 +136,7 @@ $(function(){
                 <th style="text-align: center; white-space: nowrap;">성명</th>
             </tr>
             <tr>             	
-                <td style="text-align: center; white-space: nowrap;">상호</td>
+                <td style="text-align: center; white-space: nowrap;">상호명</td>
                 <td style="text-align: center; white-space: nowrap;">
 					<input type="text" id="storename" name="storename">
 				</td>
@@ -160,41 +167,43 @@ $(function(){
                 <td style="text-align: center; white-space: nowrap;">금액</td>
                 <td style="text-align: center; white-space: nowrap;">총금액</td>
             </tr>
-
+			<c:forEach items="${list}" var="goodsPrint" varStatus="loop">
             <tr>
              	<td align="center" style="white-space: nowrap;">${ goodsPrint.goodsName }</td>
                 <td align="center" style="white-space: nowrap;">${ goodsPrint.goodsUnit }</td>
                 <td align="center" style="white-space: nowrap;">
-                	<input type="number" id="oq" name="oq">
+                	<input type="number" id="oq_${ loop.index }" name="oq">
                 </td>
-                <td align="center" style="white-space: nowrap;">${ goodsPrint.goodsPrice }</td>
+                <td id="goodsPriceCell_${loop.index}" align="center" style="white-space: nowrap;">${ goodsPrint.goodsPrice }</td>
                 <td align="center" style="white-space: nowrap;">
-                	<span id="goodstotalprice"></span>
+                	<span id="goodstotalprice_${ loop.index }"></span>
                 </td>
                 <td align="center" style="white-space: nowrap;">${ goodsPrint.goodsPrice }</td>
             </tr>
+            </c:forEach>   
         </table>
-    </c:forEach>    
 </div>
 
 
 <!-- 상품당 총 가격 덧셈 -->
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var quantityInput = document.getElementById('oq');
-        var goodsPrice = parseInt("${ goodsPrint.goodsPrice }");
-        var gp = "${goodsPrint.goodsPrice}";
-        quantityInput.addEventListener('change', function() {
-            // 사용자가 입력한 수량
-            var quantity = parseInt(this.value);
-            // 알림창으로 값과 자료형 출력
-            alert("input type number의 값: " + quantity + ", 자료형: " + typeof quantity + "\ngoodsPrice의 값: " + goodsPrice + ", 자료형: " + typeof goodsPrice + "\ngp의 값: " + gp + ", 자료형: " + typeof gp);
-            // 총 가격 계산
-            var totalPrice = quantity * goodsPrice;
-            // 결과를 화면에 출력
-            document.getElementById('goodstotalprice').textContent = totalPrice;
-        });
+<c:forEach items="${list}" var="goodsPrint" varStatus="loop">
+	var quantityInput_${loop.index} = document.getElementById('oq_${loop.index}');
+	var goodsPriceCell_${loop.index} = document.getElementById('goodsPriceCell_${loop.index}');
+	var goodstotalprice_${loop.index} = document.getElementById('goodstotalprice_${loop.index}');
+
+	quantityInput_${loop.index}.addEventListener('change', function() {
+    // 사용자가 입력한 수량
+    	var quantity = parseInt(this.value);
+    // 상품 가격 가져오기
+    	var goodsPrice = parseFloat(goodsPriceCell_${loop.index}.textContent); // 또는 innerText 사용 가능
+
+    // 총 가격 계산
+    	var totalPrice = quantity * goodsPrice;
+    // 결과를 화면에 출력
+    	goodstotalprice_${loop.index}.textContent = totalPrice;     
     });
+</c:forEach>
 </script>
 
 
@@ -237,6 +246,9 @@ $(function(){
 <!-- 출력 -->
 <script>
         function printTable() {
+        	
+        	
+        	
             var table = document.getElementById("specifysave");
 
             // 모든 요소를 보이지 않도록 설정

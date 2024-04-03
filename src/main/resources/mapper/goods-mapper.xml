@@ -164,7 +164,7 @@
 		where rnum between #{startRow} and #{endRow}	
 	</select>
 	
-	<!-- 명세서 -->
+	<!-- 명세서 - 상품명 검색 -->
 	<select id="selectSSearchGoodsName" parameterType="Search" resultMap="GoodsResultList">
 	   SELECT GOODS_NO, GOODS_NAME, PD_QUANTITY, GOODS_UNIT, 
          		  MIN_ORDER_QUANTITY, MIN_ALARM_QUANTITY, 
@@ -177,7 +177,18 @@
        ORDER BY GOODS_NO ASC 
 	</select>
 	
-	
+	<!-- 명세서 - 발주처 검색 -->
+	<select id="selectSSearchpdName" parameterType="Search" resultMap="GoodsResultList">
+	   SELECT GOODS_NO, GOODS_NAME, PD_QUANTITY, GOODS_UNIT, 
+         		  MIN_ORDER_QUANTITY, MIN_ALARM_QUANTITY, 
+        		  PD_NAME, PD_PHONE, GOODS_PRICE, NATION
+       FROM TB_GOODS_${ id }
+       LEFT JOIN TB_INVENTORY_${ id } USING (GOODS_NO)
+       LEFT JOIN TB_PRODUCE_${ id } USING (GOODS_NO)
+       WHERE ID = ${ id }
+       AND PD_NAME LIKE '%' || #{ keyword } || '%'
+       ORDER BY GOODS_NO ASC 
+	</select>
 	
 	
 </mapper>

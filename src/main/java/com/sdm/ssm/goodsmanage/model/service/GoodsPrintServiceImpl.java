@@ -74,6 +74,11 @@ public class GoodsPrintServiceImpl implements GoodsPrintService{
 		return goodsPrintDao.selectSSearchGoodsName(search);
 	}
 
+	@Override
+	public ArrayList<GoodsPrint> selectSSearchpdName(Search search) {
+		return goodsPrintDao.selectSSearchpdName(search);
+	}
+
 	
 	
 	
