@@ -7,23 +7,17 @@
 <link rel="stylesheet" href="resources/css/user/enroll.css">
 <script type="text/javascript" src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.7.0.min.js"></script>
 <script type="text/javascript" src="${ pageContext.servletContext.contextPath }/resources/js/user/enroll.js" defer></script>
-<script type="text/javascript">
-
-/* const accountNumAuthChk = () => {
-	var tmpWindow = window.open(url: "about:blank");
-	tmpWindow.location = "https://testapi.openbanking.or.kr/oauth/2.0/authorize?"
-	+ "response_type=code&"
-	+"client_id=1841bcd5-82dd-443b-b290-9d5c2cf333bf&"
-	+"redirect_uri=http://127.0.0.1:8080/ssm/goEnroll.do&"
-	+"scope=login inquiry transfer&"
-	+"state=12312312312312312312312312312312&"
-	+"auth_type=0";
-} */
-
-
-
+<script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.1/kakao.min.js" integrity="sha384-kDljxUXHaJ9xAb2AzRd59KxjrFjzHa5TAoFQ6GbYTCAG0bjM55XohjjDT7tDDC01" crossorigin="anonymous"></script>
+<script>
 $(() => {
-	
+	const urlParams = new URLSearchParams(window.location.search);
+    const kid = urlParams.get('kid');
+    console.log(kid);
+    
+    if (!!kid) {
+        $("#userId").prop('readonly', true);
+    }
+    
 }); //doc ready;
 
 </script>
@@ -42,9 +36,9 @@ $(() => {
 					<li>
 						<ul class="sns">
 							<li>
-								<c:url var="#" value="#" />
-						 		<a href=#> 
-									 <img src="/ssm/resources/images/kakaoLB.png" alt="카카오로고" />
+								<%-- <c:url var="kakaoLogin" value="kakaoAuth.do" /> --%>
+						 		<a href=" ${kakaourl}"> 
+									 <img src="/ssm/resources/images/kakaoLB.png" alt="카카오로고"/>
 								</a>
 							</li>
 							<li>
@@ -66,8 +60,13 @@ $(() => {
 					<ul>
 						<li class="auth relative first">
 							<p></p>
-							<input type="text" name="userId" id="userId" placeholder="아이디">
-							<input type="button" value="중복검사" onclick="return dupIDCheck();">
+							<c:if test="${ empty param.kid }">
+								<input type="text" name="userId" id="userId" placeholder="아이디">
+							</c:if>
+							<c:if test="${ !empty param.kid }">
+								<input type="text" name="userId" id="userId" placeholder="아이디" value="${param.kid}">
+							</c:if>
+								<input type="button" value="중복검사" onclick="return dupIDCheck();">
 						</li>
 						<li class="relative">
 							<p></p>

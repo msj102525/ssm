@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.SessionStatus;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.sdm.ssm.user.model.service.UserService;
 import com.sdm.ssm.user.model.vo.User;
 
@@ -39,6 +40,9 @@ public class UserController {
 	
 	@Autowired
 	private BCryptPasswordEncoder bcryptPwEncoder;
+	
+	@Autowired
+	private KakaoLoginAuth kakaologinAuth;
 
 	// 뷰 페이지 내보내기
 	@RequestMapping("goLogin.do")
@@ -46,8 +50,13 @@ public class UserController {
 		return "user/login";
 	}
 
-	@RequestMapping("goEnroll.do")
-	public String goEnroll() {
+	@RequestMapping(value="goEnroll.do", method= {RequestMethod.GET, RequestMethod.POST})
+	public String goEnroll(Model model, HttpSession session) {
+		String kakaoAuthURL = kakaologinAuth.getAuthorizationUrl(session);
+		
+		model.addAttribute("kakaourl", kakaoAuthURL);
+		
+		
 		return "user/enroll";
 	}
 
@@ -63,6 +72,48 @@ public class UserController {
 			return "common/error";
 		}
 	}
+	
+	@RequestMapping(value="kcallback.do", produces="application/json",
+			method= {RequestMethod.GET, RequestMethod.POST})
+	public String kakaoLogin(@RequestParam String code, Model model, HttpSession session) {
+		logger.info("0. kcallback.do" + code);
+		
+		// 로그인 결과값을 node에 담기
+		JsonNode node = kakaologinAuth.getAcessToken(code);
+		logger.info("1. kcallback.do : " + node);
+		
+		// accessToken에 사용자의 로그인한 모든 정보가 들어있음
+		JsonNode accessToken = node.get("access_token");
+		logger.info("2. kcallback.do : " + accessToken);
+		
+		// 사용자 정보 추출
+		JsonNode userInfo = kakaologinAuth.getKakaoUserInfo(accessToken);
+		logger.info("3. kcallback.do : " + userInfo);
+		
+		// db table 에 기록할 회원정보 추출함 : 카카오 회원가입시
+		//userInfo 에서 properties 정보 추출
+		JsonNode properties = node.get("properties");
+		logger.info("4. kcallback.do : " + properties);
+		
+		JsonNode kakao_account = userInfo.path("kakao_account");
+		String kid = userInfo.path("id").asText();
+		logger.info("5. kcallback.do : " + kakao_account);
+		
+		// 유저 테이블에서 회원 정보 조회해 오기
+		User loginUser = null;
+		User kUser = userService.selectUserById(kid);
+		
+		if(kUser == null) {
+			return "redirect:goEnroll.do?kid=" + kid;
+		} else {
+			loginUser = kUser;
+			session.setAttribute("loginUser", loginUser);
+			return "redirect:main.do";
+		}
+		
+	}
+	
+	
 
 	// 서비스 메소드 실행
 	// 로그인
