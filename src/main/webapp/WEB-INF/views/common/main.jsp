@@ -97,6 +97,40 @@ $(function(){
 		</c:if>
 		<%-- 유저 로그인한 경우--%>
 		<c:if test="${ !empty loginUser &&  loginUser.adminOk ne 'Y'}">
+					<div class="section-container">
+				<%-- section1 --%>
+				<section class="sec1">
+					section1
+					<div class="inner-section">
+						<div class="left-section">left</div>
+						<div class="right-section">right</div>
+					</div>
+				</section>
+				<%-- section2 --%>
+				<section class="sec2">
+					section2
+					<div class="inner-section">
+						<div class="left-section">left</div>
+						<div class="right-section">right</div>
+					</div>
+				</section>
+				<%-- section3 --%>
+				section3
+				<section class="sec3">
+					<div class="inner-section">
+						<div class="left-section">left</div>
+						<div class="right-section">right</div>
+					</div>
+				</section>
+				<%-- section4 --%>
+				<section class="sec4">
+					section4
+					<div class="inner-section">
+						<div class="left-section">left</div>
+						<div class="right-section">right</div>
+					</div>
+				</section>
+			</div>
 		</c:if>
 		<%-- 관리자 로그인한 경우--%>
 		<c:if test="${ !empty loginUser &&  loginUser.adminOk eq 'Y'}">

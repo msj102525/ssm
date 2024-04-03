@@ -9,6 +9,18 @@
 <script type="text/javascript" src="${ pageContext.servletContext.contextPath }/resources/js/user/enroll.js" defer></script>
 <script type="text/javascript">
 
+/* const accountNumAuthChk = () => {
+	var tmpWindow = window.open(url: "about:blank");
+	tmpWindow.location = "https://testapi.openbanking.or.kr/oauth/2.0/authorize?"
+	+ "response_type=code&"
+	+"client_id=1841bcd5-82dd-443b-b290-9d5c2cf333bf&"
+	+"redirect_uri=http://127.0.0.1:8080/ssm/goEnroll.do&"
+	+"scope=login inquiry transfer&"
+	+"state=12312312312312312312312312312312&"
+	+"auth_type=0";
+} */
+
+
 
 $(() => {
 	
@@ -94,7 +106,7 @@ $(() => {
 						<li class="auth relative">
 							<p></p>
 							<input type="text" name="accountNumber" id="accountNumber" placeholder="계좌번호">
-							<input type="button" value="계좌인증">
+							<input type="button" value="계좌인증" id="accountNumBtn" onclick="accountNumChk();">
 						</li>
 						<li>
 							<input type="submit" value="회원가입" class="enroll">
