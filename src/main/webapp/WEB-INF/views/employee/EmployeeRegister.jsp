@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <link rel="stylesheet" href="resources/css/common/header.css" />
 <title>직원 등록</title>
-<style type="text/css">  
+<!-- <style type="text/css">  
 body {
     font-family: Arial, sans-serif;
     margin: 150px;
@@ -86,22 +86,67 @@ h2 {
     background-color: rgb(241, 200, 125);
 }
 
+</style> -->
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 20px;
+        color: #333;
+    }
+    h2, h4 {
+        color: #444;
+    }
+    form {
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    label {
+        display: block;
+        margin-top: 20px;
+        margin-bottom: 5px;
+    }
+    input[type="number"], input[type="text"], input[type="submit"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+        box-sizing: border-box; /* Makes sure padding does not affect total width */
+    }
+    input[type="submit"] {
+        background-color: #5cb85c;
+        color: white;
+        cursor: pointer;
+    }
+    input[type="submit"]:hover {
+        background-color: #4cae4c;
+    }
 </style>  
 </head>
 
 <body>
 <div class="center-container"> 
     <h2>직원 등록</h2>
-    <form action="Insertemp.do" method="post">
-        
+    <br>
+    <form action="insertemp.do" method="post" >
+        <table>
+         <div>
+            <label for="id">유저 번호:</label>
+            <input type="number" id="id" name="id" required>
+        </div>
         <div>
             <label for="empName">이름:</label>
             <input type="text" id="empName" name="empName"required>
         </div>
         <div>
             <label for="position">직책:</label>
-            <input type="text" id="position" name="position">
+            <input type="text" id="position" name="position">  
         </div>
+  
         <div>
             <label for="empHireDate">입사일:</label>
             <input type="date" id="empHireDate" name="empHireDate">
@@ -128,16 +173,31 @@ h2 {
                 <option value="M">남자</option>
                 <option value="F">여자</option>
             </select>
-        </div>
-        <div>
-            <label for="id">식별번호:</label>
-            <input type="number" id="id" name="id" required>
-        </div>
+        </div>           
+         <hr>
         <input type="submit" value="등록"/>
+    <%-- <script>
+        <% if (request.getAttribute("errorMessage") != null) { %>
+        
+            alert('<%= request.getAttribute("errorMessage") %>');
+        <% } %>
+        <% if (request.getAttribute("successMessage") != null) { %>
+            alert('<%= request.getAttribute("successMessage") %>');
+        <% } %>
+    </script>    --%>
+     <button onclick="location.href='mainEmpPage.do'">목록</button>
+       </table> 
     </form>
-    <script th:if="${errorMessage}">
-        alert("정보 등록 전 확인해주세요");
-    </script> 
-    </div> 
+
+<%-- 
+		<script th:if="${errorMessage}">
+    		alert([[${errorMessage}]]);
+		</script>
+		<script th:if="${successMessage}">
+    		alert([[${successMessage}]]);
+		</script> --%>
+
+	</div> 
+
 </body>
 </html>

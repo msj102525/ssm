@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+"-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="EmployeeMapper">
+	<resultMap type="Employee" id="resultList">
+		<result property="empId" column="EMP_ID" />
+		<result property="empName" column="EMP_NAME" />
+		<result property="position" column="POSITION" />
+		<result property="empHireDate" column="EMP_HIREDATE" />
+		<result property="empPhone" column="EMP_PHONE" />
+		<result property="empEmail" column="EMP_EMAIL" />
+		<result property="empAddress" column="EMP_ADDRESS" />
+		<result property="empBirthDate" column="EMP_BIRTHDATE" />
+		<result property="empGender" column="EMP_GENDER" />
+		<result property="id" column="ID" />
+	</resultMap>
+	
+	<resultMap type="Employee" id="resultEmployee">
+		<result property="empId" column="EMP_ID" />
+		<result property="empName" column="EMP_NAME" />
+		<result property="position" column="POSITION" />
+		<result property="empHireDate" column="EMP_HIREDATE" />
+		<result property="empPhone" column="EMP_PHONE" />
+		<result property="empEmail" column="EMP_EMAIL" />
+		<result property="empAddress" column="EMP_ADDRESS" />
+		<result property="empBirthDate" column="EMP_BIRTHDATE" />
+		<result property="empGender" column="EMP_GENDER" />
+		<result property="id" column="ID" />
+	</resultMap>
+	<!-- <resultMap id="employeeResultMap" type="Employee">
+    	<result property="empId" column="empId" />
+    	<result property="empName" column="empName" />
+    	<result property="position" column="position" />
+    	<result property="empHireDate" column="empHireDate" />
+    	<result property="empPhone" column="empPhone" />
+    	<result property="empEmail" column="empEmail" />
+    	<result property="empAddress" column="empAddress" />
+	</resultMap>
+	 -->
+	 <resultMap type="SalaryInfo" id="resultSalaryInfoList">
+	 	<result property="empId" column="EMP_ID"/>
+	 	<result property="bankName" column="BANK_NAME"/>
+	 	<result property="bankAccountNo" column="BANK_ACCOUNT_NO"/>
+	 	<result property="accountHolder" column="ACCOUNT_HOLDER"/>
+	 	<result property="premium" column="PREMIUM"/>
+	 	<result property="tax" column="TAX"/>
+	 	<result property="id" column="ID" />
+	 </resultMap>
+	 
+	 <resultMap type="SalaryInfo" id="resultSalaryInfo">
+	 	<result property="empId" column="EMP_ID"/>
+	 	<result property="bankName" column="BANK_NAME"/>
+	 	<result property="bankAccountNo" column="BANK_ACCOUNT_NO"/>
+	 	<result property="accountHolder" column="ACCOUNT_HOLDER"/>
+	 	<result property="premium" column="PREMIUM"/>
+	 	<result property="tax" column="TAX"/>
+	 	<result property="id" column="ID" />
+	 </resultMap>
+	 
+	 
+	<!-- 직원 전체조회 -->
+	<select id="selectAllEmployees" resultMap="Employee"> 
+		SELECT * FROM tbEmployee_${ id } 
+	</select>
+
+	<!-- 아이디 조회 -->
+	<select id="selectempId" parameterType="int" resultType="Employee">
+	SELECT * FROM tbEmployee_${ id } WHERE empId = #{empId}
+	</select>
+
+	<!-- 직원 이름으로 검색 -->
+	<select id="selectEmpName" parameterType="search" resultMap="resultEmployee">
+		SELECT * FROM tbEmployee_${ id } WHERE empName LIKE '%' || #{empName} || '%'
+	</select>
+	
+   	 <select id="selectEmployeeList" parameterType="int" resultType="Employee" >
+	    SELECT * FROM (SELECT ROWNUM rnum, empId,empName,position,empHireDate,
+	    				empPhone,empEmail,empAddress,empBirthDate,empGender			
+	  	FROM (SELECT * FROM tbEmployee
+	        	ORDER BY empId DESC));	   		 												
+	</select>
+
+	<!-- 직원정보 등록 -->
+	<insert id="insertemp" parameterType="Employee">
+		INSERT INTO tbEmployee_${ id } (empName, position, empHireDate, empPhone, empEmail,
+		empAddress, empBirthDate, empGender)
+		VALUES (#{empName}, #{position}, #{empHireDate}, #{empPhone}, #{empEmail},
+		#{empAddress}, #{empBirthDate}, #{empGender})
+	</insert>
+
+	<!-- 직원정보 수정 -->
+	<update id="updateemp" parameterType="Employee">	
+		UPDATE tbEmployee_${ id } SET empName=#{empName}, position=#{position},
+		empHireDate=#{empHireDate}, empPhone=#{empPhone},
+		empEmail=#{empEmail}, empAddress=#{empAddress},
+		empBirthDate=#{empBirthDate}, empGender=#{empGender}
+		WHERE empId=#{empId}
+	</update>
+	
+	<!-- 직원 정보 삭제 -->
+	<delete id="deleteemp" parameterType="_int">
+		DELETE FROM tbEmployee_${ id } WHERE empId=#{empId}
+	</delete>
+
+	<!-- 직원 급여 정보 등록 -->
+	<insert id="insertSalaryInfo" parameterType="SalaryInfo">
+		INSERT INTO tbSalaryInfo (empId, bankName, bankAccountNo, accountHolder,
+		premium, tax)
+		VALUES (#{empId}, #{bankName}, #{bankAccountNo}, #{accountHolder},
+		#{premium}, #{tax})
+	</insert>
+	
+	<!-- 직원 급여 정보 조회 -->
+	<!-- 특정 직원의 급여 정보 조회 -->
+	<select id="selectSalaryInfoByEmpId" parameterType="int" resultType="SalaryInfo">
+		SELECT * FROM tbSalaryInfo WHERE empId = #{empId}
+	</select>
+	<!-- 모든 직원의 급여 정보 조회 -->
+	<select id="selectAllSalaryInfos" resultType="SalaryInfo">
+		SELECT * FROM tbSalaryInfo
+	</select>
+
+	<!-- 직원 급여 정보 수정 -->
+	<update id="updateSalaryInfo" parameterType="SalaryInfo">
+		UPDATE tbSalaryInfo
+		SET bankName=#{bankName}, bankAccountNo=#{bankAccountNo},
+		accountHolder=#{accountHolder},
+		premium=#{premium}, tax=#{tax}
+		WHERE empId=#{empId}
+	</update>
+
+	<!-- 직원 급여 정보 삭제 -->
+	<delete id="deleteSalaryInfo" parameterType="int">
+		DELETE FROM tbSalaryInfo WHERE empId=#{empId}
+	</delete>
+
+	
+	
+</mapper>
+    
