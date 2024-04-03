@@ -32,8 +32,11 @@ public interface GoodsPrintService {
 	// 발주처 리스트
 	ArrayList<GoodsPrint> selectProducePrint(Paging paging);
 
-	// 명세서
+	// 명세서 - 상품명
 	ArrayList<GoodsPrint> selectSSearchGoodsName(Search search);
+
+	// 명세서 - 발주처
+	ArrayList<GoodsPrint> selectSSearchpdName(Search search);
 
 	
 	

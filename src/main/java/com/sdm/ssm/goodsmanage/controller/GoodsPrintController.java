@@ -231,8 +231,9 @@ public class GoodsPrintController {
 		}
 	}
 		
+	// 명세서 보기 - 상품 이름
 	@RequestMapping(value = "goodsNameSearch.do")	
-	public String boardSearchTitleMethod(
+	public String goodsNameSearchMethod(
 			@RequestParam(name = "id", required = false) int id,
 			@RequestParam("action") String action, 
 			Model model,
@@ -248,4 +249,20 @@ public class GoodsPrintController {
 		
 	}	
 		
+	@RequestMapping(value = "pdNameSearch.do")	
+	public String pdNameSearchMethod(
+			@RequestParam(name = "id", required = false) int id,
+			@RequestParam("action") String action, 
+			Model model,
+			Search search) {
+
+		search.setId(id);
+		
+		ArrayList<GoodsPrint>list = null;
+		list = goodsPrintService.selectSSearchpdName(search);
+		model.addAttribute("list", list);
+		
+		return "goods/specify";
+		
+	}
 }

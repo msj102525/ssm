@@ -68,6 +68,11 @@ public class GoodsPrintDao {
 		List<GoodsPrint>list =sqlSessionTemplate.selectList("goodsMapper.selectSSearchGoodsName", search);
 		return (ArrayList<GoodsPrint>)list;
 	}
+
+	public ArrayList<GoodsPrint> selectSSearchpdName(Search search) {
+		List<GoodsPrint>list =sqlSessionTemplate.selectList("goodsMapper.selectSSearchpdName", search);
+		return (ArrayList<GoodsPrint>)list;
+	}
 	
 
 	
