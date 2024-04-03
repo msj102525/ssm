@@ -15,13 +15,13 @@ public class ChattingController {
 	@GetMapping("chat.do")
 	public void chat(Model model) {
 		
-		LoginUser user = (LoginUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		// 로그인한 id 받아서 model 담아서 뷰로 전달. 
-		
-		
-		logger.info("==================================");
-		logger.info("@ChatController, GET Chat / Username : " + user.getUsername());
-		
-		model.addAttribute("userid", user.getUsername());
+//		LoginUser user = (LoginUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//		// 로그인한 id 받아서 model 담아서 뷰로 전달. 
+//		
+//		
+//		logger.info("==================================");
+//		logger.info("@ChatController, GET Chat / Username : " + user.getUsername());
+//		
+//		model.addAttribute("userid", user.getUsername());
 	}
 }
