@@ -75,14 +75,6 @@
 			id="loggerIntercepter" />
 		</interceptor>
 	</interceptors>
-	<!--  web 소캣 -->
-	<!-- <websocket:handlers>
-		<websocket:mapping handler="chattingHandler" path="/chatting"/>
-		<websocket:sockjs></websocket:sockjs>
-	</websocket:handlers>	
-	
-	<beans:bean id="chattingHandler"></beans:bean>
-</beans:beans> -->
 	
 	
 </beans:beans>
