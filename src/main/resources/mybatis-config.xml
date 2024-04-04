@@ -24,6 +24,9 @@
 		<typeAlias type="com.sdm.ssm.reserve.model.vo.Reserve" alias="Reserve"/>
 		<typeAlias type="com.sdm.ssm.Inconvinience.model.vo.InconvinienceBoard" alias="InconvinienceBoard"/>
 		<typeAlias type="com.sdm.ssm.Inconvinience.model.vo.InconvinienceBoardReply" alias="InconvinienceBoardReply"/>
+		<typeAlias type="com.sdm.ssm.employee.model.vo.Employee" alias="Employee"/>
+		<typeAlias type="com.sdm.ssm.employee.model.vo.SalaryInfo" alias="SalaryInfo"/>
+		<typeAlias type="com.sdm.ssm.employee.model.vo.CommuteInfo" alias="CommuteInfo"/>
 	</typeAliases>
 		
 	<mappers>
@@ -32,6 +35,7 @@
 		<mapper resource="mapper/user-mapper.xml"/>
 		<mapper resource="mapper/reserve-mapper.xml"/>
 		<mapper resource="mapper/inconv-mapper.xml"/>
+		<mapper resource="mapper/emp-mapper.xml"/>
 		<mapper resource="mapper/usermanage-mapper.xml" />
 	</mappers>
 </configuration>
