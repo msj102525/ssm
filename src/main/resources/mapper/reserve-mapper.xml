@@ -16,6 +16,16 @@
 		<result property="writer" column="WRITER" />
 		<result property="writeDate" column="WRITE_DATE" />
 	</resultMap>
+	
+	<resultMap type="com.sdm.ssm.reserve.model.vo.ScheduleDto" id="resultScheduleList">
+		<result property="schedule_idx" column="SCHEDULE_IDX" />
+		<result property="schedule_num" column="SCHEDULE_NUM" />
+		<result property="schedule_subject" column="SCHEDULE_SUBJECT" />
+		<result property="schedule_desc" column="SCHEDULE_DESC" />
+		<result property="schedule_date" column="SCHEDULE_DATE" />
+		<result property="schedule_share" column="SCHEDULE_SHARE" />
+		<result property="schedule_mycolor" column="SCHEDULE_MYCOLOR" />
+	</resultMap>
 
 	<select id="selectRsrvListCount" resultType="_int">
 		SELECT count(*) FROM TB_RESERVATION_${ id }
@@ -74,6 +84,21 @@
 	<delete id="deleteReserve" parameterType="Reserve">
 		DELETE FROM tb_reservateaion_${ id } 
 		WHERE rsrv_num = #{ rsrvNum }
+	
 	</delete> -->
+	
+	<select id="selectScheduleList" parameterType="com.sdm.ssm.reserve.model.vo.DateData" resultMap="resultScheduleList">
+		<![CDATA[
+		SELECT * FROM SCHEDULE 
+		WHERE SCHEDULE_DATE BETWEEN #{ db_startDate } AND #{ db_endDate }
+		ORDER BY SCHEDULE_DATE, SCHEDULE_NUM, SCHEDULE_IDX
+		]]>
+	</select>  
+	<!-- 리스트 가져오기 -->
+	<select id="selectReserveget" parameterType="_int" resultMap="resultScheduleList">
+		<![CDATA[
+		SELECT * FROM SCHEDULE WHERE SCHEDULE_IDX = #{schedule_idx}
+		]]>
+	</select>
 	
 </mapper>
