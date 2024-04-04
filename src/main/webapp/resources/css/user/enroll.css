@@ -99,6 +99,11 @@ input:focus {
 .form-box ul li.chkEmailAuth  {
 	display: none;
 }
+
+.form-box ul li.businessStoreName  {
+	display: none;
+}
+
 .form-box ul li input {
 	padding: 0 10px
 }
