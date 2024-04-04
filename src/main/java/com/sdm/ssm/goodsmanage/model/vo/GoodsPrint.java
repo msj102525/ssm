@@ -2,6 +2,8 @@ package com.sdm.ssm.goodsmanage.model.vo;
 
 public class GoodsPrint implements java.io.Serializable{
 
+	private static final long serialVersionUID = 8641213196345903900L;
+	
 	private int id;
 	private int goodsNo;
 	private String goodsName;

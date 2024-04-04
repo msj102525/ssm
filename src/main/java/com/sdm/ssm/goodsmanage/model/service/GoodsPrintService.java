@@ -55,6 +55,11 @@ public interface GoodsPrintService {
 
 	// 발주처 수정 - 발주처 테이블
 	int updateProducePT(GoodsPrint goodsPrint);
+
+	// 상품 등록 - 첫번째
+	int firstGoods(int id);
+
+	int insertFirstGoods(GoodsPrint goodsPrint);
 	
 
 }

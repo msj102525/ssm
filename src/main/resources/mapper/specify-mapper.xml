@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+"-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="specifyMapper">
+
+	<resultMap id="SpecifyList" type="Specify">
+		<result property="id" column="ID" />
+		<result property="pdDate" column="PD_DATE" />
+		<result property="pdPrice" column="PD_PRICE" />
+	</resultMap>
+
+	<insert id="insertSpecify" parameterType="Specify">
+		INSERT INTO TB_SPECIFY_${ id }
+		VALUES ( ${id}, DEFAULT, #{pdPrice})
+	</insert>
+</mapper>

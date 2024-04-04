@@ -20,24 +20,6 @@
 <script type="text/javascript" src="/ssm/resources/js/jquery-3.7.0.min.js"></script>
 <script type="text/javascript">
 
-$(function(){
-	//input 태그의 name 이 item 의 값이 바뀌면(change) 작동되는 이벤트 핸들러 작성
-	$('input[name=item]').on('change', function(){
-		//여러 개의 태그 중에서 체크표시가 된 태그를 선택
-		$('input[name=item]').each(function(index){
-			//선택된 radio 순번대로 하나씩 checked 인지 확인함
-			if($(this).is(':checked')){
-				//체크 표시된 아이템에 대한 폼이 보여지게 처리함
-				$('form.sform').eq(index).css('display', 'block');
-			}else{
-				//체크 표시 안된 아이템의 폼은 안 보이게 처리함
-				$('form.sform').eq(index).css('display', 'none');
-			}
-		});  //each
-	});  //on
-	
-});  //document ready
-
 </script>
 
 <script>
@@ -92,7 +74,7 @@ $(function(){
 	}
 }
 </style>
-	<div class="searchdiv">
+<div class="searchdiv">
 	<form method="get" id="searchForm">
 		<input type="hidden" id = "id" name="id" value="${ loginUser.id }">
 		<select style="height: 35px; width: 80px;" name="action"id="searchselect">
@@ -119,20 +101,17 @@ $(function(){
         form.submit();
     }
 </script>
-
-
-
 <br>
 	
 <div style="text-align: center;">
 	<button onclick="exportToExcel()">엑셀로 저장</button>&nbsp;
 	<button onclick="printTable()">인쇄 및 pdf로 저장</button>&nbsp;
-	
+	<button onclick="insertTable()">발주 금액 저장</button>&nbsp;
 </div>
 <br>	
 
 
-<div style="margin-left: auto; margin-right: auto; width: 1400px;">
+<div style="margin-left: auto; margin-right: auto; width: 1400px;">	
         <table id="specifysave" align="center" border="2" cellspacing="25" width="100%">
         	<tr>
                 <th style="text-align: center; white-space: nowrap;">일자</th>
@@ -186,18 +165,64 @@ $(function(){
                 	<span id="goodstotalprice_${ loop.index }"></span>
                 </td>
             </tr>
-            </c:forEach>   
+            </c:forEach>             
             <tr>
             	<td style="text-align: center; white-space: nowrap;">합계</td>
             	<td style="text-align: center; white-space: nowrap;"></td>
             	<td style="text-align: center; white-space: nowrap;"></td>
             	<td style="text-align: center; white-space: nowrap;"></td>
             	<td id="sum" style="text-align: center; white-space: nowrap;">
-            		<button onclick="calcSum()">합계</button>
+            		<div id="buttonDisplay">
+            			<button onclick="calcSum();">합계</button>
+            		</div>
+            	<form action="sinsert.do" method="post" id="sinsert">
+            		<div id="sumDisplay" style="display:none;"></div>
+            		<input type="hidden" id="idd" name="idd" value="${ loginUser.id }">   		
+            	</form>
             	</td>
             </tr>
         </table>
+        <div id="idDisplay" style="display:none;">${ loginUser.id }</div>
 </div>
+
+<script>
+function insertTable() {
+	
+    var jarr = new Array();
+    var job = new Object();
+    
+    job.id = document.getElementById("idDisplay").textContent;
+    job.pdPrice = document.getElementById("sumDisplay").textContent;
+	
+    jarr.push(job);
+    
+    alert(JSON.stringify(jarr));
+    
+    var confirmMessage = "해당 금액을 월 발주 금액에 저장하시겠습니까?"
+    	if (confirm(confirmMessage)) {
+            $.ajax({
+                type: "POST",
+                url: "sinsert.do",
+                data: JSON.stringify(jarr),
+                contentType: "application/json; charset=utf-8",
+                success: function(result) {
+                	alert("요청 성공 : " + jarr);
+                },
+                error: function(request, status, errorData) {
+                    console.log("error code : " + request.status
+                        + "\nMessage : " + request.responseText
+                        + "\nError : " + errorData);
+                } 
+            });      
+        } else {
+            console.log("저장이 취소되었습니다.");
+        }
+    
+}
+
+
+</script>
+
 
 <!-- 상품당 총 가격 덧셈 -->
 <script>
@@ -223,18 +248,31 @@ $(function(){
 
 <script>
 function calcSum() {
-	  // table element 찾기
-	  const table = document.getElementById('specifysave');
-	  
-	  // 합계 계산
-	  let sum = 0;
-	  for(let i = 4; i < table.rows.length-1; i++)  {
-	    sum += Number(table.rows[i].cells[4].textContent);
-	  }
-	  
-	  // 합계 출력
-	  document.getElementById('sum').textContent = sum;	  
-	}
+    // table element 찾기
+    const table = document.getElementById('specifysave');
+    
+    // 합계 계산
+    let sum = 0;
+    for(let i = 4; i < table.rows.length-1; i++)  {
+        sum += Number(table.rows[i].cells[4].textContent);
+    }
+    
+    // 합계 출력
+    document.getElementById('sumDisplay').textContent = sum;
+    
+    // 버튼 숨기기
+    document.getElementById('buttonDisplay').style.display = 'none';
+    // 합계 표시
+    document.getElementById('sumDisplay').style.display = 'block';
+}
+
+// 합계를 클릭하면 버튼 다시 표시
+document.getElementById('sumDisplay').addEventListener('click', function() {
+    // 합계 숨기기
+    document.getElementById('sumDisplay').style.display = 'none';
+    // 버튼 표시
+    document.getElementById('buttonDisplay').style.display = 'block';
+});
 </script>
 
 
