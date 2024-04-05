@@ -546,6 +546,15 @@ BEGIN
    END;
 END;
 /
+
+
+CREATE SEQUENCE ingno
+MINVALUE 1;
+
+CREATE SEQUENCE inpno
+MINVALUE 1;
+
+
 -------------- 상품 테이블 --------------- 
 CREATE OR REPLACE PROCEDURE create_goods_table (
     p_user_id IN NUMBER
@@ -634,15 +643,11 @@ BEGIN
     -- 동적 SQL 실행
     EXECUTE IMMEDIATE '
         CREATE TABLE ' || v_table_name || '(
-            SPECIFY_NO NUMBER PRIMARY KEY,
-            GOODS_NO NUMBER NOT NULL,
-            PD_DATE DEFAULT SYSDATE
-            ORDER_QUANTITY NUMBER
-            FOREIGN KEY (GOODS_NO) REFERENCES TB_GOODS_' || p_user_id || '(GOODS_NO) ON DELETE CASCADE
+	    ID NUMBER,
+            PD_DATE DATE DEFAULT SYSDATE,
+            PD_PRICE NUMBER
         )';
-EXCEPTION
-    WHEN OTHERS THEN
-        NULL; 
+
 END;
 
 /

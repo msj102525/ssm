@@ -55,45 +55,45 @@
 				<input type="hidden" name="id" value="${ loginUser.id }">
 			<tr>
 				<td align="center" style="white-space: nowrap;"><input
-					type="text" maxlength='100' name="goodsName"
+					type="text" maxlength='100' name="goodsName" placeholder="필수입력"
 					style="width: 50px; margin-right: 0px; vertical-align: middle;" />
 				</td>
 				<td align="center" style="white-space: nowrap;"><input
-					type="number" name="pdQuantity"
+					type="number" name="pdQuantity" placeholder="필수입력"
 					style="width: 50px; margin-right: 0px; vertical-align: middle;" />
 				</td>
 				<td align="center" style="white-space: nowrap;"><input
-					type="text" maxlength='10' name="goodsUnit"
+					type="text" maxlength='10' name="goodsUnit" value=""
 					style="width: 50px; margin-right: 0px; vertical-align: middle;" />
 				</td>
 				<td align="center" style="white-space: nowrap;"><input
-					type="number" maxlength='10' name="goodsPrice"
+					type="number" maxlength='10' name="goodsPrice" value="0" min="0"
 					style="width: 50px; margin-right: 0px; vertical-align: middle;" />
 				</td>
 				<td align="center" style="white-space: nowrap;"><input
-					type="number" name="minOrderQuantity"
+					type="number" name="minOrderQuantity" value="0" min="0"
 					style="width: 50px; margin-right: 0px; vertical-align: middle;" />
 				</td>
 				<td align="center" style="white-space: nowrap;"><input
-					type="number" name="minAlarmQuantity"
+					type="number" name="minAlarmQuantity" value="0" min="0"
 					style="width: 50px; margin-right: 0px; vertical-align: middle;" />
 				</td>
 				<td align="center" style="white-space: nowrap;"><input
-					type="text" maxlength='100' name="pdName"
+					type="text" maxlength='100' name="pdName" placeholder="필수입력"
 					style="width: 50px; margin-right: 0px; vertical-align: middle;" />
 				</td>
 				<td align="center" style="white-space: nowrap;"><input
-					type="text" maxlength='30' name="pdPhone"
+					type="text" maxlength='30' name="pdPhone" value=""
 					style="width: 50px; margin-right: 0px; vertical-align: middle;" />
 				</td>
 				<td align="center" style="white-space: nowrap;"><input
-					type="text" maxlength='10' name="nation"
+					type="text" maxlength='10' name="nation" value=""
 					style="width: 50px; margin-right: 0px; vertical-align: middle;" />
 				</td>
-				<td><input type="submit" id="addBtn" value="등록하기"></td>
+				<td><input type="submit" id="addBtn" value="등록하기"></td>			
 			</tr>
-		</table>
-		</form>
+		</form>	
+		</table>		
 	</div>
 
 

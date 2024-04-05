@@ -134,7 +134,14 @@ $('#checkBoxAll').click(function () {
                 data: JSON.stringify(updatedGoods),
                 contentType: "application/json; charset=utf-8",
                 success: function(result) {
+                	alert("저장 성공")
                     location.reload(); 
+                	
+                	updatedGoods.forEach(function(rowData) {
+                        if (parseInt(rowData.pdQuantity) < parseInt(rowData.minAlarmQuantity)) {
+                            alert( (rowData.goodsNo) + "번 상품의 재고가 부족합니다. 주의하세요.");
+                        }
+                	});
                 },
                 error: function(request, status, errorData) {
                     console.log("error code : " + request.status
@@ -143,7 +150,7 @@ $('#checkBoxAll').click(function () {
                 } 
             });  
         } else {
-            console.log("수정이 취소되었습니다.");
+            alert("수정이 취소되었습니다.");
         }
     }
 </script>

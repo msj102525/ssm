@@ -121,7 +121,7 @@ $('#checkBoxAll').click(function () {
                 pdPhone: document.getElementById('pdPhone_' + rowIndex).value,
                 pdAddress: document.getElementById('pdAddress_' + rowIndex).value,
                 goodsUnit: document.getElementById('goodsUnit_' + rowIndex).value,
-                nation: document.getElementById('nation_' + rowIndex).value,
+                nation: document.getElementById('nation_' + rowIndex).value
             };
             updatedGoods.push(rowData);
         });

@@ -69,7 +69,7 @@
 							<li><a href="${pageContext.servletContext.contextPath }/nlist.do?page=1">공지사항</a></li>
 							<li><a href="${pageContext.servletContext.contextPath }/inconvlist.do?page=1">불편사항</a></li>
 							<li><a href="${pageContext.servletContext.contextPath}/gmoveinsert.do">재고관리</a></li>
-
+							<li><a href="${pageContext.servletContext.contextPath }/account.do">회계관리</a></li>
 							<li><a href="#">매장관리</a></li>
 						</ul>
 					</div>
