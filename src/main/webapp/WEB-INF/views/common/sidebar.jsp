@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+ <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -185,14 +185,14 @@ body {
         <li><a href="${pageContext.servletContext.contextPath}/pmoveinsert.do?id=${loginUser.id}">발주처 등록</a></li>
         <li><a href="${pageContext.servletContext.contextPath}/plist.do?page=1&id=${loginUser.id}">발주처 현황</a></li>
         <li><a href="${pageContext.servletContext.contextPath}/specify.do?id=${loginUser.id}">발주 명세서</a></li>
-        <li><a href="${pageContext.servletContext.contextPath}/gmoveinsert2.do?id=${loginUser.id}">재고 등록 연습용</a></li>
+        
       </ul>
     </li>
     <li>
-      <a href="#">menu2</a>
+      <a href="#"><i class="fa-solid fa-cat"></i> 회계관리</a>
       <ul>
-        <li><a href="#">text1</a></li>
-        <li><a href="#">text2</a></li>
+        <li><a href="${pageContext.servletContext.contextPath }/account.do">매출보기</a></li>
+        <li><a href="${pageContext.servletContext.contextPath}/graph.do?id=${loginUser.id}">그래프 연습</a></li>
         <li><a href="#">text3</a></li>
         <li><a href="#">text4</a></li>
       </ul>

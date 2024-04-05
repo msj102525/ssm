@@ -1,5 +1,7 @@
 package com.sdm.ssm.goodsmanage.controller;
 
+import java.text.SimpleDateFormat;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -22,43 +24,82 @@ import com.sdm.ssm.goodsmanage.model.vo.Specify;
 
 @Controller
 public class SpeifyController {
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(SpeifyController.class);
 
 	@Autowired
 	private SpecifyService specifyService;
-	
-	
-	@RequestMapping(value="sinsert.do", method=RequestMethod.POST)
-	public ResponseEntity<String> specifyInsertMethod(
-			@RequestBody String param) throws ParseException {
+
+	@RequestMapping(value = "sinsert.do", method = RequestMethod.POST)
+	public ResponseEntity<String> specifyInsertMethod(@RequestBody String param) throws ParseException, java.text.ParseException {
 
 		JSONParser jparser = new JSONParser();
-		JSONArray jarr = (JSONArray)jparser.parse(param);
+		JSONArray jarr = (JSONArray) jparser.parse(param);
+		
+		for (int i = 0; i < jarr.size(); i++) {
+			JSONObject job = (JSONObject) jarr.get(i);
 
-		for(int i = 0; i < jarr.size(); i++) {
-			JSONObject job = (JSONObject)jarr.get(i);
-				
 			Specify specify = new Specify();
 			specify.setId(Integer.parseInt(job.get("id").toString()));
 			specify.setPdPrice(Integer.parseInt(job.get("pdPrice").toString()));
+			specify.setPdDate(job.get("pdDate").toString());
+			
+	
 			// 상품 삭제 메소드 작성
 			int result = specifyService.insertSpeify(specify);
-				
-			// 에러 발생 시 
-			if(result <= 0) {
+
+			// 에러 발생 시
+			if (result <= 0) {
 				return new ResponseEntity<String>("failed", HttpStatus.REQUEST_TIMEOUT);
-			}			
+			}
 		}
 		return new ResponseEntity<String>("success", HttpStatus.OK);
 	}
-	
+
 	// 월 매출 보기 페이지이동
-		@RequestMapping("account.do")
-		public String moveGoodsInsertPage() {
-			return "account/accountListView";
-		}
+	@RequestMapping("account.do")
+	public String moveGoodsInsertPage() {
+		return "account/accountListView";
+	}
 	
+	// 그래프연습 페이지이동
+	@RequestMapping("graph.do")
+	public String moveGraphPage() {
+		return "account/testGraph";
+	}
+
+
+	
+	// 월 매출 보기 
+	@RequestMapping("monthlyPdPrice.do")
+	public ResponseEntity<String> calMonthlyPdPriceMethod(
+			@RequestBody String param) throws ParseException, java.text.ParseException
+				 {
+		int monthlyPdSum = 0;
+		JSONParser jparser = new JSONParser();
+		JSONArray jarr = (JSONArray) jparser.parse(param);
+		
+		for (int i = 0; i < jarr.size(); i++) {
+			JSONObject job = (JSONObject) jarr.get(i);
+
+			Specify specify = new Specify();
+			specify.setId(Integer.parseInt(job.get("id").toString()));
+			specify.setPdMonth(job.get("month").toString());
+			
+	
+			// 상품 삭제 메소드 작성
+			monthlyPdSum = specifyService.calMonthlyPdPrice(specify);
+
+			// 에러 발생 시
+			if (monthlyPdSum <= 0) {
+				return new ResponseEntity<String>("failed", HttpStatus.REQUEST_TIMEOUT);
+			}else {
+				
+			}
+		}
+		return ResponseEntity.ok().body(String.valueOf(monthlyPdSum));
+	}
+
 	
 	
 }

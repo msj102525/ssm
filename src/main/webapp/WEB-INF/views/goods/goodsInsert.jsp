@@ -75,7 +75,7 @@
             // 변경된 내용을 서버로 전송
             $.ajax({
                 type: "POST",
-                url: "ginsert2.do",
+                url: "ginsert.do",
                 data: JSON.stringify(jarr),
                 contentType: "application/json; charset=utf-8",
                 success: function(result) {
@@ -101,8 +101,8 @@
 
 	<hr>
 	<br>
-	<%-- 	<c:import url="/WEB-INF/views/common/sidebar.jsp" /> --%>
-	<h1 align="center">재고 등록 연속 연습</h1>
+	<c:import url="/WEB-INF/views/common/sidebar.jsp" /> 
+	<h1 align="center">재고 등록</h1>
 	<div style="align: center; text-align: center;">
 		<br> <br> <br>
 	</div>

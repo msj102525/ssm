@@ -8,10 +8,19 @@
 		<result property="id" column="ID" />
 		<result property="pdDate" column="PD_DATE" />
 		<result property="pdPrice" column="PD_PRICE" />
+		<result property="pdMonth" column="PD_MONTH" />
 	</resultMap>
 
 	<insert id="insertSpecify" parameterType="Specify">
-		INSERT INTO TB_SPECIFY_${ id }
-		VALUES ( ${id}, DEFAULT, #{pdPrice})
+		INSERT INTO TB_SPECIFY_${ id } (ID, PD_DATE, PD_PRICE)
+		VALUES ( ${id}, #{pdDate}, #{pdPrice})
 	</insert>
+	
+	<select id="calMonthlyPdPrice" resultType="int">
+		select sum(PD_PRICE)
+		from  TB_SPECIFY_${ id }
+		WHERE PD_MONTH = #{ pdMonth }
+	</select>	
+	
+	
 </mapper>

@@ -18,4 +18,9 @@ public class SpecifyServiceImpl implements SpecifyService{
 		return specifyDao.insertSpeicfy(specify);
 	}
 
+	@Override
+	public int calMonthlyPdPrice(Specify specify) {
+		return specifyDao.calMonthlyPdPrice(specify);
+	}
+
 }

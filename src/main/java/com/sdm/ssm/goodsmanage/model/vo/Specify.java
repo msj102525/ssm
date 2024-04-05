@@ -1,28 +1,25 @@
 package com.sdm.ssm.goodsmanage.model.vo;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class Specify implements java.io.Serializable{
 
 	private static final long serialVersionUID = -24672002857221168L;
 	
 	private int id;
-	private Date pdDate;
+	private String pdDate;
 	private int pdPrice;
-	
-	public Specify() {
-		super();
+	private String pdMonth;
+	public int getId() {
+		return id;
 	}
-	public Specify(int id, Date pdDate, int pdPrice) {
-		super();
+	public void setId(int id) {
 		this.id = id;
-		this.pdDate = pdDate;
-		this.pdPrice = pdPrice;
 	}
-	public Date getPdDate() {
+	public String getPdDate() {
 		return pdDate;
 	}
-	public void setPdDate(Date pdDate) {
+	public void setPdDate(String pdDate) {
 		this.pdDate = pdDate;
 	}
 	public int getPdPrice() {
@@ -31,21 +28,30 @@ public class Specify implements java.io.Serializable{
 	public void setPdPrice(int pdPrice) {
 		this.pdPrice = pdPrice;
 	}
-	
-	
-	
-	
-	
-	public int getId() {
-		return id;
+	public String getPdMonth() {
+		return pdMonth;
 	}
-	public void setId(int id) {
+	public void setPdMonth(String pdMonth) {
+		this.pdMonth = pdMonth;
+	}
+	public Specify(int id, String pdDate, int pdPrice, String pdMonth) {
+		super();
 		this.id = id;
+		this.pdDate = pdDate;
+		this.pdPrice = pdPrice;
+		this.pdMonth = pdMonth;
+	}
+	public Specify() {
+		super();
 	}
 	@Override
 	public String toString() {
-		return "Specify [pdDate=" + pdDate + ", pdPrice=" + pdPrice + "]";
+		return "Specify [id=" + id + ", pdDate=" + pdDate + ", pdPrice=" + pdPrice + ", pdMonth=" + pdMonth + "]";
 	}
+	
+	
+	
+	
 	
 	
 }

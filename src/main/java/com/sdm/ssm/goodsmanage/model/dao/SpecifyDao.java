@@ -16,4 +16,8 @@ public class SpecifyDao {
 		return sqlSessionTemplate.insert("specifyMapper.insertSpecify", specify);
 	}
 
+	public int calMonthlyPdPrice(Specify specify) {
+		return sqlSessionTemplate.selectOne("specifyMapper.calMonthlyPdPrice", specify);
+	}
+
 }

@@ -630,7 +630,7 @@ BEGIN
     EXECUTE IMMEDIATE '
         CREATE TABLE ' || v_table_name || '(
             ID NUMBER,
-            PD_DATE DATE DEFAULT SYSDATE,
+            PD_DATE VARCHAR2(10),
             PD_PRICE NUMBER,
             PD_MONTH VARCHAR2(10)
         )';
@@ -641,7 +641,9 @@ BEGIN
         BEFORE INSERT OR UPDATE ON ' || v_table_name || '
         FOR EACH ROW
         BEGIN
-            :NEW.PD_MONTH := SUBSTR(TO_CHAR(:NEW.PD_DATE, ''YYYY/MM/DD''), 1, LENGTH(TO_CHAR(:NEW.PD_DATE, ''YYYY/MM/DD'')) - 3);
+            IF :NEW.PD_DATE IS NOT NULL THEN
+                :NEW.PD_MONTH := SUBSTR(:NEW.PD_DATE, 1, LENGTH(:NEW.PD_DATE) - 3);
+            END IF;
         END;';
 END;
 /

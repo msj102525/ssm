@@ -6,4 +6,6 @@ public interface SpecifyService {
 
 	int insertSpeify(Specify specify);
 
+	int calMonthlyPdPrice(Specify specify);
+
 }

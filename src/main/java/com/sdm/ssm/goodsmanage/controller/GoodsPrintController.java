@@ -38,7 +38,6 @@ public class GoodsPrintController {
 			@RequestParam(name = "page", required = false) String page,
 			@RequestParam(name = "limit", required = false) String slimit, Model model) {
 
-		logger.info("12jti2i3gt1");
 
 		int currentPage = 1;
 		if (page != null) {
@@ -123,33 +122,15 @@ public class GoodsPrintController {
 		}
 	}
 
+
+
 	// 상품 추가 페이지 이동
 	@RequestMapping("gmoveinsert.do")
-	public String moveGoodsInsertPage() {
+	public String moveGoodsInsertPage2() {
 		return "goods/goodsInsert";
 	}
 
-	// 상품 추가 연습 페이지 이동
-	@RequestMapping("gmoveinsert2.do")
-	public String moveGoodsInsertPage2() {
-		return "goods/goodsInsert2";
-	}
-
-	// 상품 추가
-	@RequestMapping(value = "ginsert.do", method = RequestMethod.POST)
-	public String InsertgoodsMethod(@RequestParam(name = "id") int id, GoodsPrint goodsPrint, Model model) {
-		logger.info("ginsert.do : " + goodsPrint);
-
-		goodsPrint.setId(id);
-
-		if (goodsPrintService.insertGoods(goodsPrint) > 0) {
-			return "goods/goodsInsert";
-		} else {
-			model.addAttribute("message", "새 상품 등록 실패");
-			return "common/error";
-		}
-
-	}
+	
 
 	// 상품 수정
 	@RequestMapping(value = "gupdate.do", method = RequestMethod.POST)
@@ -181,8 +162,8 @@ public class GoodsPrintController {
 	}
 
 	// 상품 등록
-	@RequestMapping(value = "ginsert2.do", method = RequestMethod.POST)
-	public ResponseEntity<String> goodsinsertMethod2(@RequestBody String param) throws ParseException {
+	@RequestMapping(value = "ginsert.do", method = RequestMethod.POST)
+	public ResponseEntity<String> goodsinsertMethod(@RequestBody String param) throws ParseException {
 
 		JSONParser jparser = new JSONParser();
 		JSONArray jarr = (JSONArray) jparser.parse(param);
@@ -217,7 +198,6 @@ public class GoodsPrintController {
 			@RequestParam(name = "page", required = false) String page,
 			@RequestParam(name = "limit", required = false) String slimit, Model model) {
 
-		logger.info("12jti2i3gt1");
 
 		int currentPage = 1;
 		if (page != null) {
@@ -257,20 +237,36 @@ public class GoodsPrintController {
 		return "goods/produceInsert";
 	}
 
-	// 발주처 추가
-	@RequestMapping(value = "pinsert.do", method = RequestMethod.POST)
-	public String InsertproduceMethod(@RequestParam(name = "id") int id, GoodsPrint goodsPrint, Model model) {
-		logger.info("pinsert.do : " + goodsPrint);
+	// 발주처 등록
+		@RequestMapping(value = "pinsert.do", method = RequestMethod.POST)
+		public ResponseEntity<String> produceinsertMethod(@RequestBody String param) throws ParseException {
 
-		goodsPrint.setId(id);
-		if (goodsPrintService.insertProduce(goodsPrint) > 0) {
-			model.addAttribute("message", "새 발주처 등록 성공");
-			return "goods/produceInsert";
-		} else {
-			model.addAttribute("message", "새 발주처 등록 실패");
-			return "common/error";
+			JSONParser jparser = new JSONParser();
+			JSONArray jarr = (JSONArray) jparser.parse(param);
+
+			for (int i = 0; i < jarr.size(); i++) {
+				JSONObject job = (JSONObject) jarr.get(i);
+
+				GoodsPrint goodsPrint = new GoodsPrint();
+				goodsPrint.setId(Integer.parseInt(job.get("id").toString()));
+				goodsPrint.setPdName(job.get("pdName").toString());
+				goodsPrint.setPdPhone(job.get("pdPhone").toString());
+				goodsPrint.setPdAddress(job.get("pdAddress").toString());
+				goodsPrint.setGoodsName(job.get("goodsName").toString());
+				goodsPrint.setGoodsPrice(Integer.parseInt(job.get("goodsPrice").toString()));
+				goodsPrint.setGoodsUnit(job.get("goodsUnit").toString());
+				goodsPrint.setPdQuantity(Integer.parseInt(job.get("pdQuantity").toString()));	
+				goodsPrint.setNation(job.get("nation").toString());
+				// 상품 삭제 메소드 작성
+				int result = goodsPrintService.insertGoods(goodsPrint);
+
+				// 에러 발생 시
+				if (result <= 0 ) {
+					return new ResponseEntity<String>("failed", HttpStatus.REQUEST_TIMEOUT);
+				}
+			}
+			return new ResponseEntity<String>("success", HttpStatus.OK);
 		}
-	}
 
 	// 발주처 수정
 	@RequestMapping(value = "pupdate.do", method = RequestMethod.POST)

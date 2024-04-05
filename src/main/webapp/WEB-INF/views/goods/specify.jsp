@@ -116,7 +116,7 @@
         	<tr>
                 <th style="text-align: center; white-space: nowrap;">일자</th>
                 <th style="text-align: center; white-space: nowrap;">
-        			<input type="date" id="date" name="date" required>
+        			<input type="date" id="date" name="date" onchange="setSelectedDate()" required>
         		</th>
                 <th style="text-align: center; white-space: nowrap;">성명</th>
                 <th style="text-align: center; white-space: nowrap;">받는분</th>
@@ -178,12 +178,25 @@
             	<form action="sinsert.do" method="post" id="sinsert">
             		<div id="sumDisplay" style="display:none;"></div>
             		<input type="hidden" id="idd" name="idd" value="${ loginUser.id }">   		
+            		<div id="pdDate" style="display:none;"></div>
             	</form>
             	</td>
             </tr>
         </table>
         <div id="idDisplay" style="display:none;">${ loginUser.id }</div>
 </div>
+
+<script>
+function setSelectedDate() {
+    // input 요소에서 선택한 날짜 가져오기
+    var selectedDate = document.getElementById("date").value;
+    
+    // 가져온 날짜를 div 요소에 설정
+    document.getElementById("pdDate").innerText = selectedDate;
+    // 또는 내부 HTML로 설정하려면 아래 코드를 사용합니다.
+    // document.getElementById("selectDate").innerHTML = selectedDate;
+}
+</script>
 
 <script>
 function insertTable() {
@@ -193,7 +206,8 @@ function insertTable() {
     
     job.id = document.getElementById("idDisplay").textContent;
     job.pdPrice = document.getElementById("sumDisplay").textContent;
-	
+    job.pdDate  = document.getElementById("pdDate").textContent;
+    
     jarr.push(job);
     
     alert(JSON.stringify(jarr));
