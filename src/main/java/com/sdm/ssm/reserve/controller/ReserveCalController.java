@@ -13,7 +13,6 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.asm.TypeReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sdm.ssm.common.SearchDate;
 import com.sdm.ssm.common.SerachDateStr;
@@ -125,7 +125,17 @@ public class ReserveCalController {
 							+ reserve.getRsrvDate().substring(6, 8);
 
 			job.put("start", start);
+			
 			job.put("sortIdx", sortidx);   /// 일정을 순서대로 보이게 하기 위함(2024.04.04)
+			
+			/////////////////////////////////////////////////////////////
+			//// 추가
+			/////////////////////////////////////////////////////////////
+			job.put("rsrvname", reserve.getRsrvName());  //// 예약자명 2024.04.05
+			job.put("rsrvtelno", reserve.getRsrvTelno());  //// 연락처 2024.04.05
+			job.put("rsrvtime", reserve.getRsrvTime());  //// 예약시간 2024.04.05
+			job.put("rsrvinwon", reserve.getRsrvInwon());  //// 인원 2024.04.05
+			job.put("rsrvmemo", reserve.getRsrvMemo());  //// 메모 2024.04.05
 			
 			jarr.add(job);
 			
@@ -144,10 +154,13 @@ public class ReserveCalController {
 	    out.close();
 	    return null;
 	}
+	
+	
 	/////////////////////////////////////////////////////
 	//// 달력 데이터등록 화면
 	/////////////////////////////////////////////////////
-	@RequestMapping(value = "/adms/calendar/management/create_ajx.do",method = RequestMethod.POST)
+	//@RequestMapping(value = "/adms/calendar/management/create_ajx.do",method = RequestMethod.POST)
+	@RequestMapping(value = "create_ajx.do", method = RequestMethod.POST)
 	@ResponseBody
 	public String createAction(
 	        @RequestBody String filterJSON,
@@ -165,22 +178,117 @@ public class ReserveCalController {
 	    
 	    PrintWriter out = res.getWriter();
 	 
-//	    //================================ json Object parse ============================
-//	    ObjectMapper mapper = new ObjectMapper();            
-//	    tbl_calendarVO searchVO = (tbl_calendarVO)mapper.readValue(filterJSON, new TypeReference<tbl_calendarVO>(){ });
-//	    //================================ json Object parse ============================
-//	    searchVO.setSite_code(loginService.getSiteCode());
-//	    searchVO.setCret_id(loginVO.getId());
-//	    searchVO.setCret_ip(request.getRemoteAddr());
-//	    
-//	    calendarService.createCalendar(searchVO);
-	 
-	    obj.put("success", "ok");
-	    //out.print(obj);
+	    //================================ json Object parse ============================
+	    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+	    //// com.fasterxml.jackson.core/jackson-databind --> 사용 library import시 주의(2024.04.05)
+	    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+	    ObjectMapper mapper = new ObjectMapper();            
+	    ////tbl_calendarVO searchVO = (tbl_calendarVO)mapper.readValue(filterJSON, new TypeReference<tbl_calendarVO>(){ });
+	    Reserve rsrv = (Reserve)mapper.readValue(filterJSON, new TypeReference<Reserve>(){ });
+	    //================================ json Object parse ============================
+	    
+	    //searchVO.setSite_code(loginService.getSiteCode());
+	    //searchVO.setCret_id(loginVO.getId());
+	    //searchVO.setCret_ip(request.getRemoteAddr());
+	    //searchVO.getStart().replace("-", "")
+	    String rsrvDate = rsrv.getRsrvDate().replace("-", "");   //// 예약일자 format 제거(2024.04.05)
+	    rsrv.setRsrvDate(rsrvDate);
+	    
+	    rsrv.setId(200);
+    
+		if(reserveService.insertReserve(rsrv) > 0) {
+		    obj.put("success", "ok");
+		}else {
+		    obj.put("success", "fail");
+		}
+			
+	    out.print(obj);
 	    
 	    return null;
 	}
 
+	//// 달력 데이터 업데이트
+	/////@RequestMapping(value="/adms/calendar/management/update_ajx.do", method=RequestMethod.POST)
+	@RequestMapping(value="update_ajx.do", method=RequestMethod.POST)
+	@ResponseBody
+	public String updateAction(
+	        @RequestBody String filterJSON,
+	        HttpServletRequest request,
+	        HttpServletResponse res,
+	        ModelMap model) throws Exception {
+		
+	    //LoginVO loginVO = loginService.getLoginInfo();
+		
+	    JSONObject obj = new JSONObject();
+	    
+	    res.setContentType("text/html; charset=UTF-8");
+	    
+	    PrintWriter out = res.getWriter();
+	 
+	    //================================ json Object parse ============================
+	    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+	    //// com.fasterxml.jackson.core/jackson-databind --> 사용 library import시 주의(2024.04.05)
+	    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+	    ObjectMapper mapper = new ObjectMapper();            
+	    ////tbl_calendarVO searchVO = (tbl_calendarVO)mapper.readValue(filterJSON, new TypeReference<tbl_calendarVO>(){ });
+	    Reserve rsrv = (Reserve)mapper.readValue(filterJSON, new TypeReference<Reserve>(){ });
+	    //================================ json Object parse ============================
+	    //searchVO.setSite_code(loginService.getSiteCode());
+	    //searchVO.setModi_id(loginVO.getId());
+	    //searchVO.setModi_ip(request.getRemoteAddr());
+	    
+	    String rsrvDate = rsrv.getRsrvDate().replace("-", "");   //// 예약일자 format 제거(2024.04.05)
+	    rsrv.setRsrvDate(rsrvDate);
+	    
+	    rsrv.setId(200);
+    
+		if(reserveService.updateReserve(rsrv) > 0) {
+		    obj.put("success", "ok");
+		}else {
+		    obj.put("success", "fail");
+		}
+
+	    out.print(obj);
+	    return null;
+	}
+
+	//// 달력데이터삭제
+	////@RequestMapping(value = "/adms/calendar/management/delete_ajx.do",method=RequestMethod.POST)
+	@RequestMapping(value = "delete_ajx.do", method=RequestMethod.POST)
+	@ResponseBody
+	public String deleteAction(
+	        @RequestBody String filterJSON,
+	        HttpServletRequest request,
+	        HttpServletResponse res,
+	        ModelMap model) throws Exception {
+	    //LoginVO loginVO = loginService.getLoginInfo();
+	    JSONObject obj = new JSONObject();
+	    
+	    res.setContentType("text/html; charset=UTF-8");
+
+	    PrintWriter out = res.getWriter();
+
+	    //================================ json Object parse ============================
+	    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+	    //// com.fasterxml.jackson.core/jackson-databind --> 사용 library import시 주의(2024.04.05)
+	    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+	    ObjectMapper mapper = new ObjectMapper();
+	    Reserve rsrv = (Reserve)mapper.readValue(filterJSON, new TypeReference<Reserve>(){ });
+	    //================================ json Object parse ============================
+	    //searchVO.setSite_code(loginService.getSiteCode());
+	    //searchVO.setModi_id(loginVO.getId());
+	    //searchVO.setModi_ip(request.getRemoteAddr());
+	    
+	    if (reserveService.updateReserve(rsrv) > 0) {
+	    	obj.put("success", "ok");
+		}else {
+			obj.put("success", "fail");
+		}
+
+	    out.print(obj);
+	    
+	    return null;
+	}
 	//////////////////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////////////////////////////////////////
 	@RequestMapping(value="calendar.do", method=RequestMethod.GET)
@@ -266,6 +374,7 @@ public class ReserveCalController {
 				dateList.add(calendarData);
 			}
 		}
+		
 		logger.info("일자 : " + dateList.toString());
 		
 		model.addAttribute("dateList", dateList); // 날짜 데이터 배열

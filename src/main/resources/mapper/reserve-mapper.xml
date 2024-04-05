@@ -63,7 +63,23 @@
 	</select>
 	
 	<!-- dml *************************************************************** -->
+	<!-- sequence 적용(2024.04.05) -->
 	<insert id="insertReserve" parameterType="Reserve">
+		INSERT INTO TB_RESERVATION_${ id }
+					(rsrv_num
+					,rsrv_date, rsrv_time
+					,rsrv_name, rsrv_telno, rsrv_inwon
+					,rsrv_subject, rsrv_memo
+					,writer, write_date)
+		VALUES (TB_RESERVATION_${ id }_SEQ.NEXTVAL
+				,#{ rsrvDate }, #{ rsrvTime }
+				,#{ rsrvName }, #{ rsrvTelno }, #{ rsrvInwon }
+				,#{ rsrvSubject }, #{ rsrvMemo }
+				,#{ writer }, default)
+	</insert>
+	
+	<!-- old version -->
+	<insert id="insertReserve_old" parameterType="Reserve">
 		INSERT INTO TB_RESERVATION_${ id }
 					(rsrv_num
 					,rsrv_date, rsrv_time
@@ -77,7 +93,7 @@
 				,#{ writer }, default)
 	</insert>
 	
-<!-- 	<update id="updateReserve" parameterType="_int">
+	<update id="updateReserve" parameterType="Reserve">
 		UPDATE TB_RESERVATION_${ id }
 		   SET rsrv_date = #{ rsrvDate }
 		   		,rsrv_time = #{ rsrvTime }
@@ -87,15 +103,14 @@
 		   		,rsrv_subject = #{ rsrvSubject }
 		   		,rsrv_memo = #{ rsrvMemo }
 		   		,writer = #{ writer }
-		   		,sysdate
+		   		,write_date = sysdate  
 		WHERE rsrv_num = #{ rsrvNum }
 	</update>
 	
 	<delete id="deleteReserve" parameterType="Reserve">
-		DELETE FROM tb_reservateaion_${ id } 
+		DELETE FROM TB_RESERVATION_${ id } 
 		WHERE rsrv_num = #{ rsrvNum }
-	
-	</delete> -->
+	</delete>
 	
 	<select id="selectScheduleList" parameterType="com.sdm.ssm.reserve.model.vo.DateData" resultMap="resultScheduleList">
 		<![CDATA[

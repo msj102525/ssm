@@ -183,8 +183,21 @@ var calFunc = {
 		var id = null;
 		var xcontent = null;
 		var title = null;
+		//// 추가(2024.04.05)
+		var groupId = null;
+		var rsrvname = null;
+		var rsrvtelno = null; 
+		var rsrvtime = null;
+		var rsrvinwon = null;
+		var rsrvmemo = null;
 	
 		//============================== date get / set ============================
+		//// 그룹id(2024.02.04)
+		//evnet 값들
+		if (arg.groupId != "" && arg.groupId != null && arg.groupId != undefined) {
+			groupId = arg.groupId;
+		}
+		
 		if (arg.id !="" && arg.id != null && arg.id != undefined) {
 			id = arg.id;
 		}
@@ -192,13 +205,62 @@ var calFunc = {
 		if (arg.title != "" && arg.title != null && arg.title != undefined) {
 			title = arg.title;
 		}
+		
+		////console.log("custome : " + JSON.stringify(arg.extendedProps));
+		
+		//event외에 값들
 		if (arg.extendedProps != undefined) {
 			if (arg._def.extendedProps.xcontent != "" && 
 					arg._def.extendedProps.xcontent != null && 
-					arg._def.extendedProps.xcontent!=undefined) {
-				
+					arg._def.extendedProps.xcontent != undefined) {
 				xcontent = arg._def.extendedProps.xcontent;
 			}
+			
+			/// 추가(2024.04.05)
+			//// 예약자명
+			//console.log("예약자명2 : " + arg.rsrvname);
+			if (arg.extendedProps.rsrvname != "" && 
+					arg.extendedProps.rsrvname != null && 
+					arg.extendedProps.rsrvname != undefined) {
+				rsrvname = arg.extendedProps.rsrvname;
+			}
+			
+			//// 전화번호
+			if (arg.extendedProps.rsrvtelno != "" && 
+					arg.extendedProps.rsrvtelno != null && 
+					arg.extendedProps.rsrvtelno != undefined) {
+				rsrvtelno = arg.extendedProps.rsrvtelno;
+			}
+			
+			//// 연락처
+			if (arg.extendedProps.rsrvtelno != "" && 
+					arg.extendedProps.rsrvtelno != null && 
+					arg.extendedProps.rsrvtelno != undefined) {
+				rsrvtelno = arg.extendedProps.rsrvtelno;
+			}
+			
+			//// 예약시간
+			if (arg.extendedProps.rsrvtime != "" && 
+					arg.extendedProps.rsrvtime != null && 
+					arg.extendedProps.rsrvtime != undefined) {
+				rsrvtime = arg.extendedProps.rsrvtime;
+			}
+			
+			//// 인원
+			if (arg.extendedProps.rsrvinwon != "" && 
+					arg.extendedProps.rsrvinwon != null && 
+					arg.extendedProps.rsrvinwon != undefined) {
+				rsrvinwon = arg.extendedProps.rsrvinwon;
+			}
+			
+			//// 메모
+			if (arg.extendedProps.rsrvmemo != "" && 
+					arg.extendedProps.rsrvmemo != null && 
+					arg.extendedProps.rsrvmemo != undefined) {
+				rsrvmemo = arg.extendedProps.rsrvmemo;
+			}
+			
+			//console.log("cs : " + arg.extendedProps.rsrvmemo);
 		}
        
 		if (allDay) { //// 하루종일이면
@@ -214,7 +276,7 @@ var calFunc = {
            }
            startDisp = start;
            
-           if (end != null) { //// 알릴때만 날짜 하루 빼기
+           if (end != null) { //// 알릴 때만 날짜 하루 빼기
         	   endDisp = dateRel(arg.end.toISOString().slice(0, 10));
            }
 		} else { //// 시간이 같이 들어오면
@@ -230,7 +292,10 @@ var calFunc = {
 				endDisp = returnCdate(calendar, arg.end);
 			}
 		}
-		
+
+		/////////////////////////////////////////////////////////
+		/////////////////////////////////////////////////////////
+		rObj.groupId = groupId; /* 2024.04.05 add */
 		rObj.start = start;
 		rObj.end = end;
 		rObj.start = start;
@@ -240,10 +305,17 @@ var calFunc = {
 		rObj.xcontent = xcontent;
 		rObj.title = title;
 		
+		/// add(2024.04.05)
+		rObj.rsrvname = rsrvname;
+		rObj.rsrvtelno = rsrvtelno;
+		rObj.rsrvtime = rsrvtime;
+		rObj.rsrvinwon = rsrvinwon;
+		rObj.rsrvmemo = rsrvmemo;
+		
 		//============================== date get / set ======================================
 		return rObj;
 	},
-	//// 등록초기
+	//// 등록 초기
 	setDateRangeView : function(xobj) {
 		
 		var dispStr = xobj.startDisp;
@@ -252,19 +324,38 @@ var calFunc = {
 			dispStr += " ~ " + xobj.endDisp;
 		}
       
-		$("form#diaForm").find("input[name='xdate']").val(dispStr);
-		$("form#diaForm").find("input[name='start']").val(xobj.start);
-		$("form#diaForm").find("input[name='end']").val(xobj.end);
 		$("form#diaForm").find("input[name='actType']").val("C"); //// 등록
+
+		$("form#diaForm").find("input[name='id']").val(xobj.id);  //// user id
+		//$("form#diaForm").find("input[name='rsrvNum']").val(xobj.start); ////번호 = groupId
+		$("form#diaForm").find("input[name='rsrvDate']").val(xobj.start);    //// 예약일자
+		//$("form#diaForm").find("input[name='rsrvName']").val(xobj.start);  //// 예약자명
+		//$("form#diaForm").find("input[name='rsrvTelno']").val(xobj.start);  //// 연락처
+		//$("form#diaForm").find("input[name='rsrvTime']").val(xobj.start);  //// 예약시간
+		//$("form#diaForm").find("input[name='rsrvInwon']").val(xobj.start);  //// 예약인원
+		//$("form#diaForm").find("input[name='rsrvSubject']").val(xobj.title);  //// 제목
+		//$("form#diaForm").find("textarea[name='rsrvMemo']").val(xobj.xcontent);
+		//$("form#diaForm").find("input[name='xwriteDate']").val(xobj.start);  //// 작성일자
+		
+		/* $("form#diaForm").find("input[name='rsrvdate']").val(dispStr);
+		$("form#diaForm").find("input[name='rsrvtime']").val(dispStr);
+		$("form#diaForm").find("input[name='start']").val(xobj.start);
+		$("form#diaForm").find("input[name='end']").val(xobj.end); */
+		
 	},
 	//// form안에 name값을 $obj에 주입
 	getFormValue : function() {
 		var $dForm =$("form#diaForm");
 		
 		var $obj = new Object();
-		$("form#diaForm").find("input,textarea,select").each(function(){
+		
+		/////////////////////////////////////////////////////////////////////
+		/// 변경 검토
+		/////////////////////////////////////////////////////////////////////
+		$("form#diaForm").find("input,textarea,select")
+				.not("input[name='actType'], input[name='id'], input[name='xwriteDate']").each(function(){
 			var xval = $(this).val();
-			
+
 			$obj[$(this).attr("name")] = xval;
 		});
       
@@ -291,15 +382,30 @@ var calFunc = {
 		if (xobj.endDisp != null) {
 			dispStr += " ~ " + xobj.endDisp;
 		}
-      
-		$("form#diaForm").find("input[name='xdate']").val(dispStr);
+
+		$("form#diaForm").find("input[name='actType']").val("U"); //// 수정
+		
+		$("form#diaForm").find("input[name='id']").val(xobj.id);  //// user id
+		$("form#diaForm").find("input[name='rsrvNum']").val(xobj.groupId); ////번호 = groupId
+		$("form#diaForm").find("input[name='rsrvDate']").val(xobj.start); ////번호 = groupId
+		$("form#diaForm").find("input[name='rsrvName']").val(xobj.rsrvname);  //// 예약자명
+		$("form#diaForm").find("input[name='rsrvTelno']").val(xobj.rsrvtelno);  //// 연락처
+		$("form#diaForm").find("input[name='rsrvTime']").val(xobj.rsrvtime);  //// 예약시간
+		$("form#diaForm").find("input[name='rsrvInwon']").val(xobj.rsrvinwon);  //// 예약인원
+		$("form#diaForm").find("input[name='rsrvSubject']").val(xobj.title);  //// 제목
+		$("form#diaForm").find("textarea[name='rsrvMemo']").val(xobj.rsrvmemo);
+		
+		//$("form#diaForm").find("input[name='xwriteDate']").val(xobj.start);  //// 작성일자
+
+		/* 
+		$("form#diaForm").find("input[name='rsrvdate']").val(dispStr);
 		$("form#diaForm").find("input[name='start']").val(xobj.start);
 		$("form#diaForm").find("input[name='end']").val(xobj.end);
-		$("form#diaForm").find("input[name='actType']").val("U"); //// 수정
       
 		$("form#diaForm").find("input[name='id']").val(xobj.id);
 		$("form#diaForm").find("input[name='title']").val(xobj.title);
-		$("form#diaForm").find("textarea[name='xcontent']").val(xobj.xcontent);
+		$("form#diaForm").find("textarea[name='xcontent']").val(xobj.xcontent); 
+		*/
 	}
 };
 //calFunc[e]---- ojbect create end
@@ -312,6 +418,7 @@ function createClnd(cal, xobj) {
 		return false; 
 	}
 	
+	//// 등록을 위해서 넘겨줘야 할 값
 	var $obj = calFunc.getFormValue();    
 
 	$.ajax({
@@ -348,16 +455,21 @@ function updateClnd(cal,xobj,event) {
 	var $obj = calFunc.getFormValue();    
   
 	$.ajax({ 
-		url: ctx+"/adms/calendar/management/update_ajx.do", 
+		//url: ctx+"/adms/calendar/management/update_ajx.do",
+		url: "update_ajx.do",
 		type: "POST", 
 		contentType: "application/json;charset=UTF-8",
 		data:JSON.stringify($obj) 
 	}).done(function(data) { 
 		var result = jQuery.parseJSON(data);
+		
 		cal.refetchEvents();
+		
 	}).fail(function(e) {  
 		alert("실패하였습니다." + e);
 	}).always(function() { 
+		///////////////////////////////////////////////////
+		///////////////////////////////////////////////////
 		$("#name").val("");
 		$("#comment").val("");
 	}); 
@@ -372,21 +484,37 @@ function deleteClnd(cal, xobj){
 	
 	var $obj = calFunc.getFormValue();
 	
-	$.ajax({ 
-		url: ctx + "/adms/calendar/management/delete_ajx.do",
+	$.ajax({
+		//url: ctx + "/adms/calendar/management/delete_ajx.do",
+		url: "delete_ajx.do",
 		type: "POST",
 		contentType: "application/json;charset=UTF-8",
 		data:JSON.stringify($obj)
 	}).done(function(data) {
 		var result = jQuery.parseJSON(data); 
 		cal.refetchEvents();
- 	}).fail(function(e) {  
+ 	}).fail(function(e) {
 		alert("실패하였습니다." + e);
- 	}).always(function() { 
+ 	}).always(function() {
 		$("#name").val("");
 		$("#comment").val("");
 	});
 }
+
+/// modal popu 화면 값 clear(2024.04.05)
+function funDiaFormClear(){
+	$("#id").val("");
+	$("#rsrvNum").val("");  //// 예약번호
+	$("#rsrvDate").val("");  //// 예약일자  
+	$("#rsrvName").val("");  //// 예약자명
+	$("#rsrvTelno").val("");  //// 연락처
+	$("#rsrvTime").val("");  //// 예약시간
+	$("#rsrvInwon").val("");  //// 인원
+	$("#rsrvSubject").val("");  //// 제목
+	$("#rsrvMemo").val("");  //// 메모
+	$("#xwriteDate").val("");  //// 작성일자
+}
+		
 //=========================================== function =========================================== 
  
 //관리자만 ,주,일 옵션 뷰
@@ -422,15 +550,18 @@ document.addEventListener('DOMContentLoaded', function() {
 			
 					alert("등록 여부 : " + isAdm);
 					
-			 		if (isAdm == 0) { 
+			 		if (isAdm == 0) {
 						return false;
 					}
 			
-					var xObj = calFunc.calcDate(arg, calendar); //// get event data     
+					var xObj = calFunc.calcDate(arg, calendar); //// get event data
+					
 					//================ dialog 옵션 추가 ===================
 					var btnOpt = {
-									"저장":function() {                            
-											createClnd(calendar, xObj); //// 저장클릭시 액션 함수
+									"저장":function() {
+											//////////////////////////////////////////////
+											//////////////////////////////////////////////
+											createClnd(calendar, xObj); //// 저장 클릭시 액션 함수
 											$(this).dialog("close");
 											},
 									"취소":function() {
@@ -441,31 +572,29 @@ document.addEventListener('DOMContentLoaded', function() {
 					var dOpt = diaLogOpt;
 					dOpt.buttons = btnOpt;
 			
-					//alert("수정 여부2 : ");
-					$("#name").val("");
-					$("#comment").val("");
+					//////////////////////////////////////////////////////////////////
+					/// object clear
+					//////////////////////////////////////////////////////////////////
+					funDiaFormClear();
 
 					//================ dialog 옵션 추가 ===================
-					calFunc.formDsbFalse(); //// Form data disabeld false
+					//calFunc.formDsbFalse(); //// Form data disabeld false
+					
 					$('#dialog').dialog(dOpt); //// 다이얼로그 오픈
 					
-					calFunc.setDateRangeView(xObj);  //SET Form data
+					calFunc.setDateRangeView(xObj);  //// SET Form data
+					
 					calendar.unselect();
 				},
 		/////////////////////////////////////////////////////////////
 		//// 클릭 함수 [s]
 		/////////////////////////////////////////////////////////////
 		eventClick: function(calEvent, jsEvent) {
-				console.log('---------------------------------------');
-				console.log(calEvent.event);
-				console.log('---------------------------------------');
+			
+				var xObj = calFunc.calcDate(calEvent.event, calendar);  //// get event data
 				
-				var xObj = calFunc.calcDate(calEvent.event, calendar);  //// get event data  
+				//console.log("이벤트 : " + JSON.stringify(calEvent));
 				
-				console.log('---------------------------------------');
-				console.log('object : ' + xObj.toString());
-				console.log('---------------------------------------');
-
 				//================ dialog 옵션 추가 ===================
 				var btnOpt = {                
 			                    "삭제": function() {
@@ -480,17 +609,13 @@ document.addEventListener('DOMContentLoaded', function() {
                   			}
 				//================ dialog 옵션 추가 ===================
 
-				console.log('---------------------------------------');
-				console.log('object3 : ');
-				console.log('---------------------------------------');
-
 				//======================관리자 =======================
 				if (isAdm == 1) {
 					calFunc.formDsbFalse(); //Form data disabeld false
 				} else {
-					calFunc.formDsbTrue();  //Form data disabeld true
-					delete btnOpt['수정'];   //일반사용자 수정 히든 처리
-					delete btnOpt['삭제'];   //일반사용자 삭제 히든 처리
+					calFunc.formDsbTrue();  //// Form data disabeld true
+					delete btnOpt['수정'];   //// 일반사용자 수정 히든 처리
+					delete btnOpt['삭제'];   //// 일반사용자 삭제 히든 처리
 				}
 				
 				//======================관리자 =======================
@@ -501,40 +626,43 @@ document.addEventListener('DOMContentLoaded', function() {
 				//================ dialog 옵션 추가 ===================
       
 				//================ 실행  ===================
-				$("#dialog").dialog(dOpt);  //다이얼로그 오픈
-				calFunc.setDataForm(xObj);  //// SET Form Data
+				$("#dialog").dialog(dOpt);   //// 다이얼로그 오픈
+				calFunc.setDataForm(xObj); //// SET Form Data
        
 			//================ 실행 ===================
 			},
 			//// 클릭 함수 [e]
 			editable: edit,  //관리자 외 false
-			eventOrder : "displayOrder",
-			dayMaxEvents: true, // allow "more" link when too many events 
+			eventOrder : "displayOrder",  //// 일정을 sql 조회 순서로 적용
+			dayMaxEvents: true, //// allow "more" link when too many events 
 			//// 새로운 이벤트 데이터가 필요할 때마다 이 함수를 호출 (데이터 조회)
 			events: function(fetchInfo, successCallback, failureCallback) {
 				var start= fetchInfo.start.toISOString().slice(0, 7);
 				var end = fetchInfo.end.toISOString().slice(0, 7);
+				
 				var start2 = fetchInfo.start.toISOString().slice(0, 10);
 				var end2 = fetchInfo.end.toISOString().slice(0, 10);
 				var param = "";
        
 				//console.log("start : " + fetchInfo.start.toISOString()); //년월만 전달...
 				//console.log("end : " + fetchInfo.end.toISOString()); //년월만 전달...
-				console.log("start2 : " + start2); //년월만 전달...
-				console.log("end2 : " + end2); //년월만 전달...
+				console.log("start2 : " + start2); //// 년월만 전달...
+				console.log("end2 : " + end2); //// 년월만 전달...
        
 				param += "start=" + start2;
 				param += "&end=" + end2;
        
 				$.ajax({
-					//url: ctx + "/adms/calendar/management/read_ajx.do", 
 					url: "read_ajx.do",
 					type: "POST",
 					data: param
 				}).done(function(data) {
 					var result = jQuery.parseJSON(data);
-					console.log("값 : " + JSON.stringify(result));
+					
+					//console.log("값 : " + JSON.stringify(result));
+					
 					successCallback(result.list);
+					
 				}).fail(function(e) {  
 					alert("실패하였습니다." + e);
 				}).always(function() {
@@ -543,13 +671,16 @@ document.addEventListener('DOMContentLoaded', function() {
 				}); 
 			},
 		eventDrop: function(info) {               
-			var xObj = calFunc.calcDate(info.event,calendar); //get event data
-			calFunc.setDataForm(xObj);  //Set Form Data
-			updateClnd(calendar, xObj,info); 
+			var xObj = calFunc.calcDate(info.event, calendar); //get event data
+			
+			calFunc.setDataForm(xObj);  //// Set Form Data
+			
+			updateClnd(calendar, xObj,info);
+			
     		},
 		eventResize: function(info) {           
-			var xObj = calFunc.calcDate(info.event,calendar); //get event data
-			calFunc.setDataForm(xObj);  //Set Form Data
+			var xObj = calFunc.calcDate(info.event, calendar); //get event data
+			calFunc.setDataForm(xObj);  //// Set Form Data
 			
 			updateClnd(calendar,xObj,info);  
 			},
@@ -594,7 +725,7 @@ function dateRel(date){
 }
 
 function returnCdate(cal, time){      
-  return cal.formatDate(time,{month: 'long',year: 'numeric',day: 'numeric', hour:'numeric',minute:'numeric', timeZone: 'Asia/Seoul',locale: 'ko'});
+	return cal.formatDate(time,{month: 'long',year: 'numeric',day: 'numeric', hour:'numeric',minute:'numeric', timeZone: 'Asia/Seoul',locale: 'ko'});
 }
 
 </script>
@@ -602,23 +733,53 @@ function returnCdate(cal, time){
 </head>
 <body>
 <div id="contents">
-	<div id="dialog"  title="일정 관리"  style="display:none;">
+	<div id="dialog" title="일정 관리" style="display:none;">
 		<div id="form-div">
-			<form class="diaForm"  id="diaForm" >
-				<input type="text"  name="actType"  value="C"  /> <!-- C:등록 U:수정 D:삭제 -->
-				<input type="text"  name="id"  value=""  />
-				<input type="text"  name="start"  value=""  />
-				<input type="text"  name="end"  value=""  />
-	            
-				<p class="name">
-					<input type="text"  name="title"  id="name"  class="validate[required,custom[onlyLetter],length[0,100]] feedback-input" placeholder="일정타이틀"  />
+			<form class="diaForm" id="diaForm">
+				<div>
+					<input type="hidden" name="actType" value="C"/> <!-- C:등록 U:수정 D:삭제 -->
+					<input type="hidden" name="id" id="id" value=""/>
+					<input type="text" name="rsrvNum" id="rsrvNum" value=""/>
+				</div>
+				<p class="email">
+					<label for="rsrvDate" style="width: 90px;">예약일자</label>
+					<input type="text" name="rsrvDate" id="rsrvDate" readonly="readonly"/>
+					<!-- <input type="text" name="rsrvDate" id="rsrvDate" readonly="readonly"/> -->
+					<!-- <input type="text" name="rsrvdate" readonly="readonly" class="validate[required,custom[email]] feedback-input" placeholder="선택된날짜 및 시간" /> -->
+				</p>
+				<p class="email">
+					<label for="rsrvName" style="width: 90px;">예약자명</label>
+					<input type="text" name="rsrvName" id="rsrvName" />
+					<!-- <input type="text"  name="rsrvName"  id="rsrvName"  value=""  /> -->
+					<!-- <input type="text" name="rsrvName" id="rsrvName" placeholder="홍길동" /> -->
+					<!-- <input type="text" name="rsrvdate" readonly="readonly" class="validate[required,custom[email]] feedback-input" placeholder="선택된날짜 및 시간" /> -->
 				</p>
 				<p class="email">
-					<input type="text"  name="xdate"  readonly="readonly"  class="validate[required,custom[email]] feedback-input"  placeholder="선택된날짜 및 시간"  />
+					<label for="rsrvTelno" style="width: 90px">연락처</label>
+					<input type="text" name="rsrvTelno" id="rsrvTelno" placeholder="010-1234-5678" />
+				</p>
+				<p class="email">
+					<label for="rsrvTime" style="width: 90px;">예약시간</label>
+					<input type="text"  name="rsrvTime"  id="rsrvTime"  placeholder="10:00"  />
+				</p>
+				<p class="email">
+					<label for="rsrvInwon" style="width: 90px">인원</label>
+					<input type="number"  name="rsrvInwon"  id="rsrvInwon"  value="1" />
+				</p>
+				<p class="email">
+					<label for="rsrvSubject" style="width: 90px">제목</label>
+					<input type="text" name="rsrvSubject" id="rsrvSubject" placeholder=""/>
+					<!-- <input type="text" name="rsrvSubject" id="rsrvSubject" placeholder=""/> -->
 				</p>
 				<p class="text">
-					<textarea name="xcontent"  id="comment"  class="validate[required,length[6,300]] feedback-input"  placeholder="일정내용"></textarea>
-				</p>        
+					<label for="rsrvMemo" style="width: 90px">메모</label>
+					<textarea name="rsrvMemo" id="rsrvMemo" value=""></textarea>
+					<!-- <textarea name="xcontent" id="comment" class="validate[required,length[6,300]] feedback-input" placeholder="일정내용"></textarea> -->
+				</p>
+				<p class="email">
+					<label for="xwriteDate" style="width: 90px">작성일자</label>
+					<input type="text" name="xwriteDate" id="xwriteDate"/>
+				</p>
 			</form>
 		</div>
 	</div>
