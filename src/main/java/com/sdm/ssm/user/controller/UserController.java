@@ -53,6 +53,10 @@ public class UserController {
 	
 	@Autowired
 	private GoogleLoginAuth googleloginAuth;
+	
+	public UserController() {
+		super();
+	}
 
 	// 뷰 페이지 내보내기
 	@RequestMapping("goLogin.do")
@@ -86,6 +90,7 @@ public class UserController {
 		}
 	}
 	
+	// 카카오
 	@RequestMapping(value="kcallback.do", produces="application/json",
 			method= {RequestMethod.GET, RequestMethod.POST})
 	public String kakaoLogin(@RequestParam String code, Model model, HttpSession session) {
@@ -127,6 +132,7 @@ public class UserController {
 		
 	}
 	
+	// 네이버
 	public UserController(NaverLoginAuth naverLoginAuth) {
         this.naverLoginAuth = naverLoginAuth;
     }
@@ -144,7 +150,7 @@ public class UserController {
 	    logger.info("1. ncallback.do : " + node);
 	    
 		 // 2. accessToken에 사용자의 로그인한 모든 정보가 들어있음
-	    apiResult = naverLoginAuth.getUserProfile(node);
+	    apiResult = naverloginAuth.getUserProfile(node);
 		logger.info("2. ncallback.do : " + apiResult);
 		
 		// 3. String형식인 apiResult를 json형태로 바꿈
@@ -172,19 +178,67 @@ public class UserController {
 		
 		// 유저 테이블에서 회원 정보 조회해 오기
 		User loginUser = null;
-		User kUser = userService.selectUserById(email);
+		User nUser = userService.selectUserById(email);
 		
-		if(kUser == null) {
+		if(nUser == null) {
 			return "redirect:goEnroll.do?id="
 						+ email
 						+ "&email=" + email
 						+ "&birth=" + birth
 						+ "&phone=" + phone;
 		} else {
-			loginUser = kUser;
+			loginUser = nUser;
 			session.setAttribute("loginUser", email);
 			return "redirect:main.do";
 		}
+	}
+	
+	// 구글
+	
+	
+	public UserController(GoogleLoginAuth googleLoginAuth) {
+		this.googleLoginAuth = googleLoginAuth;
+	}
+	
+	private GoogleLoginAuth googleLoginAuth;
+	
+	@RequestMapping(value="gcallback.do", method= {RequestMethod.GET, RequestMethod.POST})
+	public String googleLogin(@RequestParam String code, @RequestParam String state, Model model, HttpSession session) throws IOException, ParseException {
+	    logger.info("0. gcallback.do" + code);
+	    
+	    OAuth2AccessToken node = googleloginAuth.getAccessToken(session, code, state); 
+	    logger.info("1. gcallbackgcallback.do : " + node);
+	    
+	    apiResult = googleloginAuth.getUserProfile(node);
+		logger.info("2. gcallback.do : " + apiResult);
+		
+		JSONParser parser = new JSONParser();
+		Object obj = parser.parse(apiResult);
+		JSONObject jsonObj = (JSONObject) obj;
+		
+		logger.info("2.5 jsonObj : " + jsonObj.toString());
+		
+		String name = (String)jsonObj.get("name");
+		String id = (String)jsonObj.get("id");
+		String email = (String)jsonObj.get("email");
+		
+		logger.info("3. name : " + name);
+		logger.info("3. id : " + id);
+		logger.info("3. email : " + email);
+		
+		
+		User loginUser = null;
+		User nUser = userService.selectUserById(email);
+
+		if (nUser == null) {
+			return "redirect:goEnroll.do?id=" + email 
+					+ "&email=" + email;
+		} else {
+			loginUser = nUser;
+			session.setAttribute("loginUser", email);
+			return "redirect:main.do";
+		}
+		 
 	}
 	
 	
