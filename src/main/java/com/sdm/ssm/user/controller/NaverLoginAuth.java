@@ -23,7 +23,7 @@ public class NaverLoginAuth {
 	 
 	private final static String CLIENT_ID = "vZ7d3gglKr7TQdbRo9Kx";
 	private final static String CLIENT_SECRET = "C9Fv_7lO1P";
-	private final static String REDIRECT_URI = "http://127.0.0.1:8080/ssm/ncallback.do";
+	private final static String REDIRECT_URI = "http://localhost:8080/ssm/ncallback.do";
 	private final static String SESSION_STATE = "oauth_state";
 	
 	// 프로필 조회 API URL
