@@ -255,7 +255,21 @@ public class UserController {
 		 
 	}
 	
-	
+	// 마이페이지 이동
+	@RequestMapping("goMyPage.do")
+	public String goMypage(@RequestParam("userId") String userId, Model model) {
+		User loginUser = userService.selectUserById(userId);
+		logger.info("goMypage!!!!");
+		logger.info("loginUser : " + loginUser.toString());
+		if(loginUser != null) {
+			model.addAttribute("loginUser", loginUser);
+			return "user/myPage";			
+		} else {
+			model.addAttribute("message", userId + "정보 조히 실패");
+			return "common/error";
+		}
+		
+	}
 	
 
 	// 서비스 메소드 실행
