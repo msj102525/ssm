@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-z<%-- <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui" %> --%>
+<%-- <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui" %> --%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%-- <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %> --%>
 <%-- <%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %> --%>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%-- <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %> --%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <c:set var="path" value="${ pageContext.servletContext.contextPath }" />
@@ -31,12 +31,10 @@ body {
 line-height:14px;
 }
  
- 
 #calendar {
   max-width: 1100px;
   margin: 0 auto;
 }
- 
  
 #form-div {
   background-color: '';
@@ -422,7 +420,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		selectMirror: true,
 		select: function(arg) {
 			
-					alert("수정 여부 : " + isAdm);
+					alert("등록 여부 : " + isAdm);
 					
 			 		if (isAdm == 0) { 
 						return false;
@@ -451,7 +449,7 @@ document.addEventListener('DOMContentLoaded', function() {
 					calFunc.formDsbFalse(); //// Form data disabeld false
 					$('#dialog').dialog(dOpt); //// 다이얼로그 오픈
 					
-					//calFunc.setDateRangeView(xObj);  //SET Form data
+					calFunc.setDateRangeView(xObj);  //SET Form data
 					calendar.unselect();
 				},
 		/////////////////////////////////////////////////////////////
