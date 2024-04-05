@@ -13,8 +13,20 @@
 		<org.aspectj-version>1.9.6</org.aspectj-version>
 		<org.slf4j-version>1.7.25</org.slf4j-version>
 	</properties>
-	
+	<!-- 아임포트 결제 api -->
+   <repositories>
+      <repository>
+         <id>jitpack.io</id>
+         <url>https://jitpack.io</url>
+      </repository>
+   </repositories>
 	<dependencies>
+	<!-- 아임포트 -->
+	<dependency>
+         <groupId>com.github.iamport</groupId>
+         <artifactId>iamport-rest-client-java</artifactId>
+         <version>0.2.14</version>
+      </dependency>
 		<!-- 카카오 로그인 api 연동 -->
 		<!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpcore -->
 		<dependency>
