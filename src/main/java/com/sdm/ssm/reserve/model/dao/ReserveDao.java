@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.sdm.ssm.common.SerachDateStr;
 import com.sdm.ssm.reserve.model.vo.DateData;
 import com.sdm.ssm.reserve.model.vo.Reserve;
 import com.sdm.ssm.reserve.model.vo.ScheduleDto;
@@ -31,11 +32,25 @@ public class ReserveDao {
 	public int deleteReserve(Reserve reserve) {
 		return sqlSessionTemplate.delete("reserveMapper.deleteReserve", reserve);
 	}
-
+	
+	/// 예약 내용 조회 상세
 	public Reserve selectRsrvDetail(Reserve reserve) {
 		return sqlSessionTemplate.selectOne("reserveMapper.selectRsrvDetail", reserve);
 	}
+	
+	//// 목록 조회(2024.04.04)
+	public ArrayList<Reserve> selectRsrvList(SerachDateStr serachDateStr) {
+		return sqlSessionTemplate.selectOne("reserveMapper.selectRsrvList", serachDateStr);
+	}
 
+	//// 목록 조회2(2024.04.04)
+	public ArrayList<Reserve> selectRsrvList2(SerachDateStr serachDateStr) {
+		List<Reserve> list = sqlSessionTemplate.selectList("reserveMapper.selectRsrvList2", serachDateStr);
+		return (ArrayList<Reserve>)list;
+	}
+
+	//////////////////////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////////////
 	//schedule 조회(2024.04.02)
 	public ScheduleDto selectReserveget(int idx) {
 		return sqlSessionTemplate.selectOne("reserveMapper.selectReserveget", idx);
@@ -46,5 +61,7 @@ public class ReserveDao {
 		List<ScheduleDto> list = sqlSessionTemplate.selectList("reserveMapper.selectScheduleList", dateData);
 		return (ArrayList<ScheduleDto>)list;
 	}
+
+
 
 }

@@ -67,6 +67,8 @@
 							<li><a href="${pageContext.servletContext.contextPath }/inconvlist.do?page=1">불편사항</a></li>
 							<li><a href="${pageContext.servletContext.contextPath}/gmoveinsert.do">재고관리</a></li>
 							<li><a href="${pageContext.servletContext.contextPath}/slist.do">사이트구독</a></li>
+							<li><a href="${pageContext.servletContext.contextPath }/account.do">회계관리</a></li>
+							<li><a href="#">매장관리</a></li>
 						</ul>
 					</div>
 					<div class="login-box">

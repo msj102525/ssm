@@ -185,6 +185,7 @@ body {
         <li><a href="${pageContext.servletContext.contextPath}/pmoveinsert.do?id=${loginUser.id}">발주처 등록</a></li>
         <li><a href="${pageContext.servletContext.contextPath}/plist.do?page=1&id=${loginUser.id}">발주처 현황</a></li>
         <li><a href="${pageContext.servletContext.contextPath}/specify.do?id=${loginUser.id}">발주 명세서</a></li>
+        <li><a href="${pageContext.servletContext.contextPath}/gmoveinsert2.do?id=${loginUser.id}">재고 등록 연습용</a></li>
       </ul>
     </li>
     <li>

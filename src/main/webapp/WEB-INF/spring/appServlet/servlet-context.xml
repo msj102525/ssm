@@ -49,6 +49,10 @@
 		<beans:property name="maxUploadSize" value="10000000" />	
 	</beans:bean>
 	
+	<!-- NaverLoginAuth Class에 대한 Bean설정 추가 -->
+	<beans:bean class="com.sdm.ssm.user.controller.NaverLoginAuth" id="naverLoginAuth"/>
+	<beans:bean class="com.sdm.ssm.user.controller.GoogleLoginAuth" id="googleLoginAuth"/>
+	
 	<aop:aspectj-autoproxy proxy-target-class="true" />
 	
 	<!-- mvc 탭에서 등록 처리함 -->

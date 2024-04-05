@@ -18,6 +18,7 @@
 		<typeAlias type="com.sdm.ssm.common.Search" alias="Search"/>
 		<typeAlias type="com.sdm.ssm.common.SearchDate" alias="SearchDate"/>
 		<typeAlias type="com.sdm.ssm.goodsmanage.model.vo.GoodsPrint" alias="GoodsPrint"/>
+		<typeAlias type="com.sdm.ssm.goodsmanage.model.vo.Specify" alias="Specify"/>
 		<typeAlias type="com.sdm.ssm.common.SearchDate" alias="SearchDate"/>
 		<typeAlias type="com.sdm.ssm.common.Search" alias="Search"/>
 		<typeAlias type="com.sdm.ssm.user.model.vo.User" alias="User"/>
@@ -27,6 +28,9 @@
 		<typeAlias type="com.sdm.ssm.admin.model.vo.Suspension" alias="Suspension" />
 		<typeAlias type="com.sdm.ssm.subscribe.model.vo.Subscribe" alias="Subscribe" />
 		<typeAlias type="com.sdm.ssm.subscribe.model.vo.UserSubscribe" alias="UserSubscribe" />
+		<typeAlias type="com.sdm.ssm.employee.model.vo.Employee" alias="Employee"/>
+		<typeAlias type="com.sdm.ssm.employee.model.vo.SalaryInfo" alias="SalaryInfo"/>
+		<typeAlias type="com.sdm.ssm.employee.model.vo.CommuteInfo" alias="CommuteInfo"/>
 	</typeAliases>
 		
 	<mappers>
@@ -35,6 +39,8 @@
 		<mapper resource="mapper/user-mapper.xml"/>
 		<mapper resource="mapper/reserve-mapper.xml"/>
 		<mapper resource="mapper/inconv-mapper.xml"/>
+		<mapper resource="mapper/specify-mapper.xml" />
+		<mapper resource="mapper/emp-mapper.xml"/>
 		<mapper resource="mapper/usermanage-mapper.xml" />
 		<mapper resource="mapper/subscribe-mapper.xml" />
 	</mappers>

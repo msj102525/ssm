@@ -119,21 +119,21 @@
 	<!-- 상품 등록 -->
 	<insert id="insertGoods" parameterType="goodsPrint">
 	INSERT ALL
-    
+
     INTO TB_GOODS_${id} (ID, GOODS_NO, GOODS_NAME, GOODS_UNIT, GOODS_PRICE, NATION)
     VALUES (${id}, 
-    		   (select max(GOODS_NO)+1 from TB_GOODS_${ id }), 
+    		   (ingno.NEXTVAL), 
     		   #{goodsName}, #{goodsUnit}, #{goodsPrice}, #{nation})
     
     INTO TB_INVENTORY_${id} (GOODS_NO, PD_QUANTITY, MIN_ALARM_QUANTITY, MIN_ORDER_QUANTITY)
-    VALUES (select max(GOODS_NO)+1 from TB_GOODS_${ id }), 
+    VALUES ((ingno.NEXTVAL), 
     			#{pdQuantity}, 
     			#{minAlarmQuantity}, 
     			#{minOrderQuantity})
   
     INTO TB_PRODUCE_${id} (GOODS_NO, PD_NO, PD_NAME, PD_PHONE)
-    VALUES ((select max(GOODS_NO)+1 from TB_GOODS_${ id }), 
-    			(select max(PD_NO)+1 from TB_PRODUCE_${ id }), 
+    VALUES ((ingno.NEXTVAL), 
+    			(inpno.NEXTVAL), 
     			#{pdName},
     			#{pdPhone})
 
@@ -252,6 +252,7 @@
 		  PD_ADDRESS = #{pdAddress}
 	WHERE GOODS_NO = #{ goodsNo }
 	</update>
+	
 	
 	
 	

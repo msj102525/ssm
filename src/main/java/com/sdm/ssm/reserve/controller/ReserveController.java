@@ -11,7 +11,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.sdm.ssm.admin.model.vo.Notice;
+import com.sdm.ssm.common.Paging;
+import com.sdm.ssm.common.SerachDateStr;
 import com.sdm.ssm.reserve.model.service.ReserveService;
 import com.sdm.ssm.reserve.model.vo.Reserve;
 
@@ -83,8 +87,36 @@ public class ReserveController {
 	}
 	
 	//예약 목록 조회
-	@RequestMapping(value="rsrvlist.do", method=RequestMethod.POST)
-	public String reserveselectRsrvListMethod() {
+	@RequestMapping(value="rsrvlist.do", method= RequestMethod.GET)
+	public String reserveselectRsrvListMethod(
+			@RequestParam(name="keyword", required=false) String keyword,
+			@RequestParam(name="limit", required=false) String slimit,
+			@RequestParam(name="page", required=false) String page,
+			Model model
+			) {
+		
+		int currentPage = 1;
+		if (page != null) {
+			currentPage = Integer.parseInt(page);
+		}
+		
+		//한 페이지 공지 10개씩 출력되게 한다면
+		int limit = 10;
+		if (slimit != null) {
+			limit = Integer.parseInt(slimit);
+		}
+		
+		//총 페이지 수 계산을 위한 공지글 총갯수 조회
+		//int listCount = reserveService.selectListCount();
+		//페이지 관련 항목 계산 처리
+		//Paging paging = new Paging(listCount, currentPage, limit, "rsrvlist.do");
+		//paging.calculate();
+		
+	    SerachDateStr serachDateStr = new SerachDateStr();
+	    
+	    //// 목록 조회(2024.04.04)
+		ArrayList<Reserve> list = reserveService.selectRsrvList(serachDateStr);
+		
 		return "";
 	}
 	

@@ -104,6 +104,15 @@ public class GoodsPrintDao {
 		return sqlSessionTemplate.update("goodsMapper.updateProducePT", goodsPrint);
 	}
 
+	// 상품 등록 - 첫번째
+	public int firstGoods(int id) {
+		return sqlSessionTemplate.selectOne("goodsMapper.firstGoods", id);
+	}
+
+	public int insertFirstGoods(GoodsPrint goodsPrint) {
+		return sqlSessionTemplate.insert("goodsMapper.insertFirstGoods", goodsPrint);
+	}
+
 	
 	
 

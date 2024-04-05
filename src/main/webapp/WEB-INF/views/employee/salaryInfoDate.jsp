@@ -73,33 +73,34 @@
 <div id="insertSalaryForm">
     <h2>직원 금융 정보 등록</h2>
     <!-- 등록 폼 -->
-    <form id="insertSalary" action="insertSalary.do" method="post">
-        <!-- 입력 필드들 -->
-        <label for="empId">직원 번호:</label> 
-        <input type="number" id="empId" name="empId" min="1" required><br>
-         
-        <label for="bankName">은행 이름:</label> 
-        <input type="text" id="bankName" name="bankName" required><br>
-        
-        <label for="bankAccountNo">계좌 번호:</label> 
-        <input type="text" id="bankAccountNo" name="bankAccountNo" required><br>
-         
-        <label for="accountHolder">계좌 소유자 이름:</label>
-        <input type="text" id="accountHolder" name="accountHolder" required><br>
-         
-        <label for="premium">보험료:</label>
-        <input type="text" id="premium" name="premium" required><br> 
-         
-        <label for="tax">세금:</label>            
-        <input type="text" id="tax" name="tax" required><br> 
-        
-        <input type="submit" value="등록"> <br> 
-    </form>
+<form id="insertSalary" action="insertSalary.do" method="post">
+    <!-- 입력 필드들 -->
+    <label for="empId">직원 번호:</label> 
+    <input type="number" id="empId" name="empId" min="1" required><br>
+     
+    <label for="bankName">은행 이름:</label> 
+    <input type="text" id="bankName" name="bankName" required><br>
+    
+    <label for="bankAccountNo">계좌 번호:</label> 
+    <input type="text" id="bankAccountNo" name="bankAccountNo" required><br>
+     
+    <label for="accountHolder">계좌 소유자 이름:</label>
+    <input type="text" id="accountHolder" name="accountHolder" required><br>
+     
+    <label for="premium">보험료:</label>
+    <input type="text" id="premium" name="premium" required><br> 
+     
+    <label for="tax">세금:</label>            
+    <input type="text" id="tax" name="tax" required><br> 
+    
+    <input type="submit" value="등록"> <br> 
+</form>
+
 </div>  
 <div id="updateSalaryForm">
     <!-- 직원 급여정보 수정 -->
     <h2>직원 급여 정보 수정</h2>
-    <form action="insertSalary.do" method="post">
+      <form action="updateSalary.do" method="post">
         <label for="empId">직원 번호:</label>
         <input type="number" id="empId" name="empId" min="1" required><br>
         
@@ -127,8 +128,8 @@
     <!-- 직원 급여정보 삭제 -->
     <h4>직원 급여 정보 삭제</h4>
     <form action="deleteSalary.do" method="post">
-        직원 번호: <input type="text" name="employeeId" required><br>
-        직원 이름: <input type="text" name="employeeName" required><br>
+         직원 번호: <input type="text" name="empId" required><br>
+        직원 이름: <input type="text" name="empName" required><br>
         <input type="submit" value="삭제" onclick="return confirm('정말 삭제하시겠습니까?');">
     </form>
 </div>  

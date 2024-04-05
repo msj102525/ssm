@@ -3,43 +3,120 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="resources/css/goods/goodsDetail.css" />
 <title>Insert title here</title>
+<script type="text/javascript"
+	src="/ssm/resources/js/jquery-3.7.0.min.js"></script>
+
+
+<script type="text/javascript">
+	$(function() {
+		//input 태그의 name 이 item 의 값이 바뀌면(change) 작동되는 이벤트 핸들러 작성
+		$('input[name=item]').on('change', function() {
+			//여러 개의 태그 중에서 체크표시가 된 태그를 선택
+			$('input[name=item]').each(function(index) {
+				//선택된 radio 순번대로 하나씩 checked 인지 확인함
+				if ($(this).is(':checked')) {
+					//체크 표시된 아이템에 대한 폼이 보여지게 처리함
+					$('form.sform').eq(index).css('display', 'block');
+				} else {
+					//체크 표시 안된 아이템의 폼은 안 보이게 처리함
+					$('form.sform').eq(index).css('display', 'none');
+				}
+			}); //each
+		}); //on
+
+		$('#checkBoxAll').click(function() {
+			if ($(this).is(":checked")) {
+				$(".chkCheckBoxId").prop("checked", true)
+			} else {
+				$(".chkCheckBoxId").prop("checked", false)
+			}
+		});
+	}); //document ready
+</script>
+
+<script>
+    function insertSelectedGoods() {
+    	var jarr = new Array();
+
+    	var checkedRows = document.querySelectorAll('.chkCheckBoxId:checked');
+    	var id = $("#testid").val();
+        
+        // 변경된 내용을 저장할 배열
+        var jarr = [];
+
+        // 각 체크된 행에 대해
+        checkedRows.forEach(function(row) {
+            var rowIndex = row.closest('tr').rowIndex; // 첫 번째 행은 헤더이므로 -1
+            var rowData = {
+                id: $("#testid").val(), // loginUser.id 값 가져오기
+                goodsName: document.getElementById('goodsName_' + rowIndex).value,
+                goodsUnit: document.getElementById('goodsUnit_' + rowIndex).value,
+                pdQuantity: document.getElementById('pdQuantity_' + rowIndex).value,               
+                goodsPrice: document.getElementById('goodsPrice_' + rowIndex).value,
+                minOrderQuantity: document.getElementById('minOrderQuantity_' + rowIndex).value,
+                minAlarmQuantity: document.getElementById('minAlarmQuantity_' + rowIndex).value,
+                pdName: document.getElementById('pdName_' + rowIndex).value,
+                pdPhone: document.getElementById('pdPhone_' + rowIndex).value,
+                nation: document.getElementById('nation_' + rowIndex).value,
+            };
+            jarr.push(rowData);
+        });   
+       
+     // 알림 대화 상자 표시
+        var confirmMessage = "등록 하시겠습니까?";
+        if (confirm(confirmMessage)) {
+            // 변경된 내용을 서버로 전송
+            $.ajax({
+                type: "POST",
+                url: "ginsert2.do",
+                data: JSON.stringify(jarr),
+                contentType: "application/json; charset=utf-8",
+                success: function(result) {
+                	alert("저장 성공")
+                    location.reload();  
+                },
+                error: function(request, status, errorData) {
+                    console.log("error code : " + request.status
+                        + "\nMessage : " + request.responseText
+                        + "\nError : " + errorData);
+                } 
+            });  
+        } else {
+            alert("등록이 취소되었습니다.");
+        }
+        
+    }
+</script>
+
 </head>
 <body>
 	<c:import url="/WEB-INF/views/common/header.jsp" />
 
 	<hr>
 	<br>
-	<c:import url="/WEB-INF/views/common/sidebar.jsp" /> 
-	<h1 align="center">재고 등록</h1>
+	<%-- 	<c:import url="/WEB-INF/views/common/sidebar.jsp" /> --%>
+	<h1 align="center">재고 등록 연속 연습</h1>
 	<div style="align: center; text-align: center;">
 		<br> <br> <br>
 	</div>
 
-	<style>
-.popup {
-	margin: 0 auto; /* 좌우 마진을 자동으로 설정하여 가운데 정렬 */
-	width: fit-content; /* 내용에 맞게 자동으로 너비 설정 */
-}
+	<div align="center">
+		<button onclick="insertSelectedGoods();">등록</button>
+	</div>
 
-.insertbutton {
-	margin: 0 auto; /* 좌우 마진을 자동으로 설정하여 가운데 정렬 */
-	width: fit-content; /* 내용에 맞게 자동으로 너비 설정 */
-}
-</style>
-
-	<br>
-	<br>
 	<div style="margin-left: auto; margin-right: auto; width: 1400px;">
 		<br> <br>
 		<table align="center" border="1" cellspacing="25" width="100%"
 			id="insertTable">
 			<tr>
+				<th class="table-head"><input type="checkbox" id="checkBoxAll"></th>
 				<th style="text-align: center; white-space: nowrap;">상품명</th>
 				<th style="text-align: center; white-space: nowrap;">수량</th>
 				<th style="text-align: center; white-space: nowrap;">단위</th>
@@ -49,56 +126,70 @@
 				<th style="text-align: center; white-space: nowrap;">발주처</th>
 				<th style="text-align: center; white-space: nowrap;">발주 연락처</th>
 				<th style="text-align: center; white-space: nowrap;">원산지</th>
-				<th>등록</th>
 			</tr>
 			<form action="ginsert.do" method="post" id="ginsert">
-				<input type="hidden" name="id" value="${ loginUser.id }">
-			<tr>
-				<td align="center" style="white-space: nowrap;"><input
-					type="text" maxlength='100' name="goodsName"
-					style="width: 50px; margin-right: 0px; vertical-align: middle;" />
-				</td>
-				<td align="center" style="white-space: nowrap;"><input
-					type="number" name="pdQuantity"
-					style="width: 50px; margin-right: 0px; vertical-align: middle;" />
-				</td>
-				<td align="center" style="white-space: nowrap;"><input
-					type="text" maxlength='10' name="goodsUnit"
-					style="width: 50px; margin-right: 0px; vertical-align: middle;" />
-				</td>
-				<td align="center" style="white-space: nowrap;"><input
-					type="number" maxlength='10' name="goodsPrice"
-					style="width: 50px; margin-right: 0px; vertical-align: middle;" />
-				</td>
-				<td align="center" style="white-space: nowrap;"><input
-					type="number" name="minOrderQuantity"
-					style="width: 50px; margin-right: 0px; vertical-align: middle;" />
-				</td>
-				<td align="center" style="white-space: nowrap;"><input
-					type="number" name="minAlarmQuantity"
-					style="width: 50px; margin-right: 0px; vertical-align: middle;" />
-				</td>
-				<td align="center" style="white-space: nowrap;"><input
-					type="text" maxlength='100' name="pdName"
-					style="width: 50px; margin-right: 0px; vertical-align: middle;" />
-				</td>
-				<td align="center" style="white-space: nowrap;"><input
-					type="text" maxlength='30' name="pdPhone"
-					style="width: 50px; margin-right: 0px; vertical-align: middle;" />
-				</td>
-				<td align="center" style="white-space: nowrap;"><input
-					type="text" maxlength='10' name="nation"
-					style="width: 50px; margin-right: 0px; vertical-align: middle;" />
-				</td>
-				<td><input type="submit" id="addBtn" value="등록하기"></td>
-			</tr>
+				<input type="hidden" id ="testid" name="id" value="${ loginUser.id }">
+				<c:forEach begin="1" end="15" var="index">
+					<tr>
+						<td class="table-data"><input type="checkbox"
+							class="chkCheckBoxId" value="${goodsPrint.goodsNo}"></td>
+						<td align="center" style="white-space: nowrap;"><input
+							type="text" maxlength="100" name="goodsName"
+							id="goodsName_${index}" placeholder="필수입력"
+							style="width: 50px; margin-right: 0px; vertical-align: middle;" />
+						</td>
+						<td align="center" style="white-space: nowrap;"><input
+							type="number" name="pdQuantity" id="pdQuantity_${index}"
+							placeholder="필수입력"
+							style="width: 50px; margin-right: 0px; vertical-align: middle;" />
+						</td>
+						<td align="center" style="white-space: nowrap;"><input
+							type="text" maxlength="10" name="goodsUnit"
+							id="goodsUnit_${index}" value=""
+							style="width: 50px; margin-right: 0px; vertical-align: middle;" />
+						</td>
+						<td align="center" style="white-space: nowrap;"><input
+							type="number" maxlength="10" name="goodsPrice"
+							id="goodsPrice_${index}" value="0" min="0"
+							style="width: 50px; margin-right: 0px; vertical-align: middle;" />
+						</td>
+						<td align="center" style="white-space: nowrap;"><input
+							type="number" name="minOrderQuantity"
+							id="minOrderQuantity_${index}" value="0" min="0"
+							style="width: 50px; margin-right: 0px; vertical-align: middle;" />
+						</td>
+						<td align="center" style="white-space: nowrap;"><input
+							type="number" name="minAlarmQuantity"
+							id="minAlarmQuantity_${index}" value="0" min="0"
+							style="width: 50px; margin-right: 0px; vertical-align: middle;" />
+						</td>
+						<td align="center" style="white-space: nowrap;"><input
+							type="text" maxlength="100" name="pdName" id="pdName_${index}"
+							placeholder="필수입력"
+							style="width: 50px; margin-right: 0px; vertical-align: middle;" />
+						</td>
+						<td align="center" style="white-space: nowrap;"><input
+							type="text" maxlength="30" name="pdPhone" id="pdPhone_${index}"
+							value=""
+							style="width: 50px; margin-right: 0px; vertical-align: middle;" />
+						</td>
+						<td align="center" style="white-space: nowrap;"><input
+							type="text" maxlength="10" name="nation" id="nation_${index}"
+							value=""
+							style="width: 50px; margin-right: 0px; vertical-align: middle;" />
+						</td>
+					</tr>
+				</c:forEach>
+			</form>
 		</table>
-		</form>
+
 	</div>
 
 
 
-
+	<br>
+	<hr>
+	<c:import url="/WEB-INF/views/common/footer.jsp" />
 
 </body>
 </html>

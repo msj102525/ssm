@@ -1,3 +1,6 @@
+TRUNCATE TABLE TB_NOTICE;
+
+
 -- 1번 더미 데이터 삽입
 INSERT INTO TB_NOTICE (NOTICE_NO, WRITER, NOTICE_TITLE, NOTICE_CONTENT, WRITE_DATE, MODIFY_DATE, READ_COUNT, IMPORTANCY)
 VALUES (1, 1, '중요 공지: 시스템 업그레이드 예정 안내', '안녕하세요, 회원 여러분! 플랫폼의 성능을 향상시키기 위한 시스템 업그레이드가 예정되어 있습니다. 업그레이드 작업으로 인해 일시적으로 서비스 이용이 제한될 수 있습니다. 양해 부탁드리며, 더 나은 서비스를 제공하기 위해 최선을 다하겠습니다.', SYSDATE, SYSDATE, 0, 2);

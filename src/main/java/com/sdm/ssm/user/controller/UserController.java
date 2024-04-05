@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +26,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.SessionStatus;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import com.github.scribejava.core.model.OAuth2AccessToken;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import com.sdm.ssm.user.model.service.UserService;
 import com.sdm.ssm.user.model.vo.User;
 
@@ -43,6 +47,16 @@ public class UserController {
 	
 	@Autowired
 	private KakaoLoginAuth kakaologinAuth;
+	
+	@Autowired
+	private NaverLoginAuth naverloginAuth;
+	
+	@Autowired
+	private GoogleLoginAuth googleloginAuth;
+	
+	public UserController() {
+		super();
+	}
 
 	// 뷰 페이지 내보내기
 	@RequestMapping("goLogin.do")
@@ -53,9 +67,12 @@ public class UserController {
 	@RequestMapping(value="goEnroll.do", method= {RequestMethod.GET, RequestMethod.POST})
 	public String goEnroll(Model model, HttpSession session) {
 		String kakaoAuthURL = kakaologinAuth.getAuthorizationUrl(session);
+		String naverAuthURL = naverloginAuth.getAuthorizationUrl(session);
+		String googleAuthURL = googleloginAuth.getAuthorizationUrl(session);
 		
 		model.addAttribute("kakaourl", kakaoAuthURL);
-		
+		model.addAttribute("naverurl", naverAuthURL);
+		model.addAttribute("googleurl", googleAuthURL);
 		
 		return "user/enroll";
 	}
@@ -73,37 +90,40 @@ public class UserController {
 		}
 	}
 	
+	// 카카오
 	@RequestMapping(value="kcallback.do", produces="application/json",
 			method= {RequestMethod.GET, RequestMethod.POST})
 	public String kakaoLogin(@RequestParam String code, Model model, HttpSession session) {
 		logger.info("0. kcallback.do" + code);
 		
 		// 로그인 결과값을 node에 담기
-		JsonNode node = kakaologinAuth.getAcessToken(code);
+		JsonObject node = kakaologinAuth.getAccessToken(code);
 		logger.info("1. kcallback.do : " + node);
 		
 		// accessToken에 사용자의 로그인한 모든 정보가 들어있음
-		JsonNode accessToken = node.get("access_token");
+		JsonPrimitive accessToken = node.getAsJsonPrimitive("access_token");
 		logger.info("2. kcallback.do : " + accessToken);
+		
 		// 사용자 정보 추출
-		JsonNode userInfo = kakaologinAuth.getKakaoUserInfo(accessToken);
+		JsonObject userInfo = kakaologinAuth.getKakaoUserInfo(node.getAsJsonPrimitive("access_token"));
 		logger.info("3. kcallback.do : " + userInfo);
 		
 		// db table 에 기록할 회원정보 추출함 : 카카오 회원가입시
 		//userInfo 에서 properties 정보 추출
-		JsonNode properties = node.get("properties");
+		JsonObject properties = (JsonObject) node.get("properties");
 		logger.info("4. kcallback.do : " + properties);
 		
-		JsonNode kakao_account = userInfo.path("kakao_account");
-		String kid = userInfo.path("id").asText();
+		JsonObject kakao_account = (JsonObject) userInfo.get("kakao_account");
+		String id = userInfo.get("id").getAsString();
 		logger.info("5. kcallback.do : " + kakao_account);
+
 		
 		// 유저 테이블에서 회원 정보 조회해 오기
 		User loginUser = null;
-		User kUser = userService.selectUserById(kid);
+		User kUser = userService.selectUserById(id);
 		
 		if(kUser == null) {
-			return "redirect:goEnroll.do?kid=" + kid;
+			return "redirect:goEnroll.do?id=" + id;
 		} else {
 			loginUser = kUser;
 			session.setAttribute("loginUser", loginUser);
@@ -111,6 +131,116 @@ public class UserController {
 		}
 		
 	}
+	
+	// 네이버
+	public UserController(NaverLoginAuth naverLoginAuth) {
+        this.naverLoginAuth = naverLoginAuth;
+    }
+	
+	private NaverLoginAuth naverLoginAuth;
+	String apiResult = null;
+	
+	@RequestMapping(value="ncallback.do", method= {RequestMethod.GET, RequestMethod.POST})
+	public String naverLogin(@RequestParam String code, @RequestParam String state, Model model, HttpSession session) throws IOException, ParseException {
+	    logger.info("0. ncallback.do" + code);
+	    
+	    // 1. 코드, 세션 및 상태를 사용하여 getAccessToken을 호출합니다.
+	    OAuth2AccessToken node = naverloginAuth.getAccessToken(session, code, state); 
+	    // 이제 accessToken을 사용하여 사용자 정보를 가져와서 JsonObject를 만들거나 다른 작업을 수행할 수 있습니다.
+	    logger.info("1. ncallback.do : " + node);
+	    
+		 // 2. accessToken에 사용자의 로그인한 모든 정보가 들어있음
+	    apiResult = naverloginAuth.getUserProfile(node);
+		logger.info("2. ncallback.do : " + apiResult);
+		
+		// 3. String형식인 apiResult를 json형태로 바꿈
+		JSONParser parser = new JSONParser();
+		Object obj = parser.parse(apiResult);
+		JSONObject jsonObj = (JSONObject) obj;
+		
+		// 4. 데이터 파싱
+		// Top레벨 단계 _response 파싱
+		JSONObject response_obj = (JSONObject)jsonObj.get("response");
+		String nickname = (String)response_obj.get("nickname");
+		String email = (String)response_obj.get("email");
+		String birthyear = (String)response_obj.get("birthyear");
+		String birthday = (String)response_obj.get("birthday");
+		String phone = (String)response_obj.get("mobile");
+		
+		String birth = birthyear + birthday.replaceAll("-", "");
+		
+		logger.info("3. nickname : " + nickname);
+		logger.info("3. email : " + email);
+		logger.info("3. birthyear : " + birthyear);
+		logger.info("3. birthday : " + birthday);
+		logger.info("3. phone : " + phone);
+		logger.info("3. birth : " + birth);
+		
+		// 유저 테이블에서 회원 정보 조회해 오기
+		User loginUser = null;
+		User nUser = userService.selectUserById(email);
+		
+		if(nUser == null) {
+			return "redirect:goEnroll.do?id="
+						+ email
+						+ "&email=" + email
+						+ "&birth=" + birth
+						+ "&phone=" + phone;
+		} else {
+			loginUser = nUser;
+			session.setAttribute("loginUser", email);
+			return "redirect:main.do";
+		}
+	}
+	
+	// 구글
+	
+	
+	public UserController(GoogleLoginAuth googleLoginAuth) {
+		this.googleLoginAuth = googleLoginAuth;
+	}
+	
+	private GoogleLoginAuth googleLoginAuth;
+	
+	@RequestMapping(value="gcallback.do", method= {RequestMethod.GET, RequestMethod.POST})
+	public String googleLogin(@RequestParam String code, @RequestParam String state, Model model, HttpSession session) throws IOException, ParseException {
+	    logger.info("0. gcallback.do" + code);
+	    
+	    OAuth2AccessToken node = googleloginAuth.getAccessToken(session, code, state); 
+	    logger.info("1. gcallbackgcallback.do : " + node);
+	    
+	    apiResult = googleloginAuth.getUserProfile(node);
+		logger.info("2. gcallback.do : " + apiResult);
+		
+		JSONParser parser = new JSONParser();
+		Object obj = parser.parse(apiResult);
+		JSONObject jsonObj = (JSONObject) obj;
+		
+		logger.info("2.5 jsonObj : " + jsonObj.toString());
+		
+		String name = (String)jsonObj.get("name");
+		String id = (String)jsonObj.get("id");
+		String email = (String)jsonObj.get("email");
+		
+		logger.info("3. name : " + name);
+		logger.info("3. id : " + id);
+		logger.info("3. email : " + email);
+		
+		
+		User loginUser = null;
+		User nUser = userService.selectUserById(email);
+
+		if (nUser == null) {
+			return "redirect:goEnroll.do?id=" + email 
+					+ "&email=" + email;
+		} else {
+			loginUser = nUser;
+			session.setAttribute("loginUser", email);
+			return "redirect:main.do";
+		}
+		 
+	}
+	
 	
 	
 

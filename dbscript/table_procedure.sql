@@ -48,6 +48,9 @@ MODIFY (ACCOUNT_NUMBER VARCHAR2(20) null);
 ALTER TABLE TB_USER
 MODIFY (BANK_NAME VARCHAR2(20) NULL);
 
+ALTER TABLE TB_USER
+MODIFY (PASSWD VARCHAR2(100));
+
 COMMIT;
 
 CREATE TABLE TB_USER_FINKOUT (
@@ -529,6 +532,15 @@ BEGIN
    END;
 END;
 /
+
+
+CREATE SEQUENCE ingno
+MINVALUE 1;
+
+CREATE SEQUENCE inpno
+MINVALUE 1;
+
+
 -------------- 상품 테이블 --------------- 
 CREATE OR REPLACE PROCEDURE create_goods_table (
     p_user_id IN NUMBER
@@ -605,7 +617,7 @@ END;
 /
 
 -- 명세서 테이블
-create or replace PROCEDURE create_specify_table (
+CREATE OR REPLACE PROCEDURE create_specify_table (
     p_user_id IN NUMBER
 )
 IS
@@ -614,21 +626,27 @@ BEGIN
     -- 유저 아이디를 이용하여 테이블 이름 생성
     v_table_name := 'TB_SPECIFY_' || p_user_id;
 
-    -- 동적 SQL 실행
+    -- 동적 SQL 실행하여 테이블 생성
     EXECUTE IMMEDIATE '
         CREATE TABLE ' || v_table_name || '(
-            SPECIFY_NO NUMBER PRIMARY KEY,
-            GOODS_NO NUMBER NOT NULL,
-            PD_DATE DEFAULT SYSDATE
-            ORDER_QUANTITY NUMBER
-            FOREIGN KEY (GOODS_NO) REFERENCES TB_GOODS_' || p_user_id || '(GOODS_NO) ON DELETE CASCADE
+            ID NUMBER,
+            PD_DATE DATE DEFAULT SYSDATE,
+            PD_PRICE NUMBER,
+            PD_MONTH VARCHAR2(10)
         )';
-EXCEPTION
-    WHEN OTHERS THEN
-        NULL; 
-END;
 
+    -- 트리거 생성을 위한 동적 SQL 실행
+    EXECUTE IMMEDIATE '
+        CREATE OR REPLACE TRIGGER ' || v_table_name || '_update_pd_month_trigger
+        BEFORE INSERT OR UPDATE ON ' || v_table_name || '
+        FOR EACH ROW
+        BEGIN
+            :NEW.PD_MONTH := SUBSTR(TO_CHAR(:NEW.PD_DATE, ''YYYY/MM/DD''), 1, LENGTH(TO_CHAR(:NEW.PD_DATE, ''YYYY/MM/DD'')) - 3);
+        END;';
+END;
 /
+
+
 
 CREATE OR REPLACE PROCEDURE create_sales_table (
     p_user_id IN NUMBER

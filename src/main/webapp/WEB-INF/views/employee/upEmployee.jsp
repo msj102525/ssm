@@ -26,7 +26,7 @@
         margin-top: 20px;
         margin-bottom: 5px;
     }
-    input[type="number"], input[type="text"], input[type="submit"] {
+    input[type="number"], input[type="text"], input[type="submit"], select {
         width: 100%;
         padding: 10px;
         margin-bottom: 20px;
@@ -50,7 +50,6 @@
 
 <form action="updateEmployee.do" method="post" onsubmit="submitForm(event)">
     <input type="hidden" name="empId" value="${employee.empId}">
-    
     
     <label for="empName">이름:</label>
     <input type="text" id="empName" name="empName" value="${employee.empName}" disabled required><br><br>
@@ -85,8 +84,12 @@
         <option value="f" ${employee.empGender == 'f' ? 'selected' : ''}>여자</option>
     </select><br><br>
 
-<form action="updateEmployee.do" method="post" onsubmit="submitForm(event)">    
-  <script>
+    <input type="submit" value="수정">
+    <br>
+    <button onclick="location.href='mainEmpPage.do'">목록</button>
+</form>
+
+<script>
 function submitForm(event) {
     event.preventDefault();
     var form = event.target;
@@ -103,16 +106,11 @@ function submitForm(event) {
         window.location.href = 'selectemp.do'; // 수정 완료 후 목록 페이지로 이동
     })
     .catch(error => {
-    console.error('Error:', error);
-    alert('수정 실패'); // 오류 발생 시 알림
+        console.error('Error:', error);
+        alert('수정 실패'); // 오류 발생 시 알림
     });
-    }
-    </script>
-	
-    <input type="submit" value="수정">
-    <br>
-    <button onclick="location.href='mainEmpPage.do'">목록</button>
-</form>
-</form>
+}
+</script>
+
 </body>
 </html>

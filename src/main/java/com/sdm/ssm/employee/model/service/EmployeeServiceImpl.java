@@ -12,54 +12,59 @@ import com.sdm.ssm.employee.model.vo.Employee;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
-	
-	@Autowired
-	private EmployeeDao employeeDao;
-	
+    
+    @Autowired
+    private EmployeeDao employeeDao;
+
+    @Override
+    public ArrayList<Employee> employeeListMethod() {
+        return employeeDao.employeeListMethod();
+    }
+
+    @Override
+    public List<Employee> selectEmpList() {   
+        return employeeDao.selectEmpList();
+    }
+
+    @Override
+    public List<Employee> employeeSearchMethod(Search search) {
+        return employeeDao.employeeSearchMethod(search);
+    }
+
+    @Override
+    public String selectAllEmpMethod() {
+        return employeeDao.selectAllEmpMethod();
+    }
+    
+    @Override
+    public int insertEmployee(Employee employee) {
+        return employeeDao.insertEmployee(employee);
+    }
+
+    @Override
+    public int updateEmployee(Employee employee) {
+        return employeeDao.updateEmployee(employee);
+    }
+
+    @Override
+    public int deleteEmployee(int empId) {
+        return employeeDao.deleteEmployee(empId);
+    }
+
+    @Override
+    public Employee getEmployeeDetails(Long empId) {
+        return employeeDao.getEmployeeDetails(empId);
+    }
+
+    // 추가된 메서드
+    @Override
+    public List<Employee> searchEmployeeByName(String empName) {
+        return employeeDao.searchEmployeeByName(empName);
+    }
 
 	@Override
-	public ArrayList<Employee> employeeListMethod() {
+	public Employee getEmployeeDetails(int empId) {
 		// TODO Auto-generated method stub
-		return employeeDao.employeeListMethod();
+		return null;
 	}
-
-	@Override
-	public List<Employee> selectEmpList() {	
-		return employeeDao.selectEmpList();
-	}
-
-	@Override
-	public List<Employee> employeeSearchMethod(Search search) {
-		return employeeDao.employeeSearchMethod(search);
-	}
-
-	@Override
-	public String selectAllEmpMethod() {
-		return employeeDao.selectAllEmpMethod();
-	}
-
-	@Override
-	public Employee getEmployeeDetails(Long empId) {
-		// TODO Auto-generated method stub
-		return employeeDao.getEmployeeDetails(empId);
-	}
-
-	@Override
-	public void insertEmployee(Employee employee) {
-		 return;
-	}
-
-	@Override
-	public void updateEmployee(Employee employee) {
-		return;
-		
-	}
-
-	@Override
-	public void deleteEmployee(int empId) {
-		return;
-		
-	}
-	
-	
 }

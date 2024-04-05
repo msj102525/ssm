@@ -31,43 +31,50 @@ th {
 }
 </style>
 <style>
-    body {
-        font-family: 'Arial', sans-serif;
-        background-color: #f4f4f4;
-        margin: 0;
-        padding: 20px;
-        color: #333;
-    }
-    h2, h4 {
-        color: #444;
-    }
-    form {
-        background: #fff;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-    label {
-        display: block;
-        margin-top: 20px;
-        margin-bottom: 5px;
-    }
-    input[type="number"], input[type="text"], input[type="submit"] {
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 20px;
-        border-radius: 5px;
-        border: 1px solid #ddd;
-        box-sizing: border-box; /* Makes sure padding does not affect total width */
-    }
-    input[type="submit"] {
-        background-color: #5cb85c;
-        color: white;
-        cursor: pointer;
-    }
-    input[type="submit"]:hover {
-        background-color: #4cae4c;
-    }
+body {
+	font-family: 'Arial', sans-serif;
+	background-color: #f4f4f4;
+	margin: 0;
+	padding: 20px;
+	color: #333;
+}
+
+h2, h4 {
+	color: #444;
+}
+
+form {
+	background: #fff;
+	padding: 20px;
+	border-radius: 8px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+label {
+	display: block;
+	margin-top: 20px;
+	margin-bottom: 5px;
+}
+
+input[type="number"], input[type="text"], input[type="submit"] {
+	width: 100%;
+	padding: 10px;
+	margin-bottom: 20px;
+	border-radius: 5px;
+	border: 1px solid #ddd;
+	box-sizing: border-box;
+	/* Makes sure padding does not affect total width */
+}
+
+input[type="submit"] {
+	background-color: #5cb85c;
+	color: white;
+	cursor: pointer;
+}
+
+input[type="submit"]:hover {
+	background-color: #4cae4c;
+}
 </style>
 </head>
 <body>
@@ -84,13 +91,11 @@ th {
 				<th>세금</th>
 			</tr>
 
-			<!-- 직원 목록을 반복하여 표시 -->
 			<c:forEach var="employee" items="${employees}">
 				<tr>
 					<td>${employee.empId}</td>
-					<td>${employee.name}</td>
+					<td>${employee.empName}</td>
 					<td>${employee.bankName}</td>
-					<td>${employee.position}</td>
 					<td>${employee.bankAccountNo}</td>
 					<td>${employee.premium}</td>
 					<td>${employee.tax}</td>
@@ -101,9 +106,6 @@ th {
 							<input type="hidden" name="empId" value="${employee.empId}">
 							<input type="submit" value="삭제">
 						</form>
-
-
-
 					</td>
 				</tr>
 			</c:forEach>
@@ -119,9 +121,9 @@ th {
 	<button onclick="location.href='insertSalary.do'">등록 하기</button>
 	<!-- 수정 페이지로 이동 버튼 -->
 	<button onclick="location.href='updateSalaryInfo.do'">수정하기</button>
-    <!-- 삭제하기 버튼 -->
-    <button onclick="deleteSalaryInfo.do('${selectedEmployee.empId}')">삭제하기</button>
-    <!-- 목록으로 돌아가기 버튼 --> 
+	<!-- 삭제하기 버튼 -->
+	<button onclick="deleteSalaryInfo.do('${selectedEmployee.empId}')">삭제하기</button>
+	<!-- 목록으로 돌아가기 버튼 -->
 	<button onclick="location.href='mainEmpPage.do'">목록으로 돌아가기</button>
 </div>
 </form>

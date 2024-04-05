@@ -6,6 +6,7 @@ public class CommuteInfo implements java.io.Serializable{
 
 	private static final long serialVersionUID = 7612326093915794134L;
 	
+	private int empId;
 	private Date startTime;
 	private Date workDay;
 	private Date endTime;
@@ -19,10 +20,10 @@ public class CommuteInfo implements java.io.Serializable{
 		super();
 	}
 
-	
-	public CommuteInfo(Date startTime, Date workDay, Date endTime, String workingHours, String lateFlag,
+	public CommuteInfo(int empId, Date startTime, Date workDay, Date endTime, String workingHours, String lateFlag,
 			String leaveEarly, String absenteeism, int id) {
 		super();
+		this.empId = empId;
 		this.startTime = startTime;
 		this.workDay = workDay;
 		this.endTime = endTime;
@@ -31,6 +32,14 @@ public class CommuteInfo implements java.io.Serializable{
 		this.leaveEarly = leaveEarly;
 		this.absenteeism = absenteeism;
 		this.id = id;
+	}
+
+	public int getEmpId() {
+		return empId;
+	}
+
+	public void setEmpId(int empId) {
+		this.empId = empId;
 	}
 
 	public Date getStartTime() {
@@ -103,11 +112,10 @@ public class CommuteInfo implements java.io.Serializable{
 
 	@Override
 	public String toString() {
-		return "CommuteInfo [startTime=" + startTime + ", workDay=" + workDay + ", endTime=" + endTime
-				+ ", workingHours=" + workingHours + ", lateFlag=" + lateFlag + ", leaveEarly=" + leaveEarly
+		return "CommuteInfo [empId=" + empId + ", startTime=" + startTime + ", workDay=" + workDay + ", endTime="
+				+ endTime + ", workingHours=" + workingHours + ", lateFlag=" + lateFlag + ", leaveEarly=" + leaveEarly
 				+ ", absenteeism=" + absenteeism + ", id=" + id + "]";
 	}
-	
 	
 	
 

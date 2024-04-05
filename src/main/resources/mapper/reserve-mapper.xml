@@ -46,6 +46,16 @@
 		WHERE rnum BETWEEN #{ startRow } AND #{ endRow }
 	</select>
 	
+	<select id="selectRsrvList2" parameterType="com.sdm.ssm.common.SerachDateStr" resultMap="resultList">
+		SELECT rsrv_num, rsrv_date, rsrv_time
+				,rsrv_name, rsrv_telno, rsrv_inwon
+				,rsrv_subject, rsrv_memo
+				,writer, write_date
+		FROM (SELECT * FROM TB_RESERVATION_${ id }
+				WHERE rsrv_date BETWEEN #{ sdate } AND #{ edate }
+		     ORDER BY rsrv_date desc, rsrv_time desc, rsrv_num desc)
+	</select>
+	
 	<select id="selectRsrvDetail" parameterType="Reserve" resultMap="resultList">
 		SELECT *
 		FROM TB_RESERVATION_${ id }
