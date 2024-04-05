@@ -9,20 +9,24 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.asm.TypeReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sdm.ssm.common.SearchDate;
 import com.sdm.ssm.common.SerachDateStr;
 import com.sdm.ssm.reserve.model.service.ReserveService;
@@ -47,7 +51,6 @@ public class ReserveCalController {
 		return "reserve/calendarfull040303";
 	}
 	
-	
 	//달력기본화면
 	@RequestMapping(value = "/adms/calendar/management/list.do")
 	public String lnb04List(RedirectAttributes redirectAttributes, 
@@ -67,10 +70,9 @@ public class ReserveCalController {
 	    //return "reserve/calendar/management/list";
 	    return "reserve/calendarfull040303";
 	}
-		
-	//// 달력데이터조회
-	//@RequestMapping(value= "/ssm/adms/calendar/management/read_ajx.do", method = RequestMethod.POST)
-	@RequestMapping(value= "read_ajx.do", method = RequestMethod.POST)
+
+	//// 달력데이터 조회
+	@RequestMapping(value= "read_ajx.do", method = {RequestMethod.POST, RequestMethod.GET})
 	@ResponseBody
 	public String getCalDataMethod (
 			@ModelAttribute("searchVO") SerachDateStr searchVO,
@@ -78,25 +80,109 @@ public class ReserveCalController {
 			HttpServletResponse res,
 			ModelMap model) throws Exception {
 
-		JSONObject obj = new JSONObject();
-	    
-		res.setContentType("text/html; charset=UTF-8");
-	    PrintWriter out = res.getWriter();
+		logger.info("=========================================================");
+		//logger.info("조회 일자 : " + searchVO.getStart());
+		//logger.info("조회 일자 : " + searchVO.getEnd());
+		logger.info("조회 일자 : " + searchVO.getStart().replace("-", ""));
+		logger.info("조회 일자 : " + searchVO.getEnd().replace("-", ""));
+		logger.info("=========================================================");
+		
+		String sdate = searchVO.getStart().replace("-", "");
+		String edate = searchVO.getEnd().replace("-", "");
+		
+		/// 조회 조건을 설정하기 위한 방법
+	    SerachDateStr serachDateStr = new SerachDateStr();
+	    serachDateStr.setSdate(sdate);
+	    serachDateStr.setEdate(edate);
+	    serachDateStr.setId(200);
 
 	    //searchVO.setSite_code(loginService.getSiteCode());
 	    //List<Reserve> list = reserveService.selectRsrvDetail(reserve);
-	    //List<Reserve> list = reserveService.selectRsrvDetail(reserve);
+	    ArrayList<Reserve> list = reserveService.selectRsrvList2(serachDateStr);
 	    
+		res.setContentType("text/html; charset=UTF-8");
+		
+		//리턴된 list 를 json 배열에 옮겨 담기
+		JSONArray jarr = new JSONArray();
+		
+		int sortidx = 0;
+		
+		if (list.size() > 0) {
+			sortidx = list.size(); 
+		}
+		
+		for(Reserve reserve : list) {
+			//reserve 값들을 저장할 js
+			JSONObject job = new JSONObject();
+			
+			job.put("groupId", reserve.getRsrvNum());
+			//저장할 문자열에 한글이 있다면 반드시 인코딩행서 저장해야 함
+			job.put("title", reserve.getRsrvSubject());
+			
+			//날짜는 반드시 문자열로 바꿔서 저장할 것(fullcalendar에서 받을 format으로 변경
+			String start = reserve.getRsrvDate().substring(0, 4) + "-" 
+							+ reserve.getRsrvDate().substring(4, 6) + "-" 
+							+ reserve.getRsrvDate().substring(6, 8);
+
+			job.put("start", start);
+			job.put("sortIdx", sortidx);   /// 일정을 순서대로 보이게 하기 위함(2024.04.04)
+			
+			jarr.add(job);
+			
+			sortidx = sortidx - 1;
+			
+		} //for
+
+		JSONObject obj = new JSONObject();
+
+	    PrintWriter out = res.getWriter();
+
 	    obj.put("success", "ok");
-	    //obj.put("list", net.sf.json.JSONArray.fromObject(list));
-	    obj.put("list", "");
+	    obj.put("list", jarr);
 	    
 	    out.print(obj);
+	    out.close();
+	    return null;
+	}
+	/////////////////////////////////////////////////////
+	//// 달력 데이터등록 화면
+	/////////////////////////////////////////////////////
+	@RequestMapping(value = "/adms/calendar/management/create_ajx.do",method = RequestMethod.POST)
+	@ResponseBody
+	public String createAction(
+	        @RequestBody String filterJSON,
+	        HttpServletRequest request,
+	        HttpServletResponse res,
+	        ModelMap model) throws Exception {
+			
+	    //LoginVO loginVO = loginService.getLoginInfo();
+			
+	    JSONObject obj = new JSONObject();
+	    
+	    ////////////////////////////////////////////
+	    ////////////////////////////////////////////
+	    res.setContentType("text/html; charset=UTF-8");
+	    
+	    PrintWriter out = res.getWriter();
+	 
+//	    //================================ json Object parse ============================
+//	    ObjectMapper mapper = new ObjectMapper();            
+//	    tbl_calendarVO searchVO = (tbl_calendarVO)mapper.readValue(filterJSON, new TypeReference<tbl_calendarVO>(){ });
+//	    //================================ json Object parse ============================
+//	    searchVO.setSite_code(loginService.getSiteCode());
+//	    searchVO.setCret_id(loginVO.getId());
+//	    searchVO.setCret_ip(request.getRemoteAddr());
+//	    
+//	    calendarService.createCalendar(searchVO);
+	 
+	    obj.put("success", "ok");
+	    //out.print(obj);
 	    
 	    return null;
 	}
 
-	
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////////////////////////
 	@RequestMapping(value="calendar.do", method=RequestMethod.GET)
 	public String calendar(Model model, HttpServletRequest request, DateData dateData) {
 		

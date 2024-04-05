@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.sdm.ssm.common.SerachDateStr;
 import com.sdm.ssm.reserve.model.dao.ReserveDao;
 import com.sdm.ssm.reserve.model.vo.DateData;
 import com.sdm.ssm.reserve.model.vo.Reserve;
@@ -35,7 +36,19 @@ public class ReserveServiceImpl implements ReserveService {
 	public Reserve selectRsrvDetail(Reserve reserve) {
 		return reserveDao.selectRsrvDetail(reserve);
 	}
+	
+	@Override /// 2024.04.04
+	public ArrayList<Reserve> selectRsrvList(SerachDateStr serachDateStr) {
+		return reserveDao.selectRsrvList(serachDateStr);
+	}
+	
+	@Override //// 2024.04.04
+	public ArrayList<Reserve> selectRsrvList2(SerachDateStr serachDateStr) {
+		return reserveDao.selectRsrvList2(serachDateStr);
+	}
 
+	/////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////
 	//// 2024.04.02
 	@Override
 	public ArrayList<ScheduleDto> selectScheduleList(DateData dateData) {

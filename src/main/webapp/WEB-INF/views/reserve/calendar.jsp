@@ -10,8 +10,9 @@
 <meta charset="UTF-8">
 <script type="text/javascript" src="${ path }/resources/js/jquery-3.7.0.min.js"></script>
 <%-- jquery datepicker(start) --%>
-<link rel="stylesheet" href="${ path }/resources/css/jqueryui/jquery-ui.min.css" />
-<script type="text/javascript" src="${ path }/resources/js/jqueryui/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="/ssm/resources/css/jquery-ui-1.13.2/jquery-ui.min.css" />
+<script type="text/javascript" src="/ssm/resources/css/jquery-ui-1.13.2/jquery-ui.min.js"></script>
+
 <%-- jquery datepicker(end) --%>
 
 <%-- <link rel="stylesheet"  ref="${ pat }/resources/css/main.css" /> --%>
