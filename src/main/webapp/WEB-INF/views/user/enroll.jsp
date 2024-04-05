@@ -66,7 +66,7 @@ $(() => {
 								</a>
 							</li>
 							<li>
-								<a href=#>
+								<a href="${ googleurl }">
 								 	<img src="/ssm/resources/images/googleLB.png" alt="구글로고" />
 								</a>
 							</li>

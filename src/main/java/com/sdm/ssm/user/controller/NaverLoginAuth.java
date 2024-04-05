@@ -19,7 +19,7 @@ import com.github.scribejava.core.oauth.OAuth20Service;
 
 @Component("naverLoginAuth")
 public class NaverLoginAuth {
-	 private final static Logger logger = LoggerFactory.getLogger(KakaoLoginAuth.class);
+	private final static Logger logger = LoggerFactory.getLogger(KakaoLoginAuth.class);
 	 
 	private final static String CLIENT_ID = "vZ7d3gglKr7TQdbRo9Kx";
 	private final static String CLIENT_SECRET = "C9Fv_7lO1P";

@@ -50,6 +50,9 @@ public class UserController {
 	
 	@Autowired
 	private NaverLoginAuth naverloginAuth;
+	
+	@Autowired
+	private GoogleLoginAuth googleloginAuth;
 
 	// 뷰 페이지 내보내기
 	@RequestMapping("goLogin.do")
@@ -61,10 +64,11 @@ public class UserController {
 	public String goEnroll(Model model, HttpSession session) {
 		String kakaoAuthURL = kakaologinAuth.getAuthorizationUrl(session);
 		String naverAuthURL = naverloginAuth.getAuthorizationUrl(session);
-		// String naverAuthURL = n
+		String googleAuthURL = googleloginAuth.getAuthorizationUrl(session);
 		
 		model.addAttribute("kakaourl", kakaoAuthURL);
 		model.addAttribute("naverurl", naverAuthURL);
+		model.addAttribute("googleurl", googleAuthURL);
 		
 		return "user/enroll";
 	}
