@@ -38,7 +38,7 @@ $(function(){
 			+ decodeURIComponent(json.ilist[i].ititle).replace(/\+/gi, " ") + "</td><td>"
 			+ json.ilist[i].iwriter + "</td><td>" + string + "</td></tr>";
 }
-			// 결과가 10개 미만일 때 빈 행을 추가하여 총 10개의 행을 만듭니다.
+			// 결과가 10개 미만일 때 빈 행을 추가하여 총 10개의 행
 			for (var j = json.ilist.length; j < 10; j++) {
 			    values += "<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>";
 			}

@@ -29,7 +29,7 @@ section .inner-section .right-section {
 table {
 	border-collapse: collapse;
 	width: 1300px;
-	min-height:700px;
+	min-height:500px;
 	margin: 1rem auto;
 	background-color: white;
 }

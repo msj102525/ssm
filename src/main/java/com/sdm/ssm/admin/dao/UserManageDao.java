@@ -9,7 +9,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.sdm.ssm.admin.model.vo.Notice;
+import com.sdm.ssm.admin.model.vo.Suspension;
 import com.sdm.ssm.common.Paging;
+import com.sdm.ssm.common.Search;
 import com.sdm.ssm.user.model.vo.User;
 
 @Repository("userManagerDao")
@@ -30,6 +33,36 @@ public class UserManageDao {
 	}
 	public int updateUserAccountActivateMethod(int id) {
 		return sqlSessionTemplate.update("userManageMapper.updateUserAccountActivateMethod", id);
+	}
+	public void insertSuspension(Suspension suspension) {
+		sqlSessionTemplate.insert("userManageMapper.insertSuspension", suspension);
+	}
+	public void updateSuspension(int id) {
+		sqlSessionTemplate.update("userManageMapper.updateSuspension",id);
+	}
+	public ArrayList<Suspension> selectSuspenseList(String userId) {
+		List<Suspension> list = sqlSessionTemplate.selectList("userManageMapper.selectSuspenseList", userId);
+		return (ArrayList<Suspension>)list;
+	}
+	public int selectSearchIdCount(String keyword) {
+		
+		return sqlSessionTemplate.selectOne("userManageMapper.selectSearchIdCount", keyword);
+	}
+	public int selectSearchStoreCount(String keyword) {
+
+		return sqlSessionTemplate.selectOne("userManageMapper.selectSearchStoreCount", keyword);
+	}
+	public ArrayList<User> selectSearchId(Search search) {
+		List<User> list = sqlSessionTemplate.selectList("userManageMapper.selectSearchId", search);
+		return (ArrayList<User>)list;
+	}
+	public ArrayList<User> selectSearchStore(Search search) {
+		List<User> list = sqlSessionTemplate.selectList("userManageMapper.selectSearchStore", search);
+		return (ArrayList<User>)list;
+	}
+	public String selectSuspenseNo(int targetAccount) {
+		
+		return sqlSessionTemplate.selectOne("userManageMapper.selectSuspenseNo", targetAccount);
 	}
 
 	

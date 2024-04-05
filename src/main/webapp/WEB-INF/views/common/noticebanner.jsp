@@ -47,13 +47,10 @@ $(function(){
 		dataType: "json",
 		success: function(data){
 			console.log("success : " + data);
-			
 			//object --> string
 			var str = JSON.stringify(data);
-			
 			//string --> json
 			var json = JSON.parse(str);
-			
 			values = "";			
 			for(var i in json.nlist){
 			values += "<li><a href='ndetail.do?nno=" + json.nlist[i].noticeNo+"'> 사장님들께 알립니다 ! "

@@ -24,6 +24,9 @@
 		<typeAlias type="com.sdm.ssm.reserve.model.vo.Reserve" alias="Reserve"/>
 		<typeAlias type="com.sdm.ssm.Inconvinience.model.vo.InconvinienceBoard" alias="InconvinienceBoard"/>
 		<typeAlias type="com.sdm.ssm.Inconvinience.model.vo.InconvinienceBoardReply" alias="InconvinienceBoardReply"/>
+		<typeAlias type="com.sdm.ssm.admin.model.vo.Suspension" alias="Suspension" />
+		<typeAlias type="com.sdm.ssm.subscribe.model.vo.Subscribe" alias="Subscribe" />
+		<typeAlias type="com.sdm.ssm.subscribe.model.vo.UserSubscribe" alias="UserSubscribe" />
 	</typeAliases>
 		
 	<mappers>
@@ -33,5 +36,6 @@
 		<mapper resource="mapper/reserve-mapper.xml"/>
 		<mapper resource="mapper/inconv-mapper.xml"/>
 		<mapper resource="mapper/usermanage-mapper.xml" />
+		<mapper resource="mapper/subscribe-mapper.xml" />
 	</mappers>
 </configuration>

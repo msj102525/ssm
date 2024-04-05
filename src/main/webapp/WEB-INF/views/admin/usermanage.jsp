@@ -385,11 +385,6 @@ select.suspend {
 			<th>계정상태</th>
 		</tr>
 		<c:forEach items="${ requestScope.list }" var="u">
-			<c:url var="ndetail" value="ndetail.do">
-				<c:param name="nno" value="${ n.noticeNo }" />
-				<c:param name="page" value="${ nowpage }" />
-			</c:url>
-
 			<tr onclick="showUserDetail('${u.userId}');">
 				<td>${u.id}</td>
 				<td>${u.userId }</td>
@@ -406,14 +401,12 @@ select.suspend {
 		</c:forEach>
 	</table>
 	<div class="searchdiv">
-		<form action="nsearch.do" method="get">
+		<form action="usearch.do" method="get">
 			<select style="height: 35px; width: 80px;" name="action"
 				id="searchselect">
-				<option value="title">제목</option>
-				<option value="writer">작성자</option>
-				<option id="date" value="date">날짜</option>
-			</select> <input type="date" name="begin"> <input type="date"
-				name="end"> <input style="height: 30px; width: 325px;"
+				<option value="userId">아이디</option>
+				<option value="storeName">상호명</option>
+			</select> <input style="height: 30px; width: 325px;"
 				type="text" id="searchtext" name="keyword" placeholder="검색어 입력">
 			<input type="submit" class="searchbtn" value="검색"> <br>
 		</form>
@@ -429,10 +422,16 @@ select.suspend {
 					userId : id
 				},
 				dataType : "json",
-				success : function(objUser) {
+				success : function(dataObj) {
+					//object => string
+					var objStr = JSON.stringify(dataObj);
+					//string => parsing : json object
+					var jsonObj = JSON.parse(objStr);
+					var objUser = jsonObj.objUser;
 					console.log('user : ' + objUser);
-
-					$('span#id').html(objUser.id);
+					var userId = objUser.id;
+					$('input#targetAccount').val(userId);
+					$('span#id').html(userId);
 					$('span#userId').html(objUser.userId);
 					$('span#businessStoreName').html(
 							decodeURIComponent(objUser.businessStoreName)
@@ -449,7 +448,19 @@ select.suspend {
 						$('li#buttonspace').html(suspendButton);
 					} else {
 						$('li#buttonspace').html(activationButton);
-					}
+					};
+					var suspensionList = jsonObj.suspensionList;
+
+					var output = "<tr id='titlerow'><th>정지번호</th><th>정지 시작날짜</th><th>정지 종료날짜</th><th>정지사유</th><th>정지사유상세</th></tr>";
+					for (var i in jsonObj.suspensionList) {
+					    output += "<tr><td>" + suspensionList[i].suspensionNo
+					        + "</td><td>" + suspensionList[i].suspensionStart
+					        + "</td><td>" + suspensionList[i].suspensionEnd
+					        + "</td><td>" + decodeURIComponent(suspensionList[i].suspensionTitle).replace(/\+/gi, ' ')
+					        + "</td><td>" + decodeURIComponent(suspensionList[i].suspensionContent).replace(/\+/gi, ' ')
+					        + "</td></tr>";
+					};
+					$('#suspensionList').html(output);
 
 				},
 				error : function(request, status, errorData) {
@@ -461,15 +472,32 @@ select.suspend {
 		};
 		function suspendUser() {
 			var userId = $('span#id').text(); // 사용자 ID 가져오기
+			var suspensionTitle = $('#suspensionTitle').val();
+			console.log(suspensionTitle);
+			var suspensionContent = $('#suspensionContent').val();
+			console.log(suspensionContent);
 			$.ajax({
 				url : 'ususpend.do',
 				type : 'post',
 				data : {
-					Id : userId
+					targetAccount : userId,
+					suspensionTitle : suspensionTitle,
+					suspensionContent : suspensionContent
 				}, // 사용자 ID를 데이터로 전송
 				success : function(response) {
 					console.log('User suspended successfully');
+					var today = new Date();
+					var year = today.getFullYear();
+					var month = ('0' + (today.getMonth() + 1)).slice(-2);
+					var day = ('0' + today.getDate()).slice(-2);
+					var dateString = year + '-' + month  + '-' + day;
 					$('li#buttonspace').html(activationButton);
+					$('table#suspensionList').append("<tr><td>" + response
+					        + "</td><td>" + dateString
+					        + "</td><td>" + ""
+					        + "</td><td>" + suspensionTitle
+					        + "</td><td>" + suspensionContent
+					        + "</td></tr>");
 					closeModal();//모달창닫기
 				},
 				error : function(request, status, errorData) {
@@ -479,6 +507,11 @@ select.suspend {
 		};
 		function activateUser() {
 			var userId = $('span#id').text(); // 사용자 ID 가져오기
+			var today = new Date();
+			var year = today.getFullYear();
+			var month = ('0' + (today.getMonth() + 1)).slice(-2);
+			var day = ('0' + today.getDate()).slice(-2);
+			var dateString = year + '-' + month  + '-' + day;//날짜기록용 날짜스트링만들기
 			$.ajax({
 				url : 'uactivate.do',
 				type : 'post',
@@ -487,7 +520,16 @@ select.suspend {
 				}, // 사용자 ID를 데이터로 전송
 				success : function(response) {
 					console.log('User activated successfully');
-					$('li#buttonspace').html(suspendButton);
+					$('li#buttonspace').html(suspendButton);//정지해제 버튼생성
+					//정지해제날짜 기록
+					 $('#suspensionList tr').each(function() {
+			                var suspensionRow = $(this);
+			                var suspensionNumber = suspensionRow.find('td:first').text(); // 정지번호 열을 확인
+			                if (suspensionNumber == response) {
+			                    suspensionRow.find('td:nth-child(3)').text(dateString); // 정지해제날짜 열에 현재 날짜를 설정
+			                    return false;
+			                }
+			            });
 				},
 				error : function(request, status, errorData) {
 					console.log("Error: " + errorData);
@@ -534,27 +576,27 @@ select.suspend {
 		<!-- 세 번째 구역: 정지 내역 -->
 		<div class="suspension-history-container">
 			<h2>정지 내역</h2>
-			<table>
-				<!-- 정지 내역 테이블 내용 추가 -->
-			</table>
+			
+	<table id="suspensionList">
+	</table>
 		</div>
 	</div>
 	<!-- 모달 팝업창  -->
 	<div class="container">
 		<div class="popup-wrap" id="popup">
 			<div class="popup">
-			<form>
+			<form id="suspensionForm">
 				<div class="body-contentbox">
 					<p id="suspendUserInfo" style="font-size: 20px; margin-bottom:0px;"></p>
 					<br>
 					<h2 style="margin:10px;">사유를 선택해주세요</h2>
-					<select class="suspend">
+					<select id="suspensionTitle" class="suspend">
 						<option>게시글 도배</option>
 						<option>비정상적인 이용</option>
 						<option>기타</option>
 					</select>
 					<br>
-					<textarea class="contentbox" placeholder="상세사유를 입력해주세요."></textarea>
+					<textarea id="suspensionContent" class="contentbox" placeholder="상세사유를 입력해주세요."></textarea>
 					<div class="popup-foot">
 					<a onclick='suspendUser();'>정지</a>
 					<a onclick='closeModal();'>취소</a>
