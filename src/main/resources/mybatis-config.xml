@@ -36,11 +36,8 @@
 		<mapper resource="mapper/user-mapper.xml"/>
 		<mapper resource="mapper/reserve-mapper.xml"/>
 		<mapper resource="mapper/inconv-mapper.xml"/>
-<<<<<<< HEAD
 		<mapper resource="mapper/specify-mapper.xml" />
-=======
 		<mapper resource="mapper/emp-mapper.xml"/>
->>>>>>> e3ddffcb7f30e02d7d2c9fc50e377543705ae652
 		<mapper resource="mapper/usermanage-mapper.xml" />
 	</mappers>
 </configuration>
