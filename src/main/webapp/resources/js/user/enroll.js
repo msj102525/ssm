@@ -25,6 +25,7 @@ const busicessNoChk = () => {
 		      console.log("사업장명 : " + result.items[0].company);
 		      
 		      $("#businessStoreName").val(result.items[0].company);
+		      $("li.businessStoreName").css("display", "block");
 		      
 		  },
 		  error: function(result) {
@@ -202,5 +203,7 @@ $("#phone").on("keyup", () => {
         $(".enroll").prop("disabled", false);
     }
 });
+
+
 
 }); //doc ready;
