@@ -5,8 +5,18 @@
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="resources/css/user/login.css">
+<script type="text/javascript" src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.7.0.min.js"></script>
 <script type="text/javascript">
-
+const validateForm = () => {
+	if (!$("#userId").val()) {
+	    alert("아이디를 입력해주세요.");
+	    return false;
+	} else if (!$("#passWd").val()) {
+	    alert("비밀번호를 입력해주세요.");
+	    return false;
+	}
+    return true; 
+}
 	
 </script>
 </head>
@@ -20,13 +30,13 @@
 				</h1>
 			</div>
 			<div class="form-box">
-				<form action="login.do" method="post">
+				<form action="login.do" method="post" onsubmit="return validateForm();">
 					<ul>
 						<li>
-							<input type="text" name="userId" id="uid" placeholder="아이디">
+							<input type="text" name="userId" id="userId" placeholder="아이디">
 						</li>
 						<li>
-							<input type="password" name="passWd" id="upd" placeholder="비밀번호">
+							<input type="password" name="passWd" id="passWd" placeholder="비밀번호">
 						</li>
 						<li>
 							<input type="submit" value="로그인" class="login">
@@ -45,20 +55,17 @@
 					<li>
 						<ul class="sns">
 							<li>
-								<c:url var="#" value="#" />
-						 		<a href=#> 
+						 		<a href="${ kakaourl }"> 
 									 <img src="/ssm/resources/images/kakaoLB.png" alt="카카오로고" />
 								</a>
 							</li>
 							<li>
-								<c:url var="#" value="#" />
-								<a href=#>
+						 		<a href="${ naverurl }"> 
 									<img src="/ssm/resources/images/naverLB.png" alt="네이버로고" />
 								</a>
 							</li>
 							<li>
-								<c:url var="#" value="#" />
-								<a href=#>
+						 		<a href="${ googleurl }"> 
 								 	<img src="/ssm/resources/images/googleLB.png" alt="구글로고" />
 								</a>
 							</li>

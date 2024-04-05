@@ -92,9 +92,10 @@ input:focus {
 	box-shadow: 0px 0px 0px #000;
 	cursor: pointer;
 }
-.form-box ul li.auth input[type="button"].chkEMail {
+
+/* .form-box ul li.auth input[type="button"].chkEMail {
 	display: none;
-}
+} */
 
 .form-box ul li.chkEmailAuth  {
 	display: none;

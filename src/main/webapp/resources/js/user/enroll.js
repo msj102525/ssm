@@ -58,6 +58,7 @@ const dupIDCheck =() => {
 				alert("이미 사용중인 아이디입니다.");
 				$("#userId").val("");
 				$("#userId").select();
+                $("#submitBtn").prop("disabled", true);
 			}
 		},
 		error: (jqXHR, textStatus, errorThrown) => {
@@ -88,7 +89,7 @@ const emailAuth = () => {
 			code = parseJson.authCode;
 			
 			console.log(code);
-			
+			$("#submitBtn").prop("disabled", true);
 			alert("인증 코드가 입력하신 이메일로 전송 되었습니다");
 			
 			$("li.chkEmailAuth").css("display", "block");
@@ -99,12 +100,71 @@ const emailAuth = () => {
 	}) // ajax
 }
 
+const validateForm = () => {
+	if (!$("#userId").val()) {
+	    alert("아이디를 입력해주세요.");
+	    return false;
+	} else if (!$("#passWd").val()) {
+	    alert("비밀번호를 입력해주세요.");
+	    return false;
+	} else if (!$("#passWd2").val()) {
+	    alert("비밀번호 확인을 입력해주세요.");
+	    return false;
+	} else if (!$("#email").val()) {
+	    alert("이메일을 입력해주세요.");
+	    return false;
+	} else if (!$("#userNo").val()) {
+	    alert("생년월일을 입력해주세요.");
+	    return false;
+	} else if (!$("#phone").val()) {
+	    alert("전화번호를 입력해주세요.");
+	    return false;
+	} else if (!$("#userNo").val()) {
+	    alert("생년월일을 입력해주세요."); 
+	    return false;
+	} else if (!$("#accountNumber").val()) {
+	    alert("계좌번호를 입력해주세요.");
+	    return false;
+	} else if (!$("#chkEmailAuth").val()) {
+	    alert("이메일 인증을 완료해주세요.");
+	    return false;
+	} else if ($("#passWd").val() !== $("#passWd2").val()) {
+        alert("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
+        return false;
+    }
+    
+    return true; 
+}
+
 
 $(()=> {
+
+const urlParams = new URLSearchParams(window.location.search);
+    const id = urlParams.get('id');
+    const email = urlParams.get('email');
+    const birth = urlParams.get('birth');
+    const phone = urlParams.get('phone');
+    const passWd = urlParams.get('passWd');
+    
+    if (!!id) {
+        $("#userId").prop('readonly', true);
+        $("#passWd").prop('readonly', true);
+        $("#passWd2").prop('readonly', true);
+    }
+    if (!!email) {
+        $("#email").prop('readonly', true);
+    }
+    if (!!birth) {
+        $("#userNo").prop('readonly', true);
+    }
+    if (!!phone) {
+        $("#phone").prop('readonly', true);
+    }
 
 $("#userId").on("keyup", () => {
     const userIdLength = $("#userId").val().length;
     const message = "아이디는 5자리이상 16자리 이하로 입력해주세요";
+    $("#submitBtn").prop("disabled", true);
     
     if (userIdLength < 5 || userIdLength > 16) {
     	$("li.relative > p").eq(0).html(message).css("color", "red");
@@ -147,15 +207,14 @@ $("#email").on("keyup", () => {
     const email = $("#email").val();
     const message = "이메일 형식을 확인해주세요";
     const regex = /^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+    $("#submitBtn").prop("disabled", false);
     
     if (!regex.test(email)) {
         $("li.relative > p").eq(3).html(message).css("color", "red");
         $("#chkEMail").css("display", "none");
-        $(".enroll").prop("disabled", true);
     } else {
         $("li.relative > p").eq(3).html(message).css("color", "orange");
         $("#chkEMail").css("display", "block");
-        $(".enroll").prop("disabled", false);
     }
 });
 
@@ -188,8 +247,6 @@ $("#userNo").on("keyup", () => {
 	    }
 	});
 
-
-
 $("#phone").on("keyup", () => {
     const phone = $("#phone").val();
     const message = "전화번호 형식을 확인해주세요";
@@ -203,7 +260,5 @@ $("#phone").on("keyup", () => {
         $(".enroll").prop("disabled", false);
     }
 });
-
-
 
 }); //doc ready;

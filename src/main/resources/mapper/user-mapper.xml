@@ -51,10 +51,10 @@
 	<insert id="insertUser" parameterType="User">
 		INSERT INTO TB_USER (ID, USER_ID, PASSWD, EMAIL, USER_NO, PHONE, ACCOUNT_NUMBER, BANK_NAME, BUSINESS_NO, BUSINESS_STORE_NAME, IS_QUIT, ADMIN_OK, LOGIN_OK, LAST_MODIFIED, SERVICE_DATE) 
 		VALUES (USER_SEQ.NEXTVAL, 
-		#{userId}, #{userPw}, #{email},
+		#{userId}, #{passWd}, #{email},
 		#{userNo}, #{phone}, #{accountNumber},
 		#{bankName}, #{businessNo}, #{businessStoreName},
-		DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT); 
+		DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT)
 	</insert>
 
 

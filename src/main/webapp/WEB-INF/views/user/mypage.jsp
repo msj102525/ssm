@@ -27,28 +27,6 @@ $(() => {
 				</h1>
 			</div>
 			<div class="form-box">
-				<ul class="go-page">
-					<li>
-						<ul class="sns">
-							<li>
-								<%-- <c:url var="kakaoLogin" value="kakaoAuth.do" /> --%>
-						 		<a href=" ${kakaourl}"> 
-									 <img src="/ssm/resources/images/kakaoLB.png" alt="카카오로고"/>
-								</a>
-							</li>
-							<li>
-								<a href="${ naverurl }">
-									<img src="/ssm/resources/images/naverLB.png" alt="네이버로고" />
-								</a>
-							</li>
-							<li>
-								<a href="${ googleurl }">
-								 	<img src="/ssm/resources/images/googleLB.png" alt="구글로고" />
-								</a>
-							</li>
-						</ul>
-					</li>
-				</ul>
 				<form action="enroll.do" method="post" onsubmit="return validateForm();">
 					<ul>
 						<li class="auth relative first">

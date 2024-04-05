@@ -27,7 +27,8 @@ public class UserDao {
 	}
 
 	public int insertUser(User user) {
-		return sqlSessionTemplate.insert("userMapper.insertUser");
+		logger.info(user.toString());
+		return sqlSessionTemplate.insert("userMapper.insertUser", user);
 	}
 
 }

@@ -59,8 +59,16 @@ public class UserController {
 	}
 
 	// 뷰 페이지 내보내기
-	@RequestMapping("goLogin.do")
-	public String goLogin() {
+	@RequestMapping(value="goLogin.do", method={RequestMethod.GET, RequestMethod.POST})
+	public String goLogin(Model model, HttpSession session) {
+		String kakaoAuthURL = kakaologinAuth.getAuthorizationUrl(session);
+		String naverAuthURL = naverloginAuth.getAuthorizationUrl(session);
+		String googleAuthURL = googleloginAuth.getAuthorizationUrl(session);
+		
+		model.addAttribute("kakaourl", kakaoAuthURL);
+		model.addAttribute("naverurl", naverAuthURL);
+		model.addAttribute("googleurl", googleAuthURL);
+		
 		return "user/login";
 	}
 
@@ -93,7 +101,7 @@ public class UserController {
 	// 카카오
 	@RequestMapping(value="kcallback.do", produces="application/json",
 			method= {RequestMethod.GET, RequestMethod.POST})
-	public String kakaoLogin(@RequestParam String code, Model model, HttpSession session) {
+	public String kakaoLogin(@RequestParam String code, Model model, HttpSession session, SessionStatus status) {
 		logger.info("0. kcallback.do" + code);
 		
 		// 로그인 결과값을 node에 담기
@@ -123,10 +131,12 @@ public class UserController {
 		User kUser = userService.selectUserById(id);
 		
 		if(kUser == null) {
-			return "redirect:goEnroll.do?id=" + id;
+			return "redirect:goEnroll.do?id=" + id
+													+ "&passWd=DefaultSSMPassword!";
 		} else {
 			loginUser = kUser;
 			session.setAttribute("loginUser", loginUser);
+			status.setComplete();
 			return "redirect:main.do";
 		}
 		
@@ -141,7 +151,7 @@ public class UserController {
 	String apiResult = null;
 	
 	@RequestMapping(value="ncallback.do", method= {RequestMethod.GET, RequestMethod.POST})
-	public String naverLogin(@RequestParam String code, @RequestParam String state, Model model, HttpSession session) throws IOException, ParseException {
+	public String naverLogin(@RequestParam String code, @RequestParam String state, Model model, HttpSession session, SessionStatus status) throws IOException, ParseException {
 	    logger.info("0. ncallback.do" + code);
 	    
 	    // 1. 코드, 세션 및 상태를 사용하여 getAccessToken을 호출합니다.
@@ -185,10 +195,12 @@ public class UserController {
 						+ email
 						+ "&email=" + email
 						+ "&birth=" + birth
-						+ "&phone=" + phone;
+						+ "&phone=" + phone
+						+ "&passWd=DefaultSSMPassword!";
 		} else {
 			loginUser = nUser;
-			session.setAttribute("loginUser", email);
+			session.setAttribute("loginUser", loginUser);
+			status.setComplete();
 			return "redirect:main.do";
 		}
 	}
@@ -203,7 +215,7 @@ public class UserController {
 	private GoogleLoginAuth googleLoginAuth;
 	
 	@RequestMapping(value="gcallback.do", method= {RequestMethod.GET, RequestMethod.POST})
-	public String googleLogin(@RequestParam String code, @RequestParam String state, Model model, HttpSession session) throws IOException, ParseException {
+	public String googleLogin(@RequestParam String code, @RequestParam String state, Model model, HttpSession session, SessionStatus status) throws IOException, ParseException {
 	    logger.info("0. gcallback.do" + code);
 	    
 	    OAuth2AccessToken node = googleloginAuth.getAccessToken(session, code, state); 
@@ -228,14 +240,16 @@ public class UserController {
 		
 		
 		User loginUser = null;
-		User nUser = userService.selectUserById(email);
+		User gUser = userService.selectUserById(email);
 
-		if (nUser == null) {
+		if (gUser == null) {
 			return "redirect:goEnroll.do?id=" + email 
-					+ "&email=" + email;
+					+ "&email=" + email
+					+ "&passWd=DefaultSSMPassword!";
 		} else {
-			loginUser = nUser;
-			session.setAttribute("loginUser", email);
+			loginUser = gUser;
+			session.setAttribute("loginUser", loginUser);
+			status.setComplete();
 			return "redirect:main.do";
 		}
 		 
@@ -248,23 +262,21 @@ public class UserController {
 	// 로그인
 	@RequestMapping(value = "login.do", method = RequestMethod.POST)
 	public String loginMethod(User user, HttpSession session, SessionStatus status, Model model) {
-		logger.info("login.do!!!!!!!!!!!!!!!" + user.toString());
-		User loginUser = null;
-
-		if (user.getUserId() != null && !user.getUserId().trim().isEmpty()) {
-			loginUser = userService.selectUserById(user.getUserId().trim());
-		}
-
-		if (loginUser != null && (user.getPassWd() != null && !user.getPassWd().trim().isEmpty()
-				&& loginUser.getPassWd() != null && !loginUser.getPassWd().trim().isEmpty()
-				&& user.getPassWd().trim().equals(loginUser.getPassWd().trim()))) {
-			logger.info("loginUser!!!!!!!!!" + loginUser.toString());
-
+		User loginUser = userService.selectUserById(user.getUserId());
+		
+		logger.info("userID!!!!!!!!!!!!!!!" + loginUser.getUserId());
+		
+		logger.info("user.getPassWd() : " + user.getPassWd());
+		logger.info("loginUser.getPassWd() : " + loginUser.getPassWd());
+		
+		if(loginUser != null && 
+				this.bcryptPwEncoder.matches(	user.getPassWd(), loginUser.getPassWd())) {
 			session.setAttribute("loginUser", loginUser);
-			status.setComplete();
+			status.setComplete();  //로그인 성공 요청 결과로 HttpStatus code 200 보냄
+			logger.info("성공!!!!!!!!!!!!!!!");
 			return "common/main";
-		} else {
-			model.addAttribute("message", "로그인 실패!");
+		}else {
+			model.addAttribute("message", "로그인 실패! 아이디나 암호를 다시 확인하세요. 또는 로그인 제한된 회원입니다. 관리자에게 문의하세요.");
 			return "common/error";
 		}
 
@@ -338,11 +350,17 @@ public class UserController {
 	// 회원 가입 요청
 	@RequestMapping(value="enroll.do", method=RequestMethod.POST)
 	public String memberInsertMethod(User user, Model model) {
+		
+		logger.info("입력 : " + user.getPassWd());
 		user.setPassWd(bcryptPwEncoder.encode(user.getPassWd()));
+		logger.info("enroll.do : " + user.toString());
+		// 패스워드 암호화 처리
+		logger.info("암호화 : " + user.getPassWd());
 		
 		if(userService.insertUser(user) > 0) {
-			return "user/login.jsp";
+			return "user/login";
 		} else {
+			model.addAttribute("message", "회원가입 오류");
 			return "common/error";
 		}
 		
