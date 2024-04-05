@@ -6,87 +6,6 @@
 <meta charset="UTF-8">
 <link rel="stylesheet" href="resources/css/common/header.css" />
 <title>직원 등록</title>
-<!-- <style type="text/css">  
-body {
-    font-family: Arial, sans-serif;
-    margin: 150px;
-    padding: 10px;
-    background-color: #f4f4f4;
-    font-size: 25px
-}
-/* .flex_container {
-  display: flex;
-} */
-.center-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center; 
-    justify-content: center; 
-    height: 50vh;
-    
-}
-
-h2 {
-    color: #333;
-    font-size: 35px;
-   	border: 1px solid rgb(241, 200, 125);
-	border-top-left-radius: 10px; /* 상단 왼쪽 모서리만 둥글게 */
-	border-top-right-radius: 10px;
-	border-bottom-left-radius: 10px;
-	border-bottom-right-radius: 10px;
-    margint: 0px; 
-    background-color: rgb(241, 200, 125);
-    
-}
-
-#registrationForm {
-    background-color: #ffffff;
-    padding: 20px;
-    margin: 50px auto;
-    width: 400px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-#registrationForm label {
-    margin: 10px 0 10px; /* 상하 마진 조정 */
-    display: block;
-    font-size: 25px; /* 라벨의 글꼴 크기 조정 */
-}
-
-#registrationForm input[type=text],
-#registrationForm input[type=number],
-#registrationForm input[type=tel],
-#registrationForm input[type=email],
-#registrationForm input[type=date],
-#registrationForm select {
-    padding: 15px; 
-   /* 	margin: 5px 0 20px; /* 입력 필드 사이의 간격을 조정합니다. */ 
-    font-size: 16pt; /* 입력 필드의 글자 크기를 조정합니다. */
-    display: block; /* 블록 레벨 요소로 설정하여 너비 전체를 차지하도록 합니다. */
-    width: 100%; /* 컨테이너의 너비를 전체 차지하도록 설정합니다. */
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-}
-
-#registrationForm input[type=submit] {
-    width: 100%;
-    background-color: #4CAF50;
-    color: white;
-    padding: 14px 20px;
-    margin: 15px 0; /* 상하 마진 조정 */
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 25px;
-}
-
-#registrationForm input[type=submit]:hover {
-    background-color: rgb(241, 200, 125);
-}
-
-</style> -->
 <style>
     body {
         font-family: 'Arial', sans-serif;
@@ -126,6 +45,19 @@ h2 {
         background-color: #4cae4c;
     }
 </style>  
+ <script>
+        // 페이지가 로드될 때 실행되는 함수
+        window.onload = function() {
+            // URL에 successMessage 파라미터가 있는지 확인
+            const urlParams = new URLSearchParams(window.location.search);
+            const successMessage = urlParams.get('successMessage');
+            
+            // successMessage가 존재하면 알림 창 표시
+            if (successMessage) {
+                alert(successMessage);
+            }
+        };
+    </script>
 </head>
 
 <body>
@@ -176,28 +108,9 @@ h2 {
         </div>           
          <hr>
         <input type="submit" value="등록"/>
-    <%-- <script>
-        <% if (request.getAttribute("errorMessage") != null) { %>
-        
-            alert('<%= request.getAttribute("errorMessage") %>');
-        <% } %>
-        <% if (request.getAttribute("successMessage") != null) { %>
-            alert('<%= request.getAttribute("successMessage") %>');
-        <% } %>
-    </script>    --%>
      <button onclick="location.href='mainEmpPage.do'">목록</button>
        </table> 
     </form>
-
-<%-- 
-		<script th:if="${errorMessage}">
-    		alert([[${errorMessage}]]);
-		</script>
-		<script th:if="${successMessage}">
-    		alert([[${successMessage}]]);
-		</script> --%>
-
 	</div> 
-
 </body>
 </html>

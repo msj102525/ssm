@@ -96,8 +96,7 @@ a {
 
 </head>
 <body>
-<button onclick="location.href='kakaoM.do'">메세지</button>
-<button onclick="location.href='kakaoM.do'">메세지</button>
+
 <button onclick="location.href='kakaoM.do'">메세지</button>
 
 <div class="wrap">

@@ -2,51 +2,96 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>  
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
 <meta charset="UTF-8">
 <title>employee main page</title>
 <style type="text/css">
-fieldset#ss {
-    width: 600px;
-    position: relative;
-    left: 450px;
+/* 헤더 버튼 스타일 */
+button {
+    background-color: rgb(250, 180, 49); /* 메인 색상 */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 20px; /* 모서리를 둥글게 */
 }
-form fieldset {
-    width: 600px;    
+
+button:hover {
+    background-color: #ffa500; /* 호버시 색상 */
 }
-form.sform {
-    background: lightgray;
-    width: 630px;
-    position: relative;
-    left: 400px;
-    display: none;  /* 안 보이게 함 */
+
+/* 테이블 스타일 */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
 }
-body  {
-    text-align: center ;
-    margin: 0px
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
 }
-.container {
-    margin: 0 auto;
-    width: 80%; /* 혹은 원하는 너비 */
+
+th {
+    background-color: #007bff; /* 테이블 헤더 색상 (예시로 변경) */
+    color: white;
 }
-table #info {
-    text-align: center;
+
+/* 페이징 스타일 */
+.pagination {
+    margin-top: 20px;
 }
-.container {
-    margin: 0 auto;
-    width: 80%; /* 혹은 원하는 너비 */
+
+.pagination li {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #007bff; /* 페이징 색상 (예시로 변경) */
+    color: white;
+    cursor: pointer;
+    border-radius: 5px; /* 모서리를 둥글게 */
 }
+
+.pagination li:hover {
+    background-color: #0056b3; /* 호버시 색상 (예시로 변경) */
+}
+
+.pagination .active {
+    background-color: #0056b3; /* 현재 페이지 색상 (예시로 변경) */
+}
+
 </style>
-
 </head>
-
 <body>
 <c:import url="/WEB-INF/views/common/header.jsp" />
 <!-- <button onclick="location.href='insertemp.do'">직원 등록</button> -->
 <button onclick="location.href='selectemp.do'">직원 정보</button><!-- 나중에 지우기! -->
 <button onclick="location.href='selectSalary.do'">직원 급여정보</button>
+<button onclick="location.href='selectcommutePage.do'">근태관리페이지</button>
 <button onclick="location.href='kakaoM.do'">메세지</button>
+<button onclick="location.href='QRController.do'">qr출퇴근</button>
+<button onclick="location.href='recordTimePage.do'">출퇴근버튼</button>
+<%-- 
+<c:import url="/WEB-INF/views/common/header.jsp" />
+<!-- <button onclick="location.href='insertemp.do'">직원 등록</button> -->
+<button onclick="location.href='selectemp.do'">직원 정보</button><!-- 나중에 지우기! -->
+<button onclick="location.href='selectSalary.do'">직원 급여정보</button>
+<button onclick="location.href='selectcommutePage.do'">출퇴근 정보</button>
+<button onclick="location.href='kakaoM.do'">메세지</button>
+<button onclick="location.href='QRController.do'">qr출퇴근</button>
+<button onclick="location.href='recordTimePage.do'">출퇴근버튼</button> --%>
+
+<c:if test="${not empty loginUser}">
+    <h2>로그인한 사용자 정보</h2>
+    <p>이름: ${loginUser.name}</p>
+    <p>직급: ${loginUser.position}</p>
+    <p>전화번호: ${loginUser.phone}</p>
+    <p>이메일: ${loginUser.email}</p>
+    <p>성별: ${loginUser.gender}</p>
+</c:if>
 <table id="info" border="1" cellspacing="0" cellpadding="3">
     <tr>
         <th>직원번호</th>
@@ -57,22 +102,14 @@ table #info {
         <th>성별</th>
     </tr>
     <c:forEach items="${sessionScope.employeeList}" var="employee">
-    <tr>
-        <td><c:out value="${employee.id}"/></td>
-        <td><c:out value="${employee.name}"/></td>
-        <td><c:out value="${employee.position}"/></td>
-        <td><c:out value="${employee.phone}"/></td>
-        <td><c:out value="${employee.email}"/></td>
-        <td><c:out value="${employee.gender}"/></td>
-    </tr>
-    <tr>
-        <td><c:out value="${employee.id}"/></td>
-        <td><c:out value="${employee.name}"/></td>
-        <td><c:out value="${employee.position}"/></td>
-        <td><c:out value="${employee.phone}"/></td>
-        <td><c:out value="${employee.email}"/></td>
-        <td><c:out value="${employee.gender}"/></td>
-    </tr>
+        <tr>
+            <td><c:out value="${employee.id}"/></td>
+            <td><c:out value="${employee.name}"/></td>
+            <td><c:out value="${employee.position}"/></td>
+            <td><c:out value="${employee.phone}"/></td>
+            <td><c:out value="${employee.email}"/></td>
+            <td><c:out value="${employee.gender}"/></td>
+        </tr>
     </c:forEach>
 </table>
 <div class="pagination">
@@ -89,26 +126,6 @@ table #info {
         <li onclick="location.href='${sessionScope.paging.urlMapping}&page=${sessionScope.paging.maxPage}'">마지막</li>
     </c:if>
 </div>
-<div>
-    <c:if test="${currentPage != 1}">
-        <a href="selectemp.do?page=1">처음</a>
-    </c:if>
-    <c:forEach begin="1" end="${totalPages}" var="page">
-        <c:choose>
-            <c:when test="${page == currentPage}">
-                <b>${page}</b>
-            </c:when>
-            <c:otherwise>
-                <a href="selectemp.do?page=${page}">${page}</a>
-            </c:otherwise>
-        </c:choose>
-    </c:forEach>
-    <c:if test="${currentPage != totalPages}">
-        <a href="selectemp.do?page=${totalPages}">마지막</a>
-    </c:if>
-</div>
 <c:import url="/WEB-INF/views/common/footer.jsp" />
-</body>
-</html>
 </body>
 </html>

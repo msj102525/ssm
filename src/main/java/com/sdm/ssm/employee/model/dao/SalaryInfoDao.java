@@ -19,4 +19,13 @@ public class SalaryInfoDao {
 		List<SalaryInfo> list = sqlSessionTemplate.selectList("SalaryInfoMapper.selectSalaryInfoMethod",empId);
 		return (ArrayList<SalaryInfo>)list;
 	}
+	 public boolean insertSalaryInfo(SalaryInfo salaryInfo) {
+	        int rowsAffected = sqlSessionTemplate.insert("SalaryInfoMapper.insertSalaryInfo", salaryInfo);
+	        return rowsAffected > 0;
+	    }
+	  public List<SalaryInfo> selectSalaryInfoByEmpId(int empId) {
+	        return sqlSessionTemplate.selectList("SalaryInfoMapper.selectSalaryInfoByEmpId", empId);
+	    }
 }
+
+

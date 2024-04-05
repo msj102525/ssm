@@ -5,7 +5,7 @@ import java.sql.Date;
 public class Employee implements java.io.Serializable{
 
 	private static final long serialVersionUID = -2506737202711282777L;
-
+		
 	private int empId;
 	private String empName;
 	private String position;
@@ -110,7 +110,7 @@ public class Employee implements java.io.Serializable{
 				+ empHireDate + ", empPhone=" + empPhone + ", empEmail=" + empEmail + ", empAddress=" + empAddress
 				+ ", empBirthDate=" + empBirthDate + ", empGender=" + empGender + ", id=" + id + "]";
 	}
-	
+
 	
 	
 	
