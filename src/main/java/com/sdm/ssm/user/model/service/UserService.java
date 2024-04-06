@@ -15,4 +15,6 @@ public interface UserService {
 
 	int insertUser(User user);
 
+	int updateUser(User user);
+
 }

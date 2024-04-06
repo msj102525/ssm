@@ -31,4 +31,8 @@ public class UserDao {
 		return sqlSessionTemplate.insert("userMapper.insertUser", user);
 	}
 
+	public int updateUser(User user) {
+		return sqlSessionTemplate.update("userMapper.updateUser", user);
+	}
+
 }

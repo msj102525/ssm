@@ -56,6 +56,16 @@
 		#{bankName}, #{businessNo}, #{businessStoreName},
 		DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT)
 	</insert>
-
+	
+	<!-- 유저 정보 수정 쿼리 -->
+	<update id="updateUser" parameterType="User">
+		UPDATE TB_USER
+			SET PASSWD = #{passWd}, EMAIL = EMAIL,
+				PHONE = #{phone}, ACCOUNT_NUMBER = #{accountNumber},
+				BANK_NAME = #{bankName}, PROFILE_URL = #{profileUrl},
+				LAST_MODIFIED = SYSDATE, BUSINESS_NO = #{businessNo},
+				BUSINESS_STORE_NAME = #{businessStoreName}
+			WHERE USER_ID = #{userId}
+	</update>
 
 </mapper>

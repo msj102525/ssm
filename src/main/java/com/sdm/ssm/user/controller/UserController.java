@@ -363,7 +363,7 @@ public class UserController {
 	
 	// 회원 가입 요청
 	@RequestMapping(value="enroll.do", method=RequestMethod.POST)
-	public String memberInsertMethod(User user, Model model) {
+	public String userInsertMethod(User user, Model model) {
 		
 		logger.info("입력 : " + user.getPassWd());
 		user.setPassWd(bcryptPwEncoder.encode(user.getPassWd()));
@@ -375,6 +375,33 @@ public class UserController {
 			return "user/login";
 		} else {
 			model.addAttribute("message", "회원가입 오류");
+			return "common/error";
+		}
+		
+		
+	}
+	
+	// 유저 정보 수정
+	@RequestMapping(value="userInfoUpdate.do", method=RequestMethod.POST)
+	public String userUpdateMethod(User user, Model model, HttpSession session) {
+		String userPwd = user.getPassWd().trim();
+		logger.info("새로운 암호 : " + userPwd + ", " + userPwd.length());
+		
+		String originUserPwd = user.getPassWd();
+		
+		if(userPwd != null && userPwd.length() > 0) {
+			if(!this.bcryptPwEncoder.matches(userPwd, originUserPwd)) {
+				user.setPassWd(this.bcryptPwEncoder.encode(userPwd));
+			}
+		}else {
+			user.setPassWd(originUserPwd);
+		}
+		
+		if(userService.updateUser(user) > 0) {
+			// return "redirect:goMypage.do?" + user.getUserId();
+			return "redirect:main.do";
+		} else {
+			model.addAttribute("message", "유저 정보 수정 오류");
 			return "common/error";
 		}
 		
