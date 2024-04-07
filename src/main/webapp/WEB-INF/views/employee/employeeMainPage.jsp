@@ -6,92 +6,74 @@
 <head>
 <meta charset="UTF-8">
 <title>employee main page</title>
+<link rel="stylesheet" type="text/css" href="style.css">
 <style type="text/css">
-/* 헤더 버튼 스타일 */
+/* 버튼 스타일 */
 button {
-    background-color: rgb(250, 180, 49); /* 메인 색상 */
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    margin: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    border-radius: 20px; /* 모서리를 둥글게 */
+    background-color: #007bff; /* 배경색 */
+    color: white; /* 텍스트색 */
+    border: none; /* 테두리 없음 */
+    padding: 10px 20px; /* 내부 여백 */
+    margin: 5px; /* 외부 여백 */
+    cursor: pointer; /* 커서 모양 */
+    font-size: 16px; /* 폰트 크기 */
+    border-radius: 5px; /* 모서리를 둥글게 */
 }
 
 button:hover {
-    background-color: #ffa500; /* 호버시 색상 */
+    background-color: #0056b3; /* 호버시 배경색 */
 }
 
 /* 테이블 스타일 */
 table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
+    width: 100%; /* 전체 너비 사용 */
+    border-collapse: collapse; /* 테두리 겹침 */
+    margin-top: 20px; /* 위 여백 */
 }
 
 th, td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: left;
+    border: 1px solid #ddd; /* 테두리 스타일 */
+    padding: 8px; /* 셀 내부 여백 */
+    text-align: left; /* 텍스트 정렬 */
 }
 
 th {
-    background-color: #007bff; /* 테이블 헤더 색상 (예시로 변경) */
-    color: white;
+    background-color: #007bff; /* 머릿글 배경색 */
+    color: white; /* 머릿글 텍스트색 */
 }
 
-/* 페이징 스타일 */
+/* 페이지네이션 스타일 */
 .pagination {
-    margin-top: 20px;
+    margin-top: 20px; /* 위 여백 */
 }
 
-.pagination li {
-    display: inline-block;
-    padding: 8px 16px;
-    background-color: #007bff; /* 페이징 색상 (예시로 변경) */
-    color: white;
-    cursor: pointer;
+.pagination span {
+    display: inline-block; /* 인라인 요소로 표시 */
+    padding: 8px 16px; /* 내부 여백 */
+    background-color: #007bff; /* 배경색 */
+    color: white; /* 텍스트색 */
+    cursor: pointer; /* 커서 모양 */
     border-radius: 5px; /* 모서리를 둥글게 */
+    margin-right: 5px; /* 오른쪽 여백 */
 }
 
-.pagination li:hover {
-    background-color: #0056b3; /* 호버시 색상 (예시로 변경) */
+.pagination span:hover {
+    background-color: #0056b3; /* 호버시 배경색 */
 }
 
 .pagination .active {
-    background-color: #0056b3; /* 현재 페이지 색상 (예시로 변경) */
+    background-color: #0056b3; /* 활성 페이지 배경색 */
 }
 
 </style>
 </head>
+
 <body>
 <c:import url="/WEB-INF/views/common/header.jsp" />
-<!-- <button onclick="location.href='insertemp.do'">직원 등록</button> -->
-<button onclick="location.href='selectemp.do'">직원 정보</button><!-- 나중에 지우기! -->
-<button onclick="location.href='selectSalary.do'">직원 급여정보</button>
-<button onclick="location.href='selectcommutePage.do'">근태관리페이지</button>
-<button onclick="location.href='kakaoM.do'">메세지</button>
-<button onclick="location.href='QRController.do'">qr출퇴근</button>
+ <c:import url="/WEB-INF/views/common/sidebar.jsp" />
 <button onclick="location.href='recordTimePage.do'">출퇴근버튼</button>
-<%-- 
-<c:import url="/WEB-INF/views/common/header.jsp" />
-<!-- <button onclick="location.href='insertemp.do'">직원 등록</button> -->
-<button onclick="location.href='selectemp.do'">직원 정보</button><!-- 나중에 지우기! -->
-<button onclick="location.href='selectSalary.do'">직원 급여정보</button>
-<button onclick="location.href='selectcommutePage.do'">출퇴근 정보</button>
-<button onclick="location.href='kakaoM.do'">메세지</button>
-<button onclick="location.href='QRController.do'">qr출퇴근</button>
-<button onclick="location.href='recordTimePage.do'">출퇴근버튼</button> --%>
-
-<c:if test="${not empty loginUser}">
-    <h2>로그인한 사용자 정보</h2>
-    <p>이름: ${loginUser.name}</p>
-    <p>직급: ${loginUser.position}</p>
-    <p>전화번호: ${loginUser.phone}</p>
-    <p>이메일: ${loginUser.email}</p>
-    <p>성별: ${loginUser.gender}</p>
-</c:if>
+<button onclick="location.href='calenderPage.do'">캘린더</button>
+<div id="ebady">
 <table id="info" border="1" cellspacing="0" cellpadding="3">
     <tr>
         <th>직원번호</th>
@@ -102,7 +84,7 @@ th {
         <th>성별</th>
     </tr>
     <c:forEach items="${sessionScope.employeeList}" var="employee">
-        <tr>
+        <tr id="selectAllEmployees">
             <td><c:out value="${employee.id}"/></td>
             <td><c:out value="${employee.name}"/></td>
             <td><c:out value="${employee.position}"/></td>
@@ -127,5 +109,6 @@ th {
     </c:if>
 </div>
 <c:import url="/WEB-INF/views/common/footer.jsp" />
+</div>
 </body>
 </html>

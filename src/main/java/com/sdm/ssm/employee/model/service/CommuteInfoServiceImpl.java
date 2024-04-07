@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import com.sdm.ssm.employee.model.dao.CommuteInfoDao;
 import com.sdm.ssm.employee.model.vo.CommuteInfo;
 
-@Service
+@Service("CommuteInfoService")
 public class CommuteInfoServiceImpl implements CommuteInfoService {
    
 	@Autowired
@@ -17,5 +17,10 @@ public class CommuteInfoServiceImpl implements CommuteInfoService {
 	@Override
 	public List<CommuteInfo> searchCommuteInfoByName(String empName) {
         return commuteInfoDao.searchCommuteInfoByName(empName);
+	}
+
+	@Override
+	public boolean recordCommuteInfo(CommuteInfo commuteInfo) {
+		return commuteInfoDao.recordCommuteInfo(commuteInfo);
 	}
 }

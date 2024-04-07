@@ -34,10 +34,6 @@ public class EmployeeDao {
         return sqlSessionTemplate.selectOne("employeeMapper.selectAllEmpMethod");
     }
 
-    public Employee getEmployeeDetails(Long empId) {
-        return sqlSessionTemplate.selectOne("employeeMapper.getEmployeeDetails", empId);
-    }
-
     public int insertEmployee(Employee employee) {
         return sqlSessionTemplate.insert("employeeMapper.insertEmployee", employee);
     }
@@ -53,4 +49,9 @@ public class EmployeeDao {
     public List<Employee> searchEmployeeByName(String empName) {
         return sqlSessionTemplate.selectList("employeeMapper.searchEmployeeByName", empName);
     }
+
+    public Employee getEmployeeDetails(int empId) {
+        return sqlSessionTemplate.selectOne("employeMapper.getEmployeeDetails", empId);
+    }
+
 }
