@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sdm.ssm.admin.dao.UserManageDao;
+import com.sdm.ssm.admin.model.vo.CountUser;
 import com.sdm.ssm.admin.model.vo.Notice;
 import com.sdm.ssm.admin.model.vo.Suspension;
 import com.sdm.ssm.common.Paging;
@@ -86,6 +87,18 @@ public class UserManageServiceImpl implements UserManageService{
 	public String selectSuspenseNo(int targetAccount) {
 		// TODO Auto-generated method stub
 		return umDao.selectSuspenseNo(targetAccount);
+	}
+
+	@Override
+	public ArrayList<CountUser> selectCountUserByEnrollDate(int year) {
+		
+		return umDao.selectCountUserByEnrollDate(year);
+	}
+
+	@Override
+	public ArrayList<CountUser> selectCountUserByServiceDate(int year) {
+
+		return umDao.selectCountUserByServiceDate(year);
 	}
 
 

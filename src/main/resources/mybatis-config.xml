@@ -28,9 +28,12 @@
 		<typeAlias type="com.sdm.ssm.admin.model.vo.Suspension" alias="Suspension" />
 		<typeAlias type="com.sdm.ssm.subscribe.model.vo.Subscribe" alias="Subscribe" />
 		<typeAlias type="com.sdm.ssm.subscribe.model.vo.UserSubscribe" alias="UserSubscribe" />
+		<typeAlias type="com.sdm.ssm.subscribe.model.vo.SubscribePayments" alias="SubscribePayments" />
 		<typeAlias type="com.sdm.ssm.employee.model.vo.Employee" alias="Employee"/>
 		<typeAlias type="com.sdm.ssm.employee.model.vo.SalaryInfo" alias="SalaryInfo"/>
 		<typeAlias type="com.sdm.ssm.employee.model.vo.CommuteInfo" alias="CommuteInfo"/>
+		<typeAlias type="com.sdm.ssm.admin.model.vo.CountUser" alias="CountUser"/>
+		
 	</typeAliases>
 		
 	<mappers>

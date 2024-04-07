@@ -228,9 +228,9 @@ p.title {
         <span class="close" onclick="closeAddModal();">&times;</span>
         <div class="modal-title">구독 상품 추가</div>
         <div class="modal-info">
-            <p><span>상품 이름:</span> <input type="text" id="input-subscribeName"></p>
-            <p><span>가격:</span> <input type="number" id="input-price"></p>
-            <p><span>서비스 개월:</span> <input type="number" id="input-subscribeDate"></p>
+            <p><span>상품 이름:</span> <input type="text" id="addSubscribeName"></p>
+            <p><span>가격:</span> <input type="number" id="addSubscribePrice"></p>
+            <p><span>서비스 개월:</span> <input type="number" id="addSubscribeMonths"></p>
         </div>
         <div class="modal-btns">
             <button id="confirmAddSubscription">추가</button>
@@ -302,9 +302,9 @@ p.title {
     });
 	// 구독상품 추가이벤트
 	$("#confirmAddSubscription").click(function() {
-        var subscribeName = $("#input-subscribeName").val();
-        var price = $("#input-price").val();
-        var subscribeDate = $("#input-subscribeDate").val();
+        var subscribeName = $("#addSubscribeName").val();
+        var price = $("#addSubscribePrice").val();
+        var subscribeDate = $("#addSubscribeMonths").val();
         var url = "insertsub.do?";
         url += "subscribeName=" +encodeURIComponent(subscribeName);
         url += "&price=" + price;

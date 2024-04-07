@@ -8,6 +8,8 @@ public class UserSubscribe implements java.io.Serializable {
 	private int addMonth;
 	private int subscribeNo;
 	private String payMethod;
+	private String subscribeName;
+	private int amount;
 	
 	
 	public UserSubscribe() {
@@ -52,6 +54,22 @@ public class UserSubscribe implements java.io.Serializable {
 
 	public void setPayMethod(String payMethod) {
 		this.payMethod = payMethod;
+	}
+
+	public String getSubscribeName() {
+		return subscribeName;
+	}
+
+	public void setSubscribeName(String subscribeName) {
+		this.subscribeName = subscribeName;
+	}
+
+	public int getAmount() {
+		return amount;
+	}
+
+	public void setAmount(int amount) {
+		this.amount = amount;
 	}
 	
 }

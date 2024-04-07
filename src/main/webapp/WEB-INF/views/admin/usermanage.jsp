@@ -170,7 +170,6 @@ button.listbtn {
 	margin-right: auto;
 	padding-left: 20px;
 	padding-right: 20px;
-
 }
 
 .user-info-parents {
@@ -258,7 +257,8 @@ button.listbtn {
 	background: rgb(0, 128, 0);
 	color: #ffffff;
 	font-size: 20px;
-	font-weight: border; cursor : pointer;
+	font-weight: border;
+	cursor: pointer;
 	margin-top: 10px;
 	cursor: pointer; /* 버튼 위 여백 추가 */
 }
@@ -277,90 +277,98 @@ button.listbtn {
 	background: darkred;
 }
 /*모달팝업 박스CSS*/
-.popup-wrap{
-  background-color:rgba(0,0,0,.7); 
-  justify-content:center;
-  align-items:center;
-  position:fixed;
-  top:0;
-  left:0;
-  right:0;
-  bottom:0;
-  display:none;
-  padding:15px;
-  flex-wrap: wrap;
+.popup-wrap {
+	background-color: rgba(0, 0, 0, .7);
+	justify-content: center;
+	align-items: center;
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	display: none;
+	padding: 15px;
+	flex-wrap: wrap;
 }
-.popup{
-  width:100%;
-  max-width:400px;
-  border-radius:10px;
-  overflow:hidden;
-background-color: rgb(180, 180, 180);
-  box-shadow: 5px 10px 10px 1px rgba(0,0,0,.3);
-  margin:auto;
+
+.popup {
+	width: 100%;
+	max-width: 400px;
+	border-radius: 10px;
+	overflow: hidden;
+	background-color: rgb(180, 180, 180);
+	box-shadow: 5px 10px 10px 1px rgba(0, 0, 0, .3);
+	margin: auto;
 }
-.body-contentbox{
-  word-break:break-word;
-  overflow-y:auto;
-  text-align:center;
-   font-size: 16px; 
+
+.body-contentbox {
+	word-break: break-word;
+	overflow-y: auto;
+	text-align: center;
+	font-size: 16px;
 }
+
 .contentbox {
-    font-size: 16px; 
-    line-height: 1;
-    margin-bottom: 20px;
-    min-height: 300px;
-    max-height: 300px;
-    width: 80%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+	font-size: 16px;
+	line-height: 1;
+	margin-bottom: 20px;
+	min-height: 300px;
+	max-height: 300px;
+	width: 80%;
+	padding: 10px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
 }
+
 select.suspend {
-    padding: 8px; 
-    font-size: 16px; 
-    border: 1px solid #ccc; 
-    border-radius: 5px; 
-    background-color: #fff; 
-    width: 200px; 
-    cursor: pointer; 
-    margin: 20px;
+	padding: 8px;
+	font-size: 16px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	background-color: #fff;
+	width: 200px;
+	cursor: pointer;
+	margin: 20px;
 }
+
 .popup-foot {
-  margin-top: 10px; 
-  margin-bottom: 10px;
-  text-align: center; 
+	margin-top: 10px;
+	margin-bottom: 10px;
+	text-align: center;
 }
+
 .popup-foot a {
-  display: inline-block;
-  width : 80px;
-  height: 30px;
-  padding: 10px 20px;
-  margin-right: 10px; 
-  border-radius: 5px; 
-  text-decoration: none; 
-  font-weight: bold; 
-  font-size: 20px;
+	display: inline-block;
+	width: 80px;
+	height: 30px;
+	padding: 10px 20px;
+	margin-right: 10px;
+	border-radius: 5px;
+	text-decoration: none;
+	font-weight: bold;
+	font-size: 20px;
 }
 
 .popup-foot a:nth-child(1) {
-  background-color: red; 
-  color: white; 
+	background-color: red;
+	color: white;
 }
 
 .popup-foot a:nth-child(2) {
-  background-color: #333; 
-  color: white; 
+	background-color: #333;
+	color: white;
 }
 
 .popup-foot a:hover {
-  opacity: 0.8;
+	opacity: 0.8;
 }
+
 .body-contentbox p {
-   margin: 10px;
+	margin: 10px;
 }
+
 .body-contentbox p#suspendUserInfo {
-   margin-top : 20px;
+	margin-top: 20px;
 }
 </style>
 <script type="text/javascript"
@@ -406,69 +414,103 @@ select.suspend {
 				id="searchselect">
 				<option value="userId">아이디</option>
 				<option value="storeName">상호명</option>
-			</select> <input style="height: 30px; width: 325px;"
-				type="text" id="searchtext" name="keyword" placeholder="검색어 입력">
-			<input type="submit" class="searchbtn" value="검색"> <br>
+			</select> <input style="height: 30px; width: 325px;" type="text"
+				id="searchtext" name="keyword" placeholder="검색어 입력"> <input
+				type="submit" class="searchbtn" value="검색"> <br>
 		</form>
 	</div>
 	<script type="text/javascript">
 		var suspendButton = "<button class='suspend-account-button' onclick='suspendModal();'>계정 정지</button>";
 		var activationButton = "<button class='activate-account-button' onclick='activateUser();'>계정 활성화</button>";
 		function showUserDetail(id) {
-			$.ajax({
-				url : 'userManageDetail.do',
-				type : 'post',
-				data : {
-					userId : id
-				},
-				dataType : "json",
-				success : function(dataObj) {
-					//object => string
-					var objStr = JSON.stringify(dataObj);
-					//string => parsing : json object
-					var jsonObj = JSON.parse(objStr);
-					var objUser = jsonObj.objUser;
-					console.log('user : ' + objUser);
-					var userId = objUser.id;
-					$('input#targetAccount').val(userId);
-					$('span#id').html(userId);
-					$('span#userId').html(objUser.userId);
-					$('span#businessStoreName').html(
-							decodeURIComponent(objUser.businessStoreName)
-									.replace(/\+/gi, " "));
-					$('span#phone').html(objUser.phone);
-					$('span#email').html(objUser.email);
-					$('span#userNo').html(objUser.userNo);
-					$('span#bankNameAndaccountNumber').html(
-							objUser.bankName + " : " + objUser.accountNumber);
-					$('span#serviceDate').html("<br>" + objUser.serviceDate);
-					$('span#lastModified').html(objUser.lastModified);
-					if (objUser.loginOk == 'Y') {
-						// '계정 정지' 버튼을 생성하여 해당 요소에 추가
-						$('li#buttonspace').html(suspendButton);
-					} else {
-						$('li#buttonspace').html(activationButton);
-					};
-					var suspensionList = jsonObj.suspensionList;
+			$
+					.ajax({
+						url : 'userManageDetail.do',
+						type : 'post',
+						data : {
+							userId : id
+						},
+						dataType : "json",
+						success : function(dataObj) {
+							//object => string
+							var objStr = JSON.stringify(dataObj);
+							//string => parsing : json object
+							var jsonObj = JSON.parse(objStr);
+							var objUser = jsonObj.objUser;
+							console.log('user : ' + objUser);
+							var userId = objUser.id;
+							$('input#targetAccount').val(userId);
+							$('span#id').html(userId);
+							$('span#userId').html(objUser.userId);
+							$('span#businessStoreName').html(
+									decodeURIComponent(
+											objUser.businessStoreName).replace(
+											/\+/gi, " "));
+							$('span#phone').html(objUser.phone);
+							$('span#email').html(objUser.email);
+							$('span#userNo').html(objUser.userNo);
+							$('span#bankNameAndaccountNumber')
+									.html(
+											/* objUser.bankName + " : " + */objUser.accountNumber);
+							$('span#serviceDate').html(
+									"<br>" + objUser.serviceDate);
+							$('span#lastModified').html(objUser.lastModified);
+							if (objUser.loginOk == 'Y') {
+								// '계정 정지' 버튼을 생성하여 해당 요소에 추가
+								$('li#buttonspace').html(suspendButton);
+							} else {
+								$('li#buttonspace').html(activationButton);
+							}
+							;
+							var suspensionList = jsonObj.suspensionList;
 
-					var output = "<tr id='titlerow'><th>정지번호</th><th>정지 시작날짜</th><th>정지 종료날짜</th><th>정지사유</th><th>정지사유상세</th></tr>";
-					for (var i in jsonObj.suspensionList) {
-					    output += "<tr><td>" + suspensionList[i].suspensionNo
-					        + "</td><td>" + suspensionList[i].suspensionStart
-					        + "</td><td>" + suspensionList[i].suspensionEnd
-					        + "</td><td>" + decodeURIComponent(suspensionList[i].suspensionTitle).replace(/\+/gi, ' ')
-					        + "</td><td>" + decodeURIComponent(suspensionList[i].suspensionContent).replace(/\+/gi, ' ')
-					        + "</td></tr>";
-					};
-					$('#suspensionList').html(output);
+							var output = "<tr id='titlerow'><th>정지번호</th><th>정지 시작날짜</th><th>정지 종료날짜</th><th>정지사유</th><th>정지사유상세</th></tr>";
+							for ( var i in jsonObj.suspensionList) {
+								output += "<tr><td>"
+										+ suspensionList[i].suspensionNo
+										+ "</td><td>"
+										+ suspensionList[i].suspensionStart
+										+ "</td><td>"
+										+ suspensionList[i].suspensionEnd
+										+ "</td><td>"
+										+ decodeURIComponent(
+												suspensionList[i].suspensionTitle)
+												.replace(/\+/gi, ' ')
+										+ "</td><td>"
+										+ decodeURIComponent(
+												suspensionList[i].suspensionContent)
+												.replace(/\+/gi, ' ')
+										+ "</td></tr>";
+							}
+							;
+							$('#suspensionList').html(output);
+							var subsPaymentsList = jsonObj.subsPaymentsList;
 
-				},
-				error : function(request, status, errorData) {
-					console.log("error code : " + request.status
-							+ "\nMessage : " + request.responseText
-							+ "\nError : " + errorData);
-				}
-			});
+							var output = "<tr id='titlerow'><th>결제번호</th><th>구독상품이름</th><th>가격</th><th>결제수단</th><th>결제일</th></tr>";
+							for ( var i in jsonObj.subsPaymentsList) {
+								output += "<tr><td>"
+										+ subsPaymentsList[i].payNo
+										+ "</td><td>"
+										+ decodeURIComponent(
+												subsPaymentsList[i].SubscribeName)
+												.replace(/\+/gi, ' ')
+										+ "</td><td>"
+										+ subsPaymentsList[i].amount
+										+ "</td><td>"
+										+ subsPaymentsList[i].payMethod
+										+ "</td><td>"
+										+ subsPaymentsList[i].payDate
+										+ "</td></tr>";
+							}
+							;
+							$('#subsPaymentsList').html(output);
+						},
+						error : function(request, status, errorData) {
+							console.log("error code : " + request.status
+									+ "\nMessage : " + request.responseText
+									+ "\nError : " + errorData);
+						}
+					});
 		};
 		function suspendUser() {
 			var userId = $('span#id').text(); // 사용자 ID 가져오기
@@ -490,14 +532,13 @@ select.suspend {
 					var year = today.getFullYear();
 					var month = ('0' + (today.getMonth() + 1)).slice(-2);
 					var day = ('0' + today.getDate()).slice(-2);
-					var dateString = year + '-' + month  + '-' + day;
+					var dateString = year + '-' + month + '-' + day;
 					$('li#buttonspace').html(activationButton);
-					$('table#suspensionList').append("<tr><td>" + response
-					        + "</td><td>" + dateString
-					        + "</td><td>" + ""
-					        + "</td><td>" + suspensionTitle
-					        + "</td><td>" + suspensionContent
-					        + "</td></tr>");
+					$('table#suspensionList').append(
+							"<tr><td>" + response + "</td><td>" + dateString
+									+ "</td><td>" + "" + "</td><td>"
+									+ suspensionTitle + "</td><td>"
+									+ suspensionContent + "</td></tr>");
 					closeModal();//모달창닫기
 				},
 				error : function(request, status, errorData) {
@@ -511,7 +552,7 @@ select.suspend {
 			var year = today.getFullYear();
 			var month = ('0' + (today.getMonth() + 1)).slice(-2);
 			var day = ('0' + today.getDate()).slice(-2);
-			var dateString = year + '-' + month  + '-' + day;//날짜기록용 날짜스트링만들기
+			var dateString = year + '-' + month + '-' + day;//날짜기록용 날짜스트링만들기
 			$.ajax({
 				url : 'uactivate.do',
 				type : 'post',
@@ -522,14 +563,17 @@ select.suspend {
 					console.log('User activated successfully');
 					$('li#buttonspace').html(suspendButton);//정지해제 버튼생성
 					//정지해제날짜 기록
-					 $('#suspensionList tr').each(function() {
-			                var suspensionRow = $(this);
-			                var suspensionNumber = suspensionRow.find('td:first').text(); // 정지번호 열을 확인
-			                if (suspensionNumber == response) {
-			                    suspensionRow.find('td:nth-child(3)').text(dateString); // 정지해제날짜 열에 현재 날짜를 설정
-			                    return false;
-			                }
-			            });
+					$('#suspensionList tr').each(
+							function() {
+								var suspensionRow = $(this);
+								var suspensionNumber = suspensionRow.find(
+										'td:first').text(); // 정지번호 열을 확인
+								if (suspensionNumber == response) {
+									suspensionRow.find('td:nth-child(3)').text(
+											dateString); // 정지해제날짜 열에 현재 날짜를 설정
+									return false;
+								}
+							});
 				},
 				error : function(request, status, errorData) {
 					console.log("Error: " + errorData);
@@ -568,41 +612,40 @@ select.suspend {
 		<!-- 두 번째 구역: 결제 내역 -->
 		<div class="payment-history-container">
 			<h2>결제 내역</h2>
-			<table>
-				<!-- 결제 내역 테이블 내용 추가 -->
+			<table id="subsPaymentsList">
 			</table>
 		</div>
 
 		<!-- 세 번째 구역: 정지 내역 -->
 		<div class="suspension-history-container">
 			<h2>정지 내역</h2>
-			
-	<table id="suspensionList">
-	</table>
+
+			<table id="suspensionList">
+			</table>
 		</div>
 	</div>
 	<!-- 모달 팝업창  -->
 	<div class="container">
 		<div class="popup-wrap" id="popup">
 			<div class="popup">
-			<form id="suspensionForm">
-				<div class="body-contentbox">
-					<p id="suspendUserInfo" style="font-size: 20px; margin-bottom:0px;"></p>
-					<br>
-					<h2 style="margin:10px;">사유를 선택해주세요</h2>
-					<select id="suspensionTitle" class="suspend">
-						<option>게시글 도배</option>
-						<option>비정상적인 이용</option>
-						<option>기타</option>
-					</select>
-					<br>
-					<textarea id="suspensionContent" class="contentbox" placeholder="상세사유를 입력해주세요."></textarea>
-					<div class="popup-foot">
-					<a onclick='suspendUser();'>정지</a>
-					<a onclick='closeModal();'>취소</a>
+				<form id="suspensionForm">
+					<div class="body-contentbox">
+						<p id="suspendUserInfo"
+							style="font-size: 20px; margin-bottom: 0px;"></p>
+						<br>
+						<h2 style="margin: 10px;">사유를 선택해주세요</h2>
+						<select id="suspensionTitle" class="suspend">
+							<option>게시글 도배</option>
+							<option>비정상적인 이용</option>
+							<option>기타</option>
+						</select> <br>
+						<textarea id="suspensionContent" class="contentbox"
+							placeholder="상세사유를 입력해주세요."></textarea>
+						<div class="popup-foot">
+							<a onclick='suspendUser();'>정지</a> <a onclick='closeModal();'>취소</a>
+						</div>
 					</div>
-				</div>
-			</form>
+				</form>
 			</div>
 		</div>
 	</div>
@@ -618,13 +661,15 @@ select.suspend {
 		}
 		//유저 정지 모달 띄우는 펑션
 		function suspendModal() {
-			$('#suspendUserInfo').html('<span style="font-size:25px;color: red; font-weight: bold;">' + $('span#id').text() + '</span>' + "번 유저를 정지합니다");
+			$('#suspendUserInfo').html(
+					'<span style="font-size:25px;color: red; font-weight: bold;">'
+							+ $('span#id').text() + '</span>' + "번 유저를 정지합니다");
 
 			$("#popup").css('display', 'flex').hide().fadeIn();
 			disableScroll();
 			//팝업을 flex속성으로 바꿔준 후 hide()로 숨기고 다시 fadeIn()으로 효과
 		};
-		
+
 		function closeModal() {
 			$("#popup").fadeOut();
 			enableScroll();

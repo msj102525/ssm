@@ -31,6 +31,10 @@
 		<result property="suspensionContent"
 			column="SUSPENSION_CONTENT" />
 	</resultMap>
+	<resultMap type="CountUser" id="resultCountUser">
+		<result property="month" column="month" />
+		<result property="Count" column="count" />
+	</resultMap>
 	<select id="selectSuspenseList" parameterType="string" resultMap="resultSuspension">
 	select * from tb_user_suspension where target_account=${id}
 	</select>
@@ -57,6 +61,18 @@
 	<select id ="selectSuspenseNo" parameterType="_int" resultType="string">
 	select max(suspension_no) from tb_user_suspension where target_account = #{id}
 	</select>
+	<!-- 월별 가입자수 조회 -->
+	<select id="selectCountUserByEnrollDate" parameterType="_int" resultMap="resultCountUser">
+	select to_char(LAST_MODIFIED, 'MM') as month, count(*) count
+from tb_user
+where to_char(last_modified,'YYYY') = #{year}
+group by to_char(LAST_MODIFIED, 'MM')
+	</select>
+	<!-- 월별 사용자수 조회 -->
+	<select id="selectCountUserByServiceDate" parameterType="_int" resultMap="resultCountUser">
+	
+	</select>
+	
 	<update id="updateUserAccountSuspendMethod" parameterType="_int">
 		update tb_user set login_ok = 'N' where id = #{id}
 	</update>

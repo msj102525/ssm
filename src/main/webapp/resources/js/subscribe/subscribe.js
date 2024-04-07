@@ -87,6 +87,7 @@ function pay(){
             merchant_uid : 'merchant_' + new Date().getTime(),
             name : subscribeName,
             amount : price,
+            customer_id : id,
             buyer_email : $('#email').val(),
             buyer_name : $('#businessStoreName').val(),
             buyer_tel : $('#phone').val(),

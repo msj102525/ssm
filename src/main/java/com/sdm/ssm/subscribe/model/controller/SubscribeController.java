@@ -52,6 +52,7 @@ public class SubscribeController {
 				model.addAttribute("list", list);
 				return "subscribe/subscribeListView";
 		}
+		//구독결제
 		@RequestMapping(value="subsPayment.do", method= {RequestMethod.POST})
 		@ResponseBody
 		public IamportResponse<Payment> subscribePaymentMethod(UserSubscribe userSubscribe,
@@ -59,6 +60,9 @@ public class SubscribeController {
 				@RequestParam("imp_uid") String impUid,
 				HttpServletResponse response) throws IOException, IamportResponseException {
 			User user = userService.selectUserById(userId);
+			Subscribe subscribe = subscribeService.selectSub(userSubscribe.getSubscribeNo());
+			userSubscribe.setAmount(subscribe.getPrice());
+			userSubscribe.setSubscribeName(subscribe.getSubscribeName());
 			Date nowDate = new Date();//현재시간
 			String firstCheck = "n";
 			if(user.getServiceDate()==null) {//유저가 첫 결재일때

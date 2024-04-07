@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.sdm.ssm.admin.model.vo.CountUser;
 import com.sdm.ssm.admin.model.vo.Notice;
 import com.sdm.ssm.admin.model.vo.Suspension;
 import com.sdm.ssm.common.Paging;
@@ -63,6 +64,14 @@ public class UserManageDao {
 	public String selectSuspenseNo(int targetAccount) {
 		
 		return sqlSessionTemplate.selectOne("userManageMapper.selectSuspenseNo", targetAccount);
+	}
+	public ArrayList<CountUser> selectCountUserByEnrollDate(int year) {
+		List<CountUser> list = sqlSessionTemplate.selectList("userManageMapper.selectCountUserByEnrollDate", year);
+		return (ArrayList<CountUser>)list;
+	}
+	public ArrayList<CountUser> selectCountUserByServiceDate(int year) {
+		List<CountUser> list = sqlSessionTemplate.selectList("userManageMapper.selectCountUserByServiceDate", year);
+		return (ArrayList<CountUser>)list;
 	}
 
 	

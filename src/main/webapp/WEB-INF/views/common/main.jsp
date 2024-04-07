@@ -10,6 +10,7 @@
 <%-- jquery 파일 로드 --%>
 <script type="text/javascript"
 	src="/ssm/resources/js/jquery-3.7.0.min.js"></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
 $(function(){
 	//조치안된 불편사항 오래된순  10개출력
@@ -51,7 +52,56 @@ $(function(){
 	});
 });//document ready
 </script>
+<script>
+$(function(){
+	$.ajax({
+		url: "countUser.do",
+		type: "post",
+		data:  {year : 2024} ,
+		dataType: "json",
+		success: function(data){
+			var countMap = data.countMap;
+			var countSubMap = data.countSubMap;
+			 google.charts.load('current', {'packages':['corechart']});
+		      google.charts.setOnLoadCallback(drawVisualization); 
 
+		      function drawVisualization() {
+		        // Some raw data (not necessarily accurate)
+		        var data = google.visualization.arrayToDataTable([
+		          ['Month', '가입자 수', '서비스 이용자 수'],
+		          ['01',  countMap["01"],      20],
+		          ['02',  countMap["02"],      10],
+		          ['03',  countMap["03"],      15],
+		          ['04',  countMap["04"],      20],
+		          ['05',  countMap["05"],      30],
+		          ['06',  countMap["06"],      20],
+		          ['07',  countMap["07"],      15],
+		          ['08',  countMap["08"],      17],
+		          ['09',  countMap["09"],      19],
+		          ['10',  countMap["10"],      15],
+		          ['11',  countMap["11"],      20],
+		          ['12',  countMap["12"],      20]
+		        ]);
+
+		        var options = {
+		          title : 'Monthly Coffee Production by Country',
+		          vAxis: {title: 'Users'},
+		          hAxis: {title: 'Month'},
+		          seriesType: 'bars',
+		          series: {5: {type: 'line'}}
+		        };
+
+		        var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));
+		        chart.draw(data, options);
+		      }
+			
+		},
+		error: function(jqXHR, textStatus, errorThrown){
+			console.log("error : " + jqXHR + ", " + textStatus + ", " + errorThrown);
+		}
+	});
+});
+</script>
 </head>
 <body>
 	<div id="wrap">
@@ -139,7 +189,7 @@ $(function(){
 				<section class="sec1">
 					section1
 					<div class="inner-section">
-						<div class="left-section">left</div>
+						<div id="chart_div" class="left-section">left</div>
 						<div class="right-section">right</div>
 					</div>
 				</section>

@@ -189,7 +189,7 @@ body {
       </ul>
     </li>
     <li>
-      <a href="#"><i class="fa-solid fa-cat"></i> 회계관리</a>
+      <a href="#"><i class="fa-solid fa-cat"></i> 직원 관리</a>
       <ul>
         <li><a href="${pageContext.servletContext.contextPath }/account.do">매출보기</a></li>
         <li><a href="${pageContext.servletContext.contextPath}/graph.do?id=${loginUser.id}">그래프 연습</a></li>
@@ -198,7 +198,7 @@ body {
       </ul>
     </li>
     <li>
-      <a href="#">menu3</a>
+      <a href="#">예약 관리</a>
       <ul>
         <li><a href="#">text1</a></li>
         <li><a href="#">text2</a></li>
@@ -207,7 +207,7 @@ body {
       </ul>
     </li>
     <li>
-      <a href="#">menu4</a>
+      <a href="#">회계 관리</a>
       <ul>
         <li><a href="#">text1</a></li>
         <li><a href="#">text2</a></li>

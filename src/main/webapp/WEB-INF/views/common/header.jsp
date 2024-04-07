@@ -34,9 +34,9 @@
 					<div class="gnb">
 						<ul>
 							<li><a href="${pageContext.servletContext.contextPath }/nlist.do?page=1">공지사항</a></li>
-							<li></li>
-							<li></li>
-							<li></li>
+							<li><a href="${pageContext.servletContext.contextPath }/inconvlist.do?page=1">불편사항</a></li>
+							<li><a href="${pageContext.servletContext.contextPath}/mvwelcom.do">매장관리</a></li>
+							<li><a href="${pageContext.servletContext.contextPath }/slist.do">구독하기</a></li>
 						</ul>
 					</div>
 					<div class="login-box">
@@ -63,14 +63,10 @@
 					</h1>
 					<div class="gnb">
 						<ul>			
-							<li><a href="#">공지사항</a></li>
-							<li><a href="#">불편사항</a></li>							
-							
 							<li><a href="${pageContext.servletContext.contextPath }/nlist.do?page=1">공지사항</a></li>
 							<li><a href="${pageContext.servletContext.contextPath }/inconvlist.do?page=1">불편사항</a></li>
-							<li><a href="${pageContext.servletContext.contextPath}/gmoveinsert.do">재고관리</a></li>
-							<li><a href="${pageContext.servletContext.contextPath }/account.do">회계관리</a></li>
-							<li><a href="#">매장관리</a></li>
+							<li><a href="${pageContext.servletContext.contextPath}/views/common/welcome.jsp">매장관리</a></li>
+							<li><a href="${pageContext.servletContext.contextPath }/slist.do">구독하기</a></li>
 						</ul>
 					</div>
 					<div class="login-box">

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.sdm.ssm.subscribe.model.vo.Subscribe;
+import com.sdm.ssm.subscribe.model.vo.SubscribePayments;
 import com.sdm.ssm.subscribe.model.vo.UserSubscribe;
 
 @Repository("subscribeDao")
@@ -38,6 +39,14 @@ public class SubscribeDao {
 	}
 	public int insertSubscribe(Subscribe subscribe) {
 		return sqlSessionTemplate.insert("subscribeMapper.insertSubscribe", subscribe);
+	}
+	public Subscribe selectSub(int subscribeNo) {
+		
+		return sqlSessionTemplate.selectOne("subscribeMapper.selectSub", subscribeNo);
+	}
+	public ArrayList<SubscribePayments> selectSubscribePaymentsByUserId(int id) {
+		List<SubscribePayments> list =  sqlSessionTemplate.selectList("subscribeMapper.selectSubscribePaymentsByUserId", id);
+		return (ArrayList<SubscribePayments>)list;
 	}
 
 }

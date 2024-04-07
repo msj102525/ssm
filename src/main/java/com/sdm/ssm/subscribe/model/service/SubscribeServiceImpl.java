@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.sdm.ssm.subscribe.model.dao.SubscribeDao;
 import com.sdm.ssm.subscribe.model.vo.Subscribe;
+import com.sdm.ssm.subscribe.model.vo.SubscribePayments;
 import com.sdm.ssm.subscribe.model.vo.UserSubscribe;
 
 @Service("subscribeService")
@@ -51,6 +52,19 @@ public class SubscribeServiceImpl implements SubscribeService {
 	public int insertSubscribe(Subscribe subscribe) {
 		return subscribeDao.insertSubscribe(subscribe);
 	}
+
+	@Override
+	public Subscribe selectSub(int subscribeNo) {
+
+		return subscribeDao.selectSub(subscribeNo);
+	}
+
+	@Override
+	public ArrayList<SubscribePayments> selectSubscribePaymentsByUserId(int id) {
+
+		return subscribeDao.selectSubscribePaymentsByUserId(id);
+	}
+
 
 	
 }

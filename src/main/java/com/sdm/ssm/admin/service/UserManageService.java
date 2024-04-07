@@ -2,6 +2,7 @@ package com.sdm.ssm.admin.service;
 
 import java.util.ArrayList;
 
+import com.sdm.ssm.admin.model.vo.CountUser;
 import com.sdm.ssm.admin.model.vo.Notice;
 import com.sdm.ssm.admin.model.vo.Suspension;
 import com.sdm.ssm.common.Paging;
@@ -33,6 +34,10 @@ public interface UserManageService {
 	ArrayList<User> selectSearchStore(Search search);
 
 	String selectSuspenseNo(int targetAccount);
+
+	ArrayList<CountUser> selectCountUserByEnrollDate(int year);
+
+	ArrayList<CountUser> selectCountUserByServiceDate(int year);
 
 
 

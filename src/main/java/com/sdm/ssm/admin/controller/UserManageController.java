@@ -5,6 +5,8 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -20,12 +22,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.sdm.ssm.admin.model.vo.CountUser;
 import com.sdm.ssm.admin.model.vo.Notice;
 import com.sdm.ssm.admin.model.vo.Suspension;
 import com.sdm.ssm.admin.service.UserManageService;
 import com.sdm.ssm.common.Paging;
 import com.sdm.ssm.common.Search;
-import com.sdm.ssm.common.SearchDate;
+import com.sdm.ssm.subscribe.model.service.SubscribeService;
+import com.sdm.ssm.subscribe.model.vo.SubscribePayments;
 import com.sdm.ssm.user.model.service.UserService;
 import com.sdm.ssm.user.model.vo.User;
 
@@ -36,6 +40,8 @@ public class UserManageController {
 	private UserManageService umService;
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private SubscribeService subscribeService;
 
 	// 유저 전체 출력
 	@RequestMapping(value = "ulist.do")
@@ -74,7 +80,7 @@ public class UserManageController {
 		job.put("userNo", user.getUserNo());
 		job.put("phone", user.getPhone());
 		job.put("accountNumber", user.getAccountNumber());
-		job.put("bankName", URLEncoder.encode(user.getBankName(), "utf-8"));
+		/* job.put("bankName", URLEncoder.encode(user.getBankName(), "utf-8")); */
 		job.put("profileUrl", user.getProfileUrl());
 		job.put("isQuit", user.getIsQuit());
 		job.put("loginOk", user.getLoginOk());
@@ -111,7 +117,22 @@ public class UserManageController {
 			// job == 유저객체 1개 , suspensionJarray 정지객체 리스트
 			// 전송용 json 에 jarr 을 저장함
 		sendJson.put("suspensionList", suspensionJarray);
-
+			//  job == 유저객체 1개 , suspensionJarray 정지객체 리스트, subscribepaments 결제내역 리스트
+		JSONArray subsPaymentsJarray = new JSONArray();
+		ArrayList<SubscribePayments> subsPayList = subscribeService.selectSubscribePaymentsByUserId(user.getId());
+		if (subsPayList.size() > 0) {
+			for (SubscribePayments subscribePayment : subsPayList) {
+				// notice 값들을 저장할 json 객체 생성
+				JSONObject subscribePaymentJob = new JSONObject();
+				subscribePaymentJob.put("payNo", subscribePayment.getPayNo());
+				subscribePaymentJob.put("SubscribeName", URLEncoder.encode(subscribePayment.getSubscribeName(), "utf-8"));
+				subscribePaymentJob.put("amount", subscribePayment.getAmount());
+				subscribePaymentJob.put("payMethod", subscribePayment.getPayMethod());
+				subscribePaymentJob.put("payDate", subscribePayment.getPayDate().toString());
+				subsPaymentsJarray.add(subscribePaymentJob);
+			} // for
+		} // if
+		sendJson.put("subsPaymentsList",subsPaymentsJarray);
 		return sendJson.toJSONString();
 	}
 
@@ -183,6 +204,28 @@ public class UserManageController {
 		model.addAttribute("search", search);
 
 		return "admin/usermanage";
+	}
+	@RequestMapping("countUser.do")
+	@ResponseBody
+	public String selectCountUserByEnrollDateMethod(@RequestParam("year") int year,
+			HttpServletResponse response) throws UnsupportedEncodingException {
+		//전달받은 년도로 이용자수 조회해오기
+		Map<String, Integer> countUserMap = new HashMap<>();
+		ArrayList<CountUser> countUserList = umService.selectCountUserByEnrollDate(year);
+		for(CountUser countUser : countUserList) {
+			countUserMap.put(countUser.getMonth(), countUser.getCount());
+		}	//for
+		JSONObject sendJson = new JSONObject();
+		sendJson.put("countMap", countUserMap);
+		ArrayList<CountUser> countSubMap = umService.selectCountUserByServiceDate(year);
+		//전송용 json 객체 생성
+		sendJson.put("countSubMap", countSubMap);
+				
+		return sendJson.toJSONString();
+	}
+	@RequestMapping("mvwelcom.do")
+	public String moveWelcomePageMethod() {
+		return "common/welcome";
 	}
 
 }
