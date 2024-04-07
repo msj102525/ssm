@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.sdm.ssm.admin.dao.UserManageDao;
 import com.sdm.ssm.admin.model.vo.CountUser;
 import com.sdm.ssm.admin.model.vo.Notice;
+import com.sdm.ssm.admin.model.vo.Sales;
 import com.sdm.ssm.admin.model.vo.Suspension;
 import com.sdm.ssm.common.Paging;
 import com.sdm.ssm.common.Search;
@@ -99,6 +100,11 @@ public class UserManageServiceImpl implements UserManageService{
 	public ArrayList<CountUser> selectCountUserByServiceDate(int year) {
 
 		return umDao.selectCountUserByServiceDate(year);
+	}
+
+	@Override
+	public ArrayList<Sales> selectSalesList(int year) {
+		return umDao.selectSalesList(year);
 	}
 
 

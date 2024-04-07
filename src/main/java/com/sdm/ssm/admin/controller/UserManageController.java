@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sdm.ssm.admin.model.vo.CountUser;
-import com.sdm.ssm.admin.model.vo.Notice;
+import com.sdm.ssm.admin.model.vo.Sales;
 import com.sdm.ssm.admin.model.vo.Suspension;
 import com.sdm.ssm.admin.service.UserManageService;
 import com.sdm.ssm.common.Paging;
@@ -222,10 +222,17 @@ public class UserManageController {
 		for(CountUser countUser : countSubList) {
 			countSubMap.put(countUser.getMonth(), countUser.getCount());
 		}	//for
-		
 		//전송용 json 객체 생성
 		sendJson.put("countSubMap", countSubMap);
-				
+		
+		Map<String, Integer> salesMap = new HashMap<>();
+		ArrayList<Sales> salesList = umService.selectSalesList(year);
+		for(Sales sales : salesList) {
+			salesMap.put(sales.getMonth(), sales.getSales());
+		}	//for
+		sendJson.put("salesMap", salesMap);
+		
+		
 		return sendJson.toJSONString();
 	}
 	@RequestMapping("mvwelcom.do")

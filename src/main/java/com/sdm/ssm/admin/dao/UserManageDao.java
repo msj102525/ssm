@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import com.sdm.ssm.admin.model.vo.CountUser;
 import com.sdm.ssm.admin.model.vo.Notice;
+import com.sdm.ssm.admin.model.vo.Sales;
 import com.sdm.ssm.admin.model.vo.Suspension;
 import com.sdm.ssm.common.Paging;
 import com.sdm.ssm.common.Search;
@@ -72,6 +73,10 @@ public class UserManageDao {
 	public ArrayList<CountUser> selectCountUserByServiceDate(int year) {
 		List<CountUser> list = sqlSessionTemplate.selectList("userManageMapper.selectCountUserByServiceDate", year);
 		return (ArrayList<CountUser>)list;
+	}
+	public ArrayList<Sales> selectSalesList(int year) {
+		List<Sales> list = sqlSessionTemplate.selectList("userManageMapper.selectSalesList", year);
+		return (ArrayList<Sales>)list;
 	}
 
 	

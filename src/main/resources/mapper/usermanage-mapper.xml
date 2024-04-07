@@ -35,6 +35,10 @@
 		<result property="month" column="month" />
 		<result property="Count" column="count" />
 	</resultMap>
+	<resultMap type="Sales" id="resultSales">
+		<result property="month" column="month" />
+		<result property="sales" column="sales" />
+	</resultMap>
 	<select id="selectSuspenseList" parameterType="string" resultMap="resultSuspension">
 	select * from tb_user_suspension where target_account=${id}
 	</select>
@@ -75,7 +79,13 @@ from TB_SUBSCRIBE_PAYMENT
 where to_char(PAY_DATE,'YYYY') = #{year}
 group by to_char(PAY_DATE, 'MM')
 	</select>
-	
+	<!-- 월별 매출 조회 -->
+	<select id="selectSalesList" parameterType="_int" resultMap="resultSales">
+	select to_char(PAY_DATE, 'MM') as month, sum(amount) sales
+from TB_SUBSCRIBE_PAYMENT
+where to_char(PAY_DATE,'YYYY') = #{year}
+group by to_char(PAY_DATE, 'MM')
+	</select>
 	<update id="updateUserAccountSuspendMethod" parameterType="_int">
 		update tb_user set login_ok = 'N' where id = #{id}
 	</update>

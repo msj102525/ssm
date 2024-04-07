@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.sdm.ssm.admin.model.vo.CountUser;
 import com.sdm.ssm.admin.model.vo.Notice;
+import com.sdm.ssm.admin.model.vo.Sales;
 import com.sdm.ssm.admin.model.vo.Suspension;
 import com.sdm.ssm.common.Paging;
 import com.sdm.ssm.common.Search;
@@ -38,6 +39,8 @@ public interface UserManageService {
 	ArrayList<CountUser> selectCountUserByEnrollDate(int year);
 
 	ArrayList<CountUser> selectCountUserByServiceDate(int year);
+
+	ArrayList<Sales> selectSalesList(int year);
 
 
 
