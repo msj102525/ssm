@@ -525,7 +525,14 @@ BEGIN
       EXECUTE IMMEDIATE 'COMMENT ON COLUMN ' || v_table_name || '.RSRV_MEMO IS ''메모''';
       EXECUTE IMMEDIATE 'COMMENT ON COLUMN ' || v_table_name || '.WRITER IS ''작성일자''';
       EXECUTE IMMEDIATE 'COMMENT ON COLUMN ' || v_table_name || '.WRITE_DATE IS ''작성일자''';
-
+	  
+      --------------------------------------------
+      --- SEQUENSE 추가(2024.04.07)
+      --------------------------------------------
+      EXECUTE IMMEDIATE 'CREATE SEQUENCE ' || v_table_name || '_SEQ '
+                       || ' INCREMENT BY 1 ' 
+					   || ' START WITH 1 ';
+					   
    EXCEPTION
       WHEN OTHERS THEN
       dbms_output.put_line(sqlerrm); 
@@ -829,13 +836,14 @@ BEGIN
    dbms_output.put_line(v_table_name);
    
    BEGIN
-      --v_str1 := 'DROP INDEX ' || 'PK_' || v_table_name;
+      v_str1 := 'DROP TABLE ' || v_table_name || ' CASCADE CONSTRAINTS';
+      EXECUTE IMMEDIATE v_str1;
       --dbms_output.put_line(v_str1);
-      --EXECUTE IMMEDIATE v_str1;
 	  
-      v_str2 := 'DROP TABLE ' || v_table_name || ' CASCADE CONSTRAINTS';
+	  --- 2024.04.07 추가
+      v_str2 := 'DROP SEQUENCE ' || v_table_name || '_SEQ ';
       EXECUTE IMMEDIATE v_str2;
-      dbms_output.put_line(v_str1);
+      --dbms_output.put_line(v_str2);
 
    EXCEPTION
       WHEN OTHERS THEN
