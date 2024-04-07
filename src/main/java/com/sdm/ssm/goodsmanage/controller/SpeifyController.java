@@ -62,11 +62,7 @@ public class SpeifyController {
 		return "account/accountListView";
 	}
 	
-	// 그래프연습 페이지이동
-	@RequestMapping("graph.do")
-	public String moveGraphPage() {
-		return "account/testGraph";
-	}
+	
 
 
 	
@@ -85,21 +81,46 @@ public class SpeifyController {
 			Specify specify = new Specify();
 			specify.setId(Integer.parseInt(job.get("id").toString()));
 			specify.setPdMonth(job.get("month").toString());
-			
-	
+				
 			// 상품 삭제 메소드 작성
 			monthlyPdSum = specifyService.calMonthlyPdPrice(specify);
 
+			logger.info(monthlyPdSum + "원");
+			
 			// 에러 발생 시
-			if (monthlyPdSum <= 0) {
+			if (monthlyPdSum < 0) {
 				return new ResponseEntity<String>("failed", HttpStatus.REQUEST_TIMEOUT);
-			}else {
-				
-			}
-		}
+			}			
+		}						
 		return ResponseEntity.ok().body(String.valueOf(monthlyPdSum));
 	}
 
+	
+	// 그래프연습 페이지이동
+	@RequestMapping("graph.do")
+	public String moveGraphPage() {
+		return "account/testGraph";
+	}
+	
+	
+	@RequestMapping("GraphListView.do")
+	public String graphListView(@RequestParam("id") String id,
+	                            @RequestParam("monthlySale") String monthlySale,
+	                            @RequestParam("monthlyPdPrice") String monthlyPdPrice,
+	                            @RequestParam("month") String month,
+	                            Model model) {
+	   
+		// 받은 정보를 모델에 추가
+	    model.addAttribute("id", id);
+	    model.addAttribute("monthlySale", monthlySale);
+	    model.addAttribute("monthlyPdPrice", monthlyPdPrice);
+	    model.addAttribute("month", month);
+	    
+	    logger.info(model + "ㅂ뎌");
+	    // testGraph 페이지로 이동
+	    return "account/testGraph";
+	}
+	
 	
 	
 }

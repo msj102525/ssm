@@ -10,6 +10,7 @@
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="resources/css/goods/goodsDetail.css" />
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <title>goodsListView</title>
 
 <script type="text/javascript" src="/ssm/resources/js/jquery-3.7.0.min.js"></script>
@@ -115,6 +116,7 @@ function onChangeMonth() {
                 success: function(result) {
                 	var spanElement = document.getElementById("monthlyPdPrice");
                     spanElement.textContent = result;
+                    drawChart();
                 },
                 error: function(request, status, errorData) {
                     console.log("error code : " + request.status
@@ -125,12 +127,42 @@ function onChangeMonth() {
         
 }
 </script>
+<script type="text/javascript">
 
+      google.charts.load('current', {'packages':['corechart']});
+
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Topping');
+        data.addColumn('number', '원');
+        data.addRows([
+          ['매출', 1500],
+          ['발주금액', parseInt(document.getElementById("monthlyPdPrice").textContent, 10)],
+          ['월 급여', 300],
+          ['월세', 100],
+          ['세금', 25],
+          ['기타비용', 50],
+          ['수익', 6]
+        ]);
+
+        // Set chart options
+        var options = {'title':'매출 그래프',
+                       'width':400,
+                       'height':300};
+
+        // Instantiate and draw our chart, passing in some options.
+        var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+      }
+    </script>
 </head>
 <body>
 <c:import url="/WEB-INF/views/common/header.jsp" />
 
-<hr>
+
 <br>
 <c:import url="/WEB-INF/views/common/sidebar.jsp" />
 <h1 style="text-align: center;">월 매출</h1>
@@ -153,15 +185,34 @@ function onChangeMonth() {
     <option value="2024-11">2024-11</option>
     <option value="2024-12">2024-12</option>
 </select> 
-<button onclick="printTable();">출력</button>
-
-
 
 <br>
 <br>
 </div>
 <style>
-    .searchdiv {
+	/* 왼쪽 div */
+    .left-div {
+        width: 40%;
+        float: left; /* 왼쪽으로 플로팅 */
+
+    }
+
+    /* 오른쪽 div */
+    .right-div {
+        width: 40%;
+        float: right; /* 오른쪽으로 플로팅 */
+
+    }
+
+    /* 부모 div */
+    .container {
+    	width: 90%; /* 부모 div의 너비를 조정 */
+        margin: 0 auto; /* 가운데 정렬 */
+        overflow: hidden;
+    }
+
+
+	 .searchdiv {
         margin: 0 auto; /* 좌우 마진을 자동으로 설정하여 가운데 정렬 */
         width: fit-content; /* 내용에 맞게 자동으로 너비 설정 */
     }
@@ -182,7 +233,10 @@ function onChangeMonth() {
 	}   
 </style>
 
-<div style="margin-left: auto; margin-right: auto; width: 700px;">
+
+<div>
+	<div class="left-div" style="margin-left: auto; margin-right: auto; width: 700px;">
+
 			<table id="myTable" align="center" border="1" cellspacing="25" width="100%">
 				<tr>
 					<th style="text-align: center; white-space: nowrap;">항목</th>
@@ -191,39 +245,37 @@ function onChangeMonth() {
 				<tr>
 					<td align="center" style="white-space: nowrap;">월 매출</td>
 					<td align="center" style="white-space: nowrap;">
-						<span></span>
+						<span id="monthlySales">월 매출 출력칸</span>
 					</td>
 				</tr>	
 				<tr>
 					<td align="center" style="white-space: nowrap;">월 발주 금액</td>
     				<td align="center" style="white-space: nowrap;">						
-						<span id=monthlyPdPrice ></span>						
+						<span id="monthlyPdPrice" ></span>						
 					</td>
 				</tr>	
 				<tr>
 					<td align="center" style="white-space: nowrap;">월 급여</td>
-					<td align="center" style="white-space: nowrap;">급여 출력칸</td>
-				</tr>
-				<tr>
-					<td align="center" style="white-space: nowrap;">구독료</td>
-					<td align="center" style="white-space: nowrap;">구독료 출력칸</td>
-				</tr>
+					<td align="center" style="white-space: nowrap;">
+						<span id="monthlySalary">월 급여 총합 출력칸</span>	
+					</td>
+				</tr>	
 				<tr>
 					<td align="center" style="white-space: nowrap;">월세</td>
 					<td align="center" style="white-space: nowrap;">
-						<input type="number" placeholder="월세 입력">
+						<input id="monthlyRent" type="number" placeholder="월세 입력">
 					</td>
 				</tr>	
 				<tr>
 					<td align="center" style="white-space: nowrap;">세금</td>
 					<td align="center" style="white-space: nowrap;">
-						<input type="number" placeholder="세금 입력">
+						<input id="montlyTax" type="number" placeholder="세금 입력">
 					</td>
 				</tr>		
 				<tr>
 					<td align="center" style="white-space: nowrap;">기타비용</td>
 					<td align="center" style="white-space: nowrap;">
-						<input type="number" placeholder="기타비용 입력">
+						<input id="monthlyCost" type="number" placeholder="기타비용 입력">
 					</td>
 				</tr>				
 				<tr>
@@ -244,36 +296,21 @@ function onChangeMonth() {
 					</td>
 				</tr>	
 			</table>
+	
+		
+	</div>
+	<div id="chart_div" class="right-div">
+		
+	</div>
 </div>
+
+<br>
+<br>
 <div id="idDisplay" style="display:none;">${ loginUser.id }</div>
 
-<!-- 출력 -->
-<script>
-    function printTable() {
-        // 모든 input 요소의 현재 스타일 저장
-        var inputs = document.querySelectorAll('input');
-        
-        // 인쇄 전에 테두리 없애기
-        inputs.forEach(function(input) {
-            input.style.outline = 'none';
-            input.style.border = 'none';
-        });
-
-        // 테이블을 인쇄
-        window.print();
-
-        // 인쇄 후에 테두리 복원
-        inputs.forEach(function(input) {
-            input.style.outline = '';
-            input.style.border = '';
-        });
-    }
-</script>
-
-
 <br>
 <br>
-<hr>
+
 <c:import url="/WEB-INF/views/common/footer.jsp" />
 </body>
 </html>
