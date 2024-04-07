@@ -17,7 +17,7 @@
 	</insert>
 	
 	<select id="calMonthlyPdPrice" resultType="int">
-		select sum(PD_PRICE)
+		select NVL(sum(PD_PRICE), 0) as PD_PRICE
 		from  TB_SPECIFY_${ id }
 		WHERE PD_MONTH = #{ pdMonth }
 	</select>	
