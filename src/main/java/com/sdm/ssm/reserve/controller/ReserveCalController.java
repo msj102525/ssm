@@ -48,10 +48,11 @@ public class ReserveCalController {
 	public String moveCalWritePage() {
 		//return "reserve/reserve_input";
 		//return "redirect:calendar.do";
-		return "reserve/calendarfull040303";
+		/* return "reserve/calendarfull040303"; */
+		return "reserve/calendarfull040701";
 	}
 	
-	//달력기본화면
+	//달력 기본 화면
 	@RequestMapping(value = "/adms/calendar/management/list.do")
 	public String lnb04List(RedirectAttributes redirectAttributes, 
 					HttpServletRequest request, 
@@ -71,7 +72,7 @@ public class ReserveCalController {
 	    return "reserve/calendarfull040303";
 	}
 
-	//// 달력데이터 조회
+	//// 달력 데이터 조회
 	@RequestMapping(value= "read_ajx.do", method = {RequestMethod.POST, RequestMethod.GET})
 	@ResponseBody
 	public String getCalDataMethod (
@@ -129,7 +130,7 @@ public class ReserveCalController {
 			job.put("sortIdx", sortidx);   /// 일정을 순서대로 보이게 하기 위함(2024.04.04)
 			
 			/////////////////////////////////////////////////////////////
-			//// 추가
+			//// 추가(2024.04.05)
 			/////////////////////////////////////////////////////////////
 			job.put("rsrvname", reserve.getRsrvName());  //// 예약자명 2024.04.05
 			job.put("rsrvtelno", reserve.getRsrvTelno());  //// 연락처 2024.04.05
@@ -262,6 +263,7 @@ public class ReserveCalController {
 	        HttpServletResponse res,
 	        ModelMap model) throws Exception {
 	    //LoginVO loginVO = loginService.getLoginInfo();
+	    
 	    JSONObject obj = new JSONObject();
 	    
 	    res.setContentType("text/html; charset=UTF-8");
@@ -275,11 +277,9 @@ public class ReserveCalController {
 	    ObjectMapper mapper = new ObjectMapper();
 	    Reserve rsrv = (Reserve)mapper.readValue(filterJSON, new TypeReference<Reserve>(){ });
 	    //================================ json Object parse ============================
-	    //searchVO.setSite_code(loginService.getSiteCode());
-	    //searchVO.setModi_id(loginVO.getId());
-	    //searchVO.setModi_ip(request.getRemoteAddr());
+	    rsrv.setId(200);
 	    
-	    if (reserveService.updateReserve(rsrv) > 0) {
+	    if (reserveService.deleteReserve(rsrv) > 0) {
 	    	obj.put("success", "ok");
 		}else {
 			obj.put("success", "fail");
