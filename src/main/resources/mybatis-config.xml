@@ -31,6 +31,9 @@
 		<typeAlias type="com.sdm.ssm.employee.model.vo.Employee" alias="Employee"/>
 		<typeAlias type="com.sdm.ssm.employee.model.vo.SalaryInfo" alias="SalaryInfo"/>
 		<typeAlias type="com.sdm.ssm.employee.model.vo.CommuteInfo" alias="CommuteInfo"/>
+		<typeAlias type="com.sdm.ssm.pos.model.vo.POS" alias="POS"/>
+		<typeAlias type="com.sdm.ssm.pos.model.vo.Menu" alias="Menu"/>
+		<typeAlias type="com.sdm.ssm.pos.model.vo.Inventory" alias="Inventroy"/>
 	</typeAliases>
 		
 	<mappers>
@@ -43,5 +46,6 @@
 		<mapper resource="mapper/emp-mapper.xml"/>
 		<mapper resource="mapper/usermanage-mapper.xml" />
 		<mapper resource="mapper/subscribe-mapper.xml" />
+		<mapper resource="mapper/pos-mapper.xml" />
 	</mappers>
 </configuration>
