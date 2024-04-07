@@ -190,42 +190,11 @@ function onChangeMonth() {
 <br>
 </div>
 <style>
-	/* 왼쪽 div */
-    .left-div {
-        width: 40%;
-        float: left; /* 왼쪽으로 플로팅 */
-
-    }
-
-    /* 오른쪽 div */
-    .right-div {
-        width: 40%;
-        float: right; /* 오른쪽으로 플로팅 */
-
-    }
-
-    /* 부모 div */
-    .container {
-    	width: 90%; /* 부모 div의 너비를 조정 */
-        margin: 0 auto; /* 가운데 정렬 */
-        overflow: hidden;
-    }
-
-
 	 .searchdiv {
         margin: 0 auto; /* 좌우 마진을 자동으로 설정하여 가운데 정렬 */
         width: fit-content; /* 내용에 맞게 자동으로 너비 설정 */
     }
     
-    @media print {
-   
-	header, footer, sidebar, button {
-		display: none !important;
-	}
-	
-	.searchdiv {
-		display: none !important;
-	}
 	table {
 		margin: 0 auto; /* 좌우 마진을 자동으로 설정하여 가운데 정렬 */
 		width: fit-content;
@@ -237,7 +206,7 @@ function onChangeMonth() {
 <div>
 	<div class="left-div" style="margin-left: auto; margin-right: auto; width: 700px;">
 
-			<table id="myTable" align="center" border="1" cellspacing="25" width="100%">
+			<table id="myTable" border="1" cellspacing="25" width="100%">
 				<tr>
 					<th style="text-align: center; white-space: nowrap;">항목</th>
 					<th style="text-align: center; white-space: nowrap;">금액</th>
