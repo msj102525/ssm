@@ -217,7 +217,12 @@ public class UserManageController {
 		}	//for
 		JSONObject sendJson = new JSONObject();
 		sendJson.put("countMap", countUserMap);
-		ArrayList<CountUser> countSubMap = umService.selectCountUserByServiceDate(year);
+		Map<String, Integer> countSubMap = new HashMap<>();
+		ArrayList<CountUser> countSubList = umService.selectCountUserByServiceDate(year);
+		for(CountUser countUser : countSubList) {
+			countSubMap.put(countUser.getMonth(), countUser.getCount());
+		}	//for
+		
 		//전송용 json 객체 생성
 		sendJson.put("countSubMap", countSubMap);
 				

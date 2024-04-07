@@ -69,22 +69,22 @@ $(function(){
 		        // Some raw data (not necessarily accurate)
 		        var data = google.visualization.arrayToDataTable([
 		          ['Month', '가입자 수', '서비스 이용자 수'],
-		          ['01',  countMap["01"],      20],
-		          ['02',  countMap["02"],      10],
-		          ['03',  countMap["03"],      15],
-		          ['04',  countMap["04"],      20],
-		          ['05',  countMap["05"],      30],
-		          ['06',  countMap["06"],      20],
-		          ['07',  countMap["07"],      15],
-		          ['08',  countMap["08"],      17],
-		          ['09',  countMap["09"],      19],
-		          ['10',  countMap["10"],      15],
-		          ['11',  countMap["11"],      20],
-		          ['12',  countMap["12"],      20]
+		          ['01',  countMap["01"],      countSubMap["01"]],
+		          ['02',  countMap["02"],      countSubMap["02"]],
+		          ['03',  countMap["03"],      countSubMap["03"]],
+		          ['04',  countMap["04"],      countSubMap["04"]],
+		          ['05',  countMap["05"],      countSubMap["05"]],
+		          ['06',  countMap["06"],      countSubMap["06"]],
+		          ['07',  countMap["07"],      countSubMap["07"]],
+		          ['08',  countMap["08"],      countSubMap["08"]],
+		          ['09',  countMap["09"],      countSubMap["09"]],
+		          ['10',  countMap["10"],      countSubMap["10"]],
+		          ['11',  countMap["11"],      countSubMap["11"]],
+		          ['12',  countMap["12"],      countSubMap["12"]]
 		        ]);
 
 		        var options = {
-		          title : 'Monthly Coffee Production by Country',
+		          title : '월간 이용자수/가입자수 추이',
 		          vAxis: {title: 'Users'},
 		          hAxis: {title: 'Month'},
 		          seriesType: 'bars',
@@ -187,7 +187,6 @@ $(function(){
 			<div class="section-container">
 				<%-- section1 --%>
 				<section class="sec1">
-					section1
 					<div class="inner-section">
 						<div id="chart_div" class="left-section">left</div>
 						<div class="right-section">right</div>
@@ -195,7 +194,6 @@ $(function(){
 				</section>
 				<%-- section2 --%>
 				<section class="sec2">
-					section2
 					<div class="inner-section-incon">
 						<table id="inconvinience">
 							<tr id="titlerow">
@@ -205,23 +203,7 @@ $(function(){
 							</tr>
 						</table>
 					</div>
-				</section>
-				<%-- section3 --%>
-				section3
-				<section class="sec3">
-					<div class="inner-section">
-						<div class="left-section">left</div>
-						<div class="right-section">right</div>
-					</div>
-				</section>
-				<%-- section4 --%>
-				<section class="sec4">
-					section4
-					<div class="inner-section">
-						<div class="left-section">left</div>
-						<div class="right-section">right</div>
-					</div>
-				</section>
+				</section>		
 			</div>
 		</c:if>
 		<%-- footer --%>

@@ -26,7 +26,7 @@ section .inner-section .right-section {
 	flex: 1;
 }
 /*관리자 불편사항 확인 테이블 CSS*/
-table {
+.inner-section-incon table {
 	border-collapse: collapse;
 	width: 1300px;
 	min-height:500px;
@@ -34,19 +34,19 @@ table {
 	background-color: white;
 }
 
-thead {
+.inner-section-incon thead {
 	box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 /* 테이블 행 */
-td {
+.inner-section-incon td {
 	padding: 8px;
 	text-align: left;
 	border-bottom: 1px solid #ddd;
 	text-align: center;
 }
 
-th {
+.inner-section-incon th {
 	padding: 8px;
 	text-align: left;
 	text-align: center;
@@ -56,25 +56,25 @@ th {
 }
 
 /* 테이블 올렸을 때 */
-tbody tr:not(#titlerow):hover {
+.inner-section-incon tbody tr:not(#titlerow):hover {
     background-color:rgb(255, 221, 102);
     opacity: 0.9;
     cursor: pointer;
 }
 /* 테이블 비율 */
-th:nth-child(1), td:nth-child(1) {
+.inner-section-incon th:nth-child(1), .inner-section-incon td:nth-child(1) {
 	width: 55%;
 }
 
-th:nth-child(2), td:nth-child(2) {
+.inner-section-incon th:nth-child(2), .inner-section-incon td:nth-child(2) {
 	width: 30%;
 }
 
-th:nth-child(3), td:nth-child(3) {
+.inner-section-incon th:nth-child(3), .inner-section-incon td:nth-child(3) {
 	width: 15%;
 }
 
-th, td {
+.inner-section-incon th, .inner-section-incon td {
 	border-left: none;
 	border-right: none;
 }
