@@ -70,7 +70,10 @@ group by to_char(LAST_MODIFIED, 'MM')
 	</select>
 	<!-- 월별 사용자수 조회 -->
 	<select id="selectCountUserByServiceDate" parameterType="_int" resultMap="resultCountUser">
-	
+	select to_char(LAST_MODIFIED, 'MM') as month, count(*) count
+from tb_user
+where to_char(last_modified,'YYYY') = #{year}
+group by to_char(LAST_MODIFIED, 'MM')
 	</select>
 	
 	<update id="updateUserAccountSuspendMethod" parameterType="_int">
