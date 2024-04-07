@@ -19,8 +19,24 @@ $(() => {
 	$("#email").on("keyup", () => {
 		$("#chkEmailAuth").val("");
 	});
+	
+	// 선택한 사진 파일 이미지 미리보기 처리
+    $("#profileUrl").change(function(event) {
+        const files = event.currentTarget.files;
+        const file = files[0];
+        const myphoto = $(".photo");
+        console.log(file.name);
+        
+        const reader = new FileReader();
+        reader.onload = function(e) {          
+            myphoto.attr('src', e.target.result);
+            myphoto.attr('data-file', file.name);
+        };
+        reader.readAsDataURL(file);    
+    });
     
 }); //doc ready;
+
 
 </script>
 </head>
@@ -34,13 +50,22 @@ $(() => {
 				</h1>
 			</div>
 			<div class="form-box">
-				<form action="userInfoUpdate.do" method="post" onsubmit="return validateForm();">
+				<form action="userInfoUpdate.do" method="post" onsubmit="return validateForm();" enctype="multipart/form-data">
 					<ul>
 						<li class="profile-img">
 							<div class="img-box">
-								<img alt="유저 프로필 이미지" src="${ loginUser.profileUrl }">
+    							<c:if test="${empty loginUser.profileUrl }">
+									<img src="resources/images/profile.png" alt="프로필" class="photo">
+								</c:if>
+								<c:if test="${!empty loginUser.profileUrl }">
+									<img src="resources/user_upfiles/${loginUser.profileUrl}" alt="프로필" class="photo">
+								</c:if>
+							</div>
+							<div class="upfile">
+								<input type="file" name="upfile" id="profileUrl" value="">
 							</div>
 						</li>
+						
 						<li class="auth relative first">
 							<p>아이디</p>
 							<input type="text" name="userId" id="userId" placeholder="아이디" value="${loginUser.userId}" readonly>

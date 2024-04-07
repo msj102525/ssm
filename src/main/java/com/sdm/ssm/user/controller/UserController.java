@@ -1,5 +1,6 @@
 package com.sdm.ssm.user.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Random;
@@ -25,10 +26,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.github.scribejava.core.model.OAuth2AccessToken;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
+import com.sdm.ssm.common.FileNameChange;
 import com.sdm.ssm.user.model.service.UserService;
 import com.sdm.ssm.user.model.vo.User;
 
@@ -382,31 +385,77 @@ public class UserController {
 	}
 	
 	// 유저 정보 수정
-	@RequestMapping(value="userInfoUpdate.do", method=RequestMethod.POST)
-	public String userUpdateMethod(User user, Model model, HttpSession session) {
+	
+	/*
+	 * @RequestMapping(value="userInfoUpdate.do", method=RequestMethod.POST) public
+	 * String userUpdateMethod(User user, Model model, HttpSession session) {
+	 * 
+	 * String userPwd = user.getPassWd().trim(); logger.info("새로운 암호 : " + userPwd +
+	 * ", " + userPwd.length());
+	 * 
+	 * String originUserPwd = user.getPassWd();
+	 * 
+	 * if(userPwd != null && userPwd.length() > 0) {
+	 * if(!this.bcryptPwEncoder.matches(userPwd, originUserPwd)) {
+	 * user.setPassWd(this.bcryptPwEncoder.encode(userPwd)); } }else {
+	 * user.setPassWd(originUserPwd); }
+	 * 
+	 * if(userService.updateUser(user) > 0) { // return "redirect:goMypage.do?" +
+	 * user.getUserId(); return "redirect:main.do"; } else {
+	 * model.addAttribute("message", "유저 정보 수정 오류"); return "common/error"; }
+	 * 
+	 * 
+	 * }
+	 */
+	 
+	
+	
+	@RequestMapping(value = "userInfoUpdate.do", method = RequestMethod.POST)
+	public String userUpdateMethod(User user, Model model, HttpSession session, HttpServletRequest request,
+			@RequestParam(name = "upfile", required = false) MultipartFile mfile) {
+
+		String savePath = request.getSession().getServletContext().getRealPath("resources/user_upfiles");
+
+		if (!mfile.isEmpty()) {
+			String fileName = mfile.getOriginalFilename();
+			String renameFileName = null;
+
+			if (fileName != null && fileName.length() > 0) {
+				renameFileName = FileNameChange.change(fileName, "yyyyMMddHHmmss");
+				logger.info("첨부 파일명 변경 확인 : " + fileName + ", " + renameFileName);
+
+				 try {
+					mfile.transferTo(new File(savePath + "\\" + renameFileName));
+				} catch (Exception e) {
+					e.printStackTrace();
+					model.addAttribute("message", "첨부 파일 저장 실패!");
+					return "common/error";
+				}
+			} 
+			user.setProfileUrl(renameFileName);
+		}
+
 		String userPwd = user.getPassWd().trim();
 		logger.info("새로운 암호 : " + userPwd + ", " + userPwd.length());
-		
+
 		String originUserPwd = user.getPassWd();
-		
-		if(userPwd != null && userPwd.length() > 0) {
-			if(!this.bcryptPwEncoder.matches(userPwd, originUserPwd)) {
+
+		if (userPwd != null && userPwd.length() > 0) {
+			if (!this.bcryptPwEncoder.matches(userPwd, originUserPwd)) {
 				user.setPassWd(this.bcryptPwEncoder.encode(userPwd));
 			}
-		}else {
+		} else {
 			user.setPassWd(originUserPwd);
 		}
-		
-		if(userService.updateUser(user) > 0) {
-			// return "redirect:goMypage.do?" + user.getUserId();
+
+		if (userService.updateUser(user) > 0) {
 			return "redirect:main.do";
 		} else {
 			model.addAttribute("message", "유저 정보 수정 오류");
 			return "common/error";
 		}
-		
-		
 	}
+
 	
 
 }

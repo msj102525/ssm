@@ -75,7 +75,12 @@
 								<c:param name="userId" value="${ loginUser.userId }" />
 							</c:url>
 							<a href="${ goMyPage }">
-								<img src="#" alt="프로필">
+								<c:if test="${empty loginUser.profileUrl }">
+									<img src="resources/images/profile.png" alt="프로필" class="photo">
+								</c:if>
+								<c:if test="${!empty loginUser.profileUrl }">
+									<img src="resources/user_upfiles/${loginUser.profileUrl}" alt="프로필" class="photo">
+								</c:if>
 							</a>							
 							</div>
 						<div class="login-button-box">
