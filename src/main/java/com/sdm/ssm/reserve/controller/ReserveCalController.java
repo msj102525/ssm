@@ -44,7 +44,7 @@ public class ReserveCalController {
 	private ReserveService reserveService;
 	
 	//예약이동 페이지
-	@RequestMapping("moveRsrvCaolPage.do")
+	@RequestMapping("moveRsrvCalPage.do")
 	public String moveCalWritePage() {
 		//return "reserve/reserve_input";
 		//return "redirect:calendar.do";
