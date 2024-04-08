@@ -64,7 +64,7 @@
 				<%-- section1 --%>
 				<br>
 				<section class="sec1">
-				<div>
+				<div align="center">
 					<select style="height: 35px; width: 80px;" 
 				id="monthSelect" onchange="onChangeMonth()">
 					<option value="2024-01">2024-01</option>
