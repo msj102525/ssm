@@ -190,7 +190,10 @@ public class NoticeController {
 		model.addAttribute("paging", paging);
 		model.addAttribute("currentPage", currentPage);
 		model.addAttribute("search", search);
-
+		model.addAttribute("limit", 10);
+		model.addAttribute("action", action);
+		model.addAttribute("keyword", search.getKeyword());
+		
 		return "notice/noticeListView";
 	}
 	@RequestMapping(value="nwrite.do", method=RequestMethod.POST)

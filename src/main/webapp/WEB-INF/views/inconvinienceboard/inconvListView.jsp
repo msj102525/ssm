@@ -207,6 +207,7 @@ button {
 			</select> <input type="date" name="begin"> <input type="date"
 				name="end"> <input style="height: 30px; width: 325px;"
 				type="text" id="searchtext" name="keyword" placeholder="검색어 입력">
+				<input type="hidden" name="page" value="${nowpage}">
 			<input type="submit" class="searchbtn" value="검색"> <br>
 		</form>
 		<c:if test="${ !empty loginUser &&  loginUser.adminOk eq 'N'}">

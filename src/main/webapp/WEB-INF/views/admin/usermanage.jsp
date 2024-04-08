@@ -8,6 +8,8 @@
 <c:if test="${ !empty requestScope.currentPage }">
 	<c:set var="nowpage" value="${ requestScope.currentPage }" />
 </c:if>
+<c:set var="action" value="$('#searchselect').val()" />
+<c:set var="keyword" value="" />
 
 <!DOCTYPE html>
 <html>

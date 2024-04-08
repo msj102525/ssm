@@ -44,10 +44,10 @@
 	</select>
 	<!-- 유저검색 -->
 	<select id="selectSearchIdCount" parameterType="string" resultType="_int">
-	select count(*) from tb_user where user_id = #{id}
+	select count(*) from tb_user where user_id Like '%${id}%'
 	</select>
 	<select id="selectSearchStoreCount" parameterType="string" resultType="_int">
-	select count(*) from tb_user where BUSINESS_STORE_NAME = #{store}
+	select count(*) from tb_user where BUSINESS_STORE_NAME LIKE '%${store}%'
 	</select>
 	<select id="selectSearchId" parameterType="Search" resultMap="resultUser">
 				select * from (select rownum rnum, ID, USER_ID, PASSWD, EMAIL, USER_NO, PHONE, ACCOUNT_NUMBER, BANK_NAME, PROFILE_URL, IS_QUIT, ADMIN_OK, LOGIN_OK, LAST_MODIFIED, SERVICE_DATE, BUSINESS_NO, BUSINESS_STORE_NAME

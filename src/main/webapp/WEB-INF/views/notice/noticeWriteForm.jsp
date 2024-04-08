@@ -156,13 +156,14 @@ label {
 				value="${sessionScope.loginUser.id }"> <input type='hidden'
 				name="page" value="${page}">
 			<hr>
+			<P>중요도</P>
 			<label style="width: 100px;"><input type="radio"
 				name="importancy" value=1 checked>1</label> <label
 				style="width: 100px;"><input type="radio" name="importancy"
 				value=2>2</label> <label style="width: 100px;"><input
 				type="radio" name="importancy" value=3>3</label> <br>
 		</form>
-		<a onclick="submitForm()" class="mv">수정하기</a> <a
+		<a onclick="submitForm()" class="mv">글쓰기</a> <a
 			href="${pageContext.servletContext.contextPath}/${lb}" class="mv">돌아가기</a>
 
 		<c:url var="lb" value="nlist.do">

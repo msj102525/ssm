@@ -180,7 +180,6 @@ public class InconvinienceController {
 		@RequestMapping("inconvsearch.do")
 		public String noticeSearch(@RequestParam("action") String action, Search search,
 				@RequestParam(name = "page", required = false) String page, Model model) {
-			logger.info("asdfadf");
 			int currentPage = 1;
 			if (page != null) {
 				currentPage = Integer.parseInt(page);

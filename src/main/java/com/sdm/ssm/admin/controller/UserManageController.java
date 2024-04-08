@@ -197,12 +197,16 @@ public class UserManageController {
 			list = umService.selectSearchStore(search);
 			break;
 		}
-
+		logger.info(paging.getStartPage()+"");
+		logger.info("endPage : " + paging.getEndPage());
 		model.addAttribute("list", list);
 		model.addAttribute("paging", paging);
 		model.addAttribute("currentPage", currentPage);
 		model.addAttribute("search", search);
-
+		model.addAttribute("limit", 10);
+		model.addAttribute("action", action);
+		model.addAttribute("keyword", search.getKeyword());
+		
 		return "admin/usermanage";
 	}
 	@RequestMapping("countUser.do")
