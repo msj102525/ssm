@@ -38,6 +38,16 @@ public class UserServiceImpl implements UserService{
 		return userDao.searchIdByEmailBName(user);
 	}
 
+	@Override
+	public User selectUserByEmailId(User user) {
+		return userDao.selectUserByEmailId(user);
+	}
+
+	@Override
+	public int updateUserPw(User user) {
+		return userDao.updateUserPw(user);
+	}
+
 
 
 	
