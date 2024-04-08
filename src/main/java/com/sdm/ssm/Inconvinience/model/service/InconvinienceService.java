@@ -52,4 +52,6 @@ public interface InconvinienceService {
 
 	ArrayList<InconvinienceBoard> selectTop10();
 
+	ArrayList<InconvinienceBoard> selectTop5(int id);
+
 }

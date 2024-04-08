@@ -31,6 +31,12 @@
 				from(select * from tb_inconvinience_board left join tb_user on writer = id where status = 1 order by write_date))
 		where rnum between 1 and 10
 	</select>
+	<select id="selectTop5" parameterType="_int" resultMap="resultTop10">
+	select board_no, board_title, status, user_id
+		from(select rownum rnum, board_no, user_id, board_title, status
+				from(select * from tb_inconvinience_board left join tb_user on writer = id where id=#{id} order by write_date))
+		where rnum between 1 and 5
+	</select>
 	<select id ="selectInconv" parameterType="_int" resultMap ="resultList">
 		select * from TB_INCONVINIENCE_BOARD left join TB_user on writer=id where board_no = #{boardno}
 	</select>

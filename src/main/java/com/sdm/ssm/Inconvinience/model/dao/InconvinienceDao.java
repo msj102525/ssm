@@ -105,4 +105,9 @@ public class InconvinienceDao {
 		return (ArrayList<InconvinienceBoard>)list;
 	}
 
+	public ArrayList<InconvinienceBoard> selectTop5(int id) {
+		List<InconvinienceBoard> list = sqlSessionTemplate.selectList("inconvMapper.selectTop5",id);
+		return (ArrayList<InconvinienceBoard>)list;
+	}
+
 }

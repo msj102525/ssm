@@ -75,7 +75,43 @@ public class InconvinienceController {
 			}
 		
 		}
-		//inconv10개
+		//inconv5개 유저용
+		@RequestMapping(value="inconvtop5.do", method=RequestMethod.POST)
+		@ResponseBody
+		public String inconvTop5Method(@RequestParam("id") int id) throws UnsupportedEncodingException {
+			
+			//해당 유저의 가장 최근 불편사항 5개
+			ArrayList<InconvinienceBoard> list = inconvService.selectTop5(id);
+			
+			for(InconvinienceBoard ib : list) {
+			logger.info(ib.toString());};
+			//전송용 json 객체 준비
+			JSONObject sendJson = new JSONObject();
+			//list 저장할 json 배열 객체 준비
+			JSONArray jarr = new JSONArray();
+			
+			//list 를 jarr 로 옮기기
+			for(InconvinienceBoard inconv : list) {
+				//notice 의 각 필드값 저장할 json 객체 생성
+				JSONObject job = new JSONObject();
+				
+				job.put("ino", inconv.getBoardNo());
+				job.put("iwriter", inconv.getWriter());
+				job.put("status", inconv.getStatus());
+				//한글에 대해서는 인코딩해서 json에 담음 (한글 깨짐 방지)
+				job.put("ititle", URLEncoder.encode(inconv.getBoardTitle(), "utf-8"));			
+				//job 를 jarr 에 추가함
+				jarr.add(job);
+			}
+			
+			//전송용 객체에 jarr 을 담음
+			sendJson.put("ilist", jarr);
+			
+			//전송용 json 을 json string 으로 바꿔서 전송되게 함
+			return sendJson.toJSONString();  //뷰리졸버로 리턴함
+			//servlet-context.xml 에 jsonString 내보내는 JSONView 라는 뷰리졸버를 추가 등록해야 함
+		}
+		//inconv10개 관리자용
 		@RequestMapping(value="inconvtop10.do", method=RequestMethod.POST)
 		@ResponseBody
 		public String inconvTop10Method() throws UnsupportedEncodingException {
