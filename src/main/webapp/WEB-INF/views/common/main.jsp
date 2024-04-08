@@ -140,21 +140,20 @@
 				</section>
 				<%-- section2 --%>
 				<section class="sec2">
-					<div class="inner-section-incon">
-						<p class="title">문의 내역</p>
-						<table id="inconvinienceUser">
+					<div class="inner-section">
+						<div class="left-section">
+						<div class="title"><p class="title">문의 내역</p></div>
+						<table id="inconvinienceUser" class="inconvinience">
 							<tr class="titlerow">
 								<th>제목</th>
 								<th>조치상태</th>
 							</tr>
 						</table>
 						<input type="hidden" id="loginUserId" value="${loginUser.id}">
+						</div>
+						<div class="right-section">예약달력자리입니다.</div>
 					</div>
 				</section>	
-				<%-- section3(예약) --%>
-				<section class="sec3">
-				예약 달력 자리입니다.
-				</section>			
 			</div>
 		</c:if>
 		<%-- 관리자 로그인한 경우--%>

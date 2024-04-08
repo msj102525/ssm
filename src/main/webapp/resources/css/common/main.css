@@ -15,8 +15,12 @@ section .inner-section {
 
 section .inner-section .left-section {
 	flex: 1;
-	border: 1px solid #000;
+/* 	border: 1px solid #000; */
 	height: 300px;
+	display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    text-align: center;
 }
 
 section .inner-section .right-section {
@@ -25,36 +29,36 @@ section .inner-section .right-section {
 	flex: 1;
 }
 p.title {
-	margin: 40px 0 40px;
+	margin: 10px 0 10px;
 	font-size: 28px;
 	font-weight: 600;
 	color: #4e5968;
 }
 /*관리자 불편사항 확인 테이블 CSS*/
-.inner-section-incon{
+.inconvinience{
 	text-align : center;
 }
-.inner-section-incon table {
+.inconvinience table {
 	border-collapse: collapse;
-	width: 1300px;
-	min-height:500px;
+ 	min-width: 600px;
+	/*min-height:500px; */
 	margin: 1rem auto;
 	background-color: white;
 }
 
-.inner-section-incon thead {
+.inconvinience thead {
 	box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 /* 테이블 행 */
-.inner-section-incon td {
+.inconvinience td {
 	padding: 8px;
 	text-align: left;
 	border-bottom: 1px solid #ddd;
 	text-align: center;
 }
 
-.inner-section-incon th {
+.inconvinience th {
 	padding: 8px;
 	text-align: left;
 	text-align: center;
@@ -64,25 +68,25 @@ p.title {
 }
 
 /* 테이블 올렸을 때 */
-.inner-section-incon tbody tr:not(.titlerow):hover {
+.inconvinience tbody tr:not(.titlerow):hover {
     background-color:rgb(255, 221, 102);
     opacity: 0.9;
     cursor: pointer;
 }
 /* 테이블 비율 */
-.inner-section-incon th:nth-child(1), .inner-section-incon td:nth-child(1) {
+.inconvinience th:nth-child(1), .inner-section-incon td:nth-child(1) {
 	width: 55%;
 }
 
-.inner-section-incon th:nth-child(2), .inner-section-incon td:nth-child(2) {
+.inconvinience th:nth-child(2), .inner-section-incon td:nth-child(2) {
 	width: 30%;
 }
 
-.inner-section-incon th:nth-child(3), .inner-section-incon td:nth-child(3) {
+.inconvinience th:nth-child(3), .inner-section-incon td:nth-child(3) {
 	width: 15%;
 }
 
-.inner-section-incon th, .inner-section-incon td {
+.inconvinience th, .inner-section-incon td {
 	border-left: none;
 	border-right: none;
 }
