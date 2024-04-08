@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <title>ssm</title>
-<link rel="stylesheet" href="resources/css/common/main.css?after1" />
+<link rel="stylesheet" href="resources/css/common/main.css" />
 <%-- jquery 파일 로드 --%>
 <script type="text/javascript"
 	src="/ssm/resources/js/jquery-3.7.0.min.js"></script>

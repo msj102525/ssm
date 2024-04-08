@@ -1,43 +1,30 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-
 <head>
-  <meta charset="UTF-8">
-  <title>공지사항 롤링</title>
-  <script src="/ssm/resources/js/jquery-3.7.0.min.js"></script>
-  <script>
-  $(function(){
-	  $(function()
-			  {
-			      var ticker = function()
-			      {
-			          setTimeout(function(){
-			              $('#ticker li:first').animate( {marginTop: '-20px'}, 400, function()
-			              {
-			                  $(this).detach().appendTo('ul#ticker').removeAttr('style');
-			              });
-			              ticker();
-			          }, 3000);
-			      };
-			      ticker();
-			  });
-  });
-  </script>
-  <style>
- .block {border:2px solid orange; padding:0 5px; height:20px; overflow:hidden; background:#fff; width:400px; font-family:Gulim; font-size:12px;
- text-align: center;margin: 0 auto;}
-.block ul, .block li 
-{margin:0; padding:0; list-style:none;}
-.block li a {display:block; height:20px; line-height:20px; color:#555; text-decoration:none;}
-  </style>
-</head>
-<body>
-<div class="block">
-    <ul id="ticker">
-    </ul>
-</div>
+<meta charset="UTF-8">
+<script src="/ssm/resources/js/jquery-3.7.0.min.js"></script>
+<script>
+$(function() {
+	$(function() {
+		var ticker = function() {
+			setTimeout(function() {
+				$('#ticker li:first').animate(
+						{
+							marginTop : '-40px'
+						},
+						550,
+						function() {
+							$(this).detach().appendTo('ul#ticker')
+									.removeAttr('style');
+						});
+				ticker();
+			}, 3000);
+		};
+		ticker();
+	});
+});
+</script>
 <script>
 $(function(){
 	//중요도 높은 공지사항 5개 롤링
@@ -64,7 +51,44 @@ $(function(){
 	});
 });
 </script>
+<style>
+.block {
+	border: 0px solid orange;
+	padding-top: 30px;
+	height: 40px;
+	overflow: hidden;
+	background: #fff;
+	width: 400px;
+	font-family: Gulim;
+	font-size: 12px;
+	text-align: center;
+	margin: 0 auto;
+}
+
+.block ul, .block li {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	line-height: 40px;
+}
+
+.block li a {
+	display: block;
+	height: 40px;
+	line-height: 40px;
+	color: #222;
+	text-decoration: none;
+	font-size: 16px;
+	font-weight: 600;
+	font-family: sans-serif;
+}
+</style>
+</head>
+<body>
+	<div class="block">
+		<ul id="ticker">
+		</ul>
+	</div>
 </body>
 </html>
 
- 
