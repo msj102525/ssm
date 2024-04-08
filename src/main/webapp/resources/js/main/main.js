@@ -219,35 +219,86 @@ $(function() {
 	});	
 	
 
-      // Load the Visualization API and the corechart package.
+      
       google.charts.load('current', {'packages':['corechart']});
 
-      // Set a callback to run when the Google Visualization API is loaded.
       google.charts.setOnLoadCallback(drawChart3);
 
-      // Callback that creates and populates a data table,
-      // instantiates the pie chart, passes in the data and
-      // draws it.
       function drawChart3() {
 
-        // Create the data table.
         var data = new google.visualization.DataTable();
-        data.addColumn('string', 'Topping');
-        data.addColumn('number', 'Slices');
+        data.addColumn('string', '항목');
+        data.addColumn('number', '금액');
         data.addRows([
-          ['Mushrooms', 3],
-          ['Onions', 1],
-          ['Olives', 1],
-          ['Zucchini', 1],
-          ['Pepperoni', 2]
+          ['매출', 3],
+          ['발주액', parseInt(document.getElementById("monthlyPdPrice").textContent, 10)],
+          ['급여', 1],
+          ['월세', parseInt(document.getElementById('monthlyRent').value,10)],
+          ['세금', parseInt(document.getElementById('montlyTax').value,10)],
+          ['기타비용', parseInt(document.getElementById('monthlyCost').value,10)],
+          ['수익', 24]
         ]);
 
         // Set chart options
-        var options = {'title':'How Much Pizza I Ate Last Night',
-                       'width':400,
-                       'height':300};
+       var options = {
+	        'title': '월 매출',
+	        'width': 600,
+	        'height': 400// 각 항목의 색상을 지정합니다.
+	    };
+
 
         // Instantiate and draw our chart, passing in some options.
-        var chart = new google.visualization.PieChart(document.getElementById('chart_div_sale'));
+        var chart = new google.visualization.BarChart(document.getElementById('chart_div_sale'));
         chart.draw(data, options);
       }
+      
+      // 발주액 가져오기
+      function onChangeMonth() {  
+		    var jarr = new Array();
+		    var job = new Object();
+		    
+		    var selectElement = document.getElementById("monthSelect");
+		    var month = selectElement.value; 
+		    
+		    job.id = document.getElementById("idDisplay").textContent;
+		    job.month = month;
+		    
+		    jarr.push(job);
+		    
+		            $.ajax({
+		                type: "POST",
+		                url: "monthlyPdPrice.do",
+		                data: JSON.stringify(jarr),
+		                contentType: "application/json; charset=utf-8",
+		                success: function(result) {
+		                	var spanElement = document.getElementById("monthlyPdPrice");
+		                    spanElement.textContent = result;
+		                    drawChart3();
+		                },
+		                error: function(request, status, errorData) {
+		                    console.log("error code : " + request.status
+		                        + "\nMessage : " + request.responseText
+		                        + "\nError : " + errorData);
+		                } 
+		            });      
+		        
+		}
+      
+      
+      // 지금 년월 자동 선택
+      window.onload = function() {
+        var today = new Date();
+        var year = today.getFullYear();
+        var month = today.getMonth() + 1; // getMonth()는 0부터 시작하므로 1을 더해줍니다.
+        var monthString = month < 10 ? '0' + month : '' + month; // 달이 한 자리 수일 경우 앞에 0을 추가합니다.
+        var currentMonthYear = year + '-' + monthString;
+        var selectElement = document.getElementById('monthSelect');
+        var options = selectElement.options;
+        for (var i = 0; i < options.length; i++) {
+            if (options[i].value === currentMonthYear) {
+                options[i].selected = true;
+                break;
+            }
+        }
+        onChangeMonth();
+    };

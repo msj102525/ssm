@@ -15,6 +15,7 @@
 	src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript"
 	src="/ssm/resources/js/main/main.js"></script>
+
 </head>
 <body>
 	<div id="wrap">
@@ -64,7 +65,7 @@
 				<%-- section1 --%>
 				<br>
 				<section class="sec1">
-				<div>
+				<div align="center">
 					<select style="height: 35px; width: 80px;" 
 				id="monthSelect" onchange="onChangeMonth()">
 					<option value="2024-01">2024-01</option>
@@ -83,7 +84,7 @@
 				</div>
 					<div class="inner-section" style="height: 400px;">
 						<div class="left-section" style="height: 400px;">
-							<table id="myTable" border="1" cellspacing="25" width="100%" style="height: 400px;">
+							<table id="myTable" border="1" width="100%" style="height: 400px;">
 								<tr style="height: 10px;">
 									<th style="text-align: center; white-space: nowrap;">항목</th>
 									<th style="text-align: center; white-space: nowrap;">금액</th>
@@ -135,7 +136,8 @@
 								</tr>	
 							</table>
 						</div>
-						<div class="right-section" id="chart_div_sale">right</div>
+						<div id="idDisplay" style="display:none;">${ loginUser.id }</div>
+						<div class="right-section" id="chart_div_sale" style="height: 400px;">그래프</div>
 					</div>
 				</section>
 				<%-- section2 --%>
@@ -153,9 +155,10 @@
 						</div>
 						<div class="right-section">예약달력자리입니다.</div>
 					</div>
-				</section>	
+				</section>
 			</div>
 		</c:if>
+						
 		<%-- 관리자 로그인한 경우--%>
 		<c:if test="${ !empty loginUser &&  loginUser.adminOk eq 'Y'}">
 			<div class="section-container">
