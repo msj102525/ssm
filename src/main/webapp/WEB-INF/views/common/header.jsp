@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="resources/css/common/header.css?after" />
+<link rel="stylesheet" href="resources/css/common/header.css" />
 <script type="text/javascript" src="/ssm/resources/js/jquery-3.7.0.min.js"></script>
 <script type="text/javascript">
 	$(()=> {
@@ -82,7 +82,7 @@
 									<img src="resources/user_upfiles/${loginUser.profileUrl}" alt="프로필" class="photo">
 								</c:if>
 							</a>							
-							</div>
+						</div>
 						<div class="login-button-box">
 							<button onclick="logout()">로그아웃</button>
 						</div>
@@ -113,7 +113,17 @@
 					</div>
 					<div class="login-box">
 						<div class="profile-img-box">
-							<img src="#" alt="프로필">
+							<c:url var="goMyPage" value="goMyPage.do">
+								<c:param name="userId" value="${ loginUser.userId }" />
+							</c:url>
+							<a href="${ goMyPage }">
+								<c:if test="${empty loginUser.profileUrl }">
+									<img src="resources/images/profile.png" alt="프로필" class="photo">
+								</c:if>
+								<c:if test="${!empty loginUser.profileUrl }">
+									<img src="resources/user_upfiles/${loginUser.profileUrl}" alt="프로필" class="photo">
+								</c:if>
+							</a>							
 						</div>
 						<div class="login-button-box">
 							<button onclick="logout()">로그아웃</button>
