@@ -9,13 +9,8 @@ import com.sdm.ssm.employee.model.vo.Employee;
 
 public interface EmployeeService {
 
-	ArrayList<Employee> employeeListMethod();
-
-	List<Employee> selectEmpList();
-
-	List<Employee> employeeSearchMethod(Search search);
-
-	String selectAllEmpMethod();
+	//직원 목록
+	List<Employee> getAllEmployees();
 
 	Employee getEmployeeDetails(int empId);
 
@@ -25,6 +20,13 @@ public interface EmployeeService {
 
 	int deleteEmployee(int empId);
 
-	List<Employee> searchEmployeeByName(String empName);
+	List<Employee> employeeSearchMethod(Search search);
+
+	List<Employee> searchEmployeeByName(String username);
+
+	List<Employee> selectEmpList();
+
+	ArrayList<Employee> employeeListMethod();
+
 
 }

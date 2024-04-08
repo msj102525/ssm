@@ -14,6 +14,7 @@ public class CommuteInfo implements java.io.Serializable{
 	private String lateFlag;
 	private String leaveEarly;
 	private String absenteeism;
+	
 	private int id;
 	
 	public CommuteInfo() {

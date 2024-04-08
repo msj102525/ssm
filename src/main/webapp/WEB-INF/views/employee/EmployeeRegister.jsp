@@ -56,6 +56,10 @@
             if (successMessage) {
                 alert(successMessage);
             }
+
+            // 유저 번호 필드에 로그인한 사용자의 번호를 자동으로 입력
+            const loggedInUserId = 'document.getElementById('id').value';
+            document.getElementById('id').value = loggedInUserId;
         };
     </script>
 </head>

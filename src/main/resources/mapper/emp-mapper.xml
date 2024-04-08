@@ -19,37 +19,29 @@
 		<result property="id" column="ID" />
 	</resultMap>
 
-	<!-- SalaryInfo 클래스에 대한 resultMap -->
-	<resultMap type="SalaryInfo" id="resultSalaryInfoList">
-		<result property="empId" column="EMP_ID" />
-		<result property="bankName" column="BANK_NAME" />
-		<result property="bankAccountNo" column="BANK_ACCOUNT_NO" />
-		<result property="accountHolder" column="ACCOUNT_HOLDER" />
-		<result property="premium" column="PREMIUM" />
-		<result property="tax" column="TAX" />
-		<result property="id" column="ID" />
-	</resultMap>
-
 	<!-- 직원 전체조회 -->
 	<select id="selectAllEmployees" resultMap="resultList">
-		SELECT * FROM tbEmployee_${id}
+		SELECT * FROM TB_EMPLOYEE_${id}
 	</select>
 
 	<!-- 아이디 조회 -->
 	<select id="selectempId" parameterType="int"
 		resultMap="resultList">
-		SELECT * FROM TB_EMPLOYEE_${id} WHERE empId = #{empId}
+		SELECT * FROM TB_EMPLOYEE_${id} WHERE EMP_ID = #{empId}
 	</select>
 
+	 <!-- 직원 이름으로 검색 -->
+	<!--<select id="selectEmpName" parameterType="search" resultMap="resultList">		
+		SELECT * FROM TB_EMPLOYEE_${id} WHERE EMP_NAME LIKE '%' || #{empName} || '%'
+	</select> -->
 	<!-- 직원 이름으로 검색 -->
-	<select id="selectEmpName" parameterType="search"
-		resultMap="resultList">
-		SELECT * FROM TB_EMPLOYEE_${id} WHERE empName LIKE '%' || #{empName} || '%'
+	<select id="searchEmployeeByName" parameterType="String" resultMap="resultList">		
+    SELECT * FROM TB_EMPLOYEE_${id} WHERE EMP_NAME LIKE '%' || #{empName} || '%'
 	</select>
+	
 
 	<!-- 직원정보 등록 -->
-	<insert id="insertemp"
-		parameterType="com.sdm.ssm.employee.model.vo.Employee">
+	<insert id="insertemp" parameterType="Employee">
 		INSERT INTO TB_EMPLOYEE_${id} (EMP_ID, EMP_NAME, POSITION, EMP_HIREDATE,
 		EMP_PHONE, EMP_EMAIL,
 		EMP_ADDRESS, EMP_BIRTHDATE, EMP_GENDER) VALUES (#{empName}, #{position},
@@ -69,46 +61,66 @@
 
 	<!-- 직원 정보 삭제 -->
 	<delete id="deleteemp" parameterType="int">
-		DELETE FROM TB_EMPLOYEE_${id} WHERE empId=#{empId}
+		DELETE FROM TB_EMPLOYEE_${id} WHERE EMP_ID=#{empId}
 	</delete>
 
+	<!-- SalaryInfo 클래스에 대한 resultMap -->
+	<resultMap type="SalaryInfo" id="resultSalaryInfoList">
+		<result property="empId" column="EMP_ID" />
+		<result property="bankName" column="BANK_NAME" />
+		<result property="bankAccountNo" column="BANK_ACCOUNT_NO" />
+		<result property="accountHolder" column="ACCOUNT_HOLDER" />
+		<result property="premium" column="PREMIUM" />
+		<result property="tax" column="TAX" />
+		<result property="id" column="ID" />
+	</resultMap>
+	
 	<!-- 직원 급여 정보 등록 -->
 	<insert id="insertSalaryInfo"
 		parameterType="com.sdm.ssm.employee.model.vo.SalaryInfo">
-		INSERT INTO tb_SalaryInfo (empId, bankName, bankAccountNo, accountHolder,
-		premium, tax)
+		INSERT INTO TB_SALARY_INFO_${ id } (EMP_ID, BANK_NAME, BANK_ACCOUNT_NO, ACCOUNT_HOLDER,
+		PREMIUM, TAX)
 		VALUES (#{empId}, #{bankName}, #{bankAccountNo}, #{accountHolder},
 		#{premium}, #{tax})
 	</insert>
-
-	<!-- 직원 급여 정보 조회 -->
+	
 	<!-- 특정 직원의 급여 정보 조회 -->
 	<select id="selectSalaryInfoByEmpId" parameterType="int"
 		resultMap="resultSalaryInfoList">
-		SELECT * FROM tb_SalaryInfo WHERE empId = #{empId}
+		SELECT * FROM TB_SALARY_INFO_${ id } WHERE empId = #{empId}
 	</select>
+	
 	<!-- 모든 직원의 급여 정보 조회 -->
-	<select id="selectAllSalaryInfos"
-		resultMap="resultSalaryInfoList">
-		SELECT * FROM tb_SalaryInfo_${ id }
+	<select id="selectAllSalaryInfos" resultMap="resultSalaryInfoList">
+		SELECT * FROM TB_SALARY_INFO_${ id }
 	</select>
 
 	<!-- 직원 급여 정보 수정 -->
 	<update id="updateSalaryInfo"
 		parameterType="com.sdm.ssm.employee.model.vo.SalaryInfo">
-		UPDATE tbSalaryInfo
-		SET bankName=#{bankName}, bankAccountNo=#{bankAccountNo},
-		accountHolder=#{accountHolder},
-		premium=#{premium}, tax=#{tax}
-		WHERE empId=#{empId}
+		UPDATE TB_SALARY_INFO_${ id }
+		SET BANK_NAME=#{bankName}, BANK_ACCOUNT_NO=#{bankAccountNo},
+		ACCOUNT_HOLDER=#{accountHolder},
+		PREMIUM=#{premium}, TAX=#{tax}
+		WHERE EMP_ID=#{empId}
 	</update>
 
 	<!-- 직원 급여 정보 삭제 -->
 	<delete id="deleteSalaryInfo" parameterType="int">
-		DELETE FROM tbSalaryInfo WHERE empId=#{empId}
+		DELETE FROM TB_SALARY_INFO_${ id }  WHERE EMP_ID=#{empid}
 	</delete>
-
-
+	
+	<select id="totalSalact" parameterType="map" resultMap="resultSalaryInfoList">	
+	SELECT 
+    EMP_ID=#{empId} ,(SELECT  ( * WORKING_HOURS) - (PREMIUM + TAX) AS totalSalact    
+    FROM TB_SALARY_INFO_${ id }       
+    WHERE EMP_ID = #{empId}) AS TOTALSALARY       
+	FROM TB_EMPLOYEE_${ id }     
+	WHERE EMP_ID = #{empId};	
+	</select>
+	
+	
+	
 	<!-- 출퇴근 정보 -->
 	<resultMap type="CommuteInfo" id="resultCommuteInfoList">
 		<result property="empId" column="EMP_ID" />
@@ -121,16 +133,16 @@
 		<result property="absenteeism" column="ABSENTEEISM" />
 		<result property="id" column="ID" />
 	</resultMap>
-
+	
 	<!-- 출퇴근 정보 조회 -->
 	<select id="selectcommute" parameterType="String">
-		SELECT * FROM TB_COMMUTE_INFO
+		SELECT * FROM TB_COMMUTE_INFO_${ id } 
 		WHERE EMP_ID = #{empId}
 	</select>
 
 	<!-- 이름으로 출퇴근 정보 검색조회 -->
 	<select id="commnamesarch" parameterType="String">
-		SELECT * FROM TB_COMMUTE_INFO
+		SELECT * FROM TB_COMMUTE_INFO_${ id }
 		WHERE EMP_ID IN (SELECT EMP_ID FROM TB_EMPLOYEE WHERE EMP_NAME =
 		#{empName})
 	</select>
@@ -138,7 +150,7 @@
 	<!-- 출퇴근 정보 등록 -->
 	<insert id="insertCommuteInfo"
 		parameterType="com.sdm.ssm.employee.model.vo.CommuteInfo">
-		INSERT INTO TB_COMMUTE_INFO (EMP_ID, START_TIME, WORK_DAY, END_TIME,
+		INSERT INTO TB_COMMUTE_INFO_${ id } (EMP_ID, START_TIME, WORK_DAY, END_TIME,
 		WORKING_HOURS, LATE_FLAG, LEAVE_EARLY, ABSENTEEISM)
 		VALUES (#{empId}, #{startTime}, #{workDay}, #{endTime}, #{workingHours},
 		#{lateFlag}, #{leaveEarly}, #{absenteeism})
@@ -147,7 +159,7 @@
 	<!-- 출퇴근 정보 수정 -->
 	<update id="updateCommuteInfo"
 		parameterType="com.sdm.ssm.employee.model.vo.CommuteInfo">
-		UPDATE TB_COMMUTE_INFO
+		UPDATE TB_COMMUTE_INFO_${ id }
 		SET START_TIME=#{startTime}, END_TIME=#{endTime},
 		WORKING_HOURS=#{workingHours}, LATE_FLAG=#{lateFlag},
 		LEAVE_EARLY=#{leaveEarly}, ABSENTEEISM=#{absenteeism}
@@ -156,20 +168,35 @@
 
 	<!-- 출퇴근 정보 삭제 -->
 	<delete id="deleteCommuteInfo" parameterType="map">
-		DELETE FROM TB_COMMUTE_INFO
+		DELETE FROM TB_COMMUTE_INFO_${ id }
 		WHERE EMP_ID=#{empId} AND WORK_DAY=#{workDay}
 	</delete>
 
 	<!-- 특정 날짜의 출퇴근 정보 조회 -->
 	<select id="selectCommuteInfoByDate" parameterType="map"
 		resultMap="resultCommuteInfoList">
-		SELECT * FROM TB_COMMUTE_INFO WHERE EMP_ID=#{empId} AND WORK_DAY=#{workDay}
+		SELECT * FROM TB_COMMUTE_INFO_${ id } WHERE EMP_ID=#{empId} AND WORK_DAY=#{workDay}
 	</select>
 
 	<!-- 특정 직원의 전체 출퇴근 정보 조회 -->
 	<select id="selectAllCommuteInfosByEmpId" parameterType="String"
 		resultMap="resultCommuteInfoList">
-		SELECT * FROM TB_COMMUTE_INFO WHERE EMP_ID=#{empId}
+		SELECT * FROM TB_COMMUTE_INFO_${ id } WHERE EMP_ID=#{empId}
 	</select>
+
+	 <!-- TB_CALENDAR 정보 -->
+	<!--<resultMap type="Calendar" id="resultCalendarList">
+		<result property="empId" column="EMP_ID" />
+		<result property="remarks" column="REMARKS" />
+		<result property="id" column="ID" />
+	</resultMap>
+	
+
+		Calendar 클래스와 TB_CALENDAR 테이블 간의 매핑
+	<select id="selectCalendarInfoByEmpId" parameterType="int"
+		resultMap="resultCalendarList">
+		SELECT * FROM TB_CALENDAR_${id} WHERE EMP_ID=#{empId}
+	</select> -->
+	
 </mapper>
     

@@ -31,10 +31,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employeeDao.employeeSearchMethod(search);
     }
 
-    @Override
-    public String selectAllEmpMethod() {
-        return employeeDao.selectAllEmpMethod();
-    }
+ 
     
     @Override
     public int insertEmployee(Employee employee) {
@@ -61,6 +58,13 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return employeeDao.getEmployeeDetails(empId);
 	}
 
+	@Override
+	public List<Employee> getAllEmployees() {
+		// TODO Auto-generated method stub
+		return employeeDao.getAllEmployees();
+	}
+
+	
 
 	
 }

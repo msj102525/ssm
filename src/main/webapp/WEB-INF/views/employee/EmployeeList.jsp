@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
@@ -241,14 +240,14 @@ function loadEmployeeDetails(empId) {
         }
     };
     // API 엔드포인트 및 empId를 파라미터로 전달하여 호출
-    xhttp.open("GET", "/getEmployeeDetails?empId=" + empId, true);
+    xhttp.open("GET", "/getdeleteemp?empId=" + empId, true);
     xhttp.send();
 }
 
 // 직원을 삭제하는 함수
 function deleteEmployee(empId) {
     if(confirm('정말로 삭제하시겠습니까?')) {
-        window.location.href = `/deleteEmployee?empId=${empId}`;
+        window.location.href = `/deleteemp?EMP_ID=${empId}`;
     }
 }
 </script>

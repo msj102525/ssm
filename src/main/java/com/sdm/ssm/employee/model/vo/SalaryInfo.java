@@ -10,8 +10,7 @@ public class SalaryInfo implements java.io.Serializable {
 	private String accountHolder;
 	private String premium;
 	private String tax;
-	
-	
+		
 	private int id;
 	
 	public SalaryInfo() {

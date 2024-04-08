@@ -3,6 +3,7 @@ package com.sdm.ssm.employee.model.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -46,12 +47,16 @@ public class EmployeeDao {
         return sqlSessionTemplate.delete("employeeMapper.deleteEmployee", empId);
     }
 
-    public List<Employee> searchEmployeeByName(String empName) {
-        return sqlSessionTemplate.selectList("employeeMapper.searchEmployeeByName", empName);
-    }
 
     public Employee getEmployeeDetails(int empId) {
         return sqlSessionTemplate.selectOne("employeMapper.getEmployeeDetails", empId);
     }
 
+	public List<Employee> getAllEmployees() {
+		return sqlSessionTemplate.selectList("employeeMapper.getAllEmployees");
+	}
+
+	public List<Employee> searchEmployeeByName(@Param("empName") String empName) {
+	    return sqlSessionTemplate.selectList("employeeMapper.searchEmployeeByName", empName);
+	}
 }

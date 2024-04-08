@@ -1,6 +1,9 @@
 package com.sdm.ssm.employee.model.controller;
 
 import java.io.IOException;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +25,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.sdm.ssm.common.Search;
 import com.sdm.ssm.employee.model.controller.TimeRecordController.TimeRecordData;
@@ -31,7 +33,6 @@ import com.sdm.ssm.employee.model.service.CommuteInfoService;
 import com.sdm.ssm.employee.model.service.EmployeeService;
 import com.sdm.ssm.employee.model.service.RecordTimeService;
 import com.sdm.ssm.employee.model.service.SalaryInfoService;
-import com.sdm.ssm.employee.model.vo.Calendar;
 import com.sdm.ssm.employee.model.vo.CommuteInfo;
 import com.sdm.ssm.employee.model.vo.Employee;
 import com.sdm.ssm.employee.model.vo.SalaryInfo;
@@ -71,9 +72,15 @@ public class EmployeeController {
 
 	// 직원 목록 페이지로 이동
 	@RequestMapping(value = "selectemp.do", method = { RequestMethod.POST, RequestMethod.GET })
-	public String moveSelectEmpPage(Employee employee, Model model) {
-		return "employee/EmployeeList";
+	public String moveSelectEmpPage(Model model) {
+//	    // 여기서는 직원 정보를 가져오는 서비스 레이어 메서드를 호출하여 직원 정보를 가져옵니다.
+//	    List<Employee> employeeList = employeeService.getAllEmployees(); // employeeService는 실제 서비스 레이어의 이름으로 수정 필요
+//	    // 모델에 직원 정보를 추가하여 View로 전달합니다.
+//	    model.addAttribute("employeeList", employeeList);
+//	    // 직원 정보가 표시되는 페이지로 이동합니다.
+	    return "employee/EmployeeList";
 	}
+
 
 	// 직원 정보 수정페이지 이동
 	@RequestMapping(value = "updateEmployee.do", method = { RequestMethod.POST, RequestMethod.GET })
@@ -164,8 +171,6 @@ public class EmployeeController {
         }
     }
 
-	
-	// 직원 등록
     // 직원 등록 페이지에서 직원 정보를 저장하는 메서드
     @PostMapping("insertEmp.do")
     public ResponseEntity<String> insertEmployee(HttpServletRequest request, @RequestBody Employee employee) {
@@ -203,8 +208,8 @@ public class EmployeeController {
         int result = employeeService.deleteEmployee(empId);
         if (result > 0) {
             // 직원 삭제 후 목록 페이지로 Redirect
-            try {
-                response.sendRedirect("mainEmpPage.do");
+            try {        	
+                response.sendRedirect("employee/EmployeeList");
             } catch (IOException e) {
                 e.printStackTrace();
                 return new ResponseEntity<>("페이지 이동 실패", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -256,35 +261,37 @@ public class EmployeeController {
     }
 
 		
-	 // 직원의 출퇴근 정보 저장
-    	@RequestMapping(value="recordTimeData.do", method= RequestMethod.POST)
-    	public ResponseEntity<String> recordTime(@RequestBody TimeRecordData recordTimeData) {
-	        try {
-	            // 사용자 이름과 출퇴근 정보 추출
-	            String username = recordTimeData.getUsername();
-	            CommuteInfo commuteInfo = recordTimeData.getCommuteInfo();				
-	            // 직원 이름으로 직원 정보 조회
-	            List<Employee> employees = employeeService.searchEmployeeByName(username);
-	            if (!employees.isEmpty()) {  logger.error("searchEmployeeByName 오류");
-	                // 직원이 여러 명일 수 있으므로 첫 번째 직원의 ID를 사용
-	                int empId = employees.get(0).getId();
-	                // 출퇴근 정보에 직원 ID 설정
-	                commuteInfo.setEmpId(empId);
-	                // 출퇴근 정보 저장
-	                boolean success = commuteInfoService.recordCommuteInfo(commuteInfo);
-	                if (success) {
-	                    return ResponseEntity.ok("출퇴근 정보 저장 성공");
-	                } else {
-	                    return ResponseEntity.badRequest().body("출퇴근 정보 저장 실패");
-	                }
-	            } else {
-	                return ResponseEntity.notFound().build(); // 해당 직원을 찾을 수 없는 경우
-	            }
-	        } catch (Exception e) {
-	            e.printStackTrace();
-	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 오류 발생");
-	        }
-	    }
+    @PostMapping("recordTimeData.do")
+    public ResponseEntity<String> recordTime(@RequestBody TimeRecordData recordTimeData) {
+        try {
+            String id = recordTimeData.getUsername();
+            CommuteInfo commuteInfo = recordTimeData.getCommuteInfo();
+            List<Employee> employees = employeeService.searchEmployeeByName(id);
+            if (!employees.isEmpty()) {
+                int empId = employees.get(0).getId();
+                commuteInfo.setEmpId(empId);
+                
+                // 현재 시간을 한국 시간대로 가져오기
+                ZonedDateTime koreanTime = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
+                String formattedTime = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(koreanTime);
+                
+                // 출퇴근 정보 저장
+                boolean success = commuteInfoService.recordCommuteInfo(commuteInfo);
+                if (success) {
+                    return ResponseEntity.ok("출퇴근 정보 저장 성공 - " + formattedTime);
+                } else {
+                    return ResponseEntity.badRequest().body("출퇴근 정보 저장 실패");
+                }
+            } else {
+                return ResponseEntity.notFound().build(); // 해당 직원을 찾을 수 없는 경우
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 오류 발생");
+        }
+    }
+
+    
     	
 	// 특정 직원의 급여 정보 조회
 	    @GetMapping("selectEmpSalary.do")
