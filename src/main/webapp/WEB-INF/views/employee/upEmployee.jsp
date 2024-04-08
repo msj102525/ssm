@@ -32,10 +32,10 @@
         margin-bottom: 20px;
         border-radius: 5px;
         border: 1px solid #ddd;
-        box-sizing: border-box; /* Makes sure padding does not affect total width */
+        box-sizing: border-box; 
     }
     input[type="submit"] {
-        background-color: #5cb85c;
+        background-color: rgb(255, 221, 102);
         color: white;
         cursor: pointer;
     }

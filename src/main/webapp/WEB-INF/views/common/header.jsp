@@ -85,7 +85,6 @@
 							</div>
 						<div class="login-button-box">
 							<button onclick="logout()">로그아웃</button>
-							
 						</div>
 					</div>
 				</nav>

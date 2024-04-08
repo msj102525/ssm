@@ -260,7 +260,7 @@ public class UserController {
 	
 	// 마이페이지 이동
 	@RequestMapping("goMyPage.do")
-	public String goMypage(@RequestParam("userId") String userId, Model model) {
+	public String goMypageMethod(@RequestParam("userId") String userId, Model model) {
 		User loginUser = userService.selectUserById(userId);
 		logger.info("goMypage!!!!");
 		logger.info("loginUser : " + loginUser.toString());
@@ -271,8 +271,14 @@ public class UserController {
 			model.addAttribute("message", userId + "정보 조히 실패");
 			return "common/error";
 		}
-		
 	}
+	
+	// 아이디 찾기 이동
+	@RequestMapping("goSearchId.do")
+	public String goSearchIdMethod() {
+		return "user/searchId";
+	}
+		
 	
 
 	// 서비스 메소드 실행
@@ -385,31 +391,6 @@ public class UserController {
 	}
 	
 	// 유저 정보 수정
-	
-	/*
-	 * @RequestMapping(value="userInfoUpdate.do", method=RequestMethod.POST) public
-	 * String userUpdateMethod(User user, Model model, HttpSession session) {
-	 * 
-	 * String userPwd = user.getPassWd().trim(); logger.info("새로운 암호 : " + userPwd +
-	 * ", " + userPwd.length());
-	 * 
-	 * String originUserPwd = user.getPassWd();
-	 * 
-	 * if(userPwd != null && userPwd.length() > 0) {
-	 * if(!this.bcryptPwEncoder.matches(userPwd, originUserPwd)) {
-	 * user.setPassWd(this.bcryptPwEncoder.encode(userPwd)); } }else {
-	 * user.setPassWd(originUserPwd); }
-	 * 
-	 * if(userService.updateUser(user) > 0) { // return "redirect:goMypage.do?" +
-	 * user.getUserId(); return "redirect:main.do"; } else {
-	 * model.addAttribute("message", "유저 정보 수정 오류"); return "common/error"; }
-	 * 
-	 * 
-	 * }
-	 */
-	 
-	
-	
 	@RequestMapping(value = "userInfoUpdate.do", method = RequestMethod.POST)
 	public String userUpdateMethod(User user, Model model, HttpSession session, HttpServletRequest request,
 			@RequestParam(name = "upfile", required = false) MultipartFile mfile) {
@@ -454,6 +435,21 @@ public class UserController {
 			model.addAttribute("message", "유저 정보 수정 오류");
 			return "common/error";
 		}
+	}
+	
+	// 아이디 찾기
+	@RequestMapping(value="searchId.do", method=RequestMethod.POST)
+	public String searchIdMethod(User user, HttpSession session) {
+		User findUser = userService.searchIdByEmailBName(user);
+		logger.info(findUser.toString());
+		
+		if(findUser != null) {
+			session.setAttribute("findUser", findUser);
+			return "user/findUserId";
+		} else {
+			return "common/error";
+		}
+		
 	}
 
 	

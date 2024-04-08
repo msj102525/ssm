@@ -15,6 +15,13 @@ public class CommuteInfoDao {
 	private SqlSessionTemplate sqlSessionTemplate;
 
 	public List<CommuteInfo> searchCommuteInfoByName(String empName) {
-        return sqlSessionTemplate.selectList("commuteInfoMapper.searchCommuteInfoByName", empName);
+		return sqlSessionTemplate.selectList("commuteInfoMapper.searchCommuteInfoByName", empName);
 	}
+
+	public boolean recordCommuteInfo(CommuteInfo commuteInfo) {
+		int result = sqlSessionTemplate.insert("commuteInfoMapper.insertCommuteInfo", commuteInfo);
+		return result > 0;
+	}
+
 }
+

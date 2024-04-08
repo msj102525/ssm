@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -8,10 +8,8 @@
 <meta charset="UTF-8">
 <title>메세지 창</title>
 <script type="text/JavaScript" src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
-
 <style type="text/css">
-<style type="text/css">
-.* {
+* {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
@@ -22,8 +20,12 @@ a {
 }
 
 .wrap {
-    padding: 40px 0;
-    background-color: #A8C0D6;
+    padding: 40px 20px;
+    background-color: #f2f2f2;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+    max-width: 600px;
 }
 
 .wrap .chat {
@@ -38,16 +40,12 @@ a {
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    background-color: #eee;
-}
-
-.wrap .chat .icon i {
-    position: absolute;
-    top: 10px;
-    left: 50%;
-    font-size: 2.5rem;
-    color: #aaa;
-    transform: translateX(-50%);
+    background-color: #ddd;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    color: #555;
 }
 
 .wrap .chat .textbox {
@@ -56,15 +54,21 @@ a {
     max-width: calc(100% - 70px);
     padding: 10px;
     margin-top: 7px;
-    font-size: 13px;
+    font-size: 14px;
     border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    color: #333;
 }
 
 .wrap .chat .textbox::before {
     position: absolute;
     display: block;
-    top: 0;
-    font-size: 1.5rem;
+    top: -10px;
+    content: "";
+    border-style: solid;
+    border-width: 0 10px 10px 10px;
+    border-color: transparent transparent #fff transparent;
 }
 
 .wrap .ch1 .textbox {
@@ -73,9 +77,7 @@ a {
 }
 
 .wrap .ch1 .textbox::before {
-    left: -15px;
-    content: "◀";
-    color: #ddd;
+    left: 20px;
 }
 
 .wrap .ch2 {
@@ -88,38 +90,68 @@ a {
 }
 
 .wrap .ch2 .textbox::before {
-    right: -15px;
-    content: "▶";
-    color: #F9EB54;
+    right: 20px;
+}
+
+textarea {
+    width: calc(100% - 40px);
+    margin-bottom: 20px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    resize: none;
+}
+
+input[type="button"] {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+input[type="button"]:hover {
+    background-color: #45a049;
+}
+
+#chatBox {
+    margin-top: 20px;
 }
 </style>
 
 </head>
 <body>
-
-<button onclick="location.href='kakaoM.do'">메세지</button>
-
-<div class="wrap">
-    <!-- 사용자 입력을 받는 입력 필드 -->
-    <textarea id="messageInput" rows="4" cols="50"></textarea>
-    <button onclick="sendMessage()">메시지 보내기</button>
-</div>
-<div class="wrap" id="chatBox">
-    <!-- 여기에 채팅 내용이 추가될 것입니다 -->
-</div>
-
-<div class="wrap">
-    <!-- 사용자 입력을 받는 입력 필드 -->
-    <textarea id="messageInput" rows="4" cols="50"></textarea>
-    <button onclick="sendMessage()">메시지 보내기</button>
-</div>
+<c:import url="/WEB-INF/views/common/header.jsp" />
+<c:import url="/WEB-INF/views/common/sidebar.jsp" />
+<form id="messageForm">
+    <div class="wrap">
+        <!-- 사용자 입력을 받는 입력 필드 -->
+        <textarea id="messageInput" name="message" rows="4" cols="50"></textarea>
+        <input type="button" value="메시지 보내기" onclick="sendMessage()">
+    </div>
+</form>
 
 <script type="text/javascript">
 function sendMessage() {
     // 입력 필드에서 사용자가 작성한 메시지 가져오기
     var message = document.getElementById("messageInput").value;
 
-    // Kakao Link 보내기 (생략)
+    // Kakao Link 보내기
+    Kakao.init('f73d56570e7fb0efa7fa0f476dd12336');
+    Kakao.Link.sendDefault({
+        objectType: 'text',
+        text: message,
+        link: {
+            mobileWebUrl: 'https://developers.kakao.com',
+            webUrl: 'https://developers.kakao.com',
+        },
+    });
 
     // 채팅창에 새로운 메시지 추가하기
     var chatBox = document.getElementById("chatBox");
@@ -134,50 +166,12 @@ function sendMessage() {
     // 입력 필드 비우기
     document.getElementById("messageInput").value = "";
 }
+
+// 폼 제출 이벤트 처리
+document.getElementById("messageForm").addEventListener("submit", function(event) {
+    event.preventDefault(); // 폼 제출 기본 동작 중지
+    sendMessage(); // 메시지 보내기 함수 호출
+});
 </script>
-
-<script type="text/javascript">
-function sendMessage() {
-    // 입력 필드에서 사용자가 작성한 메시지 가져오기
-    var message = document.getElementById("messageInput").value;
-
-    // Kakao Link 보내기
-    Kakao.init('f73d56570e7fb0efa7fa0f476dd12336')
-    Kakao.Link.sendDefault({
-        objectType: 'feed',
-        content: {
-            title: '사용자가 작성한 메시지',
-            description: message,
-            imageUrl: 'http://k.kakaocdn.net/dn/Q2iNx/btqgeRgV54P/VLdBs9cvyn8BJXB3o7N8UK/kakaolink40_original.png',
-            link: {
-                mobileWebUrl: 'https://developers.kakao.com',
-                webUrl: 'https://developers.kakao.com',
-            },
-        },
-        social: {
-            likeCount: 286,
-            commentCount: 45,
-            sharedCount: 845,
-        },
-        buttons: [
-            {
-                title: '웹으로 보기',
-                link: {
-                    mobileWebUrl: 'https://developers.kakao.com',
-                    webUrl: 'http://localhost:8087/ssm/kakaoM.do',
-                },
-            },
-            {
-                title: '홈페이지',
-                link: {
-                    mobileWebUrl: 'https://developers.kakao.com',
-                    webUrl: 'http://localhost:8087/ssm',
-                },
-            },
-        ],
-    });
-}
-</script>
-
 </body>
 </html>

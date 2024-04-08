@@ -25,8 +25,6 @@ public interface EmployeeService {
 
 	int deleteEmployee(int empId);
 
-	Employee getEmployeeDetails(Long empId);
-
 	List<Employee> searchEmployeeByName(String empName);
 
 }

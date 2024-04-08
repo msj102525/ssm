@@ -9,6 +9,8 @@ import com.sdm.ssm.user.model.vo.User;
 
 public interface UserService {
 
+	Object searchIdByEmailBName = null;
+
 	User selectUserById(String userId);
 
 	int selectUserCountById(String userId);
@@ -16,5 +18,7 @@ public interface UserService {
 	int insertUser(User user);
 
 	int updateUser(User user);
+
+	User searchIdByEmailBName(User user);
 
 }

@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sdm.ssm.employee.model.vo.CommuteInfo;
+
 @RestController
 public class TimeRecordController {
 
@@ -35,6 +37,16 @@ public class TimeRecordController {
         public void setTime(String time) {
             this.time = time;
         }
+
+		public CommuteInfo getCommuteInfo() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		public String getUsername() {
+			// TODO Auto-generated method stub
+			return null;
+		}
     }
 }
 

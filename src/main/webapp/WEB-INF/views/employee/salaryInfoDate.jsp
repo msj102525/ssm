@@ -122,7 +122,6 @@
         <input type="submit" value="수정">
     </form>
 </div>
-
 <br>
 <div id="deleteSalaryForm">
     <!-- 직원 급여정보 삭제 -->

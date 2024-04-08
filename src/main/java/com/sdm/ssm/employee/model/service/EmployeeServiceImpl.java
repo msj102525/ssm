@@ -52,19 +52,15 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee getEmployeeDetails(Long empId) {
-        return employeeDao.getEmployeeDetails(empId);
-    }
-
-    // 추가된 메서드
-    @Override
     public List<Employee> searchEmployeeByName(String empName) {
         return employeeDao.searchEmployeeByName(empName);
     }
 
 	@Override
 	public Employee getEmployeeDetails(int empId) {
-		// TODO Auto-generated method stub
-		return null;
+		return employeeDao.getEmployeeDetails(empId);
 	}
+
+
+	
 }

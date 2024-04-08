@@ -8,4 +8,6 @@ public interface CommuteInfoService {
 
 	List<CommuteInfo> searchCommuteInfoByName(String empName);
 
+	boolean recordCommuteInfo(CommuteInfo commuteInfo);
+
 }

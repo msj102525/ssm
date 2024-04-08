@@ -14,7 +14,7 @@
 <script type="text/javascript">
     function sendLinkCustom() {
         Kakao.init("[Javascript API key]");
-        Kakao.Link.sendCustom({
+        Kakao.Link.sendCustom({11
             templateId:106607
         });
     }
