@@ -150,6 +150,10 @@
 						</table>
 						<input type="hidden" id="loginUserId" value="${loginUser.id}">
 					</div>
+				</section>	
+				<%-- section3(예약) --%>
+				<section class="sec3">
+				예약 달력 자리입니다.
 				</section>			
 			</div>
 		</c:if>
