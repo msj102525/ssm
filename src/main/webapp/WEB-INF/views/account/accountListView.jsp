@@ -77,7 +77,7 @@ function sum() {
         data: JSON.stringify(jarr),
         contentType: "application/json; charset=utf-8",
         success: function(result) {
-        	
+        	location.reload();
         },
         error: function(request, status, errorData) {
             console.log("error code : " + request.status

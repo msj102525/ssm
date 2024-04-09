@@ -21,7 +21,6 @@
 <script type="text/javascript">
 
 </script>
-
 <script>
     var pdName = '';
     var pdAddress = '';
@@ -37,6 +36,12 @@
         // 알림으로 성명과 주소 표시
         document.getElementById('pdNameSpan').innerText = pdName;
         document.getElementById('pdAddressSpan').innerText = pdAddress;
+        
+        var today = new Date();
+
+        // 날짜 입력란에 오늘 날짜 설정
+        document.getElementById("date").value = today.toISOString().substr(0, 10);
+        
     };
 </script>
 
@@ -97,7 +102,7 @@
         } else if (action === "pdName") {
             form.action = "pdNameSearch.do"; // 발주처 검색을 처리하는 URL로 변경
         }
-
+        
         form.submit();
     }
 </script>
