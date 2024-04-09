@@ -4,7 +4,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="${pageContext.servletContext.contextPath }/resources/css/common/footer.css" />
+<link rel="stylesheet" href="${pageContext.servletContext.contextPath }/resources/css/common/footer.css?ver1" />
 <script src="/ssm/resources/js/jquery-3.7.0.min.js"></script>
 <script>
 $(function() {
