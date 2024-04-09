@@ -39,6 +39,7 @@
 		<typeAlias type="com.sdm.ssm.pos.model.vo.POS" alias="POS"/>
 		<typeAlias type="com.sdm.ssm.pos.model.vo.Menu" alias="Menu"/>
 		<typeAlias type="com.sdm.ssm.pos.model.vo.Inventory" alias="Inventroy"/>
+		<typeAlias type="com.sdm.ssm.user.model.vo.UserFinkOut" alias="UserFinkOut"/>
 	</typeAliases>
 		
 	<mappers>

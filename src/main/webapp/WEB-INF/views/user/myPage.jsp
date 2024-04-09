@@ -34,8 +34,40 @@ $(() => {
         };
         reader.readAsDataURL(file);    
     });
+	
+    $("#withdrawButton").click(function(){
+        if(confirm("회원탈퇴를 진행하시겠습니까?")) {
+            if(confirm("정말로 하시겠습니까?")) {
+                $.ajax({
+                    url: "withdraw.do",
+                    type: "POST",
+                    data: { 
+                    	id: "${loginUser.id}",
+                    	userId: "${loginUser.userId}",
+                    	email: "${loginUser.email}"
+                    	}, 
+                    success: function(response) {
+                        console.log("회원탈퇴 성공");
+                        location.href = "main.do"
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("회원탈퇴 실패");
+                        console.log(error);
+                    }
+                });
+            } else {
+                alert("회원탈퇴를 취소하였습니다.");
+                return false;
+            }
+        } else {
+            alert("회원탈퇴를 취소하였습니다.");
+            return false;
+        }
+    });
+	
     
 }); //doc ready;
+
 
 
 </script>
@@ -115,11 +147,19 @@ $(() => {
 						</li>
 					</ul>
 				</form>
-				
+				<div class="withdraw-box">
+						<ul>
+							<li>
+								<p>------------------- 또는 --------------------</p>
+							</li>
+							<li>
+								<input type="submit" value="회원탈퇴" class="withdraw" id="withdrawButton">
+							</li>
+						</ul>
+				</div>				
 			</div>
 		</div>
 	</div>
-
 	<c:import url="/WEB-INF/views/common/footer.jsp" />
 </body>
 </html>

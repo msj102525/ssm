@@ -35,6 +35,7 @@ import com.google.gson.JsonPrimitive;
 import com.sdm.ssm.common.FileNameChange;
 import com.sdm.ssm.user.model.service.UserService;
 import com.sdm.ssm.user.model.vo.User;
+import com.sdm.ssm.user.model.vo.UserFinkOut;
 
 @Controller
 public class UserController {
@@ -525,7 +526,42 @@ public class UserController {
 			model.addAttribute("message", "일치하는 사람 없음");
 			return "common/error";
 		}
+	}
+	
+	@RequestMapping(value="withdraw.do", method=RequestMethod.POST) 
+	public String withdrawMethod(
+			@RequestParam("userId") String userId, Model model,
+			@RequestParam("id") int id,
+			@RequestParam("email") String email) {
 		
+		logger.info("탈퇴할 회원 아이디!!!!!!!!!" + id);
+		logger.info("탈퇴할 회원 유저 아이디!!!!!!!!!" + userId);
+		logger.info("탈퇴할 회원 유저 이메일!!!!!!!!!" + email);
+		
+		UserFinkOut userFO = new UserFinkOut();
+		
+		userFO.setFinkOutNo(id);
+		userFO.setfUserId(userId);
+		userFO.setfEmail(email);
+		
+		logger.info(userFO.toString());
+		
+		if (userId != null && userId.length() > 0) {
+			if (userService.updateUserLoginOkToNByUserId(userId) > 0) {
+				if (userService.insertUserFinkOut(userFO) > 0) {
+					return "redirect:logout.do";
+				} else {
+					model.addAttribute("message", "탈퇴한 유저테이블에 유저 insert 실패!");
+					return "common/error";
+				}
+			} else {
+				model.addAttribute("message", "회원탈퇴 실패!");
+				return "common/error";
+			}
+		} else {
+			model.addAttribute("message", "아이디값이 없습니다!!");
+			return "common/error";
+		}
 		
 	}
 

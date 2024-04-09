@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.sdm.ssm.user.model.dao.UserDao;
 import com.sdm.ssm.user.model.vo.User;
+import com.sdm.ssm.user.model.vo.UserFinkOut;
 
 @Service("userService")
 public class UserServiceImpl implements UserService{
@@ -46,6 +47,16 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public int updateUserPw(User user) {
 		return userDao.updateUserPw(user);
+	}
+
+	@Override
+	public int updateUserLoginOkToNByUserId(String userId) {
+		return userDao.updateUserLoginOkToNByUserId(userId);
+	}
+
+	@Override
+	public int insertUserFinkOut(UserFinkOut userFO) {
+		return userDao.insertUserFinkOut(userFO);
 	}
 
 
