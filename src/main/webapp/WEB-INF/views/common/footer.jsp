@@ -69,12 +69,12 @@ $(()=> {
                     <div class="footer-up-wrap">
                         <div class="footer-menu">
                             <ul>
-                                <li><a href="#">서비스 이용약관</a></li>
-                                <li class="black"><a href="#">개인정보처리방침</a></li>
-                                <li><a href="#">영상정보처리기기운영·관리방침</a></li>
-                                <li><a href="#">이메일 무단수집 거부</a></li>
-                                <li><a href="#">전자공고</a></li>
-                                <li><a href="#">매장안내</a></li>
+                                <li><a href="${pageContext.servletContext.contextPath }/goReady.do">서비스 이용약관</a></li>
+                                <li class="black"><a href="${pageContext.servletContext.contextPath }/goReady.do">개인정보처리방침</a></li>
+                                <li><a href="${pageContext.servletContext.contextPath }/goReady.do">영상정보처리기기운영·관리방침</a></li>
+                                <li><a href="${pageContext.servletContext.contextPath }/goReady.do">이메일 무단수집 거부</a></li>
+                                <li><a href="${pageContext.servletContext.contextPath }/goReady.do">전자공고</a></li>
+                                <li><a href="${pageContext.servletContext.contextPath }/goGoogleMap.do">매장안내</a></li>
                                 <li><a href="#">고객센터</a></li>
                             </ul>
                         </div>
