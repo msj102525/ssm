@@ -154,7 +154,9 @@
 						</table>
 						<input type="hidden" id="loginUserId" value="${loginUser.id}">
 						</div>
-						<div class="right-section">예약달력자리입니다.</div>
+						<div class="right-section">
+							<c:import url="/WEB-INF/views/reserve/calendarfull040901.jsp" />
+						</div>
 					</div>
 				</section>
 			</div>

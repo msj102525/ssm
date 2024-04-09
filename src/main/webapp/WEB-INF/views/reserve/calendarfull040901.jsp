@@ -31,10 +31,10 @@
 <script type="text/javascript"
 	src="/ssm/resources/css/jquery-ui-1.13.2/jquery-ui.min.js"></script>
 
-<link rel="stylesheet"
+<!-- <link rel="stylesheet"
 	href="/ssm/resources/css/bootstrap-4.4.1-dist/css/bootstrap.min.css" />
 <script type="text/javascript"
-	src="/ssm/resources/css/bootstrap-4.4.1-dist/js/bootstrap.bundle.min.js"></script>
+	src="/ssm/resources/css/bootstrap-4.4.1-dist/js/bootstrap.bundle.min.js"></script> -->
 
 <link rel="stylesheet" href="resources/css/common/main.css" />
 
@@ -214,6 +214,21 @@ input:hover, textarea:hover, input:focus, textarea:focus {
 	-webkit-transform: scale(2);
 	transform: scale(2);
 } */
+
+button.btn {
+	display: none;
+}
+
+
+section.sec2 .right-section section::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 0;
+    height: 1px;
+    background-color: grey;
+}
 
 </style>
 <script type="text/javascript">
@@ -614,8 +629,8 @@ input:hover, textarea:hover, input:focus, textarea:focus {
 		var calendar = new FullCalendar.Calendar(calendarEl, {
 			headerToolbar : {
 				left : 'prev, next today',
-				center : 'title',
-				right : 'dayGridMonth' + rightm
+				center : 'title' //,
+				//right : 'dayGridMonth' + rightm
 			},
 			allDay : false,
 			theme : true,
@@ -775,8 +790,8 @@ input:hover, textarea:hover, input:focus, textarea:focus {
 
 		calendar.render();
 
-		$("span.fa-chevron-left").html("이전달");
-		$("span.fa-chevron-right").html("다음달");
+		//$("span.fa-chevron-left").html("이전달");
+		//$("span.fa-chevron-right").html("다음달");
 
 	});
 	//////////////////////////////////////////////////////////////////
@@ -822,7 +837,6 @@ input:hover, textarea:hover, input:focus, textarea:focus {
 <title>calendar3</title>
 </head>
 <body>
-	<c:import url="/WEB-INF/views/common/header.jsp" />
 	<div class="section-container">
 		<%-- section1 --%>
 		<section class="sec1">
@@ -886,7 +900,6 @@ input:hover, textarea:hover, input:focus, textarea:focus {
 							</form>
 						</div>
 					</div>
-					<br />
 					<div id='calendar'></div>
 				</div>
 			</div>
