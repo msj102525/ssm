@@ -14,7 +14,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="resources/css/goods/goodsDetail.css" />
+<link rel="stylesheet" href="resources/css/goods/specify.css" />
 <title>goodsListView</title>
 
 <script type="text/javascript" src="/ssm/resources/js/jquery-3.7.0.min.js"></script>
@@ -210,8 +210,6 @@ function insertTable() {
     
     jarr.push(job);
     
-    alert(JSON.stringify(jarr));
-    
     var confirmMessage = "해당 금액을 월 발주 금액에 저장하시겠습니까?"
     	if (confirm(confirmMessage)) {
             $.ajax({
@@ -220,7 +218,7 @@ function insertTable() {
                 data: JSON.stringify(jarr),
                 contentType: "application/json; charset=utf-8",
                 success: function(result) {
-                	alert("요청 성공 : " + jarr);
+                	alert("저장 성공 : " + jarr);
                 },
                 error: function(request, status, errorData) {
                     console.log("error code : " + request.status
@@ -229,7 +227,7 @@ function insertTable() {
                 } 
             });      
         } else {
-            console.log("저장이 취소되었습니다.");
+            alert.log("저장이 취소되었습니다.");
         }
     
 }

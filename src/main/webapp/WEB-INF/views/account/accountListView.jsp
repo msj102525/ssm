@@ -9,7 +9,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="resources/css/goods/goodsDetail.css" />
+<link rel="stylesheet" href="resources/css/goods/specify.css" />
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <title>goodsListView</title>
 
@@ -70,7 +70,6 @@ function sum() {
     job3.cost = document.getElementById("monthlyCost").value;
     jarr.push(job3);
     
-    console.log(JSON.stringify(jarr));
 
     $.ajax({
         type: "POST",

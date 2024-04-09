@@ -145,7 +145,7 @@ $('#checkBoxAll').click(function () {
                 } 
             });  
         } else {
-            console.log("수정이 취소되었습니다.");
+            alert.log("수정이 취소되었습니다.");
         }
     }
 </script>
@@ -184,7 +184,7 @@ $('#checkBoxAll').click(function () {
                 } 
             });      
         } else {
-            console.log("삭제가 취소되었습니다.");
+            alert.log("삭제가 취소되었습니다.");
         }
     }
 </script>	

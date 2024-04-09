@@ -187,7 +187,7 @@ $('#checkBoxAll').click(function () {
                 } 
             });      
         } else {
-            console.log("삭제가 취소되었습니다.");
+            alert("삭제가 취소되었습니다.");
         }
     }
 </script>	

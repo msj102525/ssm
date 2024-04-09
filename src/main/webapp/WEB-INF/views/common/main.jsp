@@ -6,6 +6,10 @@
 <head>
 <meta charset="UTF-8">
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      
+    </script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <title>ssm</title>
 <link rel="stylesheet" href="resources/css/common/main.css" />
 <%-- jquery 파일 로드 --%>
@@ -63,7 +67,10 @@
 		<c:if test="${ !empty loginUser &&  loginUser.adminOk ne 'Y'}">
 			<div class="section-container">
 				<%-- section1 --%>
+				<br>
 				<section class="sec1">
+				<br>
+				<br>
 				<div align="center">
 					<select style="height: 35px; width: 80px;" 
 				id="monthSelect" onchange="onChangeMonth()">
@@ -83,60 +90,58 @@
 				</div>
 					<div class="inner-section" style="height: 400px;">
 						<div class="left-section" style="height: 400px;">
-							<table id="myTable" border="1" width="100%" style="height: 400px;">
+							<table id="myTable" class="monthlySale"border="1" width="80%" style="height: 400px;">
 								<tr style="height: 10px;">
 									<th style="text-align: center; white-space: nowrap;">항목</th>
 									<th style="text-align: center; white-space: nowrap;">금액</th>
 								</tr>
 								<tr>
-									<td align="center" style="white-space: nowrap;">월 매출</td>
-									<td align="center" style="white-space: nowrap;">
+									<td  style="white-space: nowrap;">월 매출</td>
+									<td  style="white-space: nowrap;">
 										<span id="monthlySales">월 매출 출력칸</span>
 									</td>
 								</tr>	
 								<tr>
-									<td align="center" style="white-space: nowrap;">월 발주 금액</td>
-				    				<td align="center" style="white-space: nowrap;">						
+									<td  style="white-space: nowrap;">월 발주 금액</td>
+				    				<td  style="white-space: nowrap;">						
 										<span id="monthlyPdPrice" ></span>						
 									</td>
 								</tr>	
 								<tr>
-									<td align="center" style="white-space: nowrap;">월 급여</td>
-									<td align="center" style="white-space: nowrap;">
+									<td  style="white-space: nowrap;">월 급여</td>
+									<td  style="white-space: nowrap;">
 										<span id="monthlySalary">월 급여 총합 출력칸</span>	
 									</td>
 								</tr>	
 								<tr>
-									<td align="center" style="white-space: nowrap;">월세</td>
-									<td align="center" style="white-space: nowrap;">
-										<input id="monthlyRent" type="number" placeholder="월세 입력">
+									<td  style="white-space: nowrap;">월세</td>
+									<td  style="white-space: nowrap;">
+										<span id="monthlyRent" ></span>
 									</td>
 								</tr>	
 								<tr>
-									<td align="center" style="white-space: nowrap;">세금</td>
-									<td align="center" style="white-space: nowrap;">
-										<input id="montlyTax" type="number" placeholder="세금 입력">
+									<td  style="white-space: nowrap;">세금</td>
+									<td  style="white-space: nowrap;">
+										<span id="monthlyTax" ></span>
 									</td>
 								</tr>		
 								<tr>
-									<td align="center" style="white-space: nowrap;">기타비용</td>
-									<td align="center" style="white-space: nowrap;">
-										<input id="monthlyCost" type="number" placeholder="기타비용 입력">
+									<td style="white-space: nowrap;">기타비용</td>
+									<td  style="white-space: nowrap;">
+										<span id="monthlyCost" ></span>
 									</td>
 								</tr>				
 								<tr>
-									<td align="center" style="white-space: nowrap;">월 수익</td>
-									<td align="center" style="white-space: nowrap;">
-										<div id="buttonDisplay">
-				            				<button onclick="sum();">합계</button>
-				            			</div>
-				            			<div id="sumDisplay" style="display:none;"></div> 		
+									<td  style="white-space: nowrap;">월 수익</td>
+									<td  style="white-space: nowrap;">
+										<div id="buttonDisplay"></div>	
 									</td>
 								</tr>	
 							</table>
 						</div>
 						<div id="idDisplay" style="display:none;">${ loginUser.id }</div>
 						<div class="right-section" id="chart_div_sale" style="height: 400px;">그래프</div>
+						<div id="chart_div_year"></div>
 					</div>
 				</section>
 				<%-- section2 --%>
@@ -177,16 +182,14 @@
 				<%-- section2 --%>
 				<section class="sec2">
 					<div class="inner-section-incon">
-			
 					<p class="title">조치사항</p>
-						<table id="inconvinienceAdmin" class="inconvinience">
+						<table id="inconvinienceAdmin">
 							<tr class="titlerow">
 								<th>제목</th>
 								<th>작성자</th>
 								<th>조치상태</th>
 							</tr>
 						</table>
-						
 					</div>
 				</section>
 			</div>

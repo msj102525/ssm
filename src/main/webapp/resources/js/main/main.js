@@ -258,6 +258,70 @@ $(function() {
         chart.draw(data, options);
       }
       
+      google.charts.load('current', {packages: ['corechart', 'line']});
+google.charts.setOnLoadCallback(drawAxisTickColors);
+
+function drawAxisTickColors() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('number', 'X');
+      data.addColumn('number', '수익');
+      data.addColumn('number', '매출');
+
+      data.addRows([  
+        [1, 10, 5],   
+        [2, 23, 15],  
+        [3, 17, 9],   
+        [4, 18, 10],  
+        [5, 9, 5],
+        [6, 11, 3],   
+        [7, 27, 19],  
+        [8, 33, 25],  
+        [9, 40, 32],  
+        [10, 32, 24], 
+        [11, 35, 27],
+        [12, 30, 22]
+      ]);
+
+      var options = {
+        hAxis: {
+          title: '월',
+          width: 600,
+	      height: 400,
+          textStyle: {
+            color: 'black',
+            fontSize: 20,
+            fontName: 'Arial',
+            bold: true,
+            italic: true
+          },
+          titleTextStyle: {
+            color: 'black',
+            fontSize: 16,
+            fontName: 'Arial',
+            bold: true,
+            italic: true
+          },
+          ticks: [1, 6, 12]
+        },
+        vAxis: {
+          title: '금액',
+          textStyle: {
+            color: 'black',
+            fontSize: 20,
+            bold: true
+          },
+          titleTextStyle: {
+            color: 'black',
+            fontSize: 16,
+            bold: true
+          }
+        },
+        colors: ['#a52714', '#097138']
+      };
+      var chart = new google.visualization.LineChart(document.getElementById('chart_div_year'));
+      chart.draw(data, options);
+    }
+      
       // 발주액 가져오기
       function onChangeMonth() {  
     var jarr = new Array();
@@ -315,6 +379,10 @@ $(function() {
                         + "\nError : " + errorData);
                 } 
             }); 
+            
+            
+            
+            
             
         
 }

@@ -79,7 +79,7 @@
                 data: JSON.stringify(jarr),
                 contentType: "application/json; charset=utf-8",
                 success: function(result) {
-                	alert("저장 성공")
+                	alert("등록 성공")
                     location.reload();  
                 },
                 error: function(request, status, errorData) {

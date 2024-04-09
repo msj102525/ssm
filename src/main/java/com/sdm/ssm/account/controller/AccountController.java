@@ -43,7 +43,7 @@ public class AccountController {
 		JSONParser jparser = new JSONParser();
 		JSONArray jarr = (JSONArray) jparser.parse(param);
 		
-		logger.info(jarr.size() + "개");
+		
 		
 		int result = 0;
 		
@@ -123,10 +123,6 @@ public class AccountController {
 			monthlytax = accountService.calTax(account);
 			monthlyrent = accountService.calRent(account);
 			
-			logger.info("비용 : " + monthlycost + "비용 원");			
-			logger.info("세금 : " + monthlytax + "세금 원");
-			logger.info("월세 : " + monthlyrent + "월세 원");
-			
 			JSONObject resultObj = new JSONObject();
 			
 			resultObj.put("monthlycost", monthlycost);
@@ -134,7 +130,7 @@ public class AccountController {
 	        resultObj.put("monthlyrent", monthlyrent);
 			
 	        resultArray.add(resultObj);
-	        logger.info(resultArray + "실험");
+
 			// 에러 발생 시
 			if (monthlycost < 0 && monthlytax < 0 && monthlyrent < 0) {
 				return new ResponseEntity<String>("failed", HttpStatus.REQUEST_TIMEOUT);
@@ -142,6 +138,8 @@ public class AccountController {
 		}						
 		return ResponseEntity.ok().body(resultArray.toJSONString());
 	}
+	
+	
 	
 	
 }
