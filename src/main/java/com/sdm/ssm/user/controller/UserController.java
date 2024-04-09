@@ -309,15 +309,26 @@ public class UserController {
 		
 		logger.info("user.getPassWd() : " + user.getPassWd());
 		logger.info("loginUser.getPassWd() : " + loginUser.getPassWd());
+		logger.info("loginUser.getLoginOk() : " + loginUser.getLoginOk());
+		
+		String loginOk = loginUser.getLoginOk();
+		logger.info("loginOk : " + loginOk);
 		
 		if(loginUser != null && 
 				this.bcryptPwEncoder.matches(	user.getPassWd(), loginUser.getPassWd())) {
-			session.setAttribute("loginUser", loginUser);
-			status.setComplete();  //로그인 성공 요청 결과로 HttpStatus code 200 보냄
-			logger.info("성공!!!!!!!!!!!!!!!");
-			return "common/main";
+			
+			if(loginOk.equals("N") || loginOk.equals(null)) {
+				model.addAttribute("message", "로그인 제한된 회원입니다. 관리자에게 문의하세요.");
+				return "common/error";
+			}else {
+				session.setAttribute("loginUser", loginUser);
+				status.setComplete();  //로그인 성공 요청 결과로 HttpStatus code 200 보냄
+				logger.info("성공!!!!!!!!!!!!!!!");
+				return "common/main";
+			}
+			
 		}else {
-			model.addAttribute("message", "로그인 실패! 아이디나 암호를 다시 확인하세요. 또는 로그인 제한된 회원입니다. 관리자에게 문의하세요.");
+			model.addAttribute("message", "로그인 실패! 아이디나 암호를 다시 확인하세요.");
 			return "common/error";
 		}
 
