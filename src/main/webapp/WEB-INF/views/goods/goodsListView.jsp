@@ -46,60 +46,69 @@ $(function(){
 });  //document ready
 
 </script>
-
+<style type="text/css">
+	.searchdiv {
+        margin: 0 auto; /* 좌우 마진을 자동으로 설정하여 가운데 정렬 */
+        width: fit-content; /* 내용에 맞게 자동으로 너비 설정 */
+    }
+	div.listdiv {
+	height: 40px;
+	width: 1300px;
+	margin: 20px auto;
+	display: flex;
+	/* padding-left:400px; */
+	justify-content: center;
+	position: relative;
+	}
+	.searchbtn {
+	width: 50px;
+	height: 40px;
+	border: none;
+	background: rgb(250, 180, 49);
+	color: #ffffff;
+	font-size: 16px;
+	}
+	button.listbtn {
+		position: absolute;
+		right: 250px;
+	}
+    div.searchdiv {
+		height: 80px;
+		width: 1600px;
+		margin: 20px auto;
+		display: flex;
+		/* padding-left:400px; */
+		justify-content: center;
+		position: relative;
+	}
+    .searchdiv>button.savebutton {
+		position: absolute;
+		right: 470px;
+	}
+	.searchdiv>button.deletebutton {
+		position: absolute;
+		right: 400px;
+	}
+	button {
+		width: 50px;
+		height: 40px;
+		border: none;
+		background: rgb(250, 180, 49);
+		color: #ffffff;
+		font-size: 16px;
+	}
+	
+</style>
 
 </head>
 <body>
 <c:import url="/WEB-INF/views/common/header.jsp" />
-
+<div style="padding-top : 100px;">
 <hr>
 <br>
 <c:import url="/WEB-INF/views/common/sidebar.jsp" />
 <h1 style="text-align: center;">재고 현황</h1>
-<div style="align:center;text-align:center;">
-<br>
-<br>
-<br>
-</div>
-<style>
-    .searchdiv {
-        margin: 0 auto; /* 좌우 마진을 자동으로 설정하여 가운데 정렬 */
-        width: fit-content; /* 내용에 맞게 자동으로 너비 설정 */
-    }
-</style>
 
-<script type="text/javascript">
-$('#checkBoxAll').click(function () {
-    if ($(this).is(":checked")) {
-      $(".chkCheckBoxId").prop("checked", true)
-    }else{
-      $(".chkCheckBoxId").prop("checked", false)
-    }
-  });
-</script>
-	
-	<div class="searchdiv">
-		<form action="gsearch.do" method="get">
-			<input type="hidden" id = "id" name="id" value="${ loginUser.id }">
-			<select style="height: 35px; width: 80px;" name="action"
-				id="searchselect">
-				<option value="goodsName">상품명</option>
-				<option value="pdName">발주처</option>
-			</select>  
-			<input style="height: 30px; width: 325px;"
-				type="text" id="searchtext" name="keyword" placeholder="검색어 입력">
-			<input type="submit" class="searchbtn" value="검색">
-			
-			<c:forEach items="${goodsList}" var="goodsPrint">
-				<input type="checkbox" class="chkCheckBoxId checkbox"
-					value="${goodsPrint.goodsNo}">
-			</c:forEach>		
-		</form>
-<br>		
-<button onclick="updateSelectedGoods();">저장</button>			
-<button onclick="deleteSelectedGoods();">삭제</button>
-<button onclick="javascript:location.href='${pageContext.servletContext.contextPath}/glist.do?page=1&id=${loginUser.id}';">목록</button>
-<br>
 
 <!-- 저장 버튼 -->
 <script>
@@ -191,19 +200,26 @@ $('#checkBoxAll').click(function () {
         }
     }
 </script>	
-		
-		
-		
-		
-		
-		<br>
-	</div>
+<script type="text/javascript">
+$('#checkBoxAll').click(function () {
+    if ($(this).is(":checked")) {
+      $(".chkCheckBoxId").prop("checked", true)
+    }else{
+      $(".chkCheckBoxId").prop("checked", false)
+    }
+  });
+</script>
+	
 
-
-	<%-- 조회된 상품 목록 출력 --%>
+	
 <div style="margin-left: auto; margin-right: auto; width: 1400px;">
-		<form action="gsearch.do" method="post">
+		<div class="listdiv">
+			<button class="listbtn" onclick="javascript:location.href='${pageContext.servletContext.contextPath}/glist.do?page=1&id=${loginUser.id}';">목록</button>	
+			</div>
+			<form action="gsearch.do" method="post">
 			<input type="hidden" id="id" name="id" , value="${ loginUser.id }">
+			
+			
 			<table align="center" border="1" cellspacing="25" width="100%">
 				<thead>
 					<th class="table-head"><input type="checkbox" id="checkBoxAll"></th>
@@ -264,11 +280,35 @@ $('#checkBoxAll').click(function () {
 			</table>
 		</form>
 	</div>
-
+<div class="searchdiv">
+		<form action="gsearch.do" method="get">
+			<input type="hidden" id = "id" name="id" value="${ loginUser.id }">
+			<select style="height: 35px; width: 80px;" name="action"
+				id="searchselect">
+				<option value="goodsName">상품명</option>
+				<option value="pdName">발주처</option>
+			</select>  
+			<input style="height: 30px; width: 325px;"
+				type="text" id="searchtext" name="keyword" placeholder="검색어 입력">
+			<input type="submit" class="searchbtn" value="검색">
+			
+			<c:forEach items="${goodsList}" var="goodsPrint">
+				<input type="checkbox" class="chkCheckBoxId checkbox"
+					value="${goodsPrint.goodsNo}">
+			</c:forEach>			
+			</form>	
+		
+		
+</div>
+<div>
+			<button class="savebutton" onclick="updateSelectedGoods();">저장</button>			
+			<button class="deletebutton"onclick="deleteSelectedGoods();">삭제</button>
+		</div>	
 <br>
 <c:import url="/WEB-INF/views/common/pagingView.jsp" />
 
 <hr>
 <c:import url="/WEB-INF/views/common/footer.jsp" />
+</div>
 </body>
 </html>

@@ -16,6 +16,46 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="resources/css/goods/specify.css" />
 <title>goodsListView</title>
+<style>
+.searchdiv {
+	margin: 0 auto; /* 좌우 마진을 자동으로 설정하여 가운데 정렬 */
+	width: fit-content; /* 내용에 맞게 자동으로 너비 설정 */
+}
+
+@media print {
+   
+	header, footer, sidebar, button {
+		display: none !important;
+	}
+	
+	.searchdiv {
+		display: none !important;
+	}
+	table {
+		margin: 0 auto; /* 좌우 마진을 자동으로 설정하여 가운데 정렬 */
+		width: fit-content;
+		page-break-inside: avoid;
+	}
+}
+</style>
+<style type="text/css">
+	.buttons>button {
+		width: 150px;
+		height: 40px;
+		border: none;
+		background: rgb(250, 180, 49);
+		color: #ffffff;
+		font-size: 16px;
+	}
+	.searchbtn {
+	width: 50px;
+	height: 35px;
+	border: none;
+	background: rgb(250, 180, 49);
+	color: #ffffff;
+	font-size: 16px;
+	}
+</style>
 
 <script type="text/javascript" src="/ssm/resources/js/jquery-3.7.0.min.js"></script>
 <script type="text/javascript">
@@ -48,7 +88,7 @@
 </head>
 <body>
 <c:import url="/WEB-INF/views/common/header.jsp" />
-
+<div style="padding-top : 100px;">
 <hr>
 <br>
 <c:import url="/WEB-INF/views/common/sidebar.jsp" />
@@ -57,28 +97,7 @@
 <br>
 
 </div>
-<style>
-.searchdiv {
-	margin: 0 auto; /* 좌우 마진을 자동으로 설정하여 가운데 정렬 */
-	width: fit-content; /* 내용에 맞게 자동으로 너비 설정 */
-}
 
-@media print {
-   
-	header, footer, sidebar, button {
-		display: none !important;
-	}
-	
-	.searchdiv {
-		display: none !important;
-	}
-	table {
-		margin: 0 auto; /* 좌우 마진을 자동으로 설정하여 가운데 정렬 */
-		width: fit-content;
-		page-break-inside: avoid;
-	}
-}
-</style>
 <div class="searchdiv">
 	<form method="get" id="searchForm">
 		<input type="hidden" id = "id" name="id" value="${ loginUser.id }">
@@ -106,14 +125,7 @@
         form.submit();
     }
 </script>
-<br>
-	
-<div style="text-align: center;">
-	<button onclick="exportToExcel()">엑셀로 저장</button>&nbsp;
-	<button onclick="printTable()">인쇄 및 pdf로 저장</button>&nbsp;
-	<button onclick="insertTable()">발주 금액 저장</button>&nbsp;
-</div>
-<br>	
+
 
 
 <div style="margin-left: auto; margin-right: auto; width: 1400px;">	
@@ -178,7 +190,7 @@
             	<td style="text-align: center; white-space: nowrap;"></td>
             	<td id="sum" style="text-align: center; white-space: nowrap;">
             		<div id="buttonDisplay">
-            			<button onclick="calcSum();">합계</button>
+            			<button class="sum" onclick="calcSum();">합계</button>
             		</div>
             	<form action="sinsert.do" method="post" id="sinsert">
             		<div id="sumDisplay" style="display:none;"></div>
@@ -190,7 +202,11 @@
         </table>
         <div id="idDisplay" style="display:none;">${ loginUser.id }</div>
 </div>
-
+<div class="buttons" style="text-align: center;">
+	<button onclick="exportToExcel()">엑셀로 저장</button>&nbsp;
+	<button onclick="printTable()">인쇄 및 pdf로 저장</button>&nbsp;
+	<button onclick="insertTable()">발주 금액 저장</button>&nbsp;
+</div>
 <script>
 function setSelectedDate() {
     // input 요소에서 선택한 날짜 가져오기
@@ -354,5 +370,6 @@ document.getElementById('sumDisplay').addEventListener('click', function() {
 <br>
 <hr>
 <c:import url="/WEB-INF/views/common/footer.jsp" />
+</div>
 </body>
 </html>
