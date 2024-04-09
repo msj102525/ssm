@@ -86,7 +86,7 @@
 
     <input type="submit" value="수정">
     <br>
-    <button onclick="location.href='mainEmpPage.do'">목록</button>
+    <button onclick="location.href='selectemp.do?id=${loginUser.id}'">목록</button>
 </form>
 
 <script>

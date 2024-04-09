@@ -97,10 +97,11 @@ input[type="submit"]:hover {
 	background-color: #0056b3;
 }
 </style>
+<c:import url="/WEB-INF/views/common/header.jsp" />
+<c:import url="/WEB-INF/views/common/sidebar.jsp" />
 </head>
 <body>
-	<c:import url="/WEB-INF/views/common/header.jsp" />
-	<c:import url="/WEB-INF/views/common/sidebar.jsp" />
+	
 	<div class="container">
 		<!-- 검색 폼 -->
 		<form id="searchForm">
@@ -205,7 +206,7 @@ input[type="submit"]:hover {
 			<!-- 직원 삭제 버튼 -->
 			<button onclick="deleteEmployee('${selectedEmployee.empId}')">삭제하기</button>
 			<!-- 목록으로 돌아가기 버튼 -->
-			<button onclick="location.href='mainEmpPage.do'">목록으로 돌아가기</button>
+			<!-- <button onclick="location.href='mvwelcom.do?'">목록으로 돌아가기</button> -->
 		</div>
 	</div>
 

@@ -4,15 +4,24 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
 import net.sf.json.JSONObject;
 
-//@WebServlet("recordTime.do")
+@Controller("recordTime.do")
 public class RecordTimeServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
@@ -59,4 +68,8 @@ public class RecordTimeServlet extends HttpServlet {
 		 * connection.close(); } catch (SQLException e) { e.printStackTrace(); } }
 		 */
     }
+    
+   
+    
+    
 }
