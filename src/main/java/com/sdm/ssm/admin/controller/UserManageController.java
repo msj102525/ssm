@@ -118,7 +118,7 @@ public class UserManageController {
 			// job == 유저객체 1개 , suspensionJarray 정지객체 리스트
 			// 전송용 json 에 jarr 을 저장함
 		sendJson.put("suspensionList", suspensionJarray);
-			//  job == 유저객체 1개 , suspensionJarray 정지객체 리스트, subscribepaments 결제내역 리스트
+		// job == 유저객체 1개 , suspensionJarray 정지객체 리스트, subscribepaments 결제내역 리스트
 		JSONArray subsPaymentsJarray = new JSONArray();
 		ArrayList<SubscribePayments> subsPayList = subscribeService.selectSubscribePaymentsByUserId(user.getId());
 		if (subsPayList.size() > 0) {
@@ -126,14 +126,15 @@ public class UserManageController {
 				// notice 값들을 저장할 json 객체 생성
 				JSONObject subscribePaymentJob = new JSONObject();
 				subscribePaymentJob.put("payNo", subscribePayment.getPayNo());
-				subscribePaymentJob.put("SubscribeName", URLEncoder.encode(subscribePayment.getSubscribeName(), "utf-8"));
+				subscribePaymentJob.put("SubscribeName",
+						URLEncoder.encode(subscribePayment.getSubscribeName(), "utf-8"));
 				subscribePaymentJob.put("amount", subscribePayment.getAmount());
 				subscribePaymentJob.put("payMethod", subscribePayment.getPayMethod());
 				subscribePaymentJob.put("payDate", subscribePayment.getPayDate().toString());
 				subsPaymentsJarray.add(subscribePaymentJob);
 			} // for
 		} // if
-		sendJson.put("subsPaymentsList",subsPaymentsJarray);
+		sendJson.put("subsPaymentsList", subsPaymentsJarray);
 		return sendJson.toJSONString();
 	}
 
@@ -145,8 +146,8 @@ public class UserManageController {
 		if (result == 1) {
 			umService.insertSuspension(suspension);
 			String suspensionNo = umService.selectSuspenseNo(suspension.getTargetAccount());
-			if(suspensionNo == null || suspensionNo.length()<1) {
-				suspensionNo="1";
+			if (suspensionNo == null || suspensionNo.length() < 1) {
+				suspensionNo = "1";
 			}
 			out.append(suspensionNo);
 		} else {
@@ -198,7 +199,7 @@ public class UserManageController {
 			list = umService.selectSearchStore(search);
 			break;
 		}
-		logger.info(paging.getStartPage()+"");
+		logger.info(paging.getStartPage() + "");
 		logger.info("endPage : " + paging.getEndPage());
 		model.addAttribute("list", list);
 		model.addAttribute("paging", paging);
@@ -207,55 +208,53 @@ public class UserManageController {
 		model.addAttribute("limit", 10);
 		model.addAttribute("action", action);
 		model.addAttribute("keyword", search.getKeyword());
-		
+
 		return "admin/usermanage";
 	}
+
 	@RequestMapping("countUser.do")
 	@ResponseBody
-	public String selectCountUserByEnrollDateMethod(@RequestParam("year") int year,
-			HttpServletResponse response) throws UnsupportedEncodingException {
-		//전달받은 년도로 이용자수 조회해오기
+	public String selectCountUserByEnrollDateMethod(@RequestParam("year") int year, HttpServletResponse response)
+			throws UnsupportedEncodingException {
+		// 전달받은 년도로 이용자수 조회해오기
 		Map<String, Integer> countUserMap = new HashMap<>();
 		ArrayList<CountUser> countUserList = umService.selectCountUserByEnrollDate(year);
-		for(CountUser countUser : countUserList) {
+		for (CountUser countUser : countUserList) {
 			countUserMap.put(countUser.getMonth(), countUser.getCount());
-		}	//for
+		} // for
 		JSONObject sendJson = new JSONObject();
 		sendJson.put("countMap", countUserMap);
 		Map<String, Integer> countSubMap = new HashMap<>();
 		ArrayList<CountUser> countSubList = umService.selectCountUserByServiceDate(year);
-		for(CountUser countUser : countSubList) {
+		for (CountUser countUser : countSubList) {
 			countSubMap.put(countUser.getMonth(), countUser.getCount());
-		}	//for
-		//전송용 json 객체 생성
+		} // for
+		// 전송용 json 객체 생성
 		sendJson.put("countSubMap", countSubMap);
-		
+
 		Map<String, Integer> salesMap = new HashMap<>();
 		ArrayList<Sales> salesList = umService.selectSalesList(year);
-		for(Sales sales : salesList) {
+		for (Sales sales : salesList) {
 			salesMap.put(sales.getMonth(), sales.getSales());
-		}	//for
+		} // for
 		sendJson.put("salesMap", salesMap);
-		
-		
+
 		return sendJson.toJSONString();
 	}
+
 	@RequestMapping("mvwelcom.do")
 	public String moveWelcomePageMethod(@RequestParam(name="serviceDate", required=false) String serviceDate, Model model) {
 		LocalDate currentDate = LocalDate.now();
-		
-		if(serviceDate!=null&&serviceDate.length()>0) {
-			LocalDate parsedServiceDate = LocalDate.parse(serviceDate);
-	        if (currentDate.isAfter(parsedServiceDate)) {
-	        	model.addAttribute("message", "기간이 만료되었습니다! 결제후 이용해주세요!");
-	        	return "redirect:slist.do";
-	        }else {
-	        	return "common/welcome";
-	        }
-        }else {
-        	model.addAttribute("message", "결제후 이용해주세요!");
-        	return "redirect:slist.do";
-        }
+		LocalDate parsedServiceDate = LocalDate.parse(serviceDate);
+		if(serviceDate!=null) {
+			if(parsedServiceDate.isAfter(currentDate)) {
+				return "common/welcome";
+			}else {
+				model.addAttribute("message","기간이 만료되었습니다! 결제후 이용해주세요!"); return "redirect:slist.do";
+			}
+		}else {
+			model.addAttribute("message", "결제후 이용해주세요!");
+			 return "redirect:slist.do";
+		}
 	}
-
 }

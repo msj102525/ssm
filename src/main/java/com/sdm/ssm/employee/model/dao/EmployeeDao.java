@@ -52,8 +52,8 @@ public class EmployeeDao {
         return sqlSessionTemplate.selectOne("employeMapper.getEmployeeDetails", empId);
     }
 
-	public List<Employee> getAllEmployees() {
-		return sqlSessionTemplate.selectList("employeeMapper.getAllEmployees");
+	public List<Employee> getAllEmployees(int id) {
+		return sqlSessionTemplate.selectList("employeeMapper.getAllEmployees", id);
 	}
 
 	public List<Employee> searchEmployeeByName(@Param("empName") String empName) {

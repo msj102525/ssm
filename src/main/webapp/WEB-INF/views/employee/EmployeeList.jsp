@@ -138,7 +138,7 @@ input[type="submit"]:hover {
 				</tr>
 			</thead>
 			<tbody>
-				<c:forEach items="${requestScope.list}" var="employee">
+				<c:forEach items="${requestScope.employeeList}" var="employee">
 					<tr onclick="loadEmployeeDetails(${employee.empId})">
 						<td>${employee.empId}</td>
 						<td>${employee.empName}</td>

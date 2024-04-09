@@ -72,12 +72,13 @@ public class EmployeeController {
 
 	// 직원 목록 페이지로 이동
 	@RequestMapping(value = "selectemp.do", method = { RequestMethod.POST, RequestMethod.GET })
-	public String moveSelectEmpPage(Model model) {
-//	    // 여기서는 직원 정보를 가져오는 서비스 레이어 메서드를 호출하여 직원 정보를 가져옵니다.
-//	    List<Employee> employeeList = employeeService.getAllEmployees(); // employeeService는 실제 서비스 레이어의 이름으로 수정 필요
-//	    // 모델에 직원 정보를 추가하여 View로 전달합니다.
-//	    model.addAttribute("employeeList", employeeList);
-//	    // 직원 정보가 표시되는 페이지로 이동합니다.
+	public String moveSelectEmpPage(@RequestParam("id") int id,Model model) {
+		//유저 아이디로 테이블 조회
+    // 여기서는 직원 정보를 가져오는 서비스 레이어 메서드를 호출하여 직원 정보를 가져옵니다.
+    List<Employee> employeeList = employeeService.getAllEmployees(id); // employeeService는 실제 서비스 레이어의 이름으로 수정 필요
+	    // 모델에 직원 정보를 추가하여 View로 전달합니다.
+	    model.addAttribute("employeeList", employeeList);
+	    // 직원 정보가 표시되는 페이지로 이동합니다.
 	    return "employee/EmployeeList";
 	}
 
@@ -314,5 +315,11 @@ public class EmployeeController {
 	        model.addAttribute("hourlyWage", hourlyWage);
 	        return "employee/salaryInfo"; // 시급을 입력하는 페이지로 이동
 	    }
+		
+		// 직원 급여명세서 페이지로 이동
+		@RequestMapping("mvPayStub.do")
+		public String movePayStubMethod() {
+			return "account/payStub";
+		}
 	    
 }

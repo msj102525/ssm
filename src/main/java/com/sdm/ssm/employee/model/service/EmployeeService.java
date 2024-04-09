@@ -10,7 +10,7 @@ import com.sdm.ssm.employee.model.vo.Employee;
 public interface EmployeeService {
 
 	//직원 목록
-	List<Employee> getAllEmployees();
+	List<Employee> getAllEmployees(int id);
 
 	Employee getEmployeeDetails(int empId);
 

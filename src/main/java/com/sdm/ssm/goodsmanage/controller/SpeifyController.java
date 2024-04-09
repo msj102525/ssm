@@ -121,12 +121,6 @@ public class SpeifyController {
 	    return "account/testGraph";
 	}
 	
-	//직원 급여명세서로 이동
-	@RequestMapping("mvPayStub.do")
-	public String movePayStubPage() {
-		return "account/payStub";
-	}
-	
 	
 	
 }

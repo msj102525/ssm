@@ -176,6 +176,8 @@
             <button onclick="location.href='mainEmpPage.do'">목록으로 돌아가기</button>
             <!-- 직원 급여 내보내는 버튼 -->
              <button onclick="location.href='insertSalary.do'">내보내기 하기</button>
+             <!-- 현재 정보를 가지고 급여명세서 페이지로 이동 -->
+             <button onclick="location.href='mvPayStub.do'">급여명세서</button>
         </div>
     </div>
     <c:import url="/WEB-INF/views/common/footer.jsp" />
