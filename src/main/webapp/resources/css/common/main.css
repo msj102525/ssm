@@ -28,18 +28,34 @@ section .inner-section {
 	padding: 50PX 0px;
 }
 
+section.sec1 {
+	z-index: -1;
+}
+
+section.sec2 .inner-section {
+	padding: 10px 0 10px 0;
+}
+
 section .inner-section .left-section {
 	flex: 1;
 	/* 	border: 1px solid #000; */
-	height: 300px;
 	display: flex;
 	flex-wrap: nowrap;
 	flex-direction: column;
 	text-align: center;
 }
 
+section.sec2 .inner-section .left-section {
+	box-shadow: 0px 0px 1px 1px grey;
+}
+
+section.sec2 .inner-section .right-section #contents {
+	box-shadow: 0px 0px 1px 1px grey;
+	padding: 10px;
+}
+
 section .inner-section .right-section {
-	height: 300px;
+	/* height: 300px; */
 	flex: 1;
 }
 
@@ -68,7 +84,7 @@ p.title {
 
 /* 테이블 행 */
 .inconvinience td {
-	padding: 8px;
+	padding: 19px;
 	text-align: left;
 	border-bottom: 1px solid #ddd;
 	text-align: center;

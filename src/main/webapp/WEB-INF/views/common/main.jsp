@@ -20,6 +20,8 @@
 <script type="text/javascript"
 	src="/ssm/resources/js/main/main.js"></script>
 
+
+
 </head>
 <body>
 	<div id="wrap">
@@ -156,6 +158,11 @@
 						</div>
 						<div class="right-section">
 							<c:import url="/WEB-INF/views/reserve/calendarfull040901.jsp" />
+							<script type="text/javascript" defer>
+								$(()=> {
+									$("header").css("position", "fixed");	
+								});
+							</script>
 						</div>
 					</div>
 				</section>
@@ -197,4 +204,5 @@
 		<c:import url="footer.jsp" />
 	</div>
 </body>
+
 </html>

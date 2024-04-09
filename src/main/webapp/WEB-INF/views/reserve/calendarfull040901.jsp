@@ -39,16 +39,11 @@
 <link rel="stylesheet" href="resources/css/common/main.css" />
 
 <style type="text/css">
-body {
-	/* line-height:14px; */
-	
-}
-
 
 #contents {
 	/* padding-top: 150px; */
 	margin: 0 auto;
-	width: 900px;
+	width: 650px;
 }
 
 #calendar {
