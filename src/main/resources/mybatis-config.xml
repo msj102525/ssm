@@ -40,6 +40,7 @@
 		<typeAlias type="com.sdm.ssm.pos.model.vo.Menu" alias="Menu"/>
 		<typeAlias type="com.sdm.ssm.pos.model.vo.Inventory" alias="Inventroy"/>
 		<typeAlias type="com.sdm.ssm.user.model.vo.UserFinkOut" alias="UserFinkOut"/>
+		<typeAlias type="com.sdm.ssm.account.model.vo.Account" alias="Account"/>
 	</typeAliases>
 		
 	<mappers>
@@ -53,5 +54,6 @@
 		<mapper resource="mapper/usermanage-mapper.xml" />
 		<mapper resource="mapper/subscribe-mapper.xml" />
 		<mapper resource="mapper/pos-mapper.xml" />
+		<mapper resource="mapper/account-mapper.xml" />
 	</mappers>
 </configuration>
