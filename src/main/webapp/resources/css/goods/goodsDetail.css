@@ -36,46 +36,48 @@ body {
 }
 
 table {
-	border-collapse: separate;
-	border-spacing: 0;
-	width: 100%;
+  border-collapse: collapse;
+  width: 500px;
+  margin: 1rem auto;
+  background-color: white;
 }
 
+/* 테이블 행 */
 th, td {
-	padding: 6px 15px;
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
 }
 
 th {
-	background: rgb(250, 180, 49);
-	color: #000;
-	text-align: left;
+  background-color: #1b1b1b;
+  color: #ddd;
 }
 
-tr:first-child th:first-child {
-	border-top-left-radius: 6px;
+/* 테이블 올렸을 때 */
+tbody tr:hover {
+  background-color: #d3d3d3;
+  opacity: 0.9;
+  cursor: pointer;
 }
 
-tr:first-child th:last-child {
-	border-top-right-radius: 6px;
+/* 테이블 비율 */
+th:nth-child(1),
+td:nth-child(1) {
+  width: 15%;
 }
 
-td {
-	border-right: 1px solid #c6c9cc;
-	border-bottom: 1px solid #c6c9cc;
+th:nth-child(2),
+td:nth-child(2) {
+  width: 55%;
 }
 
-td:first-child {
-	border-left: 1px solid #c6c9cc;
+th:nth-child(3),
+td:nth-child(3) {
+  width: 30%;
 }
 
-tr:nth-child(even) td {
-	background: #eaeaed;
-}
-
-tr:last-child td:first-child {
-	border-bottom-left-radius: 6px;
-}
-
-tr:last-child td:last-child {
-	border-bottom-right-radius: 6px;
+tr:nth-child(even) {
+  background-color: #fff6f6;
 }

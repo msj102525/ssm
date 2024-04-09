@@ -226,17 +226,23 @@ $(function() {
 
       function drawChart3() {
 
+		var monthlyPdPrice = document.getElementById('monthlyPdPrice').textContent;
+		var monthlyRent = document.getElementById('monthlyRent').textContent;
+		var monthlyTax = document.getElementById('monthlyTax').textContent;
+		var monthlyCost = document.getElementById('monthlyCost').textContent;
+		
+	
         var data = new google.visualization.DataTable();
         data.addColumn('string', '항목');
         data.addColumn('number', '금액');
         data.addRows([
-          ['매출', 3],
-          ['발주액', parseInt(document.getElementById("monthlyPdPrice").textContent, 10)],
-          ['급여', 1],
-          ['월세', parseInt(document.getElementById('monthlyRent').value,10)],
-          ['세금', parseInt(document.getElementById('montlyTax').value,10)],
-          ['기타비용', parseInt(document.getElementById('monthlyCost').value,10)],
-          ['수익', 24]
+          ['매출', 3000],
+          ['발주액', parseInt(monthlyPdPrice)],
+          ['급여', 100],
+          ['월세', parseInt(monthlyRent)],
+          ['세금', parseInt(monthlyTax)],
+          ['기타비용', parseInt(monthlyCost)],
+          ['수익', 2487]
         ]);
 
         // Set chart options
@@ -254,35 +260,64 @@ $(function() {
       
       // 발주액 가져오기
       function onChangeMonth() {  
-		    var jarr = new Array();
-		    var job = new Object();
-		    
-		    var selectElement = document.getElementById("monthSelect");
-		    var month = selectElement.value; 
-		    
-		    job.id = document.getElementById("idDisplay").textContent;
-		    job.month = month;
-		    
-		    jarr.push(job);
-		    
-		            $.ajax({
-		                type: "POST",
-		                url: "monthlyPdPrice.do",
-		                data: JSON.stringify(jarr),
-		                contentType: "application/json; charset=utf-8",
-		                success: function(result) {
-		                	var spanElement = document.getElementById("monthlyPdPrice");
-		                    spanElement.textContent = result;
-		                    drawChart3();
-		                },
-		                error: function(request, status, errorData) {
-		                    console.log("error code : " + request.status
-		                        + "\nMessage : " + request.responseText
-		                        + "\nError : " + errorData);
-		                } 
-		            });      
-		        
-		}
+    var jarr = new Array();
+    var job = new Object();
+    
+    var selectElement = document.getElementById("monthSelect");
+    var month = selectElement.value; 
+    
+    job.id = document.getElementById("idDisplay").textContent;
+    job.month = month;
+    
+    jarr.push(job);
+    
+            $.ajax({
+                type: "POST",
+                url: "monthlyPdPrice.do",
+                data: JSON.stringify(jarr),
+                contentType: "application/json; charset=utf-8",
+                success: function(result) {
+                	var spanElement = document.getElementById("monthlyPdPrice");
+                    spanElement.textContent = result;
+                },
+                error: function(request, status, errorData) {
+                    console.log("error code : " + request.status
+                        + "\nMessage : " + request.responseText
+                        + "\nError : " + errorData);
+                } 
+            });   
+            
+            // input 값에 값 넣기
+            $.ajax({
+                type: "POST",
+                url: "monthlyCost.do",
+                data: JSON.stringify(jarr),
+                contentType: "application/json; charset=utf-8",
+                success: function(response) {
+                	var dataArray = JSON.parse(response); // JSON 배열을 JavaScript 배열로 변환
+                	for (var i = 0; i < dataArray.length; i++) {
+                        var data = dataArray[i];
+                        if (data.monthlycost !== undefined) {
+                            document.getElementById("monthlyCost").textContent = data.monthlycost;
+                        }
+                        if (data.monthlytax !== undefined) {
+                            document.getElementById("monthlyTax").textContent = data.monthlytax;
+                        }
+                        if (data.monthlyrent !== undefined) {
+                            document.getElementById("monthlyRent").textContent = data.monthlyrent;
+                        }
+                    }
+                    drawChart3();
+                },
+                error: function(request, status, errorData) {
+                    console.log("error code : " + request.status
+                        + "\nMessage : " + request.responseText
+                        + "\nError : " + errorData);
+                } 
+            }); 
+            
+        
+}
       
       
       // 지금 년월 자동 선택

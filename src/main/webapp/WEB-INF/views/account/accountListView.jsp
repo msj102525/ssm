@@ -18,47 +18,7 @@
 </script>
 
 
-<script>
-  function addRow(btn) {
-    var row = btn.parentNode.parentNode;
-    var table = row.parentNode.parentNode;
 
-    // 새로운 행 생성
-    var newRow = table.insertRow(row.rowIndex + 1);
-
-    // 새로운 행에 버튼 추가
-    var btnCell = newRow.insertCell(0);
-    var newBtn = document.createElement("button");
-    newBtn.textContent = " + ";
-    newBtn.onclick = function() {
-      addRow(this); // 새로운 행의 + 버튼을 클릭하면 새로운 행이 추가되도록 함
-    };
-    btnCell.appendChild(newBtn);
-
-    // 기존의 + 버튼이 있던 셀을 input type text로 변경
-    var oldBtnCell = row.cells[0];
-    var newTextCell = document.createElement("td");
-    newTextCell.style.textAlign = "center";
-    var newText = document.createElement("input");
-    newText.type = "text";
-    newText.placeholder = "항목 입력";
-
-    newTextCell.appendChild(newText);
-    row.replaceChild(newTextCell, oldBtnCell);
-
-    // 새로운 행에 입력란 추가 (여전히 input type number)
-    var inputCell = newRow.insertCell(1);
-    inputCell.style.textAlign = "center";
-    var input = document.createElement("input");
-    input.type = "number";
-    input.placeholder = "금액 입력";
-
-    inputCell.appendChild(input);
-
-    // 선택한 행의 + 버튼 숨김
-    btn.style.display = "none";
-  }
-</script>
 
 <script>
 function sum() {
@@ -85,15 +45,50 @@ function sum() {
     document.getElementById('buttonDisplay').style.display = 'none';
     // 합계 표시
     document.getElementById('sumDisplay').style.display = 'block';
+    
+    var jarr = new Array();
+    
+    var selectElement = document.getElementById("monthSelect");
+    var yearmonth = selectElement.value;
+    var id = document.getElementById("idDisplay").textContent;
+    
+    var job1 = {};
+    job1.yearmonth = yearmonth;    
+    job1.id = id   
+    job1.rent = document.getElementById("monthlyRent").value;   
+    jarr.push(job1);
+    
+    var job2 = {};
+    job2.yearmonth = yearmonth;    
+    job2.id = id   
+    job2.tax = document.getElementById("montlyTax").value;
+    jarr.push(job2);
+    
+    var job3 = {};
+    job3.yearmonth = yearmonth;    
+    job3.id = id 
+    job3.cost = document.getElementById("monthlyCost").value;
+    jarr.push(job3);
+    
+    console.log(JSON.stringify(jarr));
+
+    $.ajax({
+        type: "POST",
+        url: "insertAccount.do",
+        data: JSON.stringify(jarr),
+        contentType: "application/json; charset=utf-8",
+        success: function(result) {
+        	
+        },
+        error: function(request, status, errorData) {
+            console.log("error code : " + request.status
+                + "\nMessage : " + request.responseText
+                + "\nError : " + errorData);
+        } 
+    });    
+    
 }
 
-/* 	// 합계를 클릭하면 버튼 다시 표시
-    document.getElementById('sumDisplay').addEventListener('click', function() {
-    // 합계 숨기기
-    document.getElementById('sumDisplay').style.display = 'none';
-    // 버튼 표시
-    document.getElementById('buttonDisplay').style.display = 'block';
-}); */
 </script>
 <script>
 function onChangeMonth() {  
@@ -116,48 +111,46 @@ function onChangeMonth() {
                 success: function(result) {
                 	var spanElement = document.getElementById("monthlyPdPrice");
                     spanElement.textContent = result;
-                    drawChart();
                 },
                 error: function(request, status, errorData) {
                     console.log("error code : " + request.status
                         + "\nMessage : " + request.responseText
                         + "\nError : " + errorData);
                 } 
-            });      
+            });   
+            
+            // input 값에 값 넣기
+            $.ajax({
+                type: "POST",
+                url: "monthlyCost.do",
+                data: JSON.stringify(jarr),
+                contentType: "application/json; charset=utf-8",
+                success: function(response) {
+                	var dataArray = JSON.parse(response); // JSON 배열을 JavaScript 배열로 변환
+                	for (var i = 0; i < dataArray.length; i++) {
+                        var data = dataArray[i];
+                        if (data.monthlycost !== undefined) {
+                            document.getElementById("monthlyCost").placeholder = data.monthlycost;
+                        }
+                        if (data.monthlytax !== undefined) {
+                            document.getElementById("montlyTax").placeholder = data.monthlytax;
+                        }
+                        if (data.monthlyrent !== undefined) {
+                            document.getElementById("monthlyRent").placeholder = data.monthlyrent;
+                        }
+                    }
+                },
+                error: function(request, status, errorData) {
+                    console.log("error code : " + request.status
+                        + "\nMessage : " + request.responseText
+                        + "\nError : " + errorData);
+                } 
+            }); 
+            
         
 }
 </script>
-<script type="text/javascript">
 
-      google.charts.load('current', {'packages':['corechart']});
-
-      google.charts.setOnLoadCallback(drawChart);
-
-      function drawChart() {
-
-        var data = new google.visualization.DataTable();
-        data.addColumn('string', 'Topping');
-        data.addColumn('number', '원');
-        data.addRows([
-          ['매출', 1500],
-          ['발주금액', parseInt(document.getElementById("monthlyPdPrice").textContent, 10)],
-          ['월 급여', 300],
-          ['월세', 100],
-          ['세금', 25],
-          ['기타비용', 50],
-          ['수익', 6]
-        ]);
-
-        // Set chart options
-        var options = {'title':'매출 그래프',
-                       'width':400,
-                       'height':300};
-
-        // Instantiate and draw our chart, passing in some options.
-        var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
-        chart.draw(data, options);
-      }
-    </script>
 </head>
 <body>
 <c:import url="/WEB-INF/views/common/header.jsp" />
@@ -205,7 +198,6 @@ function onChangeMonth() {
 
 <div>
 	<div class="left-div" style="margin-left: auto; margin-right: auto; width: 700px;">
-
 			<table id="myTable" border="1" cellspacing="25" width="100%">
 				<tr>
 					<th style="text-align: center; white-space: nowrap;">항목</th>
@@ -247,14 +239,7 @@ function onChangeMonth() {
 						<input id="monthlyCost" type="number" placeholder="기타비용 입력">
 					</td>
 				</tr>				
-				<tr>
-					<td align="center" style="white-space: nowrap;">
-						<button onclick="addRow(this)"> + </button>
-					</td>
-					<td align="center" style="white-space: nowrap;">
-						<input type="number" placeholder="금액 입력">
-					</td>
-				</tr>	
+				
 				<tr>
 					<td align="center" style="white-space: nowrap;">월 수익</td>
 					<td align="center" style="white-space: nowrap;">
@@ -265,11 +250,6 @@ function onChangeMonth() {
 					</td>
 				</tr>	
 			</table>
-	
-		
-	</div>
-	<div id="chart_div" class="right-div">
-		
 	</div>
 </div>
 

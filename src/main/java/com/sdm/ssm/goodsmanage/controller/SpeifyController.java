@@ -56,11 +56,7 @@ public class SpeifyController {
 		return new ResponseEntity<String>("success", HttpStatus.OK);
 	}
 
-	// 월 매출 보기 페이지이동
-	@RequestMapping("account.do")
-	public String moveGoodsInsertPage() {
-		return "account/accountListView";
-	}
+	
 	
 	
 
@@ -119,12 +115,6 @@ public class SpeifyController {
 	    logger.info(model + "ㅂ뎌");
 	    // testGraph 페이지로 이동
 	    return "account/testGraph";
-	}
-	
-	//직원 급여명세서로 이동
-	@RequestMapping("mvPayStub.do")
-	public String movePayStubPage() {
-		return "account/payStub";
 	}
 	
 	
