@@ -296,9 +296,9 @@ public class EmployeeController {
     	
 	// 특정 직원의 급여 정보 조회
 	    @GetMapping("selectEmpSalary.do")
-	    public ResponseEntity<List<SalaryInfo>> selectSalaryInfoByEmpId(@RequestParam("empId") int empId) {
+	    public ResponseEntity<List<SalaryInfo>> selectSalaryInfoByEmpId(@RequestParam("empId") int empId , @RequestParam("id") int id) {
 	        try {
-	            List<SalaryInfo> salaryInfoList = salaryInfoService.selectSalaryInfoByEmpId(empId);
+	            List<SalaryInfo> salaryInfoList = (List<SalaryInfo>) salaryInfoService.selectSalaryInfoByEmpId(id);
 	            if (!salaryInfoList.isEmpty()) {
 	                return ResponseEntity.ok(salaryInfoList);
 	            } else {
