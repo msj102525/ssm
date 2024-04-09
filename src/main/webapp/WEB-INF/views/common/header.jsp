@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="resources/css/common/header.css" />
+<link rel="stylesheet" href="${pageContext.servletContext.contextPath }/resources/css/common/header.css" />
 <script type="text/javascript" src="/ssm/resources/js/jquery-3.7.0.min.js"></script>
 <script type="text/javascript">
 	$(()=> {
