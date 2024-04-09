@@ -63,7 +63,6 @@
 		<c:if test="${ !empty loginUser &&  loginUser.adminOk ne 'Y'}">
 			<div class="section-container">
 				<%-- section1 --%>
-				<br>
 				<section class="sec1">
 				<div align="center">
 					<select style="height: 35px; width: 80px;" 
@@ -110,19 +109,19 @@
 								<tr>
 									<td align="center" style="white-space: nowrap;">월세</td>
 									<td align="center" style="white-space: nowrap;">
-										<span id="monthlyRent" ></span>
+										<input id="monthlyRent" type="number" placeholder="월세 입력">
 									</td>
 								</tr>	
 								<tr>
 									<td align="center" style="white-space: nowrap;">세금</td>
 									<td align="center" style="white-space: nowrap;">
-										<span id="monthlyTax" ></span>
+										<input id="montlyTax" type="number" placeholder="세금 입력">
 									</td>
 								</tr>		
 								<tr>
 									<td align="center" style="white-space: nowrap;">기타비용</td>
 									<td align="center" style="white-space: nowrap;">
-										<span id="monthlyCost" ></span>
+										<input id="monthlyCost" type="number" placeholder="기타비용 입력">
 									</td>
 								</tr>				
 								<tr>
@@ -178,14 +177,16 @@
 				<%-- section2 --%>
 				<section class="sec2">
 					<div class="inner-section-incon">
+			
 					<p class="title">조치사항</p>
-						<table id="inconvinienceAdmin">
+						<table id="inconvinienceAdmin" class="inconvinience">
 							<tr class="titlerow">
 								<th>제목</th>
 								<th>작성자</th>
 								<th>조치상태</th>
 							</tr>
 						</table>
+						
 					</div>
 				</section>
 			</div>

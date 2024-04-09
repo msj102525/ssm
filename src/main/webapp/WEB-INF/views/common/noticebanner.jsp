@@ -11,7 +11,7 @@ $(function() {
 			setTimeout(function() {
 				$('#ticker li:first').animate(
 						{
-							marginTop : '-40px'
+							marginTop : '40px'
 						},
 						550,
 						function() {
@@ -54,7 +54,7 @@ $(function(){
 <style>
 .block {
 	border: 0px solid orange;
-	padding-top: 30px;
+	padding-top: 110px;
 	height: 40px;
 	overflow: hidden;
 	background: #fff;
@@ -64,7 +64,9 @@ $(function(){
 	text-align: center;
 	margin: 0 auto;
 }
-
+.block ul {
+	overflow: hidden;
+}
 .block ul, .block li {
 	margin: 0;
 	padding: 0;
