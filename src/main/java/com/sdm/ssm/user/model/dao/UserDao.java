@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.sdm.ssm.user.model.vo.User;
+import com.sdm.ssm.user.model.vo.UserFinkOut;
 
 @Repository("userDao")
 public class UserDao {
@@ -45,6 +46,14 @@ public class UserDao {
 
 	public int updateUserPw(User user) {
 		return sqlSessionTemplate.update("userMapper.updateUserPw", user);
+	}
+
+	public int updateUserLoginOkToNByUserId(String userId) {
+		return sqlSessionTemplate.update("userMapper.updateUserLoginOkToNByUserId", userId);
+	}
+
+	public int insertUserFinkOut(UserFinkOut userFO) {
+		return sqlSessionTemplate.insert("userMapper.insertUserFinkOut", userFO);
 	}
 
 }

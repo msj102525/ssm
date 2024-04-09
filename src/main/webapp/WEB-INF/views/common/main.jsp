@@ -63,7 +63,6 @@
 		<c:if test="${ !empty loginUser &&  loginUser.adminOk ne 'Y'}">
 			<div class="section-container">
 				<%-- section1 --%>
-				<br>
 				<section class="sec1">
 				<div align="center">
 					<select style="height: 35px; width: 80px;" 

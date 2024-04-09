@@ -56,11 +56,7 @@ public class SpeifyController {
 		return new ResponseEntity<String>("success", HttpStatus.OK);
 	}
 
-	// 월 매출 보기 페이지이동
-	@RequestMapping("account.do")
-	public String moveGoodsInsertPage() {
-		return "account/accountListView";
-	}
+	
 	
 	
 

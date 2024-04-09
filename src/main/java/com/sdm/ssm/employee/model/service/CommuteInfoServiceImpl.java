@@ -23,4 +23,9 @@ public class CommuteInfoServiceImpl implements CommuteInfoService {
 	public boolean recordCommuteInfo(CommuteInfo commuteInfo) {
 		return commuteInfoDao.recordCommuteInfo(commuteInfo);
 	}
+
+	@Override
+	public List<CommuteInfo> commuteInfoPage(int id) {
+		return commuteInfoDao.commuteInfoPage(id);
+	}
 }

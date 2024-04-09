@@ -11,21 +11,24 @@ import com.sdm.ssm.employee.model.vo.SalaryInfo;
 
 @Repository("salaryInfoDao")
 public class SalaryInfoDao {
-	
+
 	@Autowired
 	private SqlSessionTemplate sqlSessionTemplate;
 
-	public ArrayList<SalaryInfo> selectSalaryInfoMethod(int empId) {
-		List<SalaryInfo> list = sqlSessionTemplate.selectList("SalaryInfoMapper.selectSalaryInfoMethod",empId);
-		return (ArrayList<SalaryInfo>)list;
+	public ArrayList<SalaryInfo> selectSalaryInfoMethod(int Id) {
+		List<SalaryInfo> list = sqlSessionTemplate.selectList("employeeMapper.selectAllSalaryInfos", Id);
+		return (ArrayList<SalaryInfo>) list;
 	}
-	 public boolean insertSalaryInfo(SalaryInfo salaryInfo) {
-	        int rowsAffected = sqlSessionTemplate.insert("SalaryInfoMapper.insertSalaryInfo", salaryInfo);
-	        return rowsAffected > 0;
-	    }
-	  public List<SalaryInfo> selectSalaryInfoByEmpId(int empId) {
-	        return sqlSessionTemplate.selectList("SalaryInfoMapper.selectSalaryInfoByEmpId", empId);
-	    }
+
+	public boolean insertSalaryInfo(SalaryInfo salaryInfo) { 
+		int rowsAffected = sqlSessionTemplate.insert("employeeMapper.insertSalaryInfo", salaryInfo);
+	 return rowsAffected > 0;	
+	 }
+	public List<SalaryInfo> selectSalaryInfoByEmpId(int Id) {
+		return sqlSessionTemplate.selectList("employeeMapper.selectAllSalaryInfos", Id);
+	}
+
+	public List<SalaryInfo> getSalaryDate(int id) {
+		return sqlSessionTemplate.selectList("employeeMapper.selectAllSalaryInfos", id);
+	}
 }
-
-

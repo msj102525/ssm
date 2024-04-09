@@ -35,6 +35,7 @@ import com.google.gson.JsonPrimitive;
 import com.sdm.ssm.common.FileNameChange;
 import com.sdm.ssm.user.model.service.UserService;
 import com.sdm.ssm.user.model.vo.User;
+import com.sdm.ssm.user.model.vo.UserFinkOut;
 
 @Controller
 public class UserController {
@@ -308,15 +309,26 @@ public class UserController {
 		
 		logger.info("user.getPassWd() : " + user.getPassWd());
 		logger.info("loginUser.getPassWd() : " + loginUser.getPassWd());
+		logger.info("loginUser.getLoginOk() : " + loginUser.getLoginOk());
+		
+		String loginOk = loginUser.getLoginOk();
+		logger.info("loginOk : " + loginOk);
 		
 		if(loginUser != null && 
 				this.bcryptPwEncoder.matches(	user.getPassWd(), loginUser.getPassWd())) {
-			session.setAttribute("loginUser", loginUser);
-			status.setComplete();  //로그인 성공 요청 결과로 HttpStatus code 200 보냄
-			logger.info("성공!!!!!!!!!!!!!!!");
-			return "common/main";
+			
+			if(loginOk.equals("N") || loginOk.equals(null)) {
+				model.addAttribute("message", "로그인 제한된 회원입니다. 관리자에게 문의하세요.");
+				return "common/error";
+			}else {
+				session.setAttribute("loginUser", loginUser);
+				status.setComplete();  //로그인 성공 요청 결과로 HttpStatus code 200 보냄
+				logger.info("성공!!!!!!!!!!!!!!!");
+				return "common/main";
+			}
+			
 		}else {
-			model.addAttribute("message", "로그인 실패! 아이디나 암호를 다시 확인하세요. 또는 로그인 제한된 회원입니다. 관리자에게 문의하세요.");
+			model.addAttribute("message", "로그인 실패! 아이디나 암호를 다시 확인하세요.");
 			return "common/error";
 		}
 
@@ -525,7 +537,42 @@ public class UserController {
 			model.addAttribute("message", "일치하는 사람 없음");
 			return "common/error";
 		}
+	}
+	
+	@RequestMapping(value="withdraw.do", method=RequestMethod.POST) 
+	public String withdrawMethod(
+			@RequestParam("userId") String userId, Model model,
+			@RequestParam("id") int id,
+			@RequestParam("email") String email) {
 		
+		logger.info("탈퇴할 회원 아이디!!!!!!!!!" + id);
+		logger.info("탈퇴할 회원 유저 아이디!!!!!!!!!" + userId);
+		logger.info("탈퇴할 회원 유저 이메일!!!!!!!!!" + email);
+		
+		UserFinkOut userFO = new UserFinkOut();
+		
+		userFO.setFinkOutNo(id);
+		userFO.setfUserId(userId);
+		userFO.setfEmail(email);
+		
+		logger.info(userFO.toString());
+		
+		if (userId != null && userId.length() > 0) {
+			if (userService.updateUserLoginOkToNByUserId(userId) > 0) {
+				if (userService.insertUserFinkOut(userFO) > 0) {
+					return "redirect:logout.do";
+				} else {
+					model.addAttribute("message", "탈퇴한 유저테이블에 유저 insert 실패!");
+					return "common/error";
+				}
+			} else {
+				model.addAttribute("message", "회원탈퇴 실패!");
+				return "common/error";
+			}
+		} else {
+			model.addAttribute("message", "아이디값이 없습니다!!");
+			return "common/error";
+		}
 		
 	}
 
