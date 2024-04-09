@@ -21,4 +21,8 @@ public interface UserService {
 
 	User searchIdByEmailBName(User user);
 
+	User selectUserByEmailId(User user);
+
+	int updateUserPw(User user);
+
 }

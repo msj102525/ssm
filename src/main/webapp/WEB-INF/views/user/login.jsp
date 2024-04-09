@@ -45,9 +45,9 @@ const validateForm = () => {
 				</form>
 				<ul class="go-page">
 					<li>
-						<a href="${pageContext.servletContext.contextPath }/goSearchId.do">아이디 찾기</a>
-						<a href="#">비밀번호 찾기</a> | 
-						<c:url var="goEnroll" value="goEnroll.do" /> | 
+						<a href="${pageContext.servletContext.contextPath }/goSearchId.do">아이디 찾기</a> | 
+						<a href="${pageContext.servletContext.contextPath }/goSearchPw.do">비밀번호 찾기</a> | 
+						<c:url var="goEnroll" value="goEnroll.do" /> 
 						<a href="${ goEnroll }">회원가입</a></li>
 					<li>
 						<p>------------------- 또는 --------------------</p>

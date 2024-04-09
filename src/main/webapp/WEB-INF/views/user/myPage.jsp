@@ -51,6 +51,7 @@ $(() => {
 			</div>
 			<div class="form-box">
 				<form action="userInfoUpdate.do" method="post" onsubmit="return validateForm();" enctype="multipart/form-data">
+				<input type="hidden" name=profileUrl value="${loginUser.profileUrl }" >
 					<ul>
 						<li class="profile-img">
 							<div class="img-box">

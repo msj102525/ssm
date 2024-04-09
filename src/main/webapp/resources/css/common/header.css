@@ -59,8 +59,7 @@ header .inner-header nav .gnb ul li {
     border-radius: 5px;
     padding: 0 3px;
     line-height: 30px;
-    /* background-color: rgb(250, 180, 49); */
-    color: #000;
+    color: #2c1a0b;
     transition: all 0.2s ease-in-out;
 }
 

@@ -121,6 +121,17 @@
                     <th>세금</th>
                     <th>월급</th>                                 
                 </tr>
+                 <c:forEach var="employee" items="${employees}">
+                    <tr>
+                        <td>${employee.empId}</td>
+                        <td>${employee.empName}</td>
+                        <td>${employee.bankName}</td>
+                        <td>${employee.bankAccountNo}</td>
+                        <td>${employee.premium}</td>
+                        <td>${employee.tax}</td>
+                        <td>${employee.monthlySalary}</td>
+                        </tr>
+                  </c:forEach>
             </thead>
             <tbody>
                 <c:forEach var="employee" items="${employees}">
@@ -142,7 +153,6 @@
                     </tr>
                 </c:forEach>
             </tbody>			
-
 		</table>
 		
 		<!-- 시급 입력 폼 -->
@@ -164,6 +174,8 @@
             <button onclick="location.href='updateSalaryInfo.do'">수정하기</button>
             <!-- 목록으로 돌아가기 버튼 -->
             <button onclick="location.href='mainEmpPage.do'">목록으로 돌아가기</button>
+            <!-- 직원 급여 내보내는 버튼 -->
+             <button onclick="location.href='insertSalary.do'">내보내기 하기</button>
         </div>
     </div>
     <c:import url="/WEB-INF/views/common/footer.jsp" />

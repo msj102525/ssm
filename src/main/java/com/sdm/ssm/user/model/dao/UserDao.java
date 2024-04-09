@@ -39,4 +39,12 @@ public class UserDao {
 		return sqlSessionTemplate.selectOne("userMapper.selectUserIdByEmailBName", user);
 	}
 
+	public User selectUserByEmailId(User user) {
+		return sqlSessionTemplate.selectOne("userMapper.selectUserByEmailId", user);
+	}
+
+	public int updateUserPw(User user) {
+		return sqlSessionTemplate.update("userMapper.updateUserPw", user);
+	}
+
 }

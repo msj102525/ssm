@@ -9,8 +9,8 @@
 <script type="text/javascript" src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.7.0.min.js"></script>
 <script type="text/javascript">
 const validateForm = () => {
-	if (!$("#businessStoreName").val()) {
-	    alert("사업장 명을 입력해 주세요.");
+	if (!$("#userId").val()) {
+	    alert("아이디를 입력해 주세요.");
 	    return false;
 	} else if (!$("#email").val()) {
 	    alert("이메일을 입력해 주세요.");
@@ -97,10 +97,10 @@ $("#chkEmailAuth").on("keyup", () => {
 				</h1>
 			</div>
 			<div class="form-box">
-				<form action="searchId.do" method="post" onsubmit="return validateForm();">
+				<form action="searchPw.do" method="post" onsubmit="return validateForm();">
 					<ul>
 						<li>
-							<input type="text" name="businessStoreName" id="businessStoreName" placeholder="사업장 명">
+							<input type="text" name="userId" id="userId" placeholder="아이디">
 						</li>
 						<li class="auth relative">
 							<p></p>
@@ -112,13 +112,13 @@ $("#chkEmailAuth").on("keyup", () => {
 							<input type="text"  id="chkEmailAuth" placeholder="인증번호">
 						</li>
 						<li>
-							<input type="submit" value="아이디 찾기" class="searchId">
+							<input type="submit" value="비밀번호 찾기" class="searchPw">
 						</li>
 					</ul>
 				</form>
 				<ul class="go-page">
 					<li>
-						<a href="${pageContext.servletContext.contextPath }/goSearchPw.do">비밀번호 찾기</a> | 
+						<a href="${pageContext.servletContext.contextPath }/goSearchId.do">아이디 찾기</a> | 
 						<c:url var="goEnroll" value="goEnroll.do" />
 						<a href="${ goEnroll }">회원가입</a>
 					</li>

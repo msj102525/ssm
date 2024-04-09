@@ -73,6 +73,7 @@
 						<div class="profile-img-box">
 							<c:url var="goMyPage" value="goMyPage.do">
 								<c:param name="userId" value="${ loginUser.userId }" />
+								<c:param name="profileUrl" value="${ loginUser.profileUrl }" />
 							</c:url>
 							<a href="${ goMyPage }">
 								<c:if test="${empty loginUser.profileUrl }">

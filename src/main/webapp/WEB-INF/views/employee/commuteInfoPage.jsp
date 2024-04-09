@@ -155,11 +155,11 @@
 						<td><c:out value="${cinfo.leaveEarly}" /></td>
 						<td><c:out value="${cinfo.absenteeism}" /></td>	
 					</tr>
-				</c:forEach>
+				</c:forEach>				
 				<button onclick="showDetail('${cinfo.employee.name}', '${cinfo.empId}', '${cinfo.startTime}', 
-				'${cinfo.workDay}', '${cinfo.endTime}', '${cinfo.workingHours}', '${cinfo.lateFlag}', 
-				'${cinfo.leaveEarly}', '${cinfo.absenteeism}')">상세 조회</button>
-
+    '${cinfo.workDay}', '${cinfo.endTime}', '${cinfo.workingHours}', '${cinfo.lateFlag}', 
+    '${cinfo.leaveEarly}', '${cinfo.absenteeism}')">상세 조회</button>
+				
 			</table>
 		<hr>
 			<div id="detailInfo" style="display: none;">

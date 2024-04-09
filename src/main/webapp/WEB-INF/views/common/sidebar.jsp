@@ -196,8 +196,6 @@ body {
         <li><a href="${pageContext.servletContext.contextPath}/commuteInfoPage.do">근태정보</a></li>
         <li><a href="${pageContext.servletContext.contextPath}/QRController.do">QR 출퇴근페이지</a></li>
         <li><a href="${pageContext.servletContext.contextPath}/recordTimePage.do">QR 출퇴근버튼페이지</a></li>     
-        <li><a href="${pageContext.servletContext.contextPath }/account.do">매출보기</a></li>
-        <li><a href="${pageContext.servletContext.contextPath}/graph.do?id=${loginUser.id}">그래프 연습</a></li>
         <li><a href="#">text3</a></li>
         <li><a href="#">text4</a></li>
       </ul>
@@ -216,6 +214,9 @@ body {
       <ul>
         <li><a href="#">text1</a></li>
         <li><a href="#">text2</a></li>
+        <li><a href="${pageContext.servletContext.contextPath}/mvPayStub.do">급여명세서</a></li>
+        <li><a href="${pageContext.servletContext.contextPath }/account.do">매출보기</a></li>
+        <li><a href="${pageContext.servletContext.contextPath}/graph.do?id=${loginUser.id}">그래프 연습</a></li>
         <li><a href="${pageContext.servletContext.contextPath}/mvPayStub.do">급여명세서</a></li>
         <li><a href="#">text4</a></li>
       </ul>

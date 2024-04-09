@@ -3,6 +3,7 @@ package com.sdm.ssm.user.controller;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.security.SecureRandom;
 import java.util.Random;
 
 import javax.mail.internet.MimeMessage;
@@ -260,10 +261,20 @@ public class UserController {
 	
 	// 마이페이지 이동
 	@RequestMapping("goMyPage.do")
-	public String goMypageMethod(@RequestParam("userId") String userId, Model model) {
+	public String goMypageMethod(@RequestParam("userId") String userId, Model model,
+			@RequestParam(name = "profileUrl", required = false) String profilUrl) {
 		User loginUser = userService.selectUserById(userId);
 		logger.info("goMypage!!!!");
-		logger.info("loginUser : " + loginUser.toString());
+		
+		if(profilUrl == null || profilUrl.isEmpty()) {
+			logger.info("profilUrl!!!! : " + profilUrl);			
+		    loginUser.setProfileUrl(null);
+		} else {
+		    logger.info("profilUrl!!!! : " + profilUrl);
+		    loginUser.setProfileUrl(profilUrl);
+		}
+
+		
 		if(loginUser != null) {
 			model.addAttribute("loginUser", loginUser);
 			return "user/myPage";			
@@ -277,6 +288,12 @@ public class UserController {
 	@RequestMapping("goSearchId.do")
 	public String goSearchIdMethod() {
 		return "user/searchId";
+	}
+	
+	// 비밀번호 찾기 이동
+	@RequestMapping("goSearchPw.do")
+	public String goSearcPwdMethod() {
+		return "user/searchPw";
 	}
 		
 	
@@ -414,6 +431,8 @@ public class UserController {
 				}
 			} 
 			user.setProfileUrl(renameFileName);
+		} else {
+			user.setProfileUrl(user.getProfileUrl());			
 		}
 
 		String userPwd = user.getPassWd().trim();
@@ -449,6 +468,64 @@ public class UserController {
 		} else {
 			return "common/error";
 		}
+	}
+	
+	// 비밀번호 찾기
+	@RequestMapping(value = "searchPw.do", method = RequestMethod.POST)
+	public String searchPwMethod(User user, Model model) {
+		User findUser = null;
+		logger.info(user.toString());
+		findUser = userService.selectUserByEmailId(user);
+		logger.info(findUser.toString());
+
+		if (findUser != null) {
+			//소문자, 대문자, 숫자 
+		    final String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+=";
+		    
+		    SecureRandom rm = new SecureRandom();
+		    StringBuilder newPw = new StringBuilder();
+		    
+		    for(int i=0; i<11; i++) {
+		        //무작위로 문자열의 인덱스 반환
+		        int index = rm.nextInt(chars.length());
+		        //index의 위치한 랜덤값
+		        newPw.append(chars.charAt(index));
+		    }
+
+			// 이메일 보낼 양식
+			String setFrom = "msj102525@naver.com"; 
+			String toMail = user.getEmail();
+			String title = "임시 비밀번호 입니다.";
+			String content = "임시 비밀번호는 " + newPw + " 입니다." + "<br>" + "해당 비밀번호로 로그인 해주세요.";
+			
+			try {
+				MimeMessage message = mailSender.createMimeMessage(); // Spring에서 제공하는 mail API
+				MimeMessageHelper mailHelper = new MimeMessageHelper(message, "utf-8");
+				
+				mailHelper.setFrom(setFrom);
+				mailHelper.setTo(toMail);
+				mailHelper.setSubject(title);
+				mailHelper.setText(content, true);
+				mailSender.send(message);
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			logger.info("임시 비밀번호 : " + newPw);
+			
+			user.setPassWd(bcryptPwEncoder.encode(newPw.toString()));
+			
+			if(userService.updateUserPw(user) <= 0) {
+				model.addAttribute("message", "비밀번호 업데이트 오류");
+				return "common/error";
+			}
+			
+			return "user/login";
+		} else {
+			model.addAttribute("message", "일치하는 사람 없음");
+			return "common/error";
+		}
+		
 		
 	}
 
