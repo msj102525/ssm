@@ -9,9 +9,6 @@ import com.sdm.ssm.employee.model.vo.Employee;
 
 public interface EmployeeService {
 
-	//직원 목록
-	List<Employee> getAllEmployees();
-
 	Employee getEmployeeDetails(int empId);
 
 	int insertEmployee(Employee employee);
@@ -28,5 +25,5 @@ public interface EmployeeService {
 
 	ArrayList<Employee> employeeListMethod();
 
-
+	List<Employee> getAllEmployees(int id);
 }

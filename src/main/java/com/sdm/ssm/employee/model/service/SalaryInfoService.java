@@ -9,11 +9,11 @@ import com.sdm.ssm.employee.model.vo.SalaryInfo;
 
 public interface SalaryInfoService {
 
-	ArrayList<SalaryInfo> selectSalaryInfoMethod(int empId);
+	ArrayList<SalaryInfo> selectSalaryInfoMethod(int Id);
 
-	boolean insertSalaryInfo(SalaryInfo salaryInfo);
+	List<SalaryInfo> selectSalaryInfoByEmpId(int Id);
 
-	List<SalaryInfo> selectSalaryInfoByEmpId(int empId);
+	List<SalaryInfo> getSalaryDate(int Id);
 	
 	
 	

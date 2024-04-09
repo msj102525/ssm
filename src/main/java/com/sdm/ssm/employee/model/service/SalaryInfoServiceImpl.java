@@ -16,16 +16,16 @@ public class SalaryInfoServiceImpl implements SalaryInfoService {
 	private SalaryInfoDao salaryInfoDao;
 
 	@Override
-	public ArrayList<SalaryInfo> selectSalaryInfoMethod(int empId) {
-		return salaryInfoDao.selectSalaryInfoMethod(empId);
+	public ArrayList<SalaryInfo> selectSalaryInfoMethod(int Id) {
+		return salaryInfoDao.selectSalaryInfoMethod(Id);
 	}
-	 @Override
-	 public boolean insertSalaryInfo(SalaryInfo salaryInfo) {
-	   return salaryInfoDao.insertSalaryInfo(salaryInfo);
-	    }
 	@Override
-	public List<SalaryInfo> selectSalaryInfoByEmpId(int empId) {
-		return salaryInfoDao.selectSalaryInfoByEmpId(empId);
+	public List<SalaryInfo> selectSalaryInfoByEmpId(int Id) {
+		return salaryInfoDao.selectSalaryInfoByEmpId(Id);
+	}
+	@Override
+	public List<SalaryInfo> getSalaryDate(int Id) {
+		return salaryInfoDao.getSalaryDate(Id);
 	}
 
 

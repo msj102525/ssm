@@ -30,9 +30,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public List<Employee> employeeSearchMethod(Search search) {
         return employeeDao.employeeSearchMethod(search);
     }
-
- 
-    
+   
     @Override
     public int insertEmployee(Employee employee) {
         return employeeDao.insertEmployee(employee);
@@ -59,12 +57,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 	@Override
-	public List<Employee> getAllEmployees() {
-		// TODO Auto-generated method stub
-		return employeeDao.getAllEmployees();
+	public List<Employee> getAllEmployees(int id) {		
+		return employeeDao.getAllEmployees(id);
 	}
-
-	
 
 	
 }

@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.ui.Model;
 
 import com.sdm.ssm.common.Search;
 import com.sdm.ssm.employee.model.vo.Employee;
@@ -36,27 +37,27 @@ public class EmployeeDao {
     }
 
     public int insertEmployee(Employee employee) {
-        return sqlSessionTemplate.insert("employeeMapper.insertEmployee", employee);
+        return sqlSessionTemplate.insert("employeeMapper.insertemp", employee);
     }
 
     public int updateEmployee(Employee employee) {
-        return sqlSessionTemplate.update("employeeMapper.updateEmployee", employee);
+        return sqlSessionTemplate.update("employeeMapper.updateemp", employee);
     }
 
     public int deleteEmployee(int empId) {
-        return sqlSessionTemplate.delete("employeeMapper.deleteEmployee", empId);
+        return sqlSessionTemplate.delete("employeeMapper.deleteemp", empId);
     }
-
-
+    
     public Employee getEmployeeDetails(int empId) {
-        return sqlSessionTemplate.selectOne("employeMapper.getEmployeeDetails", empId);
+        return sqlSessionTemplate.selectOne("employeeMapper.updateemp", empId);
     }
 
-	public List<Employee> getAllEmployees() {
-		return sqlSessionTemplate.selectList("employeeMapper.getAllEmployees");
+	public List<Employee> getAllEmployees(int id) {
+		return sqlSessionTemplate.selectList("employeeMapper.selectAllEmployees", id);
 	}
 
 	public List<Employee> searchEmployeeByName(@Param("empName") String empName) {
 	    return sqlSessionTemplate.selectList("employeeMapper.searchEmployeeByName", empName);
 	}
+
 }

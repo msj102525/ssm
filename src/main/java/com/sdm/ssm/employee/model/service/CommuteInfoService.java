@@ -10,4 +10,6 @@ public interface CommuteInfoService {
 
 	boolean recordCommuteInfo(CommuteInfo commuteInfo);
 
+	List<CommuteInfo> commuteInfoPage(int id);
+
 }

@@ -138,7 +138,7 @@ input[type="submit"]:hover {
 				</tr>
 			</thead>
 			<tbody>
-				<c:forEach items="${requestScope.list}" var="employee">
+				<c:forEach items="${requestScope.employeeList}" var="employee">
 					<tr onclick="loadEmployeeDetails(${employee.empId})">
 						<td>${employee.empId}</td>
 						<td>${employee.empName}</td>
@@ -210,7 +210,7 @@ input[type="submit"]:hover {
 	</div>
 
 <script>
-// 선택된 직원 정보를 저장하는 변수
+//선택된 직원 정보를 저장하는 변수
 var selectedEmployee;
 
 // 직원 정보를 조회하는 함수
