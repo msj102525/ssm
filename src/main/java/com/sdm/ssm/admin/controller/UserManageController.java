@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -240,8 +241,21 @@ public class UserManageController {
 		return sendJson.toJSONString();
 	}
 	@RequestMapping("mvwelcom.do")
-	public String moveWelcomePageMethod() {
-		return "common/welcome";
+	public String moveWelcomePageMethod(@RequestParam(name="serviceDate", required=false) String serviceDate, Model model) {
+		LocalDate currentDate = LocalDate.now();
+		
+		if(serviceDate!=null&&serviceDate.length()>0) {
+			LocalDate parsedServiceDate = LocalDate.parse(serviceDate);
+	        if (currentDate.isAfter(parsedServiceDate)) {
+	        	model.addAttribute("message", "기간이 만료되었습니다! 결제후 이용해주세요!");
+	        	return "redirect:slist.do";
+	        }else {
+	        	return "common/welcome";
+	        }
+        }else {
+        	model.addAttribute("message", "결제후 이용해주세요!");
+        	return "redirect:slist.do";
+        }
 	}
 
 }

@@ -47,9 +47,10 @@ public class SubscribeController {
 	
 		// 리스트내보내기
 		@RequestMapping(value="slist.do", method= {RequestMethod.POST, RequestMethod.GET})
-		public String subscribeListMethod(Model model) {
+		public String subscribeListMethod(Model model, @RequestParam(name="message", required = false) String message) {
 			ArrayList<Subscribe> list = subscribeService.selectList();
 				model.addAttribute("list", list);
+				model.addAttribute("message", message);
 				return "subscribe/subscribeListView";
 		}
 		//구독결제

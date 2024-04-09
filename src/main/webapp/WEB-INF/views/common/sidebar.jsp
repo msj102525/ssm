@@ -216,7 +216,7 @@ body {
       <ul>
         <li><a href="#">text1</a></li>
         <li><a href="#">text2</a></li>
-        <li><a href="#">text3</a></li>
+        <li><a href="${pageContext.servletContext.contextPath}/mvPayStub.do">급여명세서</a></li>
         <li><a href="#">text4</a></li>
       </ul>
     </li>

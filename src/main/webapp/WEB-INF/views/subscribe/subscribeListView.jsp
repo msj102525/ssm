@@ -191,6 +191,7 @@ img.selected {
 	<br>
 	<br>
 	<div class="container">
+	<input id="message" type="hidden" value="${requestScope.message }">
 		<div class="subscribeList">
 			<p class="title">구독 상품</p>
 			<table>

@@ -1,3 +1,8 @@
+$(function(){
+	if($("#message").val().length>0){
+				alert($("#message").val());
+			}
+});
 $(function() {
 			$('tr').click(function(){
 			// 클릭한 행의 체크박스 상태를 변경
