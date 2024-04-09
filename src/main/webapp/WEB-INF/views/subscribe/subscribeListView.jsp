@@ -103,12 +103,12 @@ p.title {
 	color: #4e5968;
 }
 /*결제 로고*/
-img {
+#payment-method img {
 	width: 100px;
 	height: 40px;
 }
 /* 이미지에 마우스를 올렸을 때 */
-img:hover {
+#payment-method img:hover {
 	transform: scale(1.05); /* 이미지 크기를 약간 키움 */
 	transition: transform 0.3s ease; /* 부드럽게 변화되도록 애니메이션 적용 */
 	cursor: pointer; /* 커서 모양을 손가락으로 변경 */
