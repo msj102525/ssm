@@ -1378,7 +1378,9 @@ END;
 --------------------------------------------
 CREATE SEQUENCE USER_SEQ
         INCREMENT BY 1
-        START WITH 1;
+        START WITH 1
+	NOCACHE
+	NOCYCLE;
 		
 CREATE SEQUENCE EMP_ID_SEQ
        START WITH 1
