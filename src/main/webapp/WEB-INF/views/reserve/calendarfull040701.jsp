@@ -40,10 +40,8 @@
 
 <style type="text/css">
 body {
-	/* line-height:14px; */
-	
+	line-height:14px;
 }
-
 
 #contents {
 	/* padding-top: 150px; */
@@ -216,11 +214,11 @@ input:hover, textarea:hover, input:focus, textarea:focus {
 } */
 
 </style>
+
 <script type="text/javascript">
 	$(()=> {
 		$("header").css("position", "static");	
 	});
-	
 </script>
 
 <script type="text/javascript">

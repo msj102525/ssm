@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -33,6 +34,7 @@ import com.sdm.ssm.reserve.model.service.ReserveService;
 import com.sdm.ssm.reserve.model.vo.DateData;
 import com.sdm.ssm.reserve.model.vo.Reserve;
 import com.sdm.ssm.reserve.model.vo.ScheduleDto;
+import com.sdm.ssm.user.model.vo.User;
 
 @Controller //설정 xml 에 해당 클래스를 Controller 로 자동 등록해 줌
 public class ReserveCalController {
@@ -44,12 +46,43 @@ public class ReserveCalController {
 	private ReserveService reserveService;
 	
 	//예약이동 페이지
-	@RequestMapping("moveRsrvCalPage.do")
-	public String moveCalWritePage() {
+	@RequestMapping("moveRsrvCalMain.do")
+	public String moveCalMainPage(
+			HttpServletRequest request,
+			HttpServletResponse res
+			) {
 		//return "reserve/reserve_input";
 		//return "redirect:calendar.do";
 		/* return "reserve/calendarfull040303"; */
+		//logger.info("ID-01 : " + id);
+		
+		//HttpSession session = request.getSession();
+		//User loginUser = (User)session.getAttribute("loginUser");
+		
+		//logger.info("ID-01 : " + loginUser.getId());
+		
+		return "reserve/calendarfull040901";
+	}
+	
+	//////////////////////////////////////////////////////////
+	///// 예약이동 페이지
+	//////////////////////////////////////////////////////////
+	@RequestMapping("moveRsrvCalPage.do")
+	public String moveCalWritePage(
+			HttpServletRequest request,
+			HttpServletResponse res
+			) {
+		//return "reserve/reserve_input";
+		//return "redirect:calendar.do";
+		/* return "reserve/calendarfull040303"; */
+		//logger.info("ID-01 : " + id);
+		
+		//HttpSession session = request.getSession();
+		//User loginUser = (User)session.getAttribute("loginUser");
+		
+		//logger.info("ID-01 : " + loginUser.getId());
 		return "reserve/calendarfull040701";
+		//return "reserve/calendarfull040901";
 	}
 	
 	//달력 기본 화면
@@ -81,12 +114,17 @@ public class ReserveCalController {
 			HttpServletResponse res,
 			ModelMap model) throws Exception {
 
-		logger.info("=========================================================");
+		//logger.info("=========================================================");
 		//logger.info("조회 일자 : " + searchVO.getStart());
 		//logger.info("조회 일자 : " + searchVO.getEnd());
-		logger.info("조회 일자 : " + searchVO.getStart().replace("-", ""));
-		logger.info("조회 일자 : " + searchVO.getEnd().replace("-", ""));
-		logger.info("=========================================================");
+		//logger.info("조회 일자 : " + searchVO.getStart().replace("-", ""));
+		//logger.info("조회 일자 : " + searchVO.getEnd().replace("-", ""));
+		//logger.info("=========================================================");
+		
+		HttpSession session = request.getSession();
+		User loginUser = (User)session.getAttribute("loginUser");
+
+		//logger.info("ID-02 : " + loginUser.getId());
 		
 		String sdate = searchVO.getStart().replace("-", "");
 		String edate = searchVO.getEnd().replace("-", "");
@@ -95,7 +133,13 @@ public class ReserveCalController {
 	    SerachDateStr serachDateStr = new SerachDateStr();
 	    serachDateStr.setSdate(sdate);
 	    serachDateStr.setEdate(edate);
-	    serachDateStr.setId(200);
+	    
+	    ////serachDateStr.setId(200);
+
+	    serachDateStr.setId(loginUser.getId());
+	    
+		//HttpSession session = request.getSession();
+		//Member loginMember = (Member)session.getAttribute("loginMember");
 
 	    //searchVO.setSite_code(loginService.getSiteCode());
 	    //List<Reserve> list = reserveService.selectRsrvDetail(reserve);
@@ -170,6 +214,9 @@ public class ReserveCalController {
 	        ModelMap model) throws Exception {
 			
 	    //LoginVO loginVO = loginService.getLoginInfo();
+		
+		HttpSession session = request.getSession();
+		User loginUser = (User)session.getAttribute("loginUser");
 			
 	    JSONObject obj = new JSONObject();
 	    
@@ -195,9 +242,10 @@ public class ReserveCalController {
 	    String rsrvDate = rsrv.getRsrvDate().replace("-", "");   //// 예약일자 format 제거(2024.04.05)
 	    rsrv.setRsrvDate(rsrvDate);
 	    
-	    rsrv.setId(200);
-    
-		if(reserveService.insertReserve(rsrv) > 0) {
+	    //rsrv.setId(200);
+	    rsrv.setId(loginUser.getId());
+	    
+		if (reserveService.insertReserve(rsrv) > 0) {
 		    obj.put("success", "ok");
 		}else {
 		    obj.put("success", "fail");
@@ -218,6 +266,9 @@ public class ReserveCalController {
 	        HttpServletResponse res,
 	        ModelMap model) throws Exception {
 		
+		HttpSession session = request.getSession();
+		User loginUser = (User)session.getAttribute("loginUser");
+
 	    //LoginVO loginVO = loginService.getLoginInfo();
 		
 	    JSONObject obj = new JSONObject();
@@ -241,7 +292,8 @@ public class ReserveCalController {
 	    String rsrvDate = rsrv.getRsrvDate().replace("-", "");   //// 예약일자 format 제거(2024.04.05)
 	    rsrv.setRsrvDate(rsrvDate);
 	    
-	    rsrv.setId(200);
+	    //rsrv.setId(200);
+	    rsrv.setId(loginUser.getId());
     
 		if(reserveService.updateReserve(rsrv) > 0) {
 		    obj.put("success", "ok");
@@ -264,6 +316,9 @@ public class ReserveCalController {
 	        ModelMap model) throws Exception {
 	    //LoginVO loginVO = loginService.getLoginInfo();
 	    
+		HttpSession session = request.getSession();
+		User loginUser = (User)session.getAttribute("loginUser");
+
 	    JSONObject obj = new JSONObject();
 	    
 	    res.setContentType("text/html; charset=UTF-8");
@@ -277,7 +332,9 @@ public class ReserveCalController {
 	    ObjectMapper mapper = new ObjectMapper();
 	    Reserve rsrv = (Reserve)mapper.readValue(filterJSON, new TypeReference<Reserve>(){ });
 	    //================================ json Object parse ============================
-	    rsrv.setId(200);
+	    
+	    //rsrv.setId(200);
+	    rsrv.setId(loginUser.getId());
 	    
 	    if (reserveService.deleteReserve(rsrv) > 0) {
 	    	obj.put("success", "ok");
@@ -289,6 +346,7 @@ public class ReserveCalController {
 	    
 	    return null;
 	}
+	
 	//////////////////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////////////////////////////////////////
 	@RequestMapping(value="calendar.do", method=RequestMethod.GET)
