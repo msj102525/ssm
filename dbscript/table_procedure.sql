@@ -1,104 +1,59 @@
-DROP TABLE TB_EMPLOYEE CASCADE CONSTRAINTS;
+---------------------------------------------
+-- DDL ÏÉùÏÑ± SCRIPT
+---------------------------------------------
 
-CREATE TABLE TB_EMPLOYEE (
-    EMP_ID NUMBER,
-    EMP_NAME VARCHAR2(30) NOT NULL,
-    POSITION VARCHAR2(20) NOT NULL,
-    EMP_HIREDATE DATE NOT NULL,
-    EMP_PHONE VARCHAR2(15) NOT NULL,
-    EMP_EMAIL VARCHAR2(30) NOT NULL,
-    EMP_ADDRESS VARCHAR2(50) NOT NULL,
-    EMP_BIRTHDATE DATE NOT NULL,
-    EMP_GENDER VARCHAR2(1) CHECK (EMP_GENDER IN ('M', 'F')) NOT NULL,
-    PRIMARY KEY(EMP_ID) 
-);
+--DROP TABLE TB_STORE CASCADE CONSTRAINTS;
+--DROP TABLE TB_USER CASCADE CONSTRAINTS;
+--DROP TABLE TB_USER_FINKOUT CASCADE CONSTRAINTS;
 
-COMMENT ON TABLE TB_EMPLOYEE IS '¡˜ø¯¡§∫∏';
-COMMENT ON COLUMN TB_EMPLOYEE.EMP_ID IS '¡˜ø¯π¯»£';
-COMMENT ON COLUMN TB_EMPLOYEE.EMP_NAME IS '¡˜ø¯¿Ã∏ß';
-COMMENT ON COLUMN TB_EMPLOYEE.POSITION IS '¡˜±ﬁ';
-COMMENT ON COLUMN TB_EMPLOYEE.EMP_HIREDATE IS '¿‘ªÁ≥Ø¬•';
-COMMENT ON COLUMN TB_EMPLOYEE.EMP_PHONE IS '¿¸»≠π¯»£';
-COMMENT ON COLUMN TB_EMPLOYEE.EMP_EMAIL IS '¿Ã∏ﬁ¿œ';
-COMMENT ON COLUMN TB_EMPLOYEE.EMP_ADDRESS IS '¡÷º“';
-COMMENT ON COLUMN TB_EMPLOYEE.EMP_BIRTHDATE IS 'ª˝≥‚ø˘¿œ';
-COMMENT ON COLUMN TB_EMPLOYEE.EMP_GENDER IS 'º∫∫∞';
+DECLARE
+  v_str VARCHAR(500);
+  v_cnt NUMBER(5, 0) := 0;
+BEGIN
+   ----------------------------------
+   -- TB_STORE
+   ----------------------------------
+   v_cnt := 0;
+   SELECT nvl(count(*), 0) as cnt
+     INTO v_cnt
+   FROM USER_TABLES
+   WHERE TABLE_NAME = 'TB_STORE';
+	 
+   IF v_cnt > 0 THEN
+      EXECUTE IMMEDIATE 'DROP TABLE TB_STORE CASCADE CONSTRAINTS';
+   END IF;
 
-
-DROP TABLE TB_COMMUTE_INFO CONSTRAINTS;
-CREATE TABLE TB_COMMUTE_INFO (
-EMP_ID NUMBER NOT NULL,
-START_TIME DATE,
-WORK_DAY DATE,
-END_TIME DATE,
-WORKING_HOURS VARCHAR2(30),
-LATE_FLAG VARCHAR2(1) CHECK (LATE_FLAG IN ('N', 'Y')),
-LEAVE_EARLY VARCHAR2(1) CHECK (LEAVE_EARLY IN ('N', 'Y')),
-ABSENTEEISM VARCHAR2(1) CHECK (ABSENTEEISM IN ('N', 'Y')),
-FOREIGN KEY (EMP_ID) REFERENCES TB_EMPLOYEE(EMP_ID)
-);
-
-COMMENT ON TABLE TB_COMMUTE_INFO IS '±Ÿ≈¬¡§∫∏';
-COMMENT ON COLUMN TB_COMMUTE_INFO.EMP_ID IS '¡˜ø¯π¯»£';
-COMMENT ON COLUMN TB_COMMUTE_INFO.START_TIME IS '√‚±ŸΩ√∞£';
-COMMENT ON COLUMN TB_COMMUTE_INFO.WORK_DAY IS '±Ÿπ´¿œ';
-COMMENT ON COLUMN TB_COMMUTE_INFO.END_TIME IS '≈±ŸΩ√∞£';
-COMMENT ON COLUMN TB_COMMUTE_INFO.WORKING_HOURS IS '±Ÿπ´Ω√∞£';
-COMMENT ON COLUMN TB_COMMUTE_INFO.LATE_FLAG IS '¡ˆ∞¢ø©∫Œ';
-COMMENT ON COLUMN TB_COMMUTE_INFO.LEAVE_EARLY IS '¡∂≈ø©∫Œ';
-COMMENT ON COLUMN TB_COMMUTE_INFO.ABSENTEEISM IS '∞·±Ÿø©∫Œ';
-
-COMMIT;
-
-DROP TABLE TB_CALENDAR CONSTRAINTS;
-CREATE TABLE TB_CALENDAR (
-EMP_ID NUMBER NOT NULL,
-REMARKS VARCHAR2(3000),
-FOREIGN KEY (EMP_ID) REFERENCES TB_EMPLOYEE(EMP_ID)
-);
-
-COMMENT ON TABLE TB_CALENDAR IS '¡˜ø¯ Ω∫ƒ…¡Ÿ';
-COMMENT ON COLUMN TB_CALENDAR.EMP_ID IS '¡˜ø¯π¯»£';
-COMMENT ON COLUMN TB_CALENDAR.REMARKS IS '∆Ø¿ÃªÁ«◊';
-
-
-DROP TABLE TB_SALARY_INFO  CONSTRAINTS;
-CREATE TABLE TB_SALARY_INFO (
-EMP_ID NUMBER NOT NULL,
-BANK_NAME VARCHAR2(30) NOT NULL,
-BANK_ACCOUNT_NO VARCHAR2(20) NOT NULL,
-ACCOUNT_HOLDER VARCHAR2(30) NOT NULL, --∫∏∑˘
-PREMIUM VARCHAR2(15),
-TAX VARCHAR2(15),
-FOREIGN KEY (EMP_ID) REFERENCES TB_EMPLOYEE(EMP_ID)
-);
-
-COMMENT ON TABLE TB_SALARY_INFO IS '±ﬁø© ¡§∫∏';
-COMMENT ON COLUMN TB_SALARY_INFO.EMP_ID IS '¡˜ø¯π¯»£';
-COMMENT ON COLUMN TB_SALARY_INFO.BANK_NAME IS '¿∫«‡¿Ã∏ß';
-COMMENT ON COLUMN TB_SALARY_INFO.BANK_ACCOUNT_NO IS '∞Ë¡¬π¯»£';
-COMMENT ON COLUMN TB_SALARY_INFO.ACCOUNT_HOLDER IS 'øπ±›¡÷';
-COMMENT ON COLUMN TB_SALARY_INFO.PREMIUM IS '∫∏«Ë∑·';
-COMMENT ON COLUMN TB_SALARY_INFO.TAX IS 'ºº±›';
-COMMIT;
-
-DROP SEQUENCE EMP_ID_SEQ;
-
-CREATE SEQUENCE EMP_ID_SEQ
-START WITH 1
-INCREMENT BY 1
-NOCACHE
-NOCYCLE;
-
-DROP SEQUENCE USER_SEQ;
-DROP TABLE TB_STORE CASCADE CONSTRAINTS;
-DROP TABLE TB_USER CASCADE CONSTRAINTS;
-DROP TABLE TB_USER_FINKOUT CASCADE CONSTRAINTS;
-
-CREATE SEQUENCE USER_SEQ
-NOCYCLE
-NOCACHE;
-
+   ----------------------------------
+   -- TB_USER
+   ----------------------------------
+   v_cnt := 0;
+   SELECT nvl(count(*), 0) as cnt
+     INTO v_cnt
+   FROM USER_TABLES
+   WHERE TABLE_NAME = 'TB_USER';
+	 
+   IF v_cnt > 0 THEN
+      EXECUTE IMMEDIATE 'DROP TABLE TB_USER CASCADE CONSTRAINTS';
+   END IF;
+   
+   ----------------------------------
+   -- TB_USER
+   ----------------------------------
+   v_cnt := 0;
+   SELECT nvl(count(*), 0) as cnt
+     INTO v_cnt
+   FROM USER_TABLES
+   WHERE TABLE_NAME = 'TB_USER_FINKOUT';
+	 
+   IF v_cnt > 0 THEN
+      EXECUTE IMMEDIATE 'DROP TABLE TB_USER_FINKOUT CASCADE CONSTRAINTS';
+   END IF;
+   
+EXCEPTION
+   WHEN OTHERS THEN
+      dbms_output.put_line(sqlerrm); 
+END;
+/
 
 CREATE TABLE TB_USER (
     ID int PRIMARY KEY,
@@ -119,20 +74,20 @@ CREATE TABLE TB_USER (
     BUSINESS_STORE_NAME VARCHAR2(50) NOT NULL
 );
 
-COMMENT ON COLUMN TB_USER.ID IS '¿Ø¿˙π¯»£';
-COMMENT ON COLUMN TB_USER.USER_ID IS 'æ∆¿Ãµ';
-COMMENT ON COLUMN TB_USER.PASSWD IS '∫Òπ–π¯»£';
-COMMENT ON COLUMN TB_USER.EMAIL IS '¿Ã∏ﬁ¿œ';
-COMMENT ON COLUMN TB_USER.USER_NO IS '¡÷πŒπ¯»£';
-COMMENT ON COLUMN TB_USER.PHONE IS '¿¸»≠π¯»£';
-COMMENT ON COLUMN TB_USER.ACCOUNT_NUMBER IS '∞Ë¡¬π¯»£';
-COMMENT ON COLUMN TB_USER.BANK_NAME IS '¿∫«‡∏Ì';
-COMMENT ON COLUMN TB_USER.PROFILE_URL IS '«¡∑Œ« ªÁ¡¯URL';
-COMMENT ON COLUMN TB_USER.IS_QUIT IS '≈ª≈ø©∫Œ';
-COMMENT ON COLUMN TB_USER.LOGIN_OK IS '∑Œ±◊¿Œ∞°¥…ø©∫Œ';
-COMMENT ON COLUMN TB_USER.LAST_MODIFIED IS '∏∂¡ˆ∏∑ºˆ¡§¿œ';
-COMMENT ON COLUMN TB_USER.BUSINESS_NO IS 'ªÁæ˜¿⁄π¯»£';
-COMMENT ON COLUMN TB_USER.BUSINESS_STORE_NAME IS 'ªÁæ˜¿Â∏Ì';
+COMMENT ON COLUMN TB_USER.ID IS 'Ïú†Ï†ÄÎ≤àÌò∏';
+COMMENT ON COLUMN TB_USER.USER_ID IS 'ÏïÑÏù¥Îîî';
+COMMENT ON COLUMN TB_USER.PASSWD IS 'ÎπÑÎ∞ÄÎ≤àÌò∏';
+COMMENT ON COLUMN TB_USER.EMAIL IS 'Ïù¥Î©îÏùº';
+COMMENT ON COLUMN TB_USER.USER_NO IS 'Ï£ºÎØºÎ≤àÌò∏';
+COMMENT ON COLUMN TB_USER.PHONE IS 'Ï†ÑÌôîÎ≤àÌò∏';
+COMMENT ON COLUMN TB_USER.ACCOUNT_NUMBER IS 'Í≥ÑÏ¢åÎ≤àÌò∏';
+COMMENT ON COLUMN TB_USER.BANK_NAME IS 'ÏùÄÌñâÎ™Ö';
+COMMENT ON COLUMN TB_USER.PROFILE_URL IS 'ÌîÑÎ°úÌïÑÏÇ¨ÏßÑURL';
+COMMENT ON COLUMN TB_USER.IS_QUIT IS 'ÌÉàÌá¥Ïó¨Î∂Ä';
+COMMENT ON COLUMN TB_USER.LOGIN_OK IS 'Î°úÍ∑∏Ïù∏Í∞ÄÎä•Ïó¨Î∂Ä';
+COMMENT ON COLUMN TB_USER.LAST_MODIFIED IS 'ÎßàÏßÄÎßâÏàòÏ†ïÏùº';
+COMMENT ON COLUMN TB_USER.BUSINESS_NO IS 'ÏÇ¨ÏóÖÏûêÎ≤àÌò∏';
+COMMENT ON COLUMN TB_USER.BUSINESS_STORE_NAME IS 'ÏÇ¨ÏóÖÏû•Î™Ö';
 
 ALTER TABLE TB_USER
 MODIFY (ACCOUNT_NUMBER VARCHAR2(20) null);
@@ -153,13 +108,12 @@ CREATE TABLE TB_USER_FINKOUT (
     FOREIGN KEY (FINKOUT_NO) REFERENCES TB_USER (ID)
 );
 
-COMMENT ON COLUMN TB_USER_FINKOUT.FINKOUT_NO IS '≈ª≈¿Ø¿˙π¯»£';
-COMMENT ON COLUMN TB_USER_FINKOUT.USER_ID IS '≈ª≈¿Ø¿˙æ∆¿Ãµ';
-COMMENT ON COLUMN TB_USER_FINKOUT.EMAIL IS '≈ª≈¿Ø¿˙¿Ã∏ﬁ¿œ';
-COMMENT ON COLUMN TB_USER_FINKOUT.FINKOUT_DATE IS '≈ª≈¿œ¿⁄';
+COMMENT ON COLUMN TB_USER_FINKOUT.FINKOUT_NO IS 'ÌÉàÌá¥Ïú†Ï†ÄÎ≤àÌò∏';
+COMMENT ON COLUMN TB_USER_FINKOUT.USER_ID IS 'ÌÉàÌá¥Ïú†Ï†ÄÏïÑÏù¥Îîî';
+COMMENT ON COLUMN TB_USER_FINKOUT.EMAIL IS 'ÌÉàÌá¥Ïú†Ï†ÄÏù¥Î©îÏùº';
+COMMENT ON COLUMN TB_USER_FINKOUT.FINKOUT_DATE IS 'ÌÉàÌá¥ÏùºÏûê';
 
 COMMIT;
-
 
 
 --DROP INDEX PK_TB_SUBSCRIBE;
@@ -172,20 +126,15 @@ CREATE TABLE TB_SUBSCRIBE (
 	SUBSCRIBE_DATE VARCHAR2(10)
 );
 
-COMMENT ON TABLE TB_SUBSCRIBE IS '±∏µ∂ªÛ«∞';
+COMMENT ON TABLE TB_SUBSCRIBE IS 'Íµ¨ÎèÖÏÉÅÌíà';
 
-COMMENT ON COLUMN TB_SUBSCRIBE.SUBSCRIBE_NO IS 'ªÛ«∞π¯»£';
+COMMENT ON COLUMN TB_SUBSCRIBE.SUBSCRIBE_NO IS 'ÏÉÅÌíàÎ≤àÌò∏';
 
-COMMENT ON COLUMN TB_SUBSCRIBE.SUBSCRIBE_NAME IS 'ªÛ«∞∏Ì';
+COMMENT ON COLUMN TB_SUBSCRIBE.SUBSCRIBE_NAME IS 'ÏÉÅÌíàÎ™Ö';
 
-COMMENT ON COLUMN TB_SUBSCRIBE.PRICE IS '∞°∞›';
+COMMENT ON COLUMN TB_SUBSCRIBE.PRICE IS 'Í∞ÄÍ≤©';
 
-COMMENT ON COLUMN TB_SUBSCRIBE.SUBSCRIBE_DATE IS '∏Ó∞≥ø˘¿Œ¡ˆ';
-
-CREATE UNIQUE INDEX PK_TB_SUBSCRIBE
-	ON TB_SUBSCRIBE (
-		SUBSCRIBE_NO ASC
-	);
+COMMENT ON COLUMN TB_SUBSCRIBE.SUBSCRIBE_DATE IS 'Î™áÍ∞úÏõîÏù∏ÏßÄ';
 
 ALTER TABLE TB_SUBSCRIBE
 	ADD
@@ -210,15 +159,15 @@ CREATE TABLE TB_SUBSCRIBE_PAYMENT (
 	PAY_DATE DATE DEFAULT SYSDATE NOT NULL
 );
 
-COMMENT ON TABLE TB_SUBSCRIBE_PAYMENT IS '±∏µ∂∞·¡¶';
+COMMENT ON TABLE TB_SUBSCRIBE_PAYMENT IS 'Íµ¨ÎèÖÍ≤∞Ï†ú';
 
-COMMENT ON COLUMN TB_SUBSCRIBE_PAYMENT.PAY_NO IS '∞·¡¶π¯»£';
+COMMENT ON COLUMN TB_SUBSCRIBE_PAYMENT.PAY_NO IS 'Í≤∞Ï†úÎ≤àÌò∏';
 
-COMMENT ON COLUMN TB_SUBSCRIBE_PAYMENT.USER_ID IS '∞·¡¶ ¿Ø¿˙';
+COMMENT ON COLUMN TB_SUBSCRIBE_PAYMENT.USER_ID IS 'Í≤∞Ï†ú Ïú†Ï†Ä';
 
-COMMENT ON COLUMN TB_SUBSCRIBE_PAYMENT.PAY_METHOD IS '∞·¡¶ºˆ¥‹';
+COMMENT ON COLUMN TB_SUBSCRIBE_PAYMENT.PAY_METHOD IS 'Í≤∞Ï†úÏàòÎã®';
 
-COMMENT ON COLUMN TB_SUBSCRIBE_PAYMENT.PAY_DATE IS '∞·¡¶¿œΩ√';
+COMMENT ON COLUMN TB_SUBSCRIBE_PAYMENT.PAY_DATE IS 'Í≤∞Ï†úÏùºÏãú';
 
 CREATE UNIQUE INDEX PK_TB_SUBSCRIBE_PAYMENT
 	ON TB_SUBSCRIBE_PAYMENT (
@@ -239,8 +188,6 @@ REFERENCES TB_USER (ID)
 ON DELETE SET NULL;
 
 
-
-
 ALTER TABLE TB_NOTICE DROP CONSTRAINT PK_TB_NOTICE;
 --DROP INDEX PK_TB_NOTICE;
 DROP TABLE TB_NOTICE 
@@ -257,21 +204,21 @@ CREATE TABLE TB_NOTICE (
 	IMPORTANCY VARCHAR2(1) DEFAULT '1' NOT NULL
 );
 
-COMMENT ON TABLE TB_NOTICE IS '∞¯¡ˆªÁ«◊';
+COMMENT ON TABLE TB_NOTICE IS 'Í≥µÏßÄÏÇ¨Ìï≠';
 
-COMMENT ON COLUMN TB_NOTICE.NOTICE_NO IS '∞¯¡ˆπ¯»£';
+COMMENT ON COLUMN TB_NOTICE.NOTICE_NO IS 'Í≥µÏßÄÎ≤àÌò∏';
 
-COMMENT ON COLUMN TB_NOTICE.NOTICE_TITLE IS '¡¶∏Ò';
+COMMENT ON COLUMN TB_NOTICE.NOTICE_TITLE IS 'Ï†úÎ™©';
 
-COMMENT ON COLUMN TB_NOTICE.NOTICE_CONTENT IS '≥ªøÎ';
+COMMENT ON COLUMN TB_NOTICE.NOTICE_CONTENT IS 'ÎÇ¥Ïö©';
 
-COMMENT ON COLUMN TB_NOTICE.WRITE_DATE IS '¿€º∫¿œ';
+COMMENT ON COLUMN TB_NOTICE.WRITE_DATE IS 'ÏûëÏÑ±Ïùº';
 
-COMMENT ON COLUMN TB_NOTICE.MODIFY_DATE IS 'ºˆ¡§≥Ø¬•';
+COMMENT ON COLUMN TB_NOTICE.MODIFY_DATE IS 'ÏàòÏ†ïÎÇ†Ïßú';
 
-COMMENT ON COLUMN TB_NOTICE.READ_COUNT IS '¡∂»∏ºˆ';
+COMMENT ON COLUMN TB_NOTICE.READ_COUNT IS 'Ï°∞ÌöåÏàò';
 
-COMMENT ON COLUMN TB_NOTICE.IMPORTANCY IS '¡ﬂø‰µµ';
+COMMENT ON COLUMN TB_NOTICE.IMPORTANCY IS 'Ï§ëÏöîÎèÑ';
 
 CREATE UNIQUE INDEX PK_TB_NOTICE
 	ON TB_NOTICE (
@@ -292,8 +239,6 @@ ALTER TABLE TB_NOTICE
 	ON DELETE SET NULL;
 
 
-
-
 --DROP INDEX PK_TB_INCONVINIENCE;
 
 DROP TABLE TB_INCONVINIENCE_BOARD CASCADE CONSTRAINTS;
@@ -308,21 +253,21 @@ CREATE TABLE TB_INCONVINIENCE_BOARD (
 	STATUS VARCHAR2(1) NOT NULL
 );
 
-COMMENT ON TABLE TB_INCONVINIENCE_BOARD IS '∫“∆ÌªÁ«◊∞‘Ω√∆«';
+COMMENT ON TABLE TB_INCONVINIENCE_BOARD IS 'Î∂àÌé∏ÏÇ¨Ìï≠Í≤åÏãúÌåê';
 
-COMMENT ON COLUMN TB_INCONVINIENCE_BOARD.BOARD_NO IS '∞‘Ω√±€π¯»£';
+COMMENT ON COLUMN TB_INCONVINIENCE_BOARD.BOARD_NO IS 'Í≤åÏãúÍ∏ÄÎ≤àÌò∏';
 
-COMMENT ON COLUMN TB_INCONVINIENCE_BOARD.WRITER IS '¿€º∫¿⁄';
+COMMENT ON COLUMN TB_INCONVINIENCE_BOARD.WRITER IS 'ÏûëÏÑ±Ïûê';
 
-COMMENT ON COLUMN TB_INCONVINIENCE_BOARD.BOARD_TITLE IS '¡¶∏Ò';
+COMMENT ON COLUMN TB_INCONVINIENCE_BOARD.BOARD_TITLE IS 'Ï†úÎ™©';
 
-COMMENT ON COLUMN TB_INCONVINIENCE_BOARD.BOARD_CONTENT IS '≥ªøÎ';
+COMMENT ON COLUMN TB_INCONVINIENCE_BOARD.BOARD_CONTENT IS 'ÎÇ¥Ïö©';
 
-COMMENT ON COLUMN TB_INCONVINIENCE_BOARD.WRITE_DATE IS '¿€º∫¿œ';
+COMMENT ON COLUMN TB_INCONVINIENCE_BOARD.WRITE_DATE IS 'ÏûëÏÑ±Ïùº';
 
-COMMENT ON COLUMN TB_INCONVINIENCE_BOARD.MODIFY_DATE IS 'ºˆ¡§≥Ø¬•';
+COMMENT ON COLUMN TB_INCONVINIENCE_BOARD.MODIFY_DATE IS 'ÏàòÏ†ïÎÇ†Ïßú';
 
-COMMENT ON COLUMN TB_INCONVINIENCE_BOARD.STATUS IS '¡∂ƒ°ªÛ≈¬';
+COMMENT ON COLUMN TB_INCONVINIENCE_BOARD.STATUS IS 'Ï°∞ÏπòÏÉÅÌÉú';
 
 CREATE UNIQUE INDEX PK_TB_INCONVINIENCE
 	ON TB_INCONVINIENCE_BOARD (
@@ -357,15 +302,15 @@ CREATE TABLE TB_INCONVINIENCE_BOARD_REPLY (
 	COMMENT_CONTENT VARCHAR2(500) NOT NULL
 );
 
-COMMENT ON TABLE TB_INCONVINIENCE_BOARD_REPLY IS '∫“∆ÌªÁ«◊∞‘Ω√∆«¥Ò±€';
+COMMENT ON TABLE TB_INCONVINIENCE_BOARD_REPLY IS 'Î∂àÌé∏ÏÇ¨Ìï≠Í≤åÏãúÌåêÎåìÍ∏Ä';
 
-COMMENT ON COLUMN TB_INCONVINIENCE_BOARD_REPLY.BOARD_NO IS 'ø¯±€π¯»£';
+COMMENT ON COLUMN TB_INCONVINIENCE_BOARD_REPLY.BOARD_NO IS 'ÏõêÍ∏ÄÎ≤àÌò∏';
 
-COMMENT ON COLUMN TB_INCONVINIENCE_BOARD_REPLY.WRITER IS '¿€º∫¿⁄';
+COMMENT ON COLUMN TB_INCONVINIENCE_BOARD_REPLY.WRITER IS 'ÏûëÏÑ±Ïûê';
 
-COMMENT ON COLUMN TB_INCONVINIENCE_BOARD_REPLY.WRITE_DATE IS '¿€º∫≥Ø¬•';
+COMMENT ON COLUMN TB_INCONVINIENCE_BOARD_REPLY.WRITE_DATE IS 'ÏûëÏÑ±ÎÇ†Ïßú';
 
-COMMENT ON COLUMN TB_INCONVINIENCE_BOARD_REPLY.COMMENT_CONTENT IS '¥Ò±€≥ªøÎ';
+COMMENT ON COLUMN TB_INCONVINIENCE_BOARD_REPLY.COMMENT_CONTENT IS 'ÎåìÍ∏ÄÎÇ¥Ïö©';
 
 CREATE UNIQUE INDEX PK_TB_INCONVINIENCE_REPLY
 	ON TB_INCONVINIENCE_BOARD_REPLY (
@@ -409,19 +354,19 @@ CREATE TABLE TB_USER_SUSPENSION (
 	SUSPENSION_CONTENT VARCHAR2(600)
 );
 
-COMMENT ON TABLE TB_USER_SUSPENSION IS '¡§¡ˆ≥ªø™';
+COMMENT ON TABLE TB_USER_SUSPENSION IS 'Ï†ïÏßÄÎÇ¥Ïó≠';
 
-COMMENT ON COLUMN TB_USER_SUSPENSION.SUSPENSION_NO IS '¡§¡ˆπ¯»£';
+COMMENT ON COLUMN TB_USER_SUSPENSION.SUSPENSION_NO IS 'Ï†ïÏßÄÎ≤àÌò∏';
 
-COMMENT ON COLUMN TB_USER_SUSPENSION.TARGET_ACCOUNT IS '¡§¡ˆ ¿Ø¿˙';
+COMMENT ON COLUMN TB_USER_SUSPENSION.TARGET_ACCOUNT IS 'Ï†ïÏßÄ Ïú†Ï†Ä';
 
-COMMENT ON COLUMN TB_USER_SUSPENSION.SUSPENSION_START IS '¡§¡ˆΩ√¿€≥Ø¬•';
+COMMENT ON COLUMN TB_USER_SUSPENSION.SUSPENSION_START IS 'Ï†ïÏßÄÏãúÏûëÎÇ†Ïßú';
 
-COMMENT ON COLUMN TB_USER_SUSPENSION.SUSPENSION_END IS '¡§¡ˆ«ÿ¡¶≥Ø¬•';
+COMMENT ON COLUMN TB_USER_SUSPENSION.SUSPENSION_END IS 'Ï†ïÏßÄÌï¥Ï†úÎÇ†Ïßú';
 
-COMMENT ON COLUMN TB_USER_SUSPENSION.SUSPENSION_TITLE IS '¡§¡ˆªÁ¿Ø';
+COMMENT ON COLUMN TB_USER_SUSPENSION.SUSPENSION_TITLE IS 'Ï†ïÏßÄÏÇ¨Ïú†';
 
-COMMENT ON COLUMN TB_USER_SUSPENSION.SUSPENSION_CONTENT IS '¡§¡ˆªÛºº';
+COMMENT ON COLUMN TB_USER_SUSPENSION.SUSPENSION_CONTENT IS 'Ï†ïÏßÄÏÉÅÏÑ∏';
 
 CREATE UNIQUE INDEX PK_TB_USER_SUSPENSION
 	ON TB_USER_SUSPENSION (
@@ -441,133 +386,283 @@ ALTER TABLE TB_USER_SUSPENSION
 	REFERENCES TB_USER (ID)
 	ON DELETE SET NULL;
 
-
-
-
-
--- TB_EMPLOYEE ≈◊¿Ã∫Ì ª˝º∫ «¡∑ŒΩ√¿˙
-CREATE OR REPLACE PROCEDURE CREATE_TB_EMPLOYEE (p_user_id IN NUMBER) IS
-BEGIN
-    EXECUTE IMMEDIATE 'CREATE TABLE TB_EMPLOYEE_' || p_user_id || ' (
-        EMP_ID NUMBER,
-        EMP_NAME VARCHAR2(30) NOT NULL,
-        POSITION VARCHAR2(20) NOT NULL,
-        EMP_HIREDATE DATE NOT NULL,
-        EMP_PHONE VARCHAR2(15) NOT NULL,
-        EMP_EMAIL VARCHAR2(30) NOT NULL,
-        EMP_ADDRESS VARCHAR2(50) NOT NULL,
-        EMP_BIRTHDATE DATE NOT NULL,
-        EMP_GENDER VARCHAR2(1) CHECK (EMP_GENDER IN (''M'', ''F'')) NOT NULL,
-        PRIMARY KEY(EMP_ID)
-    )';
-END;
-/
-
--- TB_COMMUTE_INFO ≈◊¿Ã∫Ì ª˝º∫ «¡∑ŒΩ√¿˙
-CREATE OR REPLACE PROCEDURE CREATE_TB_COMMUTE_INFO (p_user_id IN NUMBER) IS
-BEGIN
-    EXECUTE IMMEDIATE 'CREATE TABLE TB_COMMUTE_INFO_' || p_user_id || ' (
-        EMP_ID NUMBER NOT NULL,
-        START_TIME DATE,
-        WORK_DAY DATE,
-        END_TIME DATE,
-        WORKING_HOURS VARCHAR2(30),
-        LATE_FLAG VARCHAR2(1) CHECK (LATE_FLAG IN (''N'', ''Y'')),
-        LEAVE_EARLY VARCHAR2(1) CHECK (LEAVE_EARLY IN (''N'', ''Y'')),
-        ABSENTEEISM VARCHAR2(1) CHECK (ABSENTEEISM IN (''N'', ''Y'')),
-        FOREIGN KEY (EMP_ID) REFERENCES TB_EMPLOYEE_' || p_user_id || '(EMP_ID)
-    )';
-END;
-/
-
--- TB_CALENDAR ≈◊¿Ã∫Ì ª˝º∫ «¡∑ŒΩ√¿˙
-CREATE OR REPLACE PROCEDURE CREATE_TB_CALENDAR (p_user_id IN NUMBER) IS
-BEGIN
-    EXECUTE IMMEDIATE 'CREATE TABLE TB_CALENDAR_' || p_user_id || ' (
-        EMP_ID NUMBER NOT NULL,
-        REMARKS VARCHAR2(3000),
-        FOREIGN KEY (EMP_ID) REFERENCES TB_EMPLOYEE_' || p_user_id || '(EMP_ID)
-    )';
-END;
-/
-
--- TB_SALARY_INFO ≈◊¿Ã∫Ì ª˝º∫ «¡∑ŒΩ√¿˙
-CREATE OR REPLACE PROCEDURE CREATE_TB_SALARY_INFO (p_user_id IN NUMBER) IS
-BEGIN
-    EXECUTE IMMEDIATE 'CREATE TABLE TB_SALARY_INFO_' || p_user_id || ' (
-        EMP_ID NUMBER NOT NULL,
-        BANK_NAME VARCHAR2(30) NOT NULL,
-        BANK_ACCOUNT_NO VARCHAR2(20) NOT NULL,
-        ACCOUNT_HOLDER VARCHAR2(30) NOT NULL,
-        PREMIUM VARCHAR2(15),
-        TAX VARCHAR2(15),
-        FOREIGN KEY (EMP_ID) REFERENCES TB_EMPLOYEE_' || p_user_id || '(EMP_ID)
-    )';
-END;
-/
-CREATE OR REPLACE PROCEDURE CREATE_TB_POS (
-    p_user_id IN NUMBER
-)
+-----------------------------------------------
+--- USER IDÎ°ú TABLE ÏÉùÏÑ±
+-----------------------------------------------
+-- TB_EMPLOYEE ÌÖåÏù¥Î∏î ÏÉùÏÑ± ÌîÑÎ°úÏãúÏ†Ä
+CREATE OR REPLACE PROCEDURE PR_CREATE_TB_EMPLOYEE
+(p_user_id IN NUMBER) 
 IS
-    v_table_name VARCHAR2(100);
+   v_user_id    VARCHAR2(100);
+   v_table_name VARCHAR2(200);
+   v_str        VARCHAR2(1000);
 BEGIN
-    v_table_name := 'TB_POS_' || p_user_id;
-    BEGIN
-        EXECUTE IMMEDIATE 'CREATE TABLE ' || v_table_name || '(
-                            POS_NO NUMBER PRIMARY KEY
-                            )';
-    END;
+   ---------------------
+   --- Î≥ÄÏàò Ï¥àÍ∏∞Ìôî
+   ---------------------
+   v_user_id := '';
+   v_table_name := '';
+   
+   v_user_id := RTRIM(LTRIM(TO_CHAR(p_user_id)));
+   
+   v_table_name := 'TB_EMPLOYEE_' || v_user_id;
+
+   BEGIN
+      v_str := 'CREATE TABLE ' || v_table_name || ' ('
+            || '   EMP_ID NUMBER CONSTRAINT PK_' || v_table_name || ' PRIMARY KEY, '
+            || '   EMP_NAME VARCHAR2(30) NOT NULL, '
+            || '   POSITION VARCHAR2(20) NOT NULL, '
+            || '   EMP_HIREDATE DATE NOT NULL, '
+            || '   EMP_PHONE VARCHAR2(15) NOT NULL, '
+            || '   EMP_EMAIL VARCHAR2(30) NOT NULL, '
+            || '   EMP_ADDRESS VARCHAR2(50) NOT NULL, '
+            || '   EMP_BIRTHDATE DATE NOT NULL, '
+            || '   EMP_GENDER VARCHAR2(1) CHECK (EMP_GENDER IN (''M'', ''F'')) NOT NULL '
+            || ' )';
+			
+      EXECUTE IMMEDIATE v_str;
+
+      -------------------------------	  
+	  --- Ïª¨Îüº Ï†ïÎ≥¥
+      -------------------------------
+      EXECUTE IMMEDIATE 'COMMENT ON TABLE ' || v_table_name || ' IS ''ÏßÅÏõêÏ†ïÎ≥¥''';
+      EXECUTE IMMEDIATE 'COMMENT ON COLUMN ' || v_table_name || '.EMP_ID IS ''ÏßÅÏõêÎ≤àÌò∏''';
+      EXECUTE IMMEDIATE 'COMMENT ON COLUMN ' || v_table_name || '.EMP_NAME IS ''ÏßÅÏõêÏù¥Î¶Ñ''';
+      EXECUTE IMMEDIATE 'COMMENT ON COLUMN ' || v_table_name || '.POSITION IS ''ÏßÅÍ∏â''';
+      EXECUTE IMMEDIATE 'COMMENT ON COLUMN ' || v_table_name || '.EMP_HIREDATE IS ''ÏûÖÏÇ¨ÎÇ†Ïßú''';
+      EXECUTE IMMEDIATE 'COMMENT ON COLUMN ' || v_table_name || '.EMP_PHONE IS ''Ï†ÑÌôîÎ≤àÌò∏''';
+      EXECUTE IMMEDIATE 'COMMENT ON COLUMN ' || v_table_name || '.EMP_EMAIL IS ''Ïù¥Î©îÏùº''';
+      EXECUTE IMMEDIATE 'COMMENT ON COLUMN ' || v_table_name || '.EMP_ADDRESS IS ''Ï£ºÏÜå''';
+      EXECUTE IMMEDIATE 'COMMENT ON COLUMN ' || v_table_name || '.EMP_BIRTHDATE IS ''ÏÉùÎÖÑÏõîÏùº''';
+      EXECUTE IMMEDIATE 'COMMENT ON COLUMN ' || v_table_name || '.EMP_GENDER IS ''ÏÑ±Î≥Ñ''';
+
+   END;  
+
+EXCEPTION
+   WHEN OTHERS THEN
+      dbms_output.put_line(sqlerrm); 
 END;
 /
 
-CREATE OR REPLACE PROCEDURE CREATE_TB_TABLE (
-    p_user_id IN NUMBER
-)
+-- TB_COMMUTE_INFO ÌÖåÏù¥Î∏î ÏÉùÏÑ± ÌîÑÎ°úÏãúÏ†Ä
+CREATE OR REPLACE PROCEDURE PR_CREATE_TB_COMMUTE_INFO
+(p_user_id IN NUMBER)
 IS
-    v_table_name VARCHAR2(100);
+   v_user_id    VARCHAR2(100);
+   v_table_name VARCHAR2(200);
+   v_str        VARCHAR2(1000);
 BEGIN
-    v_table_name := 'TB_TABLE_' || p_user_id;
-    BEGIN
-        EXECUTE IMMEDIATE 'CREATE TABLE ' || v_table_name || '(
-                            TABLE_NO NUMBER PRIMARY KEY, 
-                            TABLE_NAME VARCHAR2(60) NOT NULL,
-                            TABLE_X NUMBER NOT NULL,
-                            TABLE_Y NUMBER NOT NULL
-                            )';
-    END;
+   ---------------------
+   --- Î≥ÄÏàò Ï¥àÍ∏∞Ìôî
+   ---------------------
+   v_user_id := '';
+   v_table_name := '';
+   
+   v_user_id := RTRIM(LTRIM(TO_CHAR(p_user_id)));
+   
+   v_table_name := 'TB_COMMUTE_INFO_' || v_user_id;
+   BEGIN
+      v_str := 'CREATE TABLE ' || v_table_name || ' ('
+            || '   EMP_ID NUMBER NOT NULL, '
+            || '   START_TIME DATE, '
+            || '   WORK_DAY DATE, '
+            || '   END_TIME DATE, '
+            || '   WORKING_HOURS VARCHAR2(30), '
+            || '   LATE_FLAG VARCHAR2(1) CHECK (LATE_FLAG IN (''N'', ''Y'')), '
+            || '   LEAVE_EARLY VARCHAR2(1) CHECK (LEAVE_EARLY IN (''N'', ''Y'')), '
+            || '   ABSENTEEISM VARCHAR2(1) CHECK (ABSENTEEISM IN (''N'', ''Y'')), '
+            || ' CONSTRAINT FK_' || v_table_name || '_EMP_ID FOREIGN KEY (EMP_ID) '
+            || ' REFERENCES TB_EMPLOYEE_' || v_user_id || ' (EMP_ID) '
+            || ' )';
+
+      EXECUTE IMMEDIATE v_str;
+	  
+      -------------------------------	  
+	  --- Ïª¨Îüº Ï†ïÎ≥¥
+      -------------------------------
+      EXECUTE IMMEDIATE 'COMMENT ON TABLE ' || v_table_name || ' IS ''Í∑ºÌÉúÏ†ïÎ≥¥''';
+      EXECUTE IMMEDIATE 'COMMENT ON COLUMN ' || v_table_name || '.EMP_ID IS ''ÏßÅÏõêÎ≤àÌò∏''';
+      EXECUTE IMMEDIATE 'COMMENT ON COLUMN ' || v_table_name || '.START_TIME IS ''Ï∂úÍ∑ºÏãúÍ∞Ñ''';
+      EXECUTE IMMEDIATE 'COMMENT ON COLUMN ' || v_table_name || '.WORK_DAY IS ''Í∑ºÎ¨¥Ïùº''';
+      EXECUTE IMMEDIATE 'COMMENT ON COLUMN ' || v_table_name || '.END_TIME IS ''Ìá¥Í∑ºÏãúÍ∞Ñ''';
+      EXECUTE IMMEDIATE 'COMMENT ON COLUMN ' || v_table_name || '.WORKING_HOURS IS ''Í∑ºÎ¨¥ÏãúÍ∞Ñ''';
+      EXECUTE IMMEDIATE 'COMMENT ON COLUMN ' || v_table_name || '.LATE_FLAG IS ''ÏßÄÍ∞ÅÏó¨Î∂Ä''';
+      EXECUTE IMMEDIATE 'COMMENT ON COLUMN ' || v_table_name || '.LEAVE_EARLY IS ''Ï°∞Ìá¥Ïó¨Î∂Ä''';
+      EXECUTE IMMEDIATE 'COMMENT ON COLUMN ' || v_table_name || '.ABSENTEEISM IS ''Í≤∞Í∑ºÏó¨Î∂Ä''';
+
+   END;
+
+EXCEPTION
+   WHEN OTHERS THEN
+      dbms_output.put_line(sqlerrm); 
 END;
 /
-CREATE OR REPLACE PROCEDURE CREATE_TB_MENU (
-    p_user_id IN NUMBER
-)
+
+-- TB_CALENDAR ÌÖåÏù¥Î∏î ÏÉùÏÑ± ÌîÑÎ°úÏãúÏ†Ä
+CREATE OR REPLACE PROCEDURE PR_CREATE_TB_CALENDAR 
+(p_user_id IN NUMBER)
 IS
-    v_table_name VARCHAR2(100);
+   v_user_id    VARCHAR2(100);
+   v_table_name VARCHAR2(200);
+   v_str        VARCHAR2(1000);
 BEGIN
-    v_table_name := 'TB_MENU_' || p_user_id;
-    BEGIN
-        EXECUTE IMMEDIATE 'CREATE TABLE ' || v_table_name || '(
-                            MENU_NO NUMBER PRIMARY KEY,
-                            MENU_NAME VARCHAR2(60) NOT NULL,
-                            PRICE NUMBER NOT NULL
-                            )';
-    END;
-END;
-/
--------------------------------------
--- øπæ‡∞¸∏Æ TABLE ª˝º∫
--------------------------------------
-CREATE OR REPLACE PROCEDURE PR_CREATE_TB_RESERVATION_TABLE (
-    p_user_id IN NUMBER
-)
-IS
-    v_table_name VARCHAR2(200);
-    v_str VARCHAR2(2000);
-BEGIN
-   -- ¿Ø¿˙ æ∆¿Ãµ∏¶ ¿ÃøÎ«œø© ≈◊¿Ã∫Ì ¿Ã∏ß ª˝º∫
-   v_table_name := 'TB_RESERVATION_' || RTRIM(LTRIM(TO_CHAR(p_user_id)));
-   dbms_output.put_line(v_table_name);
+   ---------------------
+   --- Î≥ÄÏàò Ï¥àÍ∏∞Ìôî
+   ---------------------
+   v_user_id := '';
+   v_table_name := '';
+   
+   v_user_id := RTRIM(LTRIM(TO_CHAR(p_user_id)));
+   
+   v_table_name := 'TB_CALENDAR_' || v_user_id;
    
    BEGIN
+      v_str := 'CREATE TABLE ' || v_table_name || '('
+            || '   EMP_ID NUMBER NOT NULL, '
+            || '   REMARKS VARCHAR2(3000), '
+            || ' CONSTRAINT FK_' || v_table_name || '_EMP_ID FOREIGN KEY (EMP_ID) '
+			|| ' REFERENCES TB_EMPLOYEE_' || v_user_id || ' (EMP_ID) '
+            || '   )';
+			
+      EXECUTE IMMEDIATE v_str;
+	  
+      -------------------------------	  
+	  --- Ïª¨Îüº Ï†ïÎ≥¥
+      -------------------------------
+      EXECUTE IMMEDIATE 'COMMENT ON TABLE ' || v_table_name || ' IS ''ÏßÅÏõê Ïä§ÏºÄÏ§Ñ''';
+      EXECUTE IMMEDIATE 'COMMENT ON COLUMN ' || v_table_name || '.EMP_ID IS ''ÏßÅÏõêÎ≤àÌò∏''';
+      EXECUTE IMMEDIATE 'COMMENT ON COLUMN ' || v_table_name || '.REMARKS IS ''ÌäπÏù¥ÏÇ¨Ìï≠''';
+
+   END;
+
+EXCEPTION
+   WHEN OTHERS THEN
+      dbms_output.put_line(sqlerrm); 
+END;
+/
+
+CREATE OR REPLACE PROCEDURE PR_CREATE_TB_POS
+(p_user_id IN NUMBER)
+IS
+   v_user_id    VARCHAR2(100);
+   v_table_name VARCHAR2(200);
+   v_str        VARCHAR2(1000);
+BEGIN
+   ---------------------
+   --- Î≥ÄÏàò Ï¥àÍ∏∞Ìôî
+   ---------------------
+   v_user_id := '';
+   v_table_name := '';
+   
+   v_user_id := RTRIM(LTRIM(TO_CHAR(p_user_id)));
+
+   v_table_name := 'TB_POS_' || v_user_id;
+   
+   BEGIN
+   
+      v_str := 'CREATE TABLE ' || v_table_name || '('
+            || '  POS_NO NUMBER CONSTRAINT PK_' || v_table_name || ' PRIMARY KEY '
+            || '  )';
+
+      EXECUTE IMMEDIATE v_str;
+   END;
+	
+EXCEPTION
+   WHEN OTHERS THEN
+      dbms_output.put_line(sqlerrm); 
+END;
+/
+
+CREATE OR REPLACE PROCEDURE PR_CREATE_TB_TABLE
+(p_user_id IN NUMBER)
+IS
+   v_user_id    VARCHAR2(100);
+   v_table_name VARCHAR2(200);
+   v_str        VARCHAR2(1000);
+BEGIN
+   ---------------------
+   --- Î≥ÄÏàò Ï¥àÍ∏∞Ìôî
+   ---------------------
+   v_user_id := '';
+   v_table_name := '';
+   
+   v_user_id := RTRIM(LTRIM(TO_CHAR(p_user_id)));
+
+   v_table_name := 'TB_TABLE_' || v_user_id;
+   BEGIN
+      v_str := 'CREATE TABLE ' || v_table_name || '('
+            || '  TABLE_NO NUMBER CONSTRAINT PK_' || v_table_name || ' PRIMARY KEY, '
+            || '  TABLE_NAME VARCHAR2(60) NOT NULL, '
+            || '  TABLE_X NUMBER NOT NULL, '
+            || '  TABLE_Y NUMBER NOT NULL  '
+            || '  )';
+
+      EXECUTE IMMEDIATE v_str;
+   END;
+
+EXCEPTION
+   WHEN OTHERS THEN
+      dbms_output.put_line(sqlerrm); 
+END;
+/
+
+CREATE OR REPLACE PROCEDURE PR_CREATE_TB_MENU
+(p_user_id IN NUMBER)
+IS
+   v_user_id    VARCHAR2(100);
+   v_table_name VARCHAR2(200);
+   v_str        VARCHAR2(1000);
+BEGIN
+   ---------------------
+   --- Î≥ÄÏàò Ï¥àÍ∏∞Ìôî
+   ---------------------
+   v_user_id := '';
+   v_table_name := '';
+   
+   v_user_id := RTRIM(LTRIM(TO_CHAR(p_user_id)));
+
+   v_table_name := 'TB_MENU_' || v_user_id;
+   BEGIN
+      v_str := ' CREATE TABLE ' || v_table_name || '('
+              || '   MENU_NO NUMBER CONSTRAINT PK_' || v_table_name || ' PRIMARY KEY, '
+              || '   MENU_NAME VARCHAR2(60) NOT NULL, '
+              || '   PRICE NUMBER NOT NULL '
+              || '   )';
+			  
+      EXECUTE IMMEDIATE v_str;
+	  
+   END;
+EXCEPTION
+   WHEN OTHERS THEN
+      dbms_output.put_line(sqlerrm); 
+END;
+/
+
+-------------------------------------
+-- ÏòàÏïΩÍ¥ÄÎ¶¨ TABLE ÏÉùÏÑ±
+-------------------------------------
+CREATE OR REPLACE PROCEDURE PR_CREATE_TB_RESERVATION
+(p_user_id IN NUMBER)
+IS
+   v_user_id    VARCHAR2(100);
+   v_table_name VARCHAR2(200);
+   v_str        VARCHAR2(1000);
+BEGIN
+   ---------------------
+   --- Î≥ÄÏàò Ï¥àÍ∏∞Ìôî
+   ---------------------
+   v_user_id := '';
+   v_table_name := '';
+   
+   v_user_id := RTRIM(LTRIM(TO_CHAR(p_user_id)));
+
+   -- Ïú†Ï†Ä ÏïÑÏù¥ÎîîÎ•º Ïù¥Ïö©ÌïòÏó¨ ÌÖåÏù¥Î∏î Ïù¥Î¶Ñ ÏÉùÏÑ±
+   v_table_name := 'TB_RESERVATION_' || v_user_id;
+   
+   --dbms_output.put_line(v_table_name);
+   
+   BEGIN
+      v_str := '';
       v_str := 'CREATE TABLE ' || v_table_name || '(' ||
                '   RSRV_NUM NUMBER NOT NULL ' ||
                ' ,RSRV_DATE VARCHAR2(8) ' ||
@@ -585,29 +680,32 @@ BEGIN
 	  
       EXECUTE IMMEDIATE v_str;
 
-      EXECUTE IMMEDIATE ' ALTER TABLE ' || v_table_name || 
-                        ' ADD CONSTRAINT PK_' || v_table_name ||
-                        '   PRIMARY KEY (RSRV_NUM)';
+      v_str := '';
+	  v_str := ' ALTER TABLE ' || v_table_name || 
+               ' ADD CONSTRAINT PK_' || v_table_name ||
+               '   PRIMARY KEY (RSRV_NUM)';
+			   
+      EXECUTE IMMEDIATE v_str;
 
-      EXECUTE IMMEDIATE 'COMMENT ON TABLE ' || v_table_name || ' IS ''øπæ‡∞¸∏Æ''';
-      EXECUTE IMMEDIATE 'COMMENT ON COLUMN ' || v_table_name || '.RSRV_NUM IS ''øπæ‡π¯»£''';
-      EXECUTE IMMEDIATE 'COMMENT ON COLUMN ' || v_table_name || '.RSRV_DATE IS ''øπæ‡¿œ¿⁄''';
-      EXECUTE IMMEDIATE 'COMMENT ON COLUMN ' || v_table_name || '.RSRV_TIME IS ''øπæ‡Ω√∞£''';
-      EXECUTE IMMEDIATE 'COMMENT ON COLUMN ' || v_table_name || '.RSRV_NAME IS ''øπæ‡¿⁄∏Ì''';
-      EXECUTE IMMEDIATE 'COMMENT ON COLUMN ' || v_table_name || '.RSRV_TELNO IS ''øπæ‡¿¸»≠π¯»£''';
-      EXECUTE IMMEDIATE 'COMMENT ON COLUMN ' || v_table_name || '.RSRV_INWON IS ''¿Œø¯''';
-      EXECUTE IMMEDIATE 'COMMENT ON COLUMN ' || v_table_name || '.RSRV_SUBJECT IS ''¡¶∏Ò''';
-      EXECUTE IMMEDIATE 'COMMENT ON COLUMN ' || v_table_name || '.RSRV_MEMO IS ''∏ﬁ∏''';
-      EXECUTE IMMEDIATE 'COMMENT ON COLUMN ' || v_table_name || '.WRITER IS ''¿€º∫¿œ¿⁄''';
-      EXECUTE IMMEDIATE 'COMMENT ON COLUMN ' || v_table_name || '.WRITE_DATE IS ''¿€º∫¿œ¿⁄''';
+      EXECUTE IMMEDIATE 'COMMENT ON TABLE ' || v_table_name || ' IS ''ÏòàÏïΩÍ¥ÄÎ¶¨''';
+      EXECUTE IMMEDIATE 'COMMENT ON COLUMN ' || v_table_name || '.RSRV_NUM IS ''ÏòàÏïΩÎ≤àÌò∏''';
+      EXECUTE IMMEDIATE 'COMMENT ON COLUMN ' || v_table_name || '.RSRV_DATE IS ''ÏòàÏïΩÏùºÏûê''';
+      EXECUTE IMMEDIATE 'COMMENT ON COLUMN ' || v_table_name || '.RSRV_TIME IS ''ÏòàÏïΩÏãúÍ∞Ñ''';
+      EXECUTE IMMEDIATE 'COMMENT ON COLUMN ' || v_table_name || '.RSRV_NAME IS ''ÏòàÏïΩÏûêÎ™Ö''';
+      EXECUTE IMMEDIATE 'COMMENT ON COLUMN ' || v_table_name || '.RSRV_TELNO IS ''ÏòàÏïΩÏ†ÑÌôîÎ≤àÌò∏''';
+      EXECUTE IMMEDIATE 'COMMENT ON COLUMN ' || v_table_name || '.RSRV_INWON IS ''Ïù∏Ïõê''';
+      EXECUTE IMMEDIATE 'COMMENT ON COLUMN ' || v_table_name || '.RSRV_SUBJECT IS ''Ï†úÎ™©''';
+      EXECUTE IMMEDIATE 'COMMENT ON COLUMN ' || v_table_name || '.RSRV_MEMO IS ''Î©îÎ™®''';
+      EXECUTE IMMEDIATE 'COMMENT ON COLUMN ' || v_table_name || '.WRITER IS ''ÏûëÏÑ±ÏùºÏûê''';
+      EXECUTE IMMEDIATE 'COMMENT ON COLUMN ' || v_table_name || '.WRITE_DATE IS ''ÏûëÏÑ±ÏùºÏûê''';
 	  
       --------------------------------------------
-      --- SEQUENSE √ﬂ∞°(2024.04.07)
+      --- SEQUENSE Ï∂îÍ∞Ä(2024.04.07)
       --------------------------------------------
-      EXECUTE IMMEDIATE 'CREATE SEQUENCE ' || v_table_name || '_SEQ '
+      EXECUTE IMMEDIATE ' CREATE SEQUENCE ' || v_table_name || '_SEQ '
                        || ' INCREMENT BY 1 ' 
 					   || ' START WITH 1 ';
-					   
+
    EXCEPTION
       WHEN OTHERS THEN
       dbms_output.put_line(sqlerrm); 
@@ -615,100 +713,136 @@ BEGIN
 END;
 /
 
-
-CREATE SEQUENCE ingno
-MINVALUE 1;
-
-CREATE SEQUENCE inpno
-MINVALUE 1;
-
-
--------------- ªÛ«∞ ≈◊¿Ã∫Ì --------------- 
-CREATE OR REPLACE PROCEDURE create_goods_table (
-    p_user_id IN NUMBER
-)
+-------------- ÏÉÅÌíà ÌÖåÏù¥Î∏î --------------- 
+CREATE OR REPLACE PROCEDURE PR_CREATE_TB_GOODS
+(p_user_id IN NUMBER)
 IS
-    v_table_name VARCHAR2(100);
+   v_user_id    VARCHAR2(100);
+   v_table_name VARCHAR2(200);
+   v_str        VARCHAR2(1000);
 BEGIN
-    -- ¿Ø¿˙ æ∆¿Ãµ∏¶ ¿ÃøÎ«œø© ≈◊¿Ã∫Ì ¿Ã∏ß ª˝º∫
-    v_table_name := 'TB_GOODS_' || p_user_id;
+   ---------------------
+   --- Î≥ÄÏàò Ï¥àÍ∏∞Ìôî
+   ---------------------
+   v_user_id := '';
+   v_table_name := '';
+   
+   v_user_id := RTRIM(LTRIM(TO_CHAR(p_user_id)));
 
-    -- ≈◊¿Ã∫Ì ª˝º∫
-    EXECUTE IMMEDIATE 'CREATE TABLE ' || v_table_name || '(
-        ID NUMBER,
-        GOODS_NO NUMBER NOT NULL PRIMARY KEY,
-        GOODS_NAME VARCHAR2(300) NOT NULL,
-        GOODS_UNIT VARCHAR2(30),
-        GOODS_PRICE NUMBER,
-        NATION VARCHAR2(30) DEFAULT NULL
-    )';
+    -- Ïú†Ï†Ä ÏïÑÏù¥ÎîîÎ•º Ïù¥Ïö©ÌïòÏó¨ ÌÖåÏù¥Î∏î Ïù¥Î¶Ñ ÏÉùÏÑ±
+    v_table_name := 'TB_GOODS_' || v_user_id;
+
+    v_str := ' CREATE TABLE ' || v_table_name || '('
+           || '  ID NUMBER, '
+           || '  GOODS_NO NUMBER CONSTRAINT PK_' || v_table_name || ' PRIMARY KEY, '
+           || '  GOODS_NAME VARCHAR2(300) NOT NULL, '
+           || '  GOODS_UNIT VARCHAR2(30), '
+           || '  GOODS_PRICE NUMBER,      '
+           || '  NATION VARCHAR2(30) DEFAULT NULL '
+           || '  ) ';
+
+    -- ÌÖåÏù¥Î∏î ÏÉùÏÑ±
+    EXECUTE IMMEDIATE v_str; 
+
 EXCEPTION
-    WHEN OTHERS THEN
-        NULL; 
+   WHEN OTHERS THEN
+      dbms_output.put_line(sqlerrm); 
 END;
-
 /
--- ¿Á∞Ì ≈◊¿Ã∫Ì
-CREATE OR REPLACE PROCEDURE create_inventory_table (
-    p_user_id IN NUMBER
-)
-IS
-    v_table_name VARCHAR2(100);
-BEGIN
-    -- ¿Ø¿˙ æ∆¿Ãµ∏¶ ¿ÃøÎ«œø© ≈◊¿Ã∫Ì ¿Ã∏ß ª˝º∫
-    v_table_name := 'TB_INVENTORY_' || p_user_id;
 
-    -- µø¿˚ SQL Ω««‡
-    EXECUTE IMMEDIATE 'CREATE TABLE ' || v_table_name || '(
-                        GOODS_NO NUMBER PRIMARY KEY,
-                        PD_QUANTITY NUMBER NOT NULL,
-                        MIN_ALARM_QUANTITY NUMBER,
-                        MIN_ORDER_QUANTITY NUMBER,
-                        FOREIGN KEY (GOODS_NO) REFERENCES TB_GOODS_' || p_user_id || '(GOODS_NO) ON DELETE CASCADE
-                    )';
+-- Ïû¨Í≥† ÌÖåÏù¥Î∏î
+CREATE OR REPLACE PROCEDURE PR_CREATE_TB_INVENTORY
+(p_user_id IN NUMBER)
+IS
+   v_user_id    VARCHAR2(100);
+   v_table_name VARCHAR2(200);
+   v_str        VARCHAR2(1000);
+BEGIN
+   v_user_id := '';
+   v_table_name := '';
+   
+   v_user_id := RTRIM(LTRIM(TO_CHAR(p_user_id)));
+
+    -- Ïú†Ï†Ä ÏïÑÏù¥ÎîîÎ•º Ïù¥Ïö©ÌïòÏó¨ ÌÖåÏù¥Î∏î Ïù¥Î¶Ñ ÏÉùÏÑ±
+    v_table_name := 'TB_INVENTORY_' || v_user_id;
+
+    v_str := 'CREATE TABLE ' || v_table_name || '('
+             || '   GOODS_NO NUMBER PRIMARY KEY, '
+             || '   PD_QUANTITY NUMBER NOT NULL, '
+             || '   MIN_ALARM_QUANTITY NUMBER,   '
+             || '   MIN_ORDER_QUANTITY NUMBER,   '
+             || ' CONSTRAINT FK_' || v_table_name || '_GOODS_NO '
+			 || '    FOREIGN KEY (GOODS_NO) '
+             || '       REFERENCES TB_GOODS_' || v_user_id || ' (GOODS_NO) '
+			 || '          ON DELETE CASCADE '
+             || ' )';
+			 
+    -- ÎèôÏ†Å SQL Ïã§Ìñâ
+    EXECUTE IMMEDIATE v_str;
+
 EXCEPTION
-    WHEN OTHERS THEN
-        NULL; 
+   WHEN OTHERS THEN
+      dbms_output.put_line(sqlerrm); 
 END;
-
 /
 
--- πﬂ¡÷√≥ ≈◊¿Ã∫Ì
-CREATE OR REPLACE PROCEDURE create_produce_table (
-    p_user_id IN NUMBER
-)
+--- Î∞úÏ£ºÏ≤ò ÌÖåÏù¥Î∏î
+CREATE OR REPLACE PROCEDURE PR_CREATE_TB_PRODUCE
+(p_user_id IN NUMBER)
 IS
-    v_table_name VARCHAR2(100);
+   v_user_id    VARCHAR2(100);
+   v_table_name VARCHAR2(200);
+   v_str        VARCHAR2(1000);
 BEGIN
-    -- ¿Ø¿˙ æ∆¿Ãµ∏¶ ¿ÃøÎ«œø© ≈◊¿Ã∫Ì ¿Ã∏ß ª˝º∫
-    v_table_name := 'TB_PRODUCE_' || p_user_id;
 
-    -- µø¿˚ SQL Ω««‡
-    EXECUTE IMMEDIATE 'CREATE TABLE ' || v_table_name || '(
-            GOODS_NO NUMBER PRIMARY KEY,
-            PD_NO NUMBER,
-            PD_NAME VARCHAR2(300) NOT NULL,
-            PRODUCER VARCHAR2(20),
-            PD_PHONE VARCHAR2(30),
-            PD_ADDRESS VARCHAR2(255),
-            FOREIGN KEY (GOODS_NO) REFERENCES TB_GOODS_' || p_user_id || '(GOODS_NO) ON DELETE CASCADE
-        )';
+   v_user_id := '';
+   v_table_name := '';
+   
+   v_user_id := RTRIM(LTRIM(TO_CHAR(p_user_id)));
+
+   --- Ïú†Ï†Ä ÏïÑÏù¥ÎîîÎ•º Ïù¥Ïö©ÌïòÏó¨ ÌÖåÏù¥Î∏î Ïù¥Î¶Ñ ÏÉùÏÑ±
+   v_table_name := 'TB_PRODUCE_' || v_user_id;
+
+   v_str := 'CREATE TABLE ' || v_table_name || '('
+           || '   GOODS_NO NUMBER CONSTRAINT PK_' || v_table_name || ' PRIMARY KEY, '
+           || '   PD_NO NUMBER,                   '
+           || '   PD_NAME VARCHAR2(300) NOT NULL, '
+           || '   PRODUCER VARCHAR2(20),    '
+           || '   PD_PHONE VARCHAR2(30),    '
+           || '   PD_ADDRESS VARCHAR2(255), '
+           || ' CONSTRAINT FK_' || v_table_name || '_GOODS_NO FOREIGN KEY (GOODS_NO) '
+           || '       REFERENCES TB_GOODS_' || v_user_id
+		   || '                   (GOODS_NO) ON DELETE CASCADE '
+		   || ')';
+
+   --dbms_output.put_line(v_str); 
+   
+   -- ÎèôÏ†Å SQL Ïã§Ìñâ
+   EXECUTE IMMEDIATE v_str;
+EXCEPTION
+   WHEN OTHERS THEN
+      dbms_output.put_line(sqlerrm); 
 END;
-
-
 /
 
--- ∏Ìººº≠ ≈◊¿Ã∫Ì
-CREATE OR REPLACE PROCEDURE create_specify_table (
-    p_user_id IN NUMBER
-)
+---------------------------------------
+-- Î™ÖÏÑ∏ÏÑú ÌÖåÏù¥Î∏î
+---------------------------------------
+CREATE OR REPLACE PROCEDURE PR_CREATE_TB_SPECIFY
+(p_user_id IN NUMBER)
 IS
-    v_table_name VARCHAR2(100);
+   v_user_id    VARCHAR2(200);
+   v_table_name VARCHAR2(100);
 BEGIN
-    -- ¿Ø¿˙ æ∆¿Ãµ∏¶ ¿ÃøÎ«œø© ≈◊¿Ã∫Ì ¿Ã∏ß ª˝º∫
-    v_table_name := 'TB_SPECIFY_' || p_user_id;
+   v_user_id := '';
+   v_table_name := '';
+   
+   v_user_id := RTRIM(LTRIM(TO_CHAR(p_user_id)));
 
-    -- µø¿˚ SQL Ω««‡«œø© ≈◊¿Ã∫Ì ª˝º∫
+    -- Ïú†Ï†Ä ÏïÑÏù¥ÎîîÎ•º Ïù¥Ïö©ÌïòÏó¨ ÌÖåÏù¥Î∏î Ïù¥Î¶Ñ ÏÉùÏÑ±
+    v_table_name := 'TB_SPECIFY_' || v_user_id;
+
+    -- ÎèôÏ†Å SQL Ïã§ÌñâÌïòÏó¨ ÌÖåÏù¥Î∏î ÏÉùÏÑ±
     EXECUTE IMMEDIATE '
         CREATE TABLE ' || v_table_name || '(
             ID NUMBER,
@@ -717,9 +851,9 @@ BEGIN
             PD_MONTH VARCHAR2(10)
         )';
 
-    -- ∆Æ∏Æ∞≈ ª˝º∫¿ª ¿ß«— µø¿˚ SQL Ω««‡
+    -- Ìä∏Î¶¨Í±∞ ÏÉùÏÑ±ÏùÑ ÏúÑÌïú ÎèôÏ†Å SQL Ïã§Ìñâ
     EXECUTE IMMEDIATE '
-        CREATE OR REPLACE TRIGGER ' || v_table_name || '_update_pd_month_trigger
+        CREATE OR REPLACE TRIGGER TR_' || v_table_name || '_BF_UPDATE_PD_MONTH
         BEFORE INSERT OR UPDATE ON ' || v_table_name || '
         FOR EACH ROW
         BEGIN
@@ -727,336 +861,562 @@ BEGIN
                 :NEW.PD_MONTH := SUBSTR(:NEW.PD_DATE, 1, LENGTH(:NEW.PD_DATE) - 3);
             END IF;
         END;';
-END;
-/
-
-
-
-CREATE OR REPLACE PROCEDURE create_sales_table (
-    p_user_id IN NUMBER
-)
-IS
-    v_table_name VARCHAR2(100);
-BEGIN
-    v_table_name := 'TB_SALES_' || p_user_id;
-
-    EXECUTE IMMEDIATE '
-        CREATE TABLE ' || v_table_name || '(
-            SALE_ID NUMBER CONSTRAINT PK_' || v_table_name || ' PRIMARY KEY,
-            EMP_ID NUMBER NOT NULL,
-            SALE_DATE DATE DEFAULT SYSDATE,
-            AMOUNT NUMBER,
-            CONSTRAINT FK_' || v_table_name || '_EMP FOREIGN KEY (EMP_ID) REFERENCES TB_EMPLOYEE_' || p_user_id || ' (EMP_ID)
-        )';
 EXCEPTION
-    WHEN OTHERS THEN
-        NULL;
+   WHEN OTHERS THEN
+      dbms_output.put_line(sqlerrm); 
 END;
 /
 
-CREATE OR REPLACE PROCEDURE create_salaryinfo_table (
-    p_user_id IN NUMBER
-)
+CREATE OR REPLACE PROCEDURE PR_CREATE_TB_SALES
+(p_user_id IN NUMBER)
 IS
-    v_table_name VARCHAR2(100);
+   v_user_id    VARCHAR2(200);
+   v_table_name VARCHAR2(100);
+   v_str        VARCHAR2(1000);
 BEGIN
-    v_table_name := 'TB_SALARYINFO_' || p_user_id;
+   v_user_id := '';
+   v_table_name := '';
+   
+   v_user_id := RTRIM(LTRIM(TO_CHAR(p_user_id)));
 
-    EXECUTE IMMEDIATE '
-        CREATE TABLE ' || v_table_name || '(
-            SALARY_ID NUMBER CONSTRAINT PK_' || v_table_name || ' PRIMARY KEY,
-            EMP_ID NUMBER NOT NULL,
-            PAY_DATE DATE DEFAULT SYSDATE,
-            SALARY_AMOUNT NUMBER,
-            CONSTRAINT FK_' || v_table_name || '_EMP FOREIGN KEY (EMP_ID) REFERENCES TB_EMPLOYEE_' || p_user_id || ' (EMP_ID)
-        )';
+   v_table_name := 'TB_SALES_' || v_user_id;
+
+   v_str := 'CREATE TABLE ' || v_table_name || '('
+            || ' SALE_ID NUMBER CONSTRAINT PK_' || v_table_name || ' PRIMARY KEY, '
+            || ' EMP_ID NUMBER NOT NULL, '
+            || ' SALE_DATE DATE DEFAULT SYSDATE, '
+            || ' AMOUNT NUMBER, '
+            || ' CONSTRAINT FK_' || v_table_name || '_EMP_ID FOREIGN KEY (EMP_ID) '
+			|| ' REFERENCES TB_EMPLOYEE_' || v_user_id || ' (EMP_ID) '
+            || ' )';
+		
+   EXECUTE IMMEDIATE v_str;
+   
 EXCEPTION
-    WHEN OTHERS THEN
-        NULL;
+   WHEN OTHERS THEN
+      dbms_output.put_line(sqlerrm); 
 END;
 /
 
-CREATE OR REPLACE PROCEDURE create_additionalwages_table (
-    p_user_id IN NUMBER
-)
-IS
-    v_table_name VARCHAR2(100);
-BEGIN
-    v_table_name := 'TB_ADDITIONALWAGES_' || p_user_id;
 
-    EXECUTE IMMEDIATE '
-        CREATE TABLE ' || v_table_name || '(
-            WAGE_ID NUMBER CONSTRAINT PK_' || v_table_name || ' PRIMARY KEY,
-            EMP_ID NUMBER NOT NULL,
-            WAGE_DATE DATE DEFAULT SYSDATE,
-            WAGE_AMOUNT NUMBER,
-            CONSTRAINT FK_' || v_table_name || '_EMP FOREIGN KEY (EMP_ID) REFERENCES TB_EMPLOYEE_' || p_user_id || ' (EMP_ID)
-        )';
+CREATE OR REPLACE PROCEDURE PR_CREATE_TB_ADDITIONALWAGES
+(p_user_id IN NUMBER)
+IS
+   v_user_id    VARCHAR2(200);
+   v_table_name VARCHAR2(100);
+   v_str        VARCHAR2(1000);
+BEGIN
+   v_user_id := '';
+   v_table_name := '';
+   
+   v_user_id := RTRIM(LTRIM(TO_CHAR(p_user_id)));
+
+   v_table_name := 'TB_ADDITIONALWAGES_' || v_user_id;
+
+   v_str := ' CREATE TABLE ' || v_table_name || '('
+            || '     WAGE_ID NUMBER CONSTRAINT PK_' || v_table_name || ' PRIMARY KEY, '
+            || '     EMP_ID NUMBER NOT NULL,         '
+            || '     WAGE_DATE DATE DEFAULT SYSDATE, '
+            || '     WAGE_AMOUNT NUMBER,             '
+            || ' CONSTRAINT FK_' || v_table_name || '_EMP_ID FOREIGN KEY (EMP_ID) '
+			|| ' REFERENCES TB_EMPLOYEE_' || v_user_id || ' (EMP_ID) )';
+		
+   EXECUTE IMMEDIATE v_str;
+   
 EXCEPTION
-    WHEN OTHERS THEN
-        NULL;
+   WHEN OTHERS THEN
+      dbms_output.put_line(sqlerrm); 
 END;
 /
 
-CREATE OR REPLACE PROCEDURE DROP_TB_MENU (
-    p_user_id IN NUMBER
-)
+--- 2024.04.09 add
+CREATE OR REPLACE PROCEDURE PR_CREATE_TB_PAYSTUB
+(p_user_id IN NUMBER)
 IS
-    v_table_name VARCHAR2(100);
+   ---------------------
+   --- Î≥ÄÏàò ÏÑ†Ïñ∏
+   ---------------------
+   v_user_id    VARCHAR2(200);
+   v_table_name VARCHAR2(200);
+   v_str        VARCHAR2(1000);
 BEGIN
-    v_table_name := 'TB_MENU_' || p_user_id;
-    BEGIN
-        EXECUTE IMMEDIATE 'DROP TABLE ' || v_table_name || '
-                                    CASCADE CONSTRAINTS';
-    END;
-END;
-/
-
-CREATE OR REPLACE PROCEDURE DROP_TB_POS (
-    p_user_id IN NUMBER
-)
-IS
-    v_table_name VARCHAR2(100);
-BEGIN
-    v_table_name := 'TB_POS_' || p_user_id;
-    BEGIN
-        EXECUTE IMMEDIATE 'DROP TABLE ' || v_table_name || '
-                                    CASCADE CONSTRAINTS';
-    END;
-END;
-/
-
-
-CREATE OR REPLACE PROCEDURE DROP_TB_TABLE (
-    p_user_id IN NUMBER
-)
-IS
-    v_table_name VARCHAR2(100);
-BEGIN
-    v_table_name := 'TB_TABLE_' || p_user_id;
-    BEGIN
-        EXECUTE IMMEDIATE 'DROP TABLE ' || v_table_name || '
-                                    CASCADE CONSTRAINTS';
-    END;
-END;
-/
--- µÂ∂¯ «¡∑ŒΩ√¡Æ -------------------------------
-CREATE OR REPLACE PROCEDURE DROP_TB_INVENTORY (
-    p_user_id IN NUMBER
-)
-IS
-    v_table_name VARCHAR2(100);
-BEGIN
-    v_table_name := 'TB_INVENTORY_' || p_user_id;
-    BEGIN
-        EXECUTE IMMEDIATE 'DROP TABLE ' || v_table_name || '
-                                    CASCADE CONSTRAINTS';
-    END;
-END;
-/
-
-
-CREATE OR REPLACE PROCEDURE DROP_TB_PRODUCE (
-    p_user_id IN NUMBER
-)
-IS
-    v_table_name VARCHAR2(100);
-BEGIN
-    v_table_name := 'TB_PRODUCE_' || p_user_id;
-    BEGIN
-        EXECUTE IMMEDIATE 'DROP TABLE ' || v_table_name || '
-                                    CASCADE CONSTRAINTS';
-    END;
-END;
-/
-
-
-CREATE OR REPLACE PROCEDURE DROP_TB_SPECIFY (
-    p_user_id IN NUMBER
-)
-IS
-    v_table_name VARCHAR2(100);
-BEGIN
-    v_table_name := 'TB_SPECIFY_' || p_user_id;
-    BEGIN
-        EXECUTE IMMEDIATE 'DROP TABLE ' || v_table_name || '
-                                    CASCADE CONSTRAINTS';
-    END;
-END;
-/
-
-CREATE OR REPLACE PROCEDURE DROP_TB_GOODS (
-    p_user_id IN NUMBER
-)
-IS
-    v_table_name VARCHAR2(100);
-BEGIN
-    v_table_name := 'TB_GOODS_' || p_user_id;
-    BEGIN
-        EXECUTE IMMEDIATE 'DROP TABLE ' || v_table_name || '
-                                    CASCADE CONSTRAINTS';
-    END;
-END;
-/
-CREATE OR REPLACE PROCEDURE PR_DROP_TB_RESERVATION_TABLE (
-    p_user_id IN NUMBER
-)
-IS
-    v_table_name VARCHAR2(200);
-    v_str1 VARCHAR2(1000);
-    v_str2 VARCHAR2(1000);
-BEGIN
-   -- ¿Ø¿˙ æ∆¿Ãµ∏¶ ¿ÃøÎ«œø© ≈◊¿Ã∫Ì ¿Ã∏ß ª˝º∫
-   v_table_name := 'TB_RESERVATION_' || RTRIM(LTRIM(TO_CHAR(p_user_id)));
-   dbms_output.put_line(v_table_name);
+   ---------------------
+   --- Î≥ÄÏàò Ï¥àÍ∏∞Ìôî
+   ---------------------
+   v_user_id := '';
+   v_table_name := '';
+   
+   v_user_id := RTRIM(LTRIM(TO_CHAR(p_user_id)));
+   v_table_name := 'TB_PAYSTUB_' || v_user_id;
    
    BEGIN
-      v_str1 := 'DROP TABLE ' || v_table_name || ' CASCADE CONSTRAINTS';
-      EXECUTE IMMEDIATE v_str1;
-      --dbms_output.put_line(v_str1);
-	  
-	  --- 2024.04.07 √ﬂ∞°
-      v_str2 := 'DROP SEQUENCE ' || v_table_name || '_SEQ ';
-      EXECUTE IMMEDIATE v_str2;
-      --dbms_output.put_line(v_str2);
+      v_str := ' CREATE TABLE ' || v_table_name || '(' 
+             || ' PAYSTUB_ID NUMBER CONSTRAINT PK_' || v_table_name || ' PRIMARY KEY, '
+             || ' EMP_ID NUMBER NOT NULL, '
+             || ' PAY_DATE DATE DEFAULT SYSDATE, '
+             || ' SALARY_AMOUNT NUMBER, '
+             || ' CONSTRAINT FK_' || v_table_name || '_EMP_ID FOREIGN KEY (EMP_ID) '
+             || ' REFERENCES TB_EMPLOYEE_' || v_user_id || ' (EMP_ID) ON DELETE CASCADE) ';
 
-   EXCEPTION
-      WHEN OTHERS THEN
-         dbms_output.put_line(sqlerrm); 
+      EXECUTE IMMEDIATE v_str;
    END;
-END;
-/
--- TB_EMPLOYEE ≈◊¿Ã∫Ì ªË¡¶ «¡∑ŒΩ√¿˙
-CREATE OR REPLACE PROCEDURE DROP_TB_EMPLOYEE(
-    p_user_id IN NUMBER
-)
-IS
-    v_table_name VARCHAR2(100);
-BEGIN
-    v_table_name := 'TB_EMPLOYEE_' || p_user_id;
-    BEGIN
-        EXECUTE IMMEDIATE 'DROP TABLE ' || v_table_name || '
-                                    CASCADE CONSTRAINTS';
-    EXCEPTION
-        WHEN OTHERS THEN
-            IF SQLCODE != -942 THEN -- ≈◊¿Ã∫Ì¿Ã ¡∏¿Á«œ¡ˆ æ ¿ª ∂ß¿« øπø‹¥¬ π´Ω√
-                RAISE;
-            END IF;
-    END;
-END;
-/
-
--- TB_COMMUTE_INFO ≈◊¿Ã∫Ì ªË¡¶ «¡∑ŒΩ√¿˙
-CREATE OR REPLACE PROCEDURE DROP_TB_COMMUTE_INFO(
-    p_user_id IN NUMBER
-)
-IS
-    v_table_name VARCHAR2(100);
-BEGIN
-    v_table_name := 'TB_COMMUTE_INFO_' || p_user_id;
-    BEGIN
-        EXECUTE IMMEDIATE 'DROP TABLE ' || v_table_name || '
-                                    CASCADE CONSTRAINTS';
-    EXCEPTION
-        WHEN OTHERS THEN
-            IF SQLCODE != -942 THEN
-                RAISE;
-            END IF;
-    END;
-END;
-/
-
--- TB_CALENDAR ≈◊¿Ã∫Ì ªË¡¶ «¡∑ŒΩ√¿˙
-CREATE OR REPLACE PROCEDURE DROP_TB_CALENDAR(
-    p_user_id IN NUMBER
-)
-IS
-    v_table_name VARCHAR2(100);
-BEGIN
-    v_table_name := 'TB_CALENDAR_' || p_user_id;
-    BEGIN
-        EXECUTE IMMEDIATE 'DROP TABLE ' || v_table_name || '
-                                    CASCADE CONSTRAINTS';
-    EXCEPTION
-        WHEN OTHERS THEN
-            IF SQLCODE != -942 THEN
-                RAISE;
-            END IF;
-    END;
-END;
-/
-
--- TB_SALARY_INFO ≈◊¿Ã∫Ì ªË¡¶ «¡∑ŒΩ√¿˙
-CREATE OR REPLACE PROCEDURE DROP_TB_SALARY_INFO(
-    p_user_id IN NUMBER
-)
-IS
-    v_table_name VARCHAR2(100);
-BEGIN
-    v_table_name := 'TB_SALARY_INFO_' || p_user_id;
-    BEGIN
-        EXECUTE IMMEDIATE 'DROP TABLE ' || v_table_name || '
-                                    CASCADE CONSTRAINTS';
-    EXCEPTION
-        WHEN OTHERS THEN
-            IF SQLCODE != -942 THEN
-                RAISE;
-            END IF;
-    END;
-END;
-/
-
-CREATE OR REPLACE PROCEDURE drop_user_tables (
-    p_user_id IN NUMBER
-)
-IS
-BEGIN
-    EXECUTE IMMEDIATE 'DROP TABLE TB_ADDITIONALWAGES_' || TO_CHAR(p_user_id,99999) || ' CASCADE CONSTRAINTS';
-    EXECUTE IMMEDIATE 'DROP TABLE TB_SALARYINFO_' || TO_CHAR(p_user_id,99999) || ' CASCADE CONSTRAINTS';
-    EXECUTE IMMEDIATE 'DROP TABLE TB_SALES_' || TO_CHAR(p_user_id,99999) || ' CASCADE CONSTRAINTS';
 EXCEPTION
-    WHEN OTHERS THEN
-        NULL;
+   WHEN OTHERS THEN
+      dbms_output.put_line(sqlerrm); 
 END;
 /
 
---¡ˆøı Ω√ƒˆΩ∫
-
-drop sequence notice_seq;
-drop sequence inconvinience_seq;
-drop sequence subscribe_seq;
-drop sequence subscribe_payment_seq;
-drop sequence suspension_seq;
 
 
-Create sequence notice_seq
-        increment by 1
-        start with 1
-        minvalue 1
-        nocycle
-        nocache;
-Create sequence inconvinience_seq
-        increment by 1
-        start with 1
-        minvalue 1
-        nocycle
-        nocache; 
-Create sequence subscribe_seq
-        increment by 1
-        start with 1
-        minvalue 1
-        nocycle
-        nocache;            
-Create sequence subscribe_payment_seq
-         increment by 1
-        start with 1
-        minvalue 1
-        nocycle
-        nocache;       
-Create sequence suspension_seq
-         increment by 1
-        start with 1
-        minvalue 1
-        nocycle
-        nocache;          
-        
+CREATE OR REPLACE PROCEDURE PR_SSMS_TABLE_ALL_CREATE
+(p_user_id IN NUMBER)
+IS
+---------------------------------------------------------------------
+--- TABLE CRETE
+---------------------------------------------------------------------
+BEGIN
+   -- SET SERVEROUTPUT ON;
+   ---------------------------
+   --- 01. TB_EMPLOYEE
+   ---------------------------
+   PR_CREATE_TB_EMPLOYEE(p_user_id);
+
+   ---------------------------
+   --- 02. TB_ADDITIONALWAGES
+   ---------------------------
+   PR_CREATE_TB_ADDITIONALWAGES(p_user_id);
+   
+   ---------------------------
+   --- 03. TB_COMMUTE_INFO
+   ---------------------------
+   PR_CREATE_TB_COMMUTE_INFO(p_user_id);
+
+   ---------------------------
+   --- 04. TB_CALENDAR
+   ---------------------------
+   PR_CREATE_TB_CALENDAR(p_user_id);
+
+   ---------------------------
+   --- 05. TB_GOODS
+   ---------------------------
+   PR_CREATE_TB_GOODS(p_user_id);
+
+   ---------------------------
+   --- 06. TB_INVENTORY
+   ---------------------------
+   PR_CREATE_TB_INVENTORY(p_user_id);
+
+   ---------------------------
+   --- 07. TB_MENU
+   ---------------------------
+   PR_CREATE_TB_MENU(p_user_id);
+
+   ---------------------------
+   --- 08. TB_POS
+   ---------------------------
+   PR_CREATE_TB_POS(p_user_id);
+
+   ---------------------------
+   --- 09. TB_PRODUCE
+   ---------------------------
+   PR_CREATE_TB_PRODUCE(p_user_id);
+
+   ---------------------------
+   --- 10.1. TB_SALARY_INFO-- ÏÇ¨Ïö©ÏïàÌï®
+   ---------------------------
+   --PR_CREATE_TB_SALARY_INFO(p_user_id);
+
+   ---------------------------
+   --- 10.2. TB_SALARYINFO -- ÏÇ¨Ïö©ÏïàÌï®
+   ---------------------------
+   --PR_CREATE_TB_SALARYINFO(p_user_id);
+   
+   ---------------------------
+   --- 11. TB_SALES
+   ---------------------------
+   PR_CREATE_TB_SALES(p_user_id);
+   
+   ---------------------------
+   --- 12. TB_SPECIFY
+   ---------------------------
+   PR_CREATE_TB_SPECIFY(p_user_id);
+   
+   ---------------------------
+   --- 14. TB_TABLE
+   ---------------------------
+   PR_CREATE_TB_TABLE(p_user_id);
+
+   ---------------------------
+   --- 15. TB_RESERVATION
+   ---------------------------
+   PR_CREATE_TB_RESERVATION(p_user_id);
+
+   ---------------------------
+   --- 16. TB_PAYSTUB
+   ---------------------------
+   PR_CREATE_TB_PAYSTUB(p_user_id);
+
+EXCEPTION
+   WHEN OTHERS THEN
+      dbms_output.put_line(sqlerrm); 
+END;
+/
+
+
+-------------------------------------------
+--- PROCEDURE DROP TABLE
+-------------------------------------------
+CREATE OR REPLACE PROCEDURE PR_SSMS_DROP_TABLE
+(p_table_name IN VARCHAR2
+,p_user_id    IN NUMBER)
+IS
+   ----------------------------
+   --- Î≥ÄÏàò ÏÑ†Ïñ∏
+   ----------------------------
+   v_table_name VARCHAR2(200);
+   
+   v_str1 VARCHAR2(1000);
+   v_str2 VARCHAR2(1000);
+
+   v_cnt_1 NUMBER(5, 0);
+   v_cnt_2 NUMBER(5, 0);
+BEGIN
+   ---------------------------
+   --- Î≥ÄÏàò Ï¥àÍ∏∞Ìôî
+   ---------------------------
+   v_cnt_1 := 0;
+   v_cnt_2 := 0;
+
+   -- Ïú†Ï†Ä ÏïÑÏù¥ÎîîÎ•º Ïù¥Ïö©ÌïòÏó¨ ÌÖåÏù¥Î∏î Ïù¥Î¶Ñ ÏûëÏÑ±
+   v_table_name := p_table_name || '_' || RTRIM(LTRIM(TO_CHAR(p_user_id)));
+   --dbms_output.put_line(v_table_name);
+   
+   BEGIN
+	  -----------------------------------
+      --- TABLE
+	  -----------------------------------
+	  SELECT nvl(count(*), 0) as cnt
+        INTO v_cnt_1
+	  FROM USER_TABLES
+	  WHERE TABLE_NAME = v_table_name;
+
+      IF v_cnt_1 > 0 THEN
+         v_str1 := 'DROP TABLE ' || v_table_name || ' CASCADE CONSTRAINTS';
+         --dbms_output.put_line(v_str1);
+         EXECUTE IMMEDIATE v_str1;
+      END IF;
+	  
+	  -----------------------------------
+      --- SEQUENCE
+	  -----------------------------------
+      SELECT nvl(count(*), 0) as cnt
+        INTO v_cnt_2
+      FROM USER_OBJECTS
+      WHERE OBJECT_TYPE = 'SEQUENCE'
+        AND OBJECT_NAME = v_table_name || '_SEQ';
+
+      IF v_cnt_2 > 0 THEN
+         v_str2 := 'DROP SEQUENCE ' || v_table_name || '_SEQ ';
+         --dbms_output.put_line(v_str2);
+         EXECUTE IMMEDIATE v_str2;
+      END IF;
+   END;
+  
+EXCEPTION
+   WHEN OTHERS THEN
+      dbms_output.put_line(sqlerrm); 
+END;
+/
+
+CREATE OR REPLACE PROCEDURE PR_SSMS_TABLE_ALL_DROP
+(arg_user_id IN NUMBER)
+IS
+---------------------------------------------------------------------
+--- TABLE DROP
+---------------------------------------------------------------------
+BEGIN
+   ---------------------------
+   --- 01. TB_ADDITIONALWAGES
+   ---------------------------
+   PR_SSMS_DROP_TABLE('TB_ADDITIONALWAGES', arg_user_id);
+   dbms_output.put_line('01');
+   
+   ---------------------------
+   --- 02. TB_CALENDAR
+   ---------------------------
+   PR_SSMS_DROP_TABLE('TB_CALENDAR', arg_user_id);
+   dbms_output.put_line('02');
+   
+   ---------------------------
+   --- 03. TB_COMMUTE_INFO
+   ---------------------------
+   PR_SSMS_DROP_TABLE('TB_COMMUTE_INFO', arg_user_id);
+   dbms_output.put_line('03');
+   
+   ---------------------------
+   --- 04. TB_INVENTORY
+   ---------------------------
+   PR_SSMS_DROP_TABLE('TB_INVENTORY', arg_user_id);
+   dbms_output.put_line('04');
+   
+   ---------------------------
+   --- 05. TB_MENU
+   ---------------------------
+   PR_SSMS_DROP_TABLE('TB_MENU', arg_user_id);
+   dbms_output.put_line('05');
+
+   ---------------------------
+   --- 06. TB_POS
+   ---------------------------
+   PR_SSMS_DROP_TABLE('TB_POS', arg_user_id);
+   dbms_output.put_line('06');
+
+   ---------------------------
+   --- 07. TB_PRODUCE
+   ---------------------------
+   PR_SSMS_DROP_TABLE('TB_PRODUCE', arg_user_id);
+   dbms_output.put_line('07');
+
+   ---------------------------
+   --- 08.1. TB_SALARY_INFO
+   ---------------------------
+   --PR_SSMS_DROP_TABLE('TB_SALARY_INFO', arg_user_id);
+   -- dbms_output.put_line('08');
+
+   ---------------------------
+   --- 08.2. TB_SALARYINFO
+   ---------------------------
+   -- PR_SSMS_DROP_TABLE('TB_SALARYINFO', arg_user_id);
+   
+   ---------------------------
+   --- 09. TB_SALES
+   ---------------------------
+   PR_SSMS_DROP_TABLE('TB_SALES', arg_user_id);
+   dbms_output.put_line('09');
+
+   ---------------------------
+   --- 10. TB_SPECIFY
+   ---------------------------
+   PR_SSMS_DROP_TABLE('TB_SPECIFY', arg_user_id);
+   dbms_output.put_line('10');
+   ---------------------------
+   --- 11. TB_TABLE
+   ---------------------------
+   PR_SSMS_DROP_TABLE('TB_TABLE', arg_user_id);
+   dbms_output.put_line('11');
+
+   ---------------------------
+   --- 12. TB_RESERVATION
+   ---------------------------
+   PR_SSMS_DROP_TABLE('TB_RESERVATION', arg_user_id);
+   dbms_output.put_line('12');
+   
+   ---------------------------
+   --- 13. TB_GOODS
+   ---------------------------
+   PR_SSMS_DROP_TABLE('TB_GOODS', arg_user_id);
+   dbms_output.put_line('13');
+
+   ---------------------------
+   --- 14. TB_PAYSTUB
+   ---------------------------
+   PR_SSMS_DROP_TABLE('TB_PAYSTUB', arg_user_id);
+   dbms_output.put_line('14');
+
+   ---------------------------
+   --- 15. TB_EMPLOYEE
+   ---------------------------
+   PR_SSMS_DROP_TABLE('TB_EMPLOYEE', arg_user_id);
+   dbms_output.put_line('15');
+
+EXCEPTION
+   WHEN OTHERS THEN
+      dbms_output.put_line(sqlerrm);
+END;
+/
+
+-------------------------------------------------
+--- TABLEÏùÑ ÏûêÎèôÏúºÎ°ú ÏÉùÏÑ±ÌïòÍ∏∞ ÏúÑÌïú TRIIGER
+-------------------------------------------------
+CREATE OR REPLACE TRIGGER TR_TB_USER_BF_01
+BEFORE INSERT TB_USER
+FOR EACH ROW
+DECLARE
+   --- TRIGGERÎäî Í∏∞Î≥∏ AUTO COMMITÏûÑ
+   --- COMMITÍ≥º ÏåçÏúºÎ°ú Í±∞Î¶¨Ìï¥Ïïº Ìï®
+   PRAGMA AUTONOMOUS_TRANSACTION;
+BEGIN
+   -----------------------
+   -- TABLE ÏÉùÏÑ±ÌïòÍ∏∞
+   -----------------------
+   IF INSERTING THEN
+      PR_SSMS_TABLE_ALL_CREATE(:NEW.ID);
+	  COMMIT;
+   END IF;
+   
+EXCEPTION
+   WHEN OTHERS THEN
+      RAISE_APPLICATION_ERROR(-20001, SQLERRM);
+END;
+/
+
+-------------------------------------------------
+--- ÏßÄÏõÖ ÏãúÌÄÄÏä§
+-------------------------------------------------
+-- SEQUENCE ÏÇ≠Ï†ú Ï≤òÎ¶¨
+DECLARE
+  v_str VARCHAR(500);
+  v_cnt NUMBER(5, 0) := 0;
+BEGIN
+
+   ----------------------------------
+   -- USER_SEQ
+   ----------------------------------
+   v_cnt := 0;
+   SELECT nvl(count(*), 0) as cnt
+     INTO v_cnt
+   FROM USER_OBJECTS
+   WHERE OBJECT_TYPE = 'SEQUENCE'
+     AND OBJECT_NAME = 'USER_SEQ';
+	 
+   IF v_cnt > 0 THEN
+      EXECUTE IMMEDIATE 'DROP SEQUENCE USER_SEQ';
+   END IF;
+
+   ----------------------------------
+   -- EMP_ID_SEQ
+   ----------------------------------
+   v_cnt := 0;
+   SELECT nvl(count(*), 0) as cnt
+     INTO v_cnt
+   FROM USER_OBJECTS
+   WHERE OBJECT_TYPE = 'SEQUENCE'
+     AND OBJECT_NAME = 'EMP_ID_SEQ';
+	 
+   IF v_cnt > 0 THEN
+      EXECUTE IMMEDIATE 'DROP SEQUENCE EMP_ID_SEQ';
+   END IF;
+
+   ----------------------------------
+   --- NOTICE_SEQ
+   ----------------------------------
+   v_cnt := 0;
+   SELECT nvl(count(*), 0) as cnt
+     INTO v_cnt
+   FROM USER_OBJECTS
+   WHERE OBJECT_TYPE = 'SEQUENCE'
+     AND OBJECT_NAME = 'NOTICE_SEQ';
+	 
+   IF v_cnt > 0 THEN
+      EXECUTE IMMEDIATE 'DROP SEQUENCE NOTICE_SEQ';
+   END IF;
+   
+   ----------------------------------
+   --- INCONVINIENCE_SEQ
+   ----------------------------------
+   v_cnt := 0;
+   SELECT nvl(count(*), 0) as cnt
+     INTO v_cnt
+   FROM USER_OBJECTS
+   WHERE OBJECT_TYPE = 'SEQUENCE'
+     AND OBJECT_NAME = 'INCONVINIENCE_SEQ';
+	 
+   IF v_cnt > 0 THEN
+      EXECUTE IMMEDIATE 'DROP SEQUENCE INCONVINIENCE_SEQ';
+   END IF;
+
+   ----------------------------------
+   --- SUBSCRIBE_SEQ
+   ----------------------------------
+   v_cnt := 0;
+   SELECT nvl(count(*), 0) as cnt
+     INTO v_cnt
+   FROM USER_OBJECTS
+   WHERE OBJECT_TYPE = 'SEQUENCE'
+     AND OBJECT_NAME = 'SUBSCRIBE_SEQ';
+	 
+   IF v_cnt > 0 THEN
+      EXECUTE IMMEDIATE 'DROP SEQUENCE SUBSCRIBE_SEQ';
+   END IF;
+
+   ----------------------------------
+   --- SUBSCRIBE_PAYMENT_SEQ
+   ----------------------------------
+   v_cnt := 0;
+   SELECT nvl(count(*), 0) as cnt
+     INTO v_cnt
+   FROM USER_OBJECTS
+   WHERE OBJECT_TYPE = 'SEQUENCE'
+     AND OBJECT_NAME = 'SUBSCRIBE_PAYMENT_SEQ';
+	 
+   IF v_cnt > 0 THEN
+      EXECUTE IMMEDIATE 'DROP SEQUENCE SUBSCRIBE_PAYMENT_SEQ';
+   END IF;
+
+   ----------------------------------
+   --- SUSPENSION_SEQ
+   ----------------------------------
+   v_cnt := 0;
+   SELECT nvl(count(*), 0) as cnt
+     INTO v_cnt
+   FROM USER_OBJECTS
+   WHERE OBJECT_TYPE = 'SEQUENCE'
+     AND OBJECT_NAME = 'SUSPENSION_SEQ';
+	 
+   IF v_cnt > 0 THEN
+      EXECUTE IMMEDIATE 'DROP SEQUENCE SUSPENSION_SEQ';
+   END IF;
+   
+EXCEPTION
+   WHEN OTHERS THEN
+      dbms_output.put_line(sqlerrm); 
+END;
+/
+
+--------------------------------------------
+-- SEQUENCE ÏÉùÏÑ±
+--------------------------------------------
+CREATE SEQUENCE USER_SEQ
+        INCREMENT BY 1
+        START WITH 1;
+		
+CREATE SEQUENCE EMP_ID_SEQ
+       START WITH 1
+       INCREMENT BY 1
+       NOCACHE
+       NOCYCLE;
+
+CREATE SEQUENCE NOTICE_SEQ
+        INCREMENT BY 1
+        START WITH 1
+        MINVALUE 1
+        NOCYCLE
+        NOCACHE;
+
+CREATE SEQUENCE INCONVINIENCE_SEQ
+        INCREMENT BY 1
+        START WITH 1
+        MINVALUE 1
+        NOCYCLE
+        NOCACHE;
+		
+CREATE SEQUENCE SUBSCRIBE_SEQ
+        INCREMENT BY 1
+        START WITH 1
+        MINVALUE 1
+        NOCYCLE
+        NOCACHE;
+		
+CREATE SEQUENCE SUBSCRIBE_PAYMENT_SEQ
+       INCREMENT BY 1
+       START WITH 1
+       MINVALUE 1
+       NOCYCLE
+       NOCACHE;
+		
+CREATE SEQUENCE SUSPENSION_SEQ
+       INCREMENT BY 1
+       START WITH 1
+       MINVALUE 1
+       NOCYCLE
+       NOCACHE;
