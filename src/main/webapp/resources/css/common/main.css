@@ -1,4 +1,7 @@
 @charset "UTF-8";
+.section-container {
+	background-color: #fff;
+}
 
 section {
 	/* border: 1px solid #000; */
@@ -10,7 +13,7 @@ section::after {
 	position: absolute;
 	left: 0;
 	top: 0;
-	width: 100%;
+	width: 0%;
 	height: 1px;
 	background-color: grey;
 }
@@ -28,8 +31,15 @@ section .inner-section {
 	padding: 50PX 0px;
 }
 
-section.z-index-1{
+.z-index-1{
+	position: relative;
 	z-index: -1;
+}
+
+section.sec1 .inner-section.z-index-1 {
+	max-width: 1600px;
+	display: flex;
+	justify-content: space-between;
 }
 
 section.sec2 .inner-section {
@@ -154,4 +164,164 @@ p.title {
 	border-left: none;
 	border-right: none;
 }
+
+#calendar > div.fc-view-harness.fc-view-harness-active > div > table > thead > tr > td > div > div > table > tbody > tr > th.fc-col-header-cell.fc-day > div {
+	display: flex;
+	justify-content: end;
+	padding: 3px;
+	cursor: default;
 }
+
+#calendar > div.fc-view-harness.fc-view-harness-active > div > table > thead > tr > td > div > div > table > tbody > tr > th.fc-col-header-cell.fc-day.fc-day-sun > div {
+	color: rgb(237, 191, 104);
+}
+
+/* 로그인 안했을 경우 */
+.n-login section.sec1 .inner-section{
+	max-width: 1600px;
+	display: flex;
+	justify-content: center;
+	position: relative;
+	height: 430px;
+}
+.n-login section.sec1 .inner-section .img-box  {
+	position: absolute;
+	left: 50%;
+	top: 15px;
+	transform: translateX(-50%);
+}
+
+.n-login section.sec1 .inner-section .img-box img {
+	margin: 0 auto;
+	display: block;
+	width: 1600px;	
+	height: 500px;
+	opacity: 0.5;
+	box-shadow: 0px 0px 1px 1px grey;
+}
+
+.n-login section.sec1 .inner-section .description {
+	padding: 40px 0 0 0;
+	position: absolute;
+	left: 50%;
+	top: 0;
+	transform: translateX(-50%);
+	display: flex;
+	flex-direction:column;
+	align-items: center;
+	gap: 170px;
+	font-size: 40px;
+}
+
+.n-login section.sec1 .inner-section .description p {
+	background-color: rgba(237, 191, 104, 0.6);
+	font-weight: 600;
+	font-family: sans-serif;
+}
+
+.n-login section.sec1 .inner-section .description .description-botton{
+	display: flex;
+	flex-direction:column;
+	align-items: center;
+	gap: 30px;
+	color: #a11616;
+}
+
+.n-login section.sec2 .inner-section   {
+	max-width: 1600px;
+}
+
+.n-login section.sec2 .inner-section .img-box img {
+	margin: 0 auto;
+	display: block;
+	width: 800px;	
+	height: auto;
+}
+
+.n-login section.sec2 .inner-section .description {
+	padding: 40px 0 0 0;
+	display: flex;
+	flex-direction:column;
+	align-items: center;
+	gap: 100px;
+	font-size: 30px;
+}
+
+.n-login section.sec2 .inner-section .description p {
+	background-color: rgba(237, 191, 104, 0.6);
+	font-weight: 600;
+	font-family: sans-serif;
+}
+
+.n-login section.sec2 .inner-section .description .description-botton{
+	display: flex;
+	flex-direction:column;
+	align-items: center;
+	gap: 30px;
+	color: #a11616;
+}
+
+#wrap > div.section-container.n-login > section.sec2 > div > div.left-section {
+	box-shadow: 0 0 0 0 #fff;
+}
+
+.n-login section.sec3 .inner-section   {
+	max-width: 1600px;
+}
+
+.n-login section.sec3 .inner-section .img-box img {
+	margin: 0 auto;
+	border: 1px solid #000;
+	display: block;
+	width: 400px;	
+	height: auto;
+}
+
+.n-login section.sec3 .inner-section .description {
+	padding: 40px 0 0 0;
+	display: flex;
+	flex-direction:column;
+	align-items: center;
+	gap: 100px;
+	font-size: 30px;
+}
+
+.n-login section.sec3 .inner-section .description p {
+	background-color: rgba(237, 191, 104, 0.6);
+	font-weight: 600;
+	font-family: sans-serif;
+}
+
+.n-login section.sec3 .inner-section .description .description-botton{
+	display: flex;
+	flex-direction:column;
+	align-items: center;
+	gap: 30px;
+	color: #a11616;
+}
+
+.n-login section.sec4 .inner-section .description {
+	padding: 40px 0 0 0;
+	display: flex;
+	flex-direction:column;
+	align-items: center;
+	gap: 100px;
+	font-size: 30px;
+}
+
+.n-login section.sec4 .inner-section .description p {
+	background-color: rgba(237, 191, 104, 0.6);
+	font-weight: 600;
+	font-family: sans-serif;
+}
+
+.n-login section.sec4 .inner-section .description .description-botton{
+	display: flex;
+	flex-direction:column;
+	align-items: center;
+	gap: 30px;
+	color: #a11616;
+}
+
+
+

@@ -42,12 +42,10 @@
 
 .footer .inner-footer .footer-up .footer-up-wrap {
     display: flex;
-    flex: 0 1 1200px;
-    /* border: 1px solid; */
+    flex: 0 1 1600px;
     box-sizing: border-box;
     display: flex;
     justify-content: space-between;
-    /* padding: ; */
     box-sizing: border-box;
 }
 .footer .inner-footer .footer-up .footer-up-wrap .footer-menu {
@@ -102,7 +100,7 @@
 
 .footer .inner-footer .footer-down {
     width: 100%;
-    max-width: 1200px;
+    max-width: 1600px;
     margin: 0 auto;
     height: auto;
     /* border: 1px solid; */

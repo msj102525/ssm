@@ -53,7 +53,6 @@ $(function(){
 </script>
 <style>
 .block {
-	border: 0px solid orange;
 	padding-top: 110px;
 	height: 40px;
 	overflow: hidden;
