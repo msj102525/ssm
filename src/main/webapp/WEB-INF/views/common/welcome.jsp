@@ -85,7 +85,7 @@ function mvTablePos(){
 	window.open('mvTablePos.do?id='+${loginUser.id}, '_blank');
 }
 function mvNoTablePos(){
-	window.open('mvNoTablePos.do', '_blank');
+	window.location.href = '${pageContext.servletContext.contextPath}/mvNoTablePos.do?id=${loginUser.id}';
 }
 </script>
 </head>
