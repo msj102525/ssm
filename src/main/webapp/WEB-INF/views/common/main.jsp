@@ -197,7 +197,7 @@
 						<input type="hidden" id="loginUserId" value="${loginUser.id}">
 						</div>
 						<div class="right-section">
-							<c:import url="/WEB-INF/views/reserve/calendarfull040901.jsp" />
+							<c:import url="/WEB-INF/views/reserve/reservecalendarmain.jsp" />
 							<script type="text/javascript" defer>
 								$(()=> {
 									$("header").css("position", "fixed");	
