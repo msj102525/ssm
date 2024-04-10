@@ -31,10 +31,8 @@
 <script type="text/javascript"
 	src="/ssm/resources/css/jquery-ui-1.13.2/jquery-ui.min.js"></script>
 
-<link rel="stylesheet"
-	href="/ssm/resources/css/bootstrap-4.4.1-dist/css/bootstrap.min.css" />
-<script type="text/javascript"
-	src="/ssm/resources/css/bootstrap-4.4.1-dist/js/bootstrap.bundle.min.js"></script>
+<link rel="stylesheet" href="/ssm/resources/css/bootstrap-4.4.1-dist/css/bootstrap.min.css" />
+<script type="text/javascript" src="/ssm/resources/css/bootstrap-4.4.1-dist/js/bootstrap.bundle.min.js"></script>
 
 <link rel="stylesheet" href="resources/css/common/main.css" />
 
@@ -201,7 +199,7 @@ input:hover, textarea:hover, input:focus, textarea:focus {
 	background-color: white;
 }
 
-/* .ui-icon-gripsmall-diagonal-se
+.ui-icon-gripsmall-diagonal-se
 {
 	background-color:#fff!important;
 	border-radius: 50%; -moz-border-radius: 50%; -webkit-border-radius: 50%; -khtml-border-radius: 50%;
@@ -211,7 +209,12 @@ input:hover, textarea:hover, input:focus, textarea:focus {
 	-ms-transform: scale(2);
 	-webkit-transform: scale(2);
 	transform: scale(2);
-} */
+}
+
+/* modal title (일정관리) */
+span#ui-id-1 {
+    font-size: 14px;
+}
 
 </style>
 
@@ -259,6 +262,7 @@ input:hover, textarea:hover, input:focus, textarea:focus {
 			var rsrvtime = null;
 			var rsrvinwon = null;
 			var rsrvmemo = null;
+			var writedate = null;
 
 			//============================== date get / set ============================
 			//// 그룹id(2024.02.04)
@@ -329,8 +333,16 @@ input:hover, textarea:hover, input:focus, textarea:focus {
 						&& arg.extendedProps.rsrvmemo != undefined) {
 					rsrvmemo = arg.extendedProps.rsrvmemo;
 				}
-
+				
 				//console.log("cs : " + arg.extendedProps.rsrvmemo);
+				
+				/// 작성일자
+				if (arg.extendedProps.writedate != ""
+						&& arg.extendedProps.writedate != null
+						&& arg.extendedProps.writedate != undefined) {
+					writedate = arg.extendedProps.writedate;
+				}
+
 			}
 
 			if (allDay) { //// 하루종일이면
@@ -381,6 +393,7 @@ input:hover, textarea:hover, input:focus, textarea:focus {
 			rObj.rsrvtime = rsrvtime;
 			rObj.rsrvinwon = rsrvinwon;
 			rObj.rsrvmemo = rsrvmemo;
+			rObj.writedate = writedate;
 
 			//============================== date get / set ======================================
 			return rObj;
@@ -462,16 +475,12 @@ input:hover, textarea:hover, input:focus, textarea:focus {
 			$("form#diaForm").find("input[name='rsrvNum']").val(xobj.groupId); ////번호 = groupId
 			$("form#diaForm").find("input[name='rsrvDate']").val(xobj.start); ////번호 = groupId
 			$("form#diaForm").find("input[name='rsrvName']").val(xobj.rsrvname); //// 예약자명
-			$("form#diaForm").find("input[name='rsrvTelno']").val(
-					xobj.rsrvtelno); //// 연락처
+			$("form#diaForm").find("input[name='rsrvTelno']").val(xobj.rsrvtelno); //// 연락처
 			$("form#diaForm").find("input[name='rsrvTime']").val(xobj.rsrvtime); //// 예약시간
-			$("form#diaForm").find("input[name='rsrvInwon']").val(
-					xobj.rsrvinwon); //// 예약인원
+			$("form#diaForm").find("input[name='rsrvInwon']").val(xobj.rsrvinwon); //// 예약인원
 			$("form#diaForm").find("input[name='rsrvSubject']").val(xobj.title); //// 제목
-			$("form#diaForm").find("textarea[name='rsrvMemo']").val(
-					xobj.rsrvmemo);
-
-			//$("form#diaForm").find("input[name='xwriteDate']").val(xobj.start);  //// 작성일자
+			$("form#diaForm").find("textarea[name='rsrvMemo']").val(xobj.rsrvmemo);
+			$("form#diaForm").find("input[name='xwriteDate']").val(xobj.writedate); /// 작성일자
 
 			/* 
 			$("form#diaForm").find("input[name='rsrvdate']").val(dispStr);
@@ -625,7 +634,7 @@ input:hover, textarea:hover, input:focus, textarea:focus {
 			selectMirror : true,
 			select : function(arg) {
 
-				alert("등록 여부 : " + isAdm);
+				//// alert("등록 여부 : " + isAdm);
 
 				if (isAdm == 0) {
 					return false;
@@ -832,8 +841,7 @@ input:hover, textarea:hover, input:focus, textarea:focus {
 								<div>
 									<input type="hidden" name="actType" value="C" />
 									<!-- C:등록 U:수정 D:삭제 -->
-									<input type="hidden" name="id" id="id" value="" /> <input
-										type="text" name="rsrvNum" id="rsrvNum" value="" />
+									<input type="hidden" name="rsrvNum" id="rsrvNum" value="" />
 								</div>
 								<div class="email">
 									<label for="rsrvDate" style="width: 90px;">예약일자</label> <input
@@ -860,8 +868,8 @@ input:hover, textarea:hover, input:focus, textarea:focus {
 										  placeholder="10:00"   />
 								</div>
 								<div>
-									<label for="rsrvInwon" style="width: 90px">인원</label> <input
-										type="number"   name="rsrvInwon"   id="rsrvInwon"   value="1" />
+									<label for="rsrvInwon" style="width: 90px">인원</label>
+									<input type="number"   name="rsrvInwon"   id="rsrvInwon"   value="1" />
 								</div>
 								<div>
 									<label for="rsrvSubject" style="width: 90px">제목</label> <input
@@ -874,9 +882,9 @@ input:hover, textarea:hover, input:focus, textarea:focus {
 								</div>
 								<div>
 									<label for="xwriteDate" style="width: 90px;">작성일자</label>
-									<!-- <input type="text" name="xwriteDate" id="xwriteDate" style="border:none;"/> -->
-									<span type="text" name="xwriteDate" id="xwriteDate"
-										style="border: none;"></span>
+									<input type="text" name="xwriteDate" id="xwriteDate" style="border:none;"/>
+									<!-- <span type="text" name="xwriteDate" id="xwriteDate" style="border: none;"></span> -->
+									<!-- <span type="text" name="xwriteDate" id="xwriteDate"></span> -->
 									<!-- <input type="text" name="xwriteDate" id="xwriteDate"/> -->
 									<!-- <input type="text" name="xwriteDate" id="xwriteDate"/> -->
 									<!-- <sapn type="text" name="xwriteDate" id="xwriteDate"></sapn> -->

@@ -271,6 +271,7 @@ section.sec2 .right-section section::after {
 			var rsrvtime = null;
 			var rsrvinwon = null;
 			var rsrvmemo = null;
+			var writedate = null;
 
 			//============================== date get / set ============================
 			//// 그룹id(2024.02.04)
@@ -301,6 +302,7 @@ section.sec2 .right-section section::after {
 				/// 추가(2024.04.05)
 				//// 예약자명
 				//console.log("예약자명2 : " + arg.rsrvname);
+				
 				if (arg.extendedProps.rsrvname != ""
 						&& arg.extendedProps.rsrvname != null
 						&& arg.extendedProps.rsrvname != undefined) {
@@ -341,8 +343,16 @@ section.sec2 .right-section section::after {
 						&& arg.extendedProps.rsrvmemo != undefined) {
 					rsrvmemo = arg.extendedProps.rsrvmemo;
 				}
-
+				
 				//console.log("cs : " + arg.extendedProps.rsrvmemo);
+				
+				/// 작성일자
+				if (arg.extendedProps.writedate != ""
+						&& arg.extendedProps.writedate != null
+						&& arg.extendedProps.writedate != undefined) {
+					writedate = arg.extendedProps.writedate;
+				}
+				
 			}
 
 			if (allDay) { //// 하루종일이면
@@ -393,6 +403,7 @@ section.sec2 .right-section section::after {
 			rObj.rsrvtime = rsrvtime;
 			rObj.rsrvinwon = rsrvinwon;
 			rObj.rsrvmemo = rsrvmemo;
+			rObj.writedate = writedate;
 
 			//============================== date get / set ======================================
 			return rObj;
@@ -480,10 +491,8 @@ section.sec2 .right-section section::after {
 			$("form#diaForm").find("input[name='rsrvInwon']").val(
 					xobj.rsrvinwon); //// 예약인원
 			$("form#diaForm").find("input[name='rsrvSubject']").val(xobj.title); //// 제목
-			$("form#diaForm").find("textarea[name='rsrvMemo']").val(
-					xobj.rsrvmemo);
-
-			//$("form#diaForm").find("input[name='xwriteDate']").val(xobj.start);  //// 작성일자
+			$("form#diaForm").find("textarea[name='rsrvMemo']").val(xobj.rsrvmemo);
+			$("form#diaForm").find("input[name='xwriteDate']").val(xobj.writedate); /// 작성일자
 
 			/* 
 			$("form#diaForm").find("input[name='rsrvdate']").val(dispStr);
@@ -637,7 +646,7 @@ section.sec2 .right-section section::after {
 			selectMirror : true,
 			select : function(arg) {
 
-				alert("등록 여부 : " + isAdm);
+				/// alert("등록 여부 : " + isAdm);
 
 				if (isAdm == 0) {
 					return false;
@@ -843,8 +852,7 @@ section.sec2 .right-section section::after {
 								<div>
 									<input type="hidden" name="actType" value="C" />
 									<!-- C:등록 U:수정 D:삭제 -->
-									<input type="hidden" name="id" id="id" value="" /> <input
-										type="text" name="rsrvNum" id="rsrvNum" value="" />
+									<input type="hidden" name="rsrvNum" id="rsrvNum" value="" />
 								</div>
 								<div class="email">
 									<label for="rsrvDate" style="width: 90px;">예약일자</label> <input
