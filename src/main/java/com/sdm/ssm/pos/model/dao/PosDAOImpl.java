@@ -1,5 +1,6 @@
 package com.sdm.ssm.pos.model.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +48,18 @@ public class PosDAOImpl implements PosDAO {
 	@Override
 	public int insertTableInfo(Table table) {
 		return sqlSession.insert("posMapper.insertTable", table);
+	}
+
+	@Override
+	public ArrayList<Table> selectTableList(String id) {
+		List<Table> list = sqlSession.selectList("posMapper.selectTableList", id);
+		return (ArrayList<Table>)list;
+	}
+
+	@Override
+	public int deleteTable(Table table) {
+		
+		return sqlSession.delete("posMapper.deleteTable", table);
 	}
 
     // 추가적인 POS 관련 기능에 대한 메소드를 구현할 수 있습니다.
