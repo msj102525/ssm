@@ -107,7 +107,7 @@ p.title {
 
 /* 테이블 행 */
 .inconvinience td {
-	padding: 19px;
+	padding: 9px;
 	text-align: left;
 	border-bottom: 1px solid #ddd;
 	text-align: center;
@@ -337,5 +337,8 @@ p.title {
 	color: #a11616;
 }
 
+#chart_div, #chart_div2{
+	min-height : 400px;
+}
 
 

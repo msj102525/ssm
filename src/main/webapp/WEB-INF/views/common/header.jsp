@@ -15,9 +15,11 @@
 	src="/ssm/resources/css/jquery-ui-1.13.2/jquery-ui.min.js"></script>
 
 <script type="text/javascript">
-	$(()=> {
-		
-	}) // document ready
+	$(function(){
+		$('#noUserHeader li:nth-child(2) a, #noUserHeader li:nth-child(3) a, #noUserHeader li:nth-child(4) a').click(function() {
+	        alert("로그인 후 이용하실 수 있습니다!");
+	    });
+	}); // document ready
 	
 	const logout = () => {
 		location.href='logout.do';
@@ -38,11 +40,11 @@
 						</a>
 					</h1>
 					<div class="gnb">
-						<ul>
+						<ul id="noUserHeader">
 							<li><a href="${pageContext.servletContext.contextPath }/nlist.do?page=1">공지사항</a></li>
-							<li><a href="${pageContext.servletContext.contextPath }/inconvlist.do?page=1">불편사항</a></li>
-							<li><a href="${pageContext.servletContext.contextPath}/mvwelcom.do">매장관리</a></li>
-							<li><a href="${pageContext.servletContext.contextPath }/slist.do">구독하기</a></li>
+							<li><a href="${pageContext.servletContext.contextPath }/goLogin.do">불편사항</a></li>
+							<li><a href="${pageContext.servletContext.contextPath}/goLogin.do">매장관리</a></li>
+							<li><a href="${pageContext.servletContext.contextPath }/goLogin.do">구독하기</a></li>
 						</ul>
 					</div>
 					<div class="login-box">
