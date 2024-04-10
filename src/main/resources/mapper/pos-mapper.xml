@@ -64,4 +64,9 @@
         <!-- 사용자 별로 인벤토리 삭제하는 쿼리 -->
         DELETE FROM TB_INVENTORY_#{id} WHERE GOODS_NO = #{goodsNo}
     </delete>
+    
+    
+    <insert id="insertTable" parameterType="Table">
+    	INSERT INTO TB_TABLE_${id} VALUES()
+    </insert>
 </mapper>

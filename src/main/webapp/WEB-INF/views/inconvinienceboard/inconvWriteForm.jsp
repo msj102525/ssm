@@ -95,6 +95,7 @@ h3 {
 </head>
 <body>
 	<c:import url="/WEB-INF/views/common/header.jsp" />
+	<div class="main-container" style="padding-top:100px;">
     <div class="container">
         <hr>
         <form id="writeForm" action="iwrite.do" method="POST">
@@ -109,6 +110,7 @@ h3 {
             </c:url>
             <a onclick="submitForm()" class="mv">완료</a>
             <a href="${pageContext.servletContext.contextPath}/${lb}" class="mv">돌아가기</a>
+    </div>
     </div>
         <script>
     function submitForm() {

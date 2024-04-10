@@ -164,6 +164,7 @@ button {
 <body>
 	<c:import url="/WEB-INF/views/common/header.jsp" />
 	<hr>
+	<div class="main-container" style="padding-top:100px;">
 	<br>
 	<br>
 	<div class="listdiv">
@@ -213,6 +214,7 @@ button {
 		<c:if test="${ !empty loginUser &&  loginUser.adminOk eq 'N'}">
 			<button class="writerB" onclick="showWriteForm();">글쓰기</button>
 		</c:if>
+	</div>
 	</div>
 	<c:url var="iwf" value="iwform.do">
 		<c:param name="page" value="${nowpage}" />

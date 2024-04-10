@@ -176,6 +176,7 @@ p.title {
 </head>
 <body>
 	<c:import url="/WEB-INF/views/common/header.jsp" />
+	<div class="main-container" style="padding-top:100px;">
 	<hr>
 	<br>
 	<br>
@@ -236,6 +237,7 @@ p.title {
             <button id="confirmAddSubscription">추가</button>
         </div>
     </div>
+</div>
 </div>
 	<c:import url="/WEB-INF/views/common/footer.jsp" />
 

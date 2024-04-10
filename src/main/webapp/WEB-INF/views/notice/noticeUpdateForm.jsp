@@ -159,6 +159,7 @@ label {
 </style>
 </head>
 <body>
+<div class="main-container" style="padding-top:100px;">
 <div class="container">
 <hr>
 		<form id='modifyForm' action="nupdate.do" method="POST">
@@ -199,6 +200,7 @@ label {
 		<c:url var="lb" value="nlist.do">
 			<c:param name="page" value="${page}" />
 		</c:url>
+	</div>
 	</div>
 	<br>
 

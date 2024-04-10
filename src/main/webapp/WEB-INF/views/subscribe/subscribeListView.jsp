@@ -187,6 +187,7 @@ img.selected {
 </head>
 <body>
 	<c:import url="/WEB-INF/views/common/header.jsp" />
+	<div class="main-container" style="padding-top:100px;">
 	<hr>
 	<br>
 	<br>
@@ -313,6 +314,7 @@ img.selected {
 		<!-- 로그인유저 아이디랑 , 상품번호도 보내야함! -->
 		<br> <br> <br> <br> <br>
 		<button id="payment-button" onclick="pay();">결제하기</button>
+	</div>
 	</div>
 	<hr>
 	<c:import url="/WEB-INF/views/common/footer.jsp" />

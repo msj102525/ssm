@@ -92,6 +92,7 @@ function mvNoTablePos(){
 <body>
 <c:import url="/WEB-INF/views/common/header.jsp" />
 <c:import url="/WEB-INF/views/common/sidebar.jsp" />
+<div class="main-container" style="padding-top:100px;">
 <div class="container">
 <div class="inner">
 <div class="image left onclick" onclick="mvTablePos();">
@@ -111,6 +112,8 @@ function mvNoTablePos(){
 </div>
 </div>
 <div class="userInfo"><p class="userInfoP">아이디 : ${loginUser.userId} &nbsp;&nbsp;&nbsp;&nbsp;매장명 : ${loginUser.businessStoreName }</div>
+
+</div>
 <c:import url="footer.jsp" />
 </body>
 </html>

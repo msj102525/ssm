@@ -61,6 +61,7 @@ h3 {
 </head>
 <body>
 	<c:import url="/WEB-INF/views/common/header.jsp" />
+	<div class="main-container" style="padding-top:100px;">
 	<div class="container">
 		<br>
 		<h3>${notice.noticeTitle }</h3>
@@ -94,6 +95,7 @@ h3 {
 				<a href=${adelete}>삭제</a>
 			</c:if>
 		</div>
+	</div>
 	</div>
 	<c:import url="/WEB-INF/views/common/footer.jsp" />
 </body>

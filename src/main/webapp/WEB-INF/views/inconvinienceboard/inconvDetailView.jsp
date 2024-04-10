@@ -188,6 +188,7 @@ select#statusOption {
 </head>
 <body>
 	<c:import url="/WEB-INF/views/common/header.jsp" />
+	<div class="main-container" style="padding-top:100px;">
 	<div class="container">
 		<br>
 		<h3>${inconvBoard.boardTitle }</h3>
@@ -244,6 +245,7 @@ select#statusOption {
 				</form>
 			</div>
 		</c:if>
+	</div>
 	</div>
 	<c:import url="/WEB-INF/views/common/footer.jsp" />
 </body>

@@ -378,6 +378,7 @@ select.suspend {
 </head>
 <body>
 	<c:import url="/WEB-INF/views/common/header.jsp" />
+	<div class="main-container" style="padding-top:100px;">
 	<hr>
 	<br>
 	<br>
@@ -651,6 +652,7 @@ select.suspend {
 			</div>
 		</div>
 	</div>
+	</div>
 	<script type="text/javascript">
 		function disableScroll() {
 			// body 요소의 overflow를 hidden으로 변경하여 스크롤 비활성화
@@ -683,6 +685,7 @@ select.suspend {
 		});
 	</script>
 	<hr>
+	
 	<c:import url="/WEB-INF/views/common/footer.jsp" />
 </body>
 </html>

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import com.sdm.ssm.pos.model.vo.Inventory;
 import com.sdm.ssm.pos.model.vo.Menu;
+import com.sdm.ssm.pos.model.vo.Table;
 
 @Repository
 public class PosDAOImpl implements PosDAO {
@@ -42,6 +43,11 @@ public class PosDAOImpl implements PosDAO {
     public void deleteMenu(int id) {
         sqlSession.delete("posMapper.deleteMenu", id);
     }
+
+	@Override
+	public int insertTableInfo(Table table) {
+		return sqlSession.insert("posMapper.insertTable", table);
+	}
 
     // 추가적인 POS 관련 기능에 대한 메소드를 구현할 수 있습니다.
 }

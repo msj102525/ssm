@@ -154,6 +154,7 @@ button {
 <body>
 	<%-- <%@ include file="../common/menubar.jsp" %> --%>
 	<c:import url="/WEB-INF/views/common/header.jsp" />
+	<div class="main-container" style="padding-top:100px;">
 	<hr>
 		<br> <br>
 		<div class="listdiv">
@@ -198,6 +199,7 @@ button {
 		<c:if test="${ !empty loginUser &&  loginUser.adminOk eq 'Y'}">
 		<button class="writerB" onclick="showWriteForm();">글쓰기</button>
 		</c:if>
+		</div>
 		</div>
 		<c:url var="nwf" value="nwform.do">
 			<c:param name="page" value="${nowpage}" />

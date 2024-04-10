@@ -180,7 +180,7 @@
 				<section class="sec2">
 					<div class="inner-section-incon">
 					<p class="title">조치사항</p>
-						<table id="inconvinienceAdmin">
+						<table id="inconvinienceAdmin" class="inconvinience">
 							<tr class="titlerow">
 								<th>제목</th>
 								<th>작성자</th>

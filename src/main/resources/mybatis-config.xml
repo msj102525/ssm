@@ -34,6 +34,7 @@
 		<typeAlias type="com.sdm.ssm.employee.model.vo.CommuteInfo" alias="CommuteInfo"/>
 		<typeAlias type="com.sdm.ssm.admin.model.vo.CountUser" alias="CountUser"/>
 		<typeAlias type="com.sdm.ssm.admin.model.vo.Sales" alias="Sales"/>
+		<typeAlias type="com.sdm.ssm.pos.model.vo.Table" alias="Talbe" />
 		
 		
 		<typeAlias type="com.sdm.ssm.pos.model.vo.POS" alias="POS"/>
