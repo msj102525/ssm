@@ -133,7 +133,15 @@
 	src="/ssm/resources/css/jquery-ui-1.13.2/jquery-ui.min.js"></script>
 <script>
 $(function(){
-	
+	document.querySelectorAll(".table").forEach((element)=>{
+		 element.setAttribute('draggable','true');
+		element.addEventListener("dragstart", (event)=>{
+			const objectId = event.target.id; // 해당 객체의 ID 값을 가져옴
+		    const posX = event.offsetX;
+		    const posY = event.offsetY;
+		    event.dataTransfer.setData("text/plain", objectId+","+posX+","+posY); // 드래그하는 요소의 ID 값을 설정하여 데이터 전송 준비
+		});
+	});
 	
 	document.querySelector("#tableView").addEventListener("dragover",(event)=>{
 		event.preventDefault();
