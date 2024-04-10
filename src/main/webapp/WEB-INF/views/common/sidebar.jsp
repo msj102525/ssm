@@ -209,12 +209,8 @@ body {
     <li>
       <a href="#">회계 관리</a>
       <ul>
-        <li><a href="#">text1</a></li>
-        <li><a href="#">text2</a></li>
         <li><a href="${pageContext.servletContext.contextPath}/mvPayStub.do">급여명세서</a></li>
         <li><a href="${pageContext.servletContext.contextPath }/account.do">매출보기</a></li>
-        <li><a href="${pageContext.servletContext.contextPath}/mvPayStub.do">급여명세서</a></li>
-        <li><a href="#">text4</a></li>
       </ul>
     </li>
   </ul>

@@ -359,4 +359,56 @@ public class GoodsPrintController {
 		return "goods/specify";
 
 	}
+	
+	
+	
+	@RequestMapping(value = "psearch.do", method = RequestMethod.GET)
+	public String produceNameSearch(@RequestParam(name = "id", required = false) int id,
+			@RequestParam("action") String action, Search search,
+			@RequestParam(name = "page", required = false) String page, Model model) {
+
+		
+		int currentPage = 1;
+		if (page != null) {
+			currentPage = Integer.parseInt(page);
+		}
+
+		
+		int listCount = 0;
+		Paging paging = new Paging(listCount, currentPage, 10, "gsearch.do");
+		paging.calculate();
+		search.setId(id);
+		ArrayList<GoodsPrint> list = null;
+
+		if (action.equals("goodsName")) {
+			listCount = goodsPrintService.selectSearchGoodsNameCount(search);
+			paging.setListCount(listCount);
+			paging.calculate();
+
+			search.setStartRow(paging.getStartRow());
+			search.setEndRow(paging.getEndRow());
+			list = goodsPrintService.selectSearchGoodsName(search);
+
+		} else if (action.equals("pdName")) {
+			listCount = goodsPrintService.selectSearchPdNameCount(search);
+			paging.setListCount(listCount);
+			paging.calculate();
+			search.setStartRow(paging.getStartRow());
+			search.setEndRow(paging.getEndRow());
+			list = goodsPrintService.selectSearchPdName(search);
+		}
+
+		model.addAttribute("list", list);
+		model.addAttribute("paging", paging);
+		model.addAttribute("currentPage", currentPage);
+		model.addAttribute("action", action);
+
+		if (list != null && list.size() > 0) {
+			return "goods/goodsListView";
+		} else {
+			model.addAttribute("message", search.getKeyword() + "해당 상품 X");
+			return "common/error";
+		}
+	}
+	
 }

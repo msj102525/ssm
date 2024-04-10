@@ -91,6 +91,7 @@ function mvNoTablePos(){
 </head>
 <body>
 <c:import url="/WEB-INF/views/common/header.jsp" />
+<div style="padding-top : 100px;">
 <c:import url="/WEB-INF/views/common/sidebar.jsp" />
 <div class="main-container" style="padding-top:100px;">
 <div class="container">
@@ -116,5 +117,6 @@ function mvNoTablePos(){
 
 </div>
 <c:import url="footer.jsp" />
+</div>
 </body>
 </html>

@@ -29,7 +29,55 @@ document.querySelector('.delete').addEventListener('click', function() {
     resetBasket(); // 취소 버튼 클릭 시 테이블 초기화
 });
 </script>
+<script>
+function updateGoods() {
+    var basketTable = document.querySelector('.basket');
+    var rows = basketTable.getElementsByTagName('tr');
 
+    // 두 번째 테이블의 각 행을 순회하며 상품 이름과 수량을 출력
+    for (var i = 0; i < rows.length; i++) {
+        var cells = rows[i].cells;
+        var productName = cells[0].textContent; // 상품 이름
+        /* var inputQuantity = cells[1].getElementsByTagName('input')[0].value; // 수량 input 태그
+        var quantity = inputQuantity.value; // 수량 */
+
+        console.log("상품 이름:", productName, "수량:", );
+    }
+}
+</script>
+<script>
+    function displayInfo() {
+        var basketTable = document.querySelector('.basket');
+        var rows = basketTable.querySelectorAll('tr');
+
+        // 두 번째 테이블의 각 행을 순회하며 상품 이름과 수량을 가져와서 출력
+        var infoText = "두 번째 테이블 정보:\n";
+        rows.forEach(function(row) {
+            var cells = row.cells;
+            var productName = cells[0].textContent; // 상품명
+            var quantity = cells[1].getElementsByTagName('input')[0].innerHTML; 
+            infoText += "상품명: " + productName + ", 수량: " + quantity + "\n";
+            
+        });
+
+        // 알림창으로 정보 출력
+        alert(infoText);
+    }
+</script>
+
+
+<script>
+function checkQuantity() {
+    var quantityInput = document.getElementById('quantityInput');
+    var quantity = quantityInput.value;
+
+    if (quantity !== null && !isNaN(quantity)) {
+        alert('수량: ' + quantity);
+    } else {
+        alert('올바른 수량을 입력하세요.');
+    }
+}
+</script>
 <script>
 function addBasket(rowIndex) {
     // 결과를 표시할 테이블
@@ -133,14 +181,12 @@ table.goods {
 	position: absolute;
 	top: 0;
 	left: 0;
-	padding-right: 5px;
 }
 
 table.bascket {
 	position: absolute;
 	top: 0;
 	right: 0;
-	padding-left: 5px;
 }
 
 .body .tableView {
@@ -151,7 +197,7 @@ table.bascket {
 }
 
 .body .buttonList {
-	width: 20%;
+	width: 50%;
 	height: 60%;
 	display: flex;
 	flex-direction: column;
@@ -257,9 +303,7 @@ table.bascket {
 					</tr>
 
 				</table>
-				<div>
-					<c:import url="/WEB-INF/views/common/pagingView.jsp" />
-				</div>
+				
 				<div class="buttonList">
 					<button class="button add" onclick="updateGoods()">계산</button>
 					<button class="button delete" onclick="resetBasket()">취소</button>
@@ -268,7 +312,6 @@ table.bascket {
 			</div>
 
 		</div>
-
 	</div>
 </body>
 </html>

@@ -132,7 +132,7 @@ $(function(){
                 minAlarmQuantity: document.getElementById('minAlarmQuantity_' + rowIndex).value
             };
             updatedGoods.push(rowData);
-            alert(JSON.stringify(updatedGoods));
+
         });
 
         // 알림 대화 상자 표시

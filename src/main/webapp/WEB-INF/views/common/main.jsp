@@ -126,8 +126,8 @@
 				    <option value="2024-11">2024-11</option>
 				    <option value="2024-12">2024-12</option>
 				</select> 
-				</div>
-					<div class="inner-section z-index-1" style="height: 400px;">
+				</div>				
+					<div class="inner-section" style="height: 400px;">
 						<div class="left-section" style="height: 400px;">
 							<table id="myTable" class="monthlySale"border="1" width="80%" style="height: 400px;">
 								<tr style="height: 10px;">
