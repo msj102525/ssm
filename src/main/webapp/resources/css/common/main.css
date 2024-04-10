@@ -28,7 +28,7 @@ section .inner-section {
 	padding: 50PX 0px;
 }
 
-section {
+section.z-index-1{
 	z-index: -1;
 }
 

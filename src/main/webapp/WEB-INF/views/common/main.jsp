@@ -69,7 +69,7 @@
 		<c:if test="${ !empty loginUser &&  loginUser.adminOk ne 'Y'}">
 			<div class="section-container">
 				<%-- section1 --%>
-				<section class="sec1">
+				<section class="sec1 z-index-1">
 				<div align="center" class="padding-top">
 					<select style="height: 35px; width: 80px;" 
 				id="monthSelect" onchange="onChangeMonth()">
