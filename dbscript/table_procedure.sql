@@ -814,6 +814,7 @@ BEGIN
              || '  GOODS_NAME VARCHAR2(300) NOT NULL, '
              || '  GOODS_UNIT VARCHAR2(30), '
              || '  GOODS_PRICE NUMBER,      '
+	|| '  SALE_PRICE NUMBER,      '
              || '  NATION VARCHAR2(30) DEFAULT NULL '
              || '  ) ';
 			 
