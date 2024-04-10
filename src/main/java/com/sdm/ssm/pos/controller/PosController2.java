@@ -34,7 +34,9 @@ public class PosController2 {
 	
 	
 	@RequestMapping("mvTablePos.do")
-	public String moveTablePos() {
+	public String moveTablePos(@RequestParam("id") String id,Model model) {
+		ArrayList<Table> list = posService.selectTableList(id);
+		model.addAttribute("list", list);
 		return "pos/table";
 	}
 	@RequestMapping("mvNoTablePos.do")
@@ -71,11 +73,13 @@ public class PosController2 {
 		return "pos/notable";
 	}
 	@RequestMapping("mvPosSetting.do")
-	public String movePosSettingPage() {
+	public String movePosSettingPage(Model model,@RequestParam("id") String id) {
+		ArrayList<Table> list = posService.selectTableList(id);
+		model.addAttribute("list", list);
 		return "pos/posSetting";
 	}
 	@RequestMapping("saveTableXY.do")
-	public void test6Method(@RequestBody String tableArray) throws ParseException{
+	public void saveTableMethod(@RequestBody String tableArray) throws ParseException{
 		JSONParser jparser = new JSONParser();
 		JSONArray jarr = (JSONArray)jparser.parse(tableArray);
 		for(int i=0; i<jarr.size(); i++) {
@@ -93,6 +97,11 @@ public class PosController2 {
 			
 			int result = posService.insertTableInfo(table);
 			}
-		
+	}
+	@RequestMapping("deleteTable.do")
+	public String deleteTable(Table table, Model model) {
+		int result = posService.deleteTable(table);
+		model.addAttribute("id", table.getId());
+		return "redirect:mvPosSetting.do";
 	}
 }

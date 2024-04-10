@@ -143,7 +143,7 @@ $(function() {
 
 		function drawChart(countMap, countSubMap, year) {
 			var data = google.visualization.arrayToDataTable([
-					[ 'Month', '가입자 수', '서비스 이용자 수' ],
+					[ 'Month', '가입자 수', '결제 수' ],
 					[ '01', parseInt(countMap["01"]),
 							parseInt(countSubMap["01"]) ],
 					[ '02', parseInt(countMap["02"]),

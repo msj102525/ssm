@@ -61,7 +61,7 @@ public class ReserveCalController {
 		
 		//logger.info("ID-01 : " + loginUser.getId());
 		
-		return "reserve/calendarfull040901";
+		return "reserve/reservecalendarmain";
 	}
 	
 	//////////////////////////////////////////////////////////
@@ -81,8 +81,8 @@ public class ReserveCalController {
 		//User loginUser = (User)session.getAttribute("loginUser");
 		
 		//logger.info("ID-01 : " + loginUser.getId());
-		return "reserve/calendarfull040701";
-		//return "reserve/calendarfull040901";
+		return "reserve/reservecalendarlist";
+		//return "reserve/calendarfull040701";
 	}
 	
 	//달력 기본 화면
@@ -135,12 +135,8 @@ public class ReserveCalController {
 	    serachDateStr.setEdate(edate);
 	    
 	    ////serachDateStr.setId(200);
-
 	    serachDateStr.setId(loginUser.getId());
 	    
-		//HttpSession session = request.getSession();
-		//Member loginMember = (Member)session.getAttribute("loginMember");
-
 	    //searchVO.setSite_code(loginService.getSiteCode());
 	    //List<Reserve> list = reserveService.selectRsrvDetail(reserve);
 	    ArrayList<Reserve> list = reserveService.selectRsrvList2(serachDateStr);
@@ -181,7 +177,8 @@ public class ReserveCalController {
 			job.put("rsrvtime", reserve.getRsrvTime());  //// 예약시간 2024.04.05
 			job.put("rsrvinwon", reserve.getRsrvInwon());  //// 인원 2024.04.05
 			job.put("rsrvmemo", reserve.getRsrvMemo());  //// 메모 2024.04.05
-			
+			job.put("writedate", reserve.getWriteDate().toString());  //// 작성일자 2024.04.10 
+
 			jarr.add(job);
 			
 			sortidx = sortidx - 1;

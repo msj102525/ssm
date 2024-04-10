@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="posMapper">
+	<resultMap type="Table" id="resultTable">
+		<result property="tableNo" column="TABLE_NO" />
+		<result property="tableName" column="TABLE_NAME" />
+		<result property="tableX" column="TABLE_X" />
+		<result property="tableY" column="TABLE_Y" />
+	</resultMap>
 
     <!-- POS 관련 쿼리 -->
     <insert id="addPOS" parameterType="com.sdm.ssm.pos.model.vo.POS">
@@ -65,8 +71,14 @@
         DELETE FROM TB_INVENTORY_#{id} WHERE GOODS_NO = #{goodsNo}
     </delete>
     
-    
+    <!-- 테이블 정보조회 -->
+    <select id="selectTableList" parameterType="_int" resultMap="resultTable">
+    	select * FROM TB_TABLE_${id}
+    </select>
     <insert id="insertTable" parameterType="Table">
-    	INSERT INTO TB_TABLE_${id} VALUES()
+    	INSERT INTO TB_TABLE_${id} VALUES(TB_TABLE_${id}_TABLE_NO_SEQ.NEXTVAL,#{tableName},#{tableX},#{tableY})
     </insert>
+    <delete id="deleteTable" parameterType="Table">
+    	delete TB_TABLE_${id} where table_name=#{tableName}
+    </delete>
 </mapper>

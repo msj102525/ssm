@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -31,6 +32,21 @@
 
 .body {
 	height: 60vh;
+	position: relative;
+}
+.body a {
+	min-width: 150px;
+	min-height: 200px;
+	max-width: 150px;
+	max-height: 200px;
+	text-decoration: none;
+	text-align: center;
+	line-height: 80px;
+	background-color: white;
+	border: 2px solid black;
+	border-radius: 8px;
+	margin-bottom: 4px;
+	position: absolute;
 }
 
 .footer {
@@ -71,10 +87,14 @@
 <body>
 	<div class="wrap">
 		<div class="header"><p class="title">SSM 웹 포스기</p></div>
-		<div class="body"></div>
+		<div class="body">
+		<c:forEach items="${requestScope.list}" var="t">
+		<a class="table" id="${t.tableName }" style="left:${t.tableX}px;top:${t.tableY}px">${t.tableName }</a>
+</c:forEach>
+		</div>
 		<div class="footer">
 			<div class="inner-footer">
-				<div class="setting-image" onclick="location.href='mvPosSetting.do'">
+				<div class="setting-image" onclick="location.href='mvPosSetting.do?id=${loginUser.id}'">
 					<img src="resources/images/posImage/setting.png">
 				</div>
 			</div>

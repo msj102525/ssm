@@ -168,6 +168,14 @@ p.title {
 .modal-btns button:hover {
 	background-color: #45a049;
 }
+.addSubscribe{
+	width: 130px;
+	height: 40px;
+	border: none;
+	background: rgb(250, 180, 49);
+	color: #ffffff;
+	font-size: 16px;
+}
 </style>
 <script type="text/javascript"
 	src="/ssm/resources/js/jquery-3.7.0.min.js"></script>
@@ -202,7 +210,7 @@ p.title {
 				</c:forEach>
 			</table>
 		</div>
-		 <button onclick="$('#addSubscriptionModal').show();">구독상품 추가</button>
+		 <button class="addSubscribe" onclick="$('#addSubscriptionModal').show();">구독상품 추가</button>
 	</div>
 
 	<!-- 모달 -->

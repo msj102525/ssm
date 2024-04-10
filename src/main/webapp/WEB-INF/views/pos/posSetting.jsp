@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -72,8 +73,9 @@
 }
 /*테이블 모양*/
 .tableView {
-	position:relative;
+	position: relative;
 }
+
 .tableView a {
 	min-width: 150px;
 	min-height: 200px;
@@ -88,9 +90,14 @@
 	margin-bottom: 4px;
 	position: absolute;
 }
+
 .table:hover {
 	box-shadow: 0 0 10px 0 darkgray;
 	cursor: pointer;
+}
+
+.table.selected {
+	border: 3px solid red; /* 선택된 테이블에 빨간 테두리 추가 */
 }
 /* 테이블 추가 버튼 */
 .button.add {
@@ -126,6 +133,16 @@
 	src="/ssm/resources/css/jquery-ui-1.13.2/jquery-ui.min.js"></script>
 <script>
 $(function(){
+	document.querySelectorAll(".table").forEach((element)=>{
+		 element.setAttribute('draggable','true');
+		element.addEventListener("dragstart", (event)=>{
+			const objectId = event.target.id; // 해당 객체의 ID 값을 가져옴
+		    const posX = event.offsetX;
+		    const posY = event.offsetY;
+		    event.dataTransfer.setData("text/plain", objectId+","+posX+","+posY); // 드래그하는 요소의 ID 값을 설정하여 데이터 전송 준비
+		});
+	});
+	
 	document.querySelector("#tableView").addEventListener("dragover",(event)=>{
 		event.preventDefault();
 		event.stopPropagation();
@@ -144,19 +161,37 @@ $(function(){
 		$('#' + id).css('left', (relativeX-parseInt(posX)) + 'px');
 		$('#' + id).css('top', (relativeY-parseInt(posY)) + 'px');
 	});
-});
+	$(document).on('click', '.table', function() {
+	    $('.table').removeClass('selected');
+	    $(this).addClass('selected');
+	});
+	
+});//documentReady
 function addTable() {
 	var linkCount = $('#tableView a').length;
 	if(linkCount>5){
 		alert('테이블은 6개 까지 추가 가능합니다.');
 	}else{
+		const existingIds = new Set(); // 이미 존재하는 테이블의 ID를 저장하기 위한 Set
+	    // 이미 존재하는 테이블의 ID를 확인하여 Set에 추가
+	    $('#tableView a').each(function() {
+	        existingIds.add($(this).attr('id'));
+	    });
+	    // 사용되지 않은 ID를 찾아서 새로운 테이블에 할당
+	    let newId;
+	    for (let i = 1; i <= linkCount + 1; i++) {
+	        newId = 'table' + i;
+	        if (!existingIds.has(newId)) {
+	            break;
+	        }
+	    }
     // 새로운 <a> 태그 생성
     const newLink = document.createElement('a');
-    newLink.textContent = '테이블'+(linkCount+1); // 링크 텍스트 설정
+    newLink.textContent = newId; // 링크 텍스트 설정
     newLink.setAttribute('class','table');
     newLink.setAttribute('draggable','true');
     newLink.setAttribute('href', '#'); // 링크 URL 설정
-	newLink.setAttribute('id','table'+(linkCount+1));
+	newLink.setAttribute('id',newId);
     newLink.addEventListener("dragstart", (event) => {
 	    const objectId = event.target.id; // 해당 객체의 ID 값을 가져옴
 	    const posX = event.offsetX;
@@ -166,6 +201,18 @@ function addTable() {
     // 새로운 <a> 태그를 tableView 안에 추가
     $('#tableView').append(newLink);
 	}
+}
+function deleteTable() {
+	const selectedTable = document.querySelector('.table.selected');
+    if (selectedTable) {
+        const tableId = selectedTable.id; // 선택된 테이블의 ID 값을 가져옴
+        selectedTable.remove();
+
+        // 선택된 테이블의 ID 값을 URL에 추가하여 페이지 이동
+        location.href = 'deleteTable.do?tableName=' + encodeURIComponent(tableId) +'&id='+${loginUser.id};
+    } else {
+        alert('삭제할 테이블을 선택하세요.');
+    }
 }
 function saveTable(){
 	if(Count ==0){
@@ -213,14 +260,22 @@ function saveTable(){
 			<p class="title">SSM 웹 포스기</p>
 		</div>
 		<div class="body">
+
 			<div class="tableView" id="tableView">
+				<c:forEach items="${requestScope.list}" var="t">
+					<a class="table" id="${t.tableName }"
+						style="left:${t.tableX}px;top:${t.tableY}px">${t.tableName }</a>
+				</c:forEach>
 			</div>
+
 			<div class="buttonList">
 				<button class="button add" onclick="addTable();">테이블 추가</button>
-				<button class="button delete">테이블 삭제</button>
+				<button class="button delete" onclick="deleteTable()">테이블
+					삭제</button>
 				<button class="button menu">메뉴 관리</button>
 				<button class="button save" onclick="saveTable()">저장</button>
-				<button class="button return">돌아가기</button>
+				<button class="button return"
+					onclick="location.href = 'mvTablePos.do?id=${loginUser.id}'">돌아가기</button>
 				<input type="hidden" id="userId" value="${loginUser.id }">
 			</div>
 		</div>

@@ -82,7 +82,7 @@ margin-right : 100px;
 <script type="text/javascript" src="/ssm/resources/js/jquery-3.7.0.min.js"></script>
 <script type="text/javascript">
 function mvTablePos(){
-	window.open('mvTablePos.do', '_blank');
+	window.open('mvTablePos.do?id='+${loginUser.id}, '_blank');
 }
 function mvNoTablePos(){
 	window.open('mvNoTablePos.do', '_blank');
@@ -101,6 +101,7 @@ function mvNoTablePos(){
 <div class="title left onclick" onclick="mvTablePos();">
 <p>Table</p>
 </div>
+<input type="hidden" id="id" value="${loginUser.id}">
 </div>
 <div class="inner">
 <div class="image right onclick" onclick="mvNoTablePos()">
