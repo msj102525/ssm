@@ -243,12 +243,11 @@ public class UserManageController {
 	}
 
 	@RequestMapping("mvwelcom.do")
-	public String moveWelcomePageMethod(@RequestParam(name="serviceDate", required=false) String serviceDate, Model model) {
-		LocalDate currentDate = LocalDate.now();
-		LocalDate parsedServiceDate = LocalDate.parse(serviceDate);
-		logger.info("현재시간 : " + currentDate);
-		logger.info("서비스데이트 : " + serviceDate);
-		if(serviceDate!=null) {
+	public String moveWelcomePageMethod(@RequestParam(name="userId", required=false) String userId, Model model) {
+		User user = userService.selectUserById(userId);
+		if(user.getServiceDate()!=null) {
+			LocalDate currentDate = LocalDate.now();
+			LocalDate parsedServiceDate = LocalDate.parse(user.getServiceDate().toString());
 			if(parsedServiceDate.isAfter(currentDate)) {
 				return "common/welcome";
 			}else {

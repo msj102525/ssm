@@ -71,7 +71,7 @@
 						<ul>			
 							<li><a href="${pageContext.servletContext.contextPath }/nlist.do?page=1">공지사항</a></li>
 							<li><a href="${pageContext.servletContext.contextPath }/inconvlist.do?page=1">불편사항</a></li>
-							<li><a href="${pageContext.servletContext.contextPath}/mvwelcom.do?serviceDate=${loginUser.serviceDate}">매장관리</a></li>
+							<li><a href="${pageContext.servletContext.contextPath}/mvwelcom.do?userId=${loginUser.userId}">매장관리</a></li>
 							<li><a href="${pageContext.servletContext.contextPath }/slist.do">구독하기</a></li>
 						</ul>
 					</div>
