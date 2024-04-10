@@ -1,5 +1,7 @@
 package com.sdm.ssm.pos.controller;
 
+import java.util.ArrayList;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -8,16 +10,24 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.sdm.ssm.common.Paging;
+import com.sdm.ssm.goodsmanage.model.service.GoodsPrintService;
+import com.sdm.ssm.goodsmanage.model.vo.GoodsPrint;
 import com.sdm.ssm.pos.model.service.PosService;
 import com.sdm.ssm.pos.model.vo.Table;
 
 
 @Controller
-public class PosController {
-	private static final Logger logger = LoggerFactory.getLogger(PosController.class);
+public class PosController2 {
+	private static final Logger logger = LoggerFactory.getLogger(PosController2.class);
+	
+	@Autowired
+	private GoodsPrintService goodsPrintService;
 	
 	@Autowired
 	private PosService posService;
@@ -28,7 +38,36 @@ public class PosController {
 		return "pos/table";
 	}
 	@RequestMapping("mvNoTablePos.do")
-	public String moveNoTablePos() {
+	public String moveNoTablePos(@RequestParam(name = "id", required = false) int id,
+			@RequestParam(name = "page", required = false) String page,
+			@RequestParam(name = "limit", required = false) String slimit, Model model) {
+		
+		int currentPage = 1;
+		if (page != null) {
+			currentPage = Integer.parseInt(page);
+		}
+
+		
+		int limit = 10;
+		if (slimit != null) {
+			limit = Integer.parseInt(slimit); 
+		}
+
+		
+		int listCount = goodsPrintService.selectListCount(id);
+
+		
+		Paging paging = new Paging(listCount, currentPage, limit, "glist.do");
+		paging.calculate();
+		
+		paging.setId(id);
+		ArrayList<GoodsPrint> list = goodsPrintService.selectGoodsPrint(paging);
+		model.addAttribute("list", list);
+		model.addAttribute("paging", paging);
+		model.addAttribute("currentPage", currentPage);
+		model.addAttribute("limit", limit);
+		
+		
 		return "pos/notable";
 	}
 	@RequestMapping("mvPosSetting.do")

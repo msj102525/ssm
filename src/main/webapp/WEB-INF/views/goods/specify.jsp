@@ -78,10 +78,14 @@
         document.getElementById('pdAddressSpan').innerText = pdAddress;
         
         var today = new Date();
-
+        
         // 날짜 입력란에 오늘 날짜 설정
         document.getElementById("date").value = today.toISOString().substr(0, 10);
-        
+
+        // 오늘 날짜를 div 요소에도 설정
+        var pdDateDiv = document.getElementById("pdDate");
+        var dateString = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
+        pdDateDiv.textContent = dateString;
     };
 </script>
 
@@ -230,7 +234,7 @@ function insertTable() {
     job.pdDate  = document.getElementById("pdDate").textContent;
     
     jarr.push(job);
-    
+    console.log(JSON.stringify(jarr));
     var confirmMessage = "해당 금액을 월 발주 금액에 저장하시겠습니까?"
     	if (confirm(confirmMessage)) {
             $.ajax({
