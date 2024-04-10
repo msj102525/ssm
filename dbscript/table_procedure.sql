@@ -564,6 +564,55 @@ EXCEPTION
 END;
 /
 
+-- TB_SALARY_INFO 테이블 생성 프로시저
+CREATE OR REPLACE PROCEDURE PR_CREATE_TB_SALARY_INFO 
+(p_user_id IN NUMBER) 
+IS
+   v_user_id    VARCHAR2(100);
+   v_table_name VARCHAR2(200);
+   v_seq_col    VARCHAR2(100);
+   
+   v_str        VARCHAR2(1000);
+BEGIN
+   ---------------------
+   --- 변수 초기화
+   ---------------------
+   v_user_id := '';
+   v_table_name := '';
+   
+   v_user_id := RTRIM(LTRIM(TO_CHAR(p_user_id)));
+
+   v_table_name := 'TB_SALARY_INFO_' || v_user_id;
+   
+   BEGIN
+      v_str := 'CREATE TABLE ' || v_table_name || '('
+            || '   EMP_ID NUMBER CONSTRAINT PK_' || v_table_name || ' PRIMARY KEY, '
+            || '   BANK_NAME VARCHAR2(30) NOT NULL, '
+            || '   BANK_ACCOUNT_NO VARCHAR2(20) NOT NULL, '
+            || '   ACCOUNT_HOLDER VARCHAR2(30) NOT NULL, '
+            || '   PREMIUM VARCHAR2(15), '
+            || '   TAX VARCHAR2(15), '
+            || ' CONSTRAINT FK_' || v_table_name || '_EMP_ID FOREIGN KEY (EMP_ID) '
+			|| '    REFERENCES TB_EMPLOYEE_' || v_user_id || ' (EMP_ID) '
+            || '   )';
+
+      EXECUTE IMMEDIATE v_str;
+	  
+      -------------------------------	  
+	  --- 컬럼 정보
+      -------------------------------
+      EXECUTE IMMEDIATE 'COMMENT ON TABLE ' || v_table_name || ' IS ''급여 정보''';
+      EXECUTE IMMEDIATE 'COMMENT ON COLUMN ' || v_table_name || '.EMP_ID IS ''직원번호''';
+      EXECUTE IMMEDIATE 'COMMENT ON COLUMN ' || v_table_name || '.BANK_NAME IS ''은행이름''';
+      EXECUTE IMMEDIATE 'COMMENT ON COLUMN ' || v_table_name || '.BANK_ACCOUNT_NO IS ''계좌번호''';
+      EXECUTE IMMEDIATE 'COMMENT ON COLUMN ' || v_table_name || '.ACCOUNT_HOLDER IS ''예금주''';
+      EXECUTE IMMEDIATE 'COMMENT ON COLUMN ' || v_table_name || '.PREMIUM IS ''보험료''';
+      EXECUTE IMMEDIATE 'COMMENT ON COLUMN ' || v_table_name || '.TAX IS ''세금''';
+
+   END;
+END;
+/
+
 CREATE OR REPLACE PROCEDURE PR_CREATE_TB_POS
 (p_user_id IN NUMBER)
 IS
@@ -814,6 +863,7 @@ BEGIN
              || '  GOODS_NAME VARCHAR2(300) NOT NULL, '
              || '  GOODS_UNIT VARCHAR2(30), '
              || '  GOODS_PRICE NUMBER,      '
+             || '  SALE_PRICE NUMBER,       '
              || '  NATION VARCHAR2(30) DEFAULT NULL '
              || '  ) ';
 			 
@@ -1166,9 +1216,9 @@ BEGIN
    PR_CREATE_TB_PRODUCE(p_user_id);
 
    ---------------------------
-   --- 10.1. TB_SALARY_INFO-- 사용안함
+   --- 10.1. TB_SALARY_INFO(직원급여)
    ---------------------------
-   --PR_CREATE_TB_SALARY_INFO(p_user_id);
+   PR_CREATE_TB_SALARY_INFO(p_user_id);
 
    ---------------------------
    --- 10.2. TB_SALARYINFO -- 사용안함
@@ -1359,8 +1409,8 @@ BEGIN
    ---------------------------
    --- 08.1. TB_SALARY_INFO
    ---------------------------
-   --PR_SSMS_DROP_TABLE('TB_SALARY_INFO', arg_user_id);
-   -- dbms_output.put_line('08');
+   PR_SSMS_DROP_TABLE('TB_SALARY_INFO', arg_user_id);
+   dbms_output.put_line('08');
 
    ---------------------------
    --- 08.2. TB_SALARYINFO
@@ -1435,8 +1485,11 @@ BEGIN
    -- TABLE 생성하기
    -----------------------
    IF INSERTING THEN
-      PR_SSMS_TABLE_ALL_CREATE(:NEW.ID);
-	  COMMIT;
+      --- 1000 ~ 2000까지는 관리자 ID 이므로 TABLE을 생성하지 않는다.(2024.04.10)
+      IF NOT (:NEW.ID >= 1000 AND :NEW.ID <= 2000)  THEN
+         PR_SSMS_TABLE_ALL_CREATE(:NEW.ID);
+         COMMIT;
+	  END IF;
    END IF;
    
 EXCEPTION
@@ -1560,18 +1613,21 @@ END;
 
 --------------------------------------------
 -- SEQUENCE 생성
+-- 관리자 1000 ~ 1999까지 사용
+-- 일반 가입 사용자는 2001부터 시작
 --------------------------------------------
 CREATE SEQUENCE USER_SEQ
         INCREMENT BY 1
-        START WITH 1
-	NOCACHE
-	NOCYCLE;
-		
-CREATE SEQUENCE EMP_ID_SEQ
-       START WITH 1
-       INCREMENT BY 1
-       NOCACHE
-       NOCYCLE;
+        START WITH 2001
+        NOCACHE
+        NOCYCLE;
+
+-- 일반 사용자 TABLE로 통합(2024.04.10)
+--CREATE SEQUENCE EMP_ID_SEQ
+--       START WITH 1
+--       INCREMENT BY 1
+--       NOCACHE
+--       NOCYCLE;
 
 CREATE SEQUENCE NOTICE_SEQ
         INCREMENT BY 1

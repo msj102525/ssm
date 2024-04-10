@@ -126,11 +126,13 @@ $(function(){
                 id: ${loginUser.id}, // loginUser.id 값 가져오기
                 goodsNo: row.value, // 체크된 체크박스의 값(상품 번호) 가져오기
                 pdQuantity: document.getElementById('pdQuantity_' + rowIndex).value,
+                salePrice: document.getElementById('salePrice_' + rowIndex).value,
                 goodsPrice: document.getElementById('goodsPrice_' + rowIndex).value,
                 minOrderQuantity: document.getElementById('minOrderQuantity_' + rowIndex).value,
                 minAlarmQuantity: document.getElementById('minAlarmQuantity_' + rowIndex).value
             };
             updatedGoods.push(rowData);
+            alert(JSON.stringify(updatedGoods));
         });
 
         // 알림 대화 상자 표시
@@ -227,7 +229,8 @@ $('#checkBoxAll').click(function () {
 					<th style="text-align: center; white-space: nowrap;">상품명</th>
 					<th style="text-align: center; white-space: nowrap;">수량</th>
 					<th style="text-align: center; white-space: nowrap;">단위</th>
-					<th style="text-align: center; white-space: nowrap;">가격</th>
+					<th style="text-align: center; white-space: nowrap;">판매가격</th>
+					<th style="text-align: center; white-space: nowrap;">발주가격</th>
 					<th style="text-align: center; white-space: nowrap;">발주 최소 수량</th>
 					<th style="text-align: center; white-space: nowrap;">알림 최소 수량</th>
 					<th style="text-align: center; white-space: nowrap;">발주처</th>
@@ -250,6 +253,13 @@ $('#checkBoxAll').click(function () {
 							</td>
 							<td align="center" style="white-space: nowrap;">${goodsPrint.goodsUnit}</td>
 
+							<td align="center" style="white-space: nowrap;">
+								<div style="display: inline-block;">
+									<input type="number" id="salePrice_${loop.index}"
+										value="${goodsPrint.salePrice}" name="salePrice"
+										style="width: 70px; margin-right: 0px; vertical-align: middle;" />
+								</div>
+							</td>
 							<td align="center" style="white-space: nowrap;">
 								<div style="display: inline-block;">
 									<input type="number" id="goodsPrice_${loop.index}"

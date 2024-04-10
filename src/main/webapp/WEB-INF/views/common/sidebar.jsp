@@ -203,10 +203,7 @@ body {
     <li>
       <a href="#">예약 관리</a>
       <ul>
-        <li><a href="#">text1</a></li>
-        <li><a href="#">text2</a></li>
-        <li><a href="#">text3</a></li>
-        <li><a href="#">text4</a></li>
+        <li><a href="${pageContext.servletContext.contextPath}/moveRsrvCalPage.do">예약정보관리</a></li>
       </ul>
     </li>
     <li>

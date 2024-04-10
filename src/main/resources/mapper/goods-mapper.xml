@@ -16,6 +16,7 @@
 		<result property="pdName" column="PD_NAME" />
 		<result property="pdPhone" column="PD_PHONE" />
 		<result property="goodsPrice" column="GOODS_PRICE" />
+		<result property="salePrice" column="SALE_PRICE" />
 		<result property="nation" column="NATION" />
 	</resultMap>
 	
@@ -29,6 +30,7 @@
 		<result property="minOrderQuantity" column="MIN_ORDER_QUANTITY" />
 		<result property="pdName" column="PD_NAME" />
 		<result property="pdPhone" column="PD_PHONE" />
+		<result property="salePrice" column="SALE_PRICE" />
 		<result property="goodsPrice" column="GOODS_PRICE" />
 		<result property="nation" column="NATION" />
 		<result property="pdAddress" column="PD_ADDRESS" />
@@ -47,11 +49,11 @@
 	    from
 		    (SELECT 
     			ROWNUM rnum, GOODS_NO, GOODS_NAME, PD_QUANTITY, GOODS_UNIT, 
-    			MIN_ORDER_QUANTITY, MIN_ALARM_QUANTITY, 
+    			MIN_ORDER_QUANTITY, MIN_ALARM_QUANTITY, SALE_PRICE,
     			PD_NAME, PD_PHONE, GOODS_PRICE, NATION, PD_ADDRESS 
 			FROM (SELECT 
         			  GOODS_NO, GOODS_NAME, PD_QUANTITY, GOODS_UNIT, 
-         			  MIN_ORDER_QUANTITY, MIN_ALARM_QUANTITY, 
+         			  MIN_ORDER_QUANTITY, MIN_ALARM_QUANTITY, SALE_PRICE,
         			  PD_NAME, PD_PHONE, GOODS_PRICE, NATION, PD_ADDRESS
     				  FROM TB_GOODS_${ id } 
     				  LEFT JOIN TB_INVENTORY_${ id } USING (GOODS_NO)
@@ -73,11 +75,11 @@
 	    from
 		    (SELECT 
     			ROWNUM rnum, GOODS_NO, GOODS_NAME, PD_QUANTITY, GOODS_UNIT, 
-    			MIN_ORDER_QUANTITY, MIN_ALARM_QUANTITY, 
+    			MIN_ORDER_QUANTITY, MIN_ALARM_QUANTITY, SALE_PRICE,
     			PD_NAME, PD_PHONE, GOODS_PRICE, NATION, PD_ADDRESS 
 			FROM (SELECT 
         			  GOODS_NO, GOODS_NAME, PD_QUANTITY, GOODS_UNIT, 
-         			  MIN_ORDER_QUANTITY, MIN_ALARM_QUANTITY, 
+         			  MIN_ORDER_QUANTITY, MIN_ALARM_QUANTITY, SALE_PRICE,
         			  PD_NAME, PD_PHONE, GOODS_PRICE, NATION, PD_ADDRESS
     				  FROM TB_GOODS_${ id }
     				  LEFT JOIN TB_INVENTORY_${ id } USING (GOODS_NO)
@@ -101,11 +103,11 @@
 	    from
 		    (SELECT 
     			ROWNUM rnum, GOODS_NO, GOODS_NAME, PD_QUANTITY, GOODS_UNIT, 
-    			MIN_ORDER_QUANTITY, MIN_ALARM_QUANTITY, 
+    			MIN_ORDER_QUANTITY, MIN_ALARM_QUANTITY, SALE_PRICE,
     			PD_NAME, PD_PHONE, GOODS_PRICE, NATION, PD_ADDRESS 
 			FROM (SELECT 
         			  GOODS_NO, GOODS_NAME, PD_QUANTITY, GOODS_UNIT, 
-         			  MIN_ORDER_QUANTITY, MIN_ALARM_QUANTITY, 
+         			  MIN_ORDER_QUANTITY, MIN_ALARM_QUANTITY, SALE_PRICE,
         			  PD_NAME, PD_PHONE, GOODS_PRICE, NATION, PD_ADDRESS
     				  FROM TB_GOODS_${ id }
     				  LEFT JOIN TB_INVENTORY_${ id } USING (GOODS_NO)
@@ -122,18 +124,18 @@
 
     INTO TB_GOODS_${id} (ID, GOODS_NO, GOODS_NAME, GOODS_UNIT, GOODS_PRICE, NATION)
     VALUES (${id}, 
-    		   (ingno.NEXTVAL), 
+    		   (TB_GOODS_${id}_GOODS_NO_SEQ.NEXTVAL), 
     		   #{goodsName}, #{goodsUnit}, #{goodsPrice}, #{nation})
-    
+
     INTO TB_INVENTORY_${id} (GOODS_NO, PD_QUANTITY, MIN_ALARM_QUANTITY, MIN_ORDER_QUANTITY)
-    VALUES ((ingno.NEXTVAL), 
+    VALUES ((TB_GOODS_${id}_GOODS_NO_SEQ.NEXTVAL), 
     			#{pdQuantity}, 
     			#{minAlarmQuantity}, 
     			#{minOrderQuantity})
   
     INTO TB_PRODUCE_${id} (GOODS_NO, PD_NO, PD_NAME, PD_PHONE)
-    VALUES ((ingno.NEXTVAL), 
-    			(inpno.NEXTVAL), 
+    VALUES ((TB_GOODS_${id}_GOODS_NO_SEQ.NEXTVAL), 
+    			(TB_PRODUCE_${id}_PD_NO_SEQ.NEXTVAL), 
     			#{pdName},
     			#{pdPhone})
 
@@ -151,11 +153,11 @@
 	    from
 		    (SELECT 
     			ROWNUM rnum, GOODS_NO, GOODS_NAME, PD_QUANTITY, GOODS_UNIT, 
-    			MIN_ORDER_QUANTITY, MIN_ALARM_QUANTITY, 
+    			MIN_ORDER_QUANTITY, MIN_ALARM_QUANTITY, SALE_PRICE,
     			PD_NAME, PD_PHONE, GOODS_PRICE, NATION, PD_ADDRESS 
 			FROM (SELECT 
         			  GOODS_NO, GOODS_NAME, PD_QUANTITY, GOODS_UNIT, 
-         			  MIN_ORDER_QUANTITY, MIN_ALARM_QUANTITY, 
+         			  MIN_ORDER_QUANTITY, MIN_ALARM_QUANTITY, SALE_PRICE,
         			  PD_NAME, PD_PHONE, GOODS_PRICE, NATION, PD_ADDRESS
     				  FROM TB_GOODS_${ id } 
     				  LEFT JOIN TB_INVENTORY_${ id } USING (GOODS_NO)
@@ -181,7 +183,7 @@
 	<!-- 명세서 - 발주처 검색 -->
 	<select id="selectSSearchpdName" parameterType="Search" resultMap="GoodsResultList">
 	   SELECT GOODS_NO, GOODS_NAME, PD_QUANTITY, GOODS_UNIT, 
-         		  MIN_ORDER_QUANTITY, MIN_ALARM_QUANTITY, 
+         		  MIN_ORDER_QUANTITY, MIN_ALARM_QUANTITY, SALE_PRICE,
         		  PD_NAME, PD_PHONE, GOODS_PRICE, NATION, PD_ADDRESS
        FROM TB_GOODS_${ id }
        LEFT JOIN TB_INVENTORY_${ id } USING (GOODS_NO)
@@ -224,7 +226,8 @@
 	<!-- 상품 수정 - 상품 테이블 -->
 	<update id="updateGoodsGT" parameterType="goodsPrint" >
 	UPDATE TB_GOODS_${id} 
-	SET GOODS_PRICE = #{goodsPrice}
+	SET GOODS_PRICE = #{goodsPrice},
+		  SALE_PRICE = #{salePrice}
 	WHERE GOODS_NO = #{ goodsNo }
 	</update>
 	

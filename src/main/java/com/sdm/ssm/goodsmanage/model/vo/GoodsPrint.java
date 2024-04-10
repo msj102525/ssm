@@ -19,6 +19,24 @@ public class GoodsPrint implements java.io.Serializable{
 	private String pdName;
 	private String pdPhone;
 	private String pdAddress;
+	private int salePrice;
+	
+	
+	
+	public int getSalePrice() {
+		return salePrice;
+	}
+
+
+
+
+	public void setSalePrice(int salePrice) {
+		this.salePrice = salePrice;
+	}
+
+
+
+
 	public int getId() {
 		return id;
 	}
@@ -187,7 +205,8 @@ public class GoodsPrint implements java.io.Serializable{
 		return "GoodsPrint [id=" + id + ", goodsNo=" + goodsNo + ", goodsName=" + goodsName + ", pdQuantity="
 				+ pdQuantity + ", goodsUnit=" + goodsUnit + ", minAlarmQuantity=" + minAlarmQuantity
 				+ ", minOrderQuantity=" + minOrderQuantity + ", pdNo=" + pdNo + ", pdName=" + pdName + ", pdPhone="
-				+ pdPhone + ", goodsPrice=" + goodsPrice + ", nation=" + nation + "]";
+				+ pdPhone + ", pdAddress=" + pdAddress + ", salePrice=" + salePrice + ", goodsPrice=" + goodsPrice
+				+ ", nation=" + nation + "]";
 	}
 
 }
