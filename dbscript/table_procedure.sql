@@ -2,6 +2,14 @@
 -- DDL 생성 SCRIPT
 ---------------------------------------------
 
+-- TABLE SEQUENCE 추가(2024.04.09)
+-- TB_EMP  => EMP_ID
+-- TB_GOODS  => GOODS_NO
+-- TB_PRODUCE => PD_NO
+-- TB_MENU => MENU_NO
+-- TB_TABLE => TABLE_NO
+-- TB_POS => POS_NO
+
 --DROP TABLE TB_STORE CASCADE CONSTRAINTS;
 --DROP TABLE TB_USER CASCADE CONSTRAINTS;
 --DROP TABLE TB_USER_FINKOUT CASCADE CONSTRAINTS;
@@ -395,6 +403,8 @@ CREATE OR REPLACE PROCEDURE PR_CREATE_TB_EMPLOYEE
 IS
    v_user_id    VARCHAR2(100);
    v_table_name VARCHAR2(200);
+   v_seq_col    VARCHAR2(100);
+   
    v_str        VARCHAR2(1000);
 BEGIN
    ---------------------
@@ -435,6 +445,19 @@ BEGIN
       EXECUTE IMMEDIATE 'COMMENT ON COLUMN ' || v_table_name || '.EMP_ADDRESS IS ''주소''';
       EXECUTE IMMEDIATE 'COMMENT ON COLUMN ' || v_table_name || '.EMP_BIRTHDATE IS ''생년월일''';
       EXECUTE IMMEDIATE 'COMMENT ON COLUMN ' || v_table_name || '.EMP_GENDER IS ''성별''';
+	  
+	  
+      --------------------------------------------
+      --- SEQUENSE 추가(2024.04.09)
+      --------------------------------------------
+	  v_seq_col := 'EMP_ID';
+	  v_str := '';
+	  v_str := ' CREATE SEQUENCE ' || v_table_name
+             || '_' || v_seq_col || '_SEQ '
+             || ' INCREMENT BY 1 ' 
+             || ' START WITH 1 ';
+
+      EXECUTE IMMEDIATE v_str;
 
    END;  
 
@@ -546,6 +569,8 @@ CREATE OR REPLACE PROCEDURE PR_CREATE_TB_POS
 IS
    v_user_id    VARCHAR2(100);
    v_table_name VARCHAR2(200);
+   v_seq_col    VARCHAR2(100);
+   
    v_str        VARCHAR2(1000);
 BEGIN
    ---------------------
@@ -565,6 +590,19 @@ BEGIN
             || '  )';
 
       EXECUTE IMMEDIATE v_str;
+	  
+      --------------------------------------------
+      --- SEQUENSE 추가(2024.04.09)
+      --------------------------------------------
+	  v_seq_col := 'POS_NO';
+	  v_str := '';
+	  v_str := ' CREATE SEQUENCE ' || v_table_name
+             || '_' || v_seq_col || '_SEQ '
+             || ' INCREMENT BY 1 ' 
+             || ' START WITH 1 ';
+
+      EXECUTE IMMEDIATE v_str;
+
    END;
 	
 EXCEPTION
@@ -578,6 +616,8 @@ CREATE OR REPLACE PROCEDURE PR_CREATE_TB_TABLE
 IS
    v_user_id    VARCHAR2(100);
    v_table_name VARCHAR2(200);
+   v_seq_col    VARCHAR2(100);
+   
    v_str        VARCHAR2(1000);
 BEGIN
    ---------------------
@@ -598,6 +638,19 @@ BEGIN
             || '  )';
 
       EXECUTE IMMEDIATE v_str;
+	  
+      --------------------------------------------
+      --- SEQUENSE 추가(2024.04.09)
+      --------------------------------------------
+	  v_seq_col := 'TABLE_NO';
+	  v_str := '';
+	  v_str := ' CREATE SEQUENCE ' || v_table_name
+             || '_' || v_seq_col || '_SEQ '
+             || ' INCREMENT BY 1 ' 
+             || ' START WITH 1 ';
+
+      EXECUTE IMMEDIATE v_str;
+
    END;
 
 EXCEPTION
@@ -611,6 +664,8 @@ CREATE OR REPLACE PROCEDURE PR_CREATE_TB_MENU
 IS
    v_user_id    VARCHAR2(100);
    v_table_name VARCHAR2(200);
+   v_seq_col    VARCHAR2(100);
+   
    v_str        VARCHAR2(1000);
 BEGIN
    ---------------------
@@ -631,6 +686,18 @@ BEGIN
 			  
       EXECUTE IMMEDIATE v_str;
 	  
+      --------------------------------------------
+      --- SEQUENSE 추가(2024.04.09)
+      --------------------------------------------
+	  v_seq_col := 'MENU_NO';
+	  v_str := '';
+	  v_str := ' CREATE SEQUENCE ' || v_table_name
+             || '_' || v_seq_col || '_SEQ '
+             || ' INCREMENT BY 1 ' 
+             || ' START WITH 1 ';
+
+      EXECUTE IMMEDIATE v_str;
+	  
    END;
 EXCEPTION
    WHEN OTHERS THEN
@@ -647,6 +714,7 @@ IS
    v_user_id    VARCHAR2(100);
    v_table_name VARCHAR2(200);
    v_str        VARCHAR2(1000);
+   v_seq_col    VARCHAR2(100);
 BEGIN
    ---------------------
    --- 변수 초기화
@@ -702,14 +770,19 @@ BEGIN
       --------------------------------------------
       --- SEQUENSE 추가(2024.04.07)
       --------------------------------------------
-      EXECUTE IMMEDIATE ' CREATE SEQUENCE ' || v_table_name || '_SEQ '
-                       || ' INCREMENT BY 1 ' 
-					   || ' START WITH 1 ';
+	  v_seq_col := 'RSRV_NUM';
+	  v_str := '';
+	  v_str := ' CREATE SEQUENCE ' || v_table_name
+             || '_' || v_seq_col || '_SEQ '
+             || ' INCREMENT BY 1 ' 
+             || ' START WITH 1 ';
 
-   EXCEPTION
-      WHEN OTHERS THEN
-      dbms_output.put_line(sqlerrm); 
+      EXECUTE IMMEDIATE v_str;
+
    END;
+EXCEPTION
+   WHEN OTHERS THEN
+      dbms_output.put_line(sqlerrm);
 END;
 /
 
@@ -719,6 +792,8 @@ CREATE OR REPLACE PROCEDURE PR_CREATE_TB_GOODS
 IS
    v_user_id    VARCHAR2(100);
    v_table_name VARCHAR2(200);
+   v_seq_col    VARCHAR2(100);
+   
    v_str        VARCHAR2(1000);
 BEGIN
    ---------------------
@@ -729,20 +804,35 @@ BEGIN
    
    v_user_id := RTRIM(LTRIM(TO_CHAR(p_user_id)));
 
-    -- 유저 아이디를 이용하여 테이블 이름 생성
-    v_table_name := 'TB_GOODS_' || v_user_id;
+   -- 유저 아이디를 이용하여 테이블 이름 생성
+   v_table_name := 'TB_GOODS_' || v_user_id;
 
-    v_str := ' CREATE TABLE ' || v_table_name || '('
-           || '  ID NUMBER, '
-           || '  GOODS_NO NUMBER CONSTRAINT PK_' || v_table_name || ' PRIMARY KEY, '
-           || '  GOODS_NAME VARCHAR2(300) NOT NULL, '
-           || '  GOODS_UNIT VARCHAR2(30), '
-           || '  GOODS_PRICE NUMBER,      '
-           || '  NATION VARCHAR2(30) DEFAULT NULL '
-           || '  ) ';
+   BEGIN
+      v_str := ' CREATE TABLE ' || v_table_name || '('
+             || '  ID NUMBER, '
+             || '  GOODS_NO NUMBER CONSTRAINT PK_' || v_table_name || ' PRIMARY KEY, '
+             || '  GOODS_NAME VARCHAR2(300) NOT NULL, '
+             || '  GOODS_UNIT VARCHAR2(30), '
+             || '  GOODS_PRICE NUMBER,      '
+             || '  NATION VARCHAR2(30) DEFAULT NULL '
+             || '  ) ';
+			 
+      -- 테이블 생성
+      EXECUTE IMMEDIATE v_str;
+	  
+      --------------------------------------------
+      --- SEQUENSE 추가(2024.04.09)
+      --------------------------------------------
+	  v_seq_col := 'GOODS_NO';
+	  v_str := '';
+	  v_str := ' CREATE SEQUENCE ' || v_table_name
+             || '_' || v_seq_col || '_SEQ '
+             || ' INCREMENT BY 1 ' 
+             || ' START WITH 1 ';
 
-    -- 테이블 생성
-    EXECUTE IMMEDIATE v_str; 
+      EXECUTE IMMEDIATE v_str;
+
+   END;
 
 EXCEPTION
    WHEN OTHERS THEN
@@ -792,6 +882,8 @@ CREATE OR REPLACE PROCEDURE PR_CREATE_TB_PRODUCE
 IS
    v_user_id    VARCHAR2(100);
    v_table_name VARCHAR2(200);
+   v_seq_col    VARCHAR2(100);
+   
    v_str        VARCHAR2(1000);
 BEGIN
 
@@ -803,22 +895,36 @@ BEGIN
    --- 유저 아이디를 이용하여 테이블 이름 생성
    v_table_name := 'TB_PRODUCE_' || v_user_id;
 
-   v_str := 'CREATE TABLE ' || v_table_name || '('
-           || '   GOODS_NO NUMBER CONSTRAINT PK_' || v_table_name || ' PRIMARY KEY, '
-           || '   PD_NO NUMBER,                   '
-           || '   PD_NAME VARCHAR2(300) NOT NULL, '
-           || '   PRODUCER VARCHAR2(20),    '
-           || '   PD_PHONE VARCHAR2(30),    '
-           || '   PD_ADDRESS VARCHAR2(255), '
-           || ' CONSTRAINT FK_' || v_table_name || '_GOODS_NO FOREIGN KEY (GOODS_NO) '
-           || '       REFERENCES TB_GOODS_' || v_user_id
-		   || '                   (GOODS_NO) ON DELETE CASCADE '
-		   || ')';
+   BEGIN
+      v_str := 'CREATE TABLE ' || v_table_name || '('
+              || '   GOODS_NO NUMBER CONSTRAINT PK_' || v_table_name || ' PRIMARY KEY, '
+              || '   PD_NO NUMBER,                   '
+              || '   PD_NAME VARCHAR2(300) NOT NULL, '
+              || '   PRODUCER VARCHAR2(20),    '
+              || '   PD_PHONE VARCHAR2(30),    '
+              || '   PD_ADDRESS VARCHAR2(255), '
+              || ' CONSTRAINT FK_' || v_table_name || '_GOODS_NO FOREIGN KEY (GOODS_NO) '
+              || '       REFERENCES TB_GOODS_' || v_user_id
+              || '                   (GOODS_NO) ON DELETE CASCADE '
+              || ')';
 
-   --dbms_output.put_line(v_str); 
-   
-   -- 동적 SQL 실행
-   EXECUTE IMMEDIATE v_str;
+      --dbms_output.put_line(v_str); 
+      -- 동적 SQL 실행
+      EXECUTE IMMEDIATE v_str;
+	  
+      --------------------------------------------
+      --- SEQUENSE 추가(2024.04.09)
+      --------------------------------------------
+	  v_seq_col := 'PD_NO';
+	  v_str := '';
+	  v_str := ' CREATE SEQUENCE ' || v_table_name
+             || '_' || v_seq_col || '_SEQ '
+             || ' INCREMENT BY 1 ' 
+             || ' START WITH 1 ';
+	  
+      EXECUTE IMMEDIATE v_str;
+	  
+   END;
 EXCEPTION
    WHEN OTHERS THEN
       dbms_output.put_line(sqlerrm); 
@@ -966,8 +1072,46 @@ EXCEPTION
 END;
 /
 
+-- 2024.04.09 add
+CREATE OR REPLACE PROCEDURE PR_CREATE_TB_ACCOUNT
+(p_user_id IN NUMBER)
+IS
+   v_user_id    VARCHAR2(100);
+   v_table_name VARCHAR2(200);
+   v_str        VARCHAR2(1000);
+   v_seq_col    VARCHAR2(100);
+BEGIN
+   ---------------------
+   --- 변수 초기화
+   ---------------------
+   v_user_id := '';
+   v_table_name := '';
+   
+   v_user_id := RTRIM(LTRIM(TO_CHAR(p_user_id)));
 
+   -- 유저 아이디를 이용하여 테이블 이름 생성
+   v_table_name := 'TB_ACCOUNT_' || v_user_id;
 
+   BEGIN
+      -- 테이블 생성
+	  v_str := ' CREATE TABLE ' || v_table_name || '('
+            || '   ID NUMBER, '
+            || '   YEARMONTH VARCHAR2(20), '
+            || '   TITLE VARCHAR2(30), '
+            || '   PRICE NUMBER '
+            || ' )';
+			
+      EXECUTE IMMEDIATE v_str;
+   END;
+EXCEPTION
+   WHEN OTHERS THEN
+      dbms_output.put_line(sqlerrm);
+END;
+/
+
+---------------------------------------------------------------------
+--- TABLE CREATE ALL
+---------------------------------------------------------------------
 CREATE OR REPLACE PROCEDURE PR_SSMS_TABLE_ALL_CREATE
 (p_user_id IN NUMBER)
 IS
@@ -1056,12 +1200,16 @@ BEGIN
    ---------------------------
    PR_CREATE_TB_PAYSTUB(p_user_id);
 
+   ---------------------------
+   --- 17. TB_ACCOUNT
+   ---------------------------
+   PR_CREATE_TB_ACCOUNT(p_user_id);
+
 EXCEPTION
    WHEN OTHERS THEN
       dbms_output.put_line(sqlerrm); 
 END;
 /
-
 
 -------------------------------------------
 --- PROCEDURE DROP TABLE
@@ -1073,7 +1221,11 @@ IS
    ----------------------------
    --- 변수 선언
    ----------------------------
+   v_user_id    VARCHAR2(100);
    v_table_name VARCHAR2(200);
+
+   v_col_seq    VARCHAR2(100);
+   v_seq_object VARCHAR2(200);
    
    v_str1 VARCHAR2(1000);
    v_str2 VARCHAR2(1000);
@@ -1087,8 +1239,10 @@ BEGIN
    v_cnt_1 := 0;
    v_cnt_2 := 0;
 
+   v_user_id := RTRIM(LTRIM(TO_CHAR(p_user_id)));
+
    -- 유저 아이디를 이용하여 테이블 이름 작성
-   v_table_name := p_table_name || '_' || RTRIM(LTRIM(TO_CHAR(p_user_id)));
+   v_table_name := p_table_name || '_' || v_user_id;
    --dbms_output.put_line(v_table_name);
    
    BEGIN
@@ -1106,6 +1260,31 @@ BEGIN
          EXECUTE IMMEDIATE v_str1;
       END IF;
 	  
+	  ------------------------------
+	  -- SEQUENCE 컬럼
+	  ------------------------------
+	  v_col_seq := '';
+      IF (v_table_name = ('TB_EMPLOYEE_' || v_user_id)) THEN
+         v_col_seq := 'EMP_ID';
+      ELSIF (v_table_name = ('TB_GOODS_' || v_user_id)) THEN
+         v_col_seq := 'GOODS_NO';
+      ELSIF (v_table_name = ('TB_PRODUCE_' || v_user_id)) THEN
+         v_col_seq := 'PD_NO';
+      ELSIF (v_table_name = ('TB_MENU_' || v_user_id)) THEN
+         v_col_seq := 'MENU_NO';
+      ELSIF (v_table_name = ('TB_TABLE_' || v_user_id)) THEN
+         v_col_seq := 'TABLE_NO';
+      ELSIF (v_table_name = ('TB_POS_' || v_user_id)) THEN
+         v_col_seq := 'POS_NO';
+	  ELSIF (v_table_name = ('TB_RESERVATION_' || v_user_id)) THEN
+         v_col_seq := 'RSRV_NUM';
+      ELSE
+	     v_col_seq := '';
+	  END IF;
+
+	  v_seq_object := v_table_name || '_' || v_col_seq || '_SEQ';
+	  dbms_output.put_line(v_seq_object);
+	  
 	  -----------------------------------
       --- SEQUENCE
 	  -----------------------------------
@@ -1113,10 +1292,10 @@ BEGIN
         INTO v_cnt_2
       FROM USER_OBJECTS
       WHERE OBJECT_TYPE = 'SEQUENCE'
-        AND OBJECT_NAME = v_table_name || '_SEQ';
+        AND OBJECT_NAME = v_seq_object;
 
       IF v_cnt_2 > 0 THEN
-         v_str2 := 'DROP SEQUENCE ' || v_table_name || '_SEQ ';
+         v_str2 := 'DROP SEQUENCE ' || v_seq_object;
          --dbms_output.put_line(v_str2);
          EXECUTE IMMEDIATE v_str2;
       END IF;
@@ -1228,6 +1407,12 @@ BEGIN
    ---------------------------
    PR_SSMS_DROP_TABLE('TB_EMPLOYEE', arg_user_id);
    dbms_output.put_line('15');
+   
+   ---------------------------
+   --- 16. TB_ACCOUNT
+   ---------------------------
+   PR_SSMS_DROP_TABLE('TB_ACCOUNT', arg_user_id);
+   dbms_output.put_line('16');
 
 EXCEPTION
    WHEN OTHERS THEN
@@ -1239,7 +1424,7 @@ END;
 --- TABLE을 자동으로 생성하기 위한 TRIIGER
 -------------------------------------------------
 CREATE OR REPLACE TRIGGER TR_TB_USER_BF_01
-BEFORE INSERT TB_USER
+BEFORE INSERT ON TB_USER
 FOR EACH ROW
 DECLARE
    --- TRIGGER는 기본 AUTO COMMIT임
@@ -1422,3 +1607,4 @@ CREATE SEQUENCE SUSPENSION_SEQ
        MINVALUE 1
        NOCYCLE
        NOCACHE;
+

@@ -112,7 +112,7 @@
         </div>           
          <hr>
         <input type="submit" value="등록"/>
-     <button onclick="location.href='mainEmpPage.do'">목록</button>
+    <button onclick="location.href='selectemp.do?id=${loginUser.id}'">목록으로 돌아가기</button>
        </table> 
     </form>
 	</div> 

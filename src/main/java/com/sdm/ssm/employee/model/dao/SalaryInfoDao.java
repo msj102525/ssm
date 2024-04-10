@@ -3,6 +3,8 @@ package com.sdm.ssm.employee.model.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -15,8 +17,8 @@ public class SalaryInfoDao {
 	@Autowired
 	private SqlSessionTemplate sqlSessionTemplate;
 
-	public ArrayList<SalaryInfo> selectSalaryInfoMethod(int Id) {
-		List<SalaryInfo> list = sqlSessionTemplate.selectList("employeeMapper.selectAllSalaryInfos", Id);
+	public ArrayList<SalaryInfo> selectSalaryInfoMethod(int empId) {
+		List<SalaryInfo> list = sqlSessionTemplate.selectList("employeeMapper.selectAllSalaryInfos", empId);
 		return (ArrayList<SalaryInfo>) list;
 	}
 
@@ -24,11 +26,23 @@ public class SalaryInfoDao {
 		int rowsAffected = sqlSessionTemplate.insert("employeeMapper.insertSalaryInfo", salaryInfo);
 	 return rowsAffected > 0;	
 	 }
-	public List<SalaryInfo> selectSalaryInfoByEmpId(int Id) {
-		return sqlSessionTemplate.selectList("employeeMapper.selectAllSalaryInfos", Id);
+	public SalaryInfo selectSalaryInfoByEmpId(int id) {
+		return sqlSessionTemplate.selectOne("employeeMapper.selectAllSalaryInfos", id);
 	}
 
 	public List<SalaryInfo> getSalaryDate(int id) {
 		return sqlSessionTemplate.selectList("employeeMapper.selectAllSalaryInfos", id);
+	}
+
+	public int insertSalary(int id) {
+		return sqlSessionTemplate.insert("employeeMapper.insertSalaryInfo", id);
+	}
+
+	public int updateSalary(int id) {
+		return sqlSessionTemplate.update("employeeMapper.insertSalaryInfo", id);
+	}
+
+	public int insertSalaryPage(int id) {
+		return sqlSessionTemplate.insert("employeeMapper.insertSalaryInfo", id);
 	}
 }

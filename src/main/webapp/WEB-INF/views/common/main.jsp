@@ -20,6 +20,8 @@
 <script type="text/javascript"
 	src="/ssm/resources/js/main/main.js"></script>
 
+
+
 </head>
 <body>
 	<div id="wrap">
@@ -28,39 +30,79 @@
 		<c:import url="/WEB-INF/views/common/noticebanner.jsp" />
 		<c:if test="${ empty sessionScope.loginUser }">
 			<%-- section 로그인 안한 경우--%>
-			<div class="section-container">
+			<div class="section-container n-login">
 				<%-- section1 --%>
 				<section class="sec1">
-					section1
 					<div class="inner-section">
-						<div class="left-section">left</div>
-						<div class="right-section">right</div>
+						<div class="img-box">
+							<img alt="메인 이미지" src="${pageContext.servletContext.contextPath }/resources/images/main/main1.png">
+						</div>
+						<div class="description">
+							<p>모든 기능을 월 2만원으로</p>
+							<div class="description-botton">
+								<p>기업에 필요한 모든 기능을 제공하는</p>
+								<p>100% 웹기반 ERP 시스템</p>
+							</div>
+						</div>
 					</div>
 				</section>
 				<%-- section2 --%>
 				<section class="sec2">
-					section2
 					<div class="inner-section">
-						<div class="left-section">left</div>
-						<div class="right-section">right</div>
+						<div class="left-section">
+							<div class="img-box">
+								<img alt="메인 이미지2" src="${pageContext.servletContext.contextPath }/resources/images/main/main2.png">
+							</div>
+						</div>
+						<div class="right-section">
+							<div class="description">
+								<p>쉽게 사용하고 즉시 확인하세요</p>
+								<div class="description-botton">
+									<p>메뉴를 한눈에 보기 쉽게 사용할 수 있습니다.</p>
+									<p>필요한 메뉴만 골라서 사용하세요</p>
+								</div>
+							</div>
+						</div>
 					</div>
 				</section>
 				<%-- section3 --%>
-				section3
 				<section class="sec3">
 					<div class="inner-section">
-						<div class="left-section">left</div>
-						<div class="right-section">right</div>
+						<div class="left-section">
+							<div class="description">
+								<p>누적 50000개 기업 돌파</p>
+								<div class="description-botton">
+									<p>오늘 하루만 3000개의 기업이</p>
+									<p>SSM을 사용 중 입니다.</p>
+								</div>
+							</div>
+						</div>
+						<div class="right-section">
+							<div class="img-box">
+								<img alt="메인 이미지3" src="${pageContext.servletContext.contextPath }/resources/images/main/main3.png">
+							</div>
+						</div>
+						</div>
+						<%-- section4 --%>
+						<section class="sec4">
+							section4
+							<div class="inner-section">
+								<div class="left-section">left</div>
+								<div class="right-section">
+									<div class="description">
+										<p>다양한 편의 기능 제공</p>
+										<div class="description-botton">
+											<p>SSM은 다른 부가 프로그램을</p>
+											<p>사용할 필요 없이</p>
+											<p>다양한 쳔의 기능을 사용할 수 있습니다.</p>
+										</div>
+									</div>
+								</div>
+							</div>
+						</section>
 					</div>
 				</section>
-				<%-- section4 --%>
-				<section class="sec4">
-					section4
-					<div class="inner-section">
-						<div class="left-section">left</div>
-						<div class="right-section">right</div>
-					</div>
-				</section>
+				
 			</div>
 		</c:if>
 		<%-- 유저 로그인한 경우--%>
@@ -68,7 +110,7 @@
 			<div class="section-container">
 				<%-- section1 --%>
 				<section class="sec1">
-				<div align="center" class="padding-top">
+				<div align="center" class="padding-top selectBox">
 					<select style="height: 35px; width: 80px;" 
 				id="monthSelect" onchange="onChangeMonth()">
 					<option value="2024-01">2024-01</option>
@@ -85,7 +127,7 @@
 				    <option value="2024-12">2024-12</option>
 				</select> 
 				</div>
-					<div class="inner-section" style="height: 400px;">
+					<div class="inner-section z-index-1" style="height: 400px;">
 						<div class="left-section" style="height: 400px;">
 							<table id="myTable" class="monthlySale"border="1" width="80%" style="height: 400px;">
 								<tr style="height: 10px;">
@@ -154,7 +196,14 @@
 						</table>
 						<input type="hidden" id="loginUserId" value="${loginUser.id}">
 						</div>
-						<div class="right-section">예약달력자리입니다.</div>
+						<div class="right-section">
+							<c:import url="/WEB-INF/views/reserve/calendarfull040901.jsp" />
+							<script type="text/javascript" defer>
+								$(()=> {
+									$("header").css("position", "fixed");	
+								});
+							</script>
+						</div>
 					</div>
 				</section>
 			</div>
@@ -195,4 +244,5 @@
 		<c:import url="footer.jsp" />
 	</div>
 </body>
+
 </html>

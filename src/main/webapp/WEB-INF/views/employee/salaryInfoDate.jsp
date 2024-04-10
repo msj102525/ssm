@@ -133,7 +133,7 @@
     </form>
 </div>  
 <!-- 목록으로 돌아가기 버튼 -->
-<button onclick="location.href='mainEmpPage.do'">목록으로 돌아가기</button>
+<button onclick="location.href='selectemp.do?id=${loginUser.id}'">목록으로 돌아가기</button>
 
 </body>
 </html>

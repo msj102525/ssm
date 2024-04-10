@@ -71,7 +71,7 @@
 					,rsrv_name, rsrv_telno, rsrv_inwon
 					,rsrv_subject, rsrv_memo
 					,writer, write_date)
-		VALUES (TB_RESERVATION_${ id }_SEQ.NEXTVAL
+		VALUES (TB_RESERVATION_${ id }_RSRV_NUM_SEQ.NEXTVAL
 				,#{ rsrvDate }, #{ rsrvTime }
 				,#{ rsrvName }, #{ rsrvTelno }, #{ rsrvInwon }
 				,#{ rsrvSubject }, #{ rsrvMemo }

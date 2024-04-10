@@ -246,6 +246,8 @@ public class UserManageController {
 	public String moveWelcomePageMethod(@RequestParam(name="serviceDate", required=false) String serviceDate, Model model) {
 		LocalDate currentDate = LocalDate.now();
 		LocalDate parsedServiceDate = LocalDate.parse(serviceDate);
+		logger.info("현재시간 : " + currentDate);
+		logger.info("서비스데이트 : " + serviceDate);
 		if(serviceDate!=null) {
 			if(parsedServiceDate.isAfter(currentDate)) {
 				return "common/welcome";

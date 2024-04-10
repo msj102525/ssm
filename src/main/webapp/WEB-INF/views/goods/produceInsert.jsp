@@ -10,6 +10,30 @@
 <meta charset="UTF-8">
 <link rel="stylesheet" href="resources/css/goods/goodsDetail.css" />
 <title>Insert title here</title>
+<style type="text/css">
+	div.listdiv {
+		height: 40px;
+		width: 1300px;
+		margin: 20px auto;
+		display: flex;
+		/* padding-left:400px; */
+		justify-content: center;
+		position: relative;
+	}
+	button.listbtn {
+		position: absolute;
+		right: 350px;
+	}
+	button {
+		width: 50px;
+		height: 40px;
+		border: none;
+		background: rgb(250, 180, 49);
+		color: #ffffff;
+		font-size: 16px;
+	}
+
+</style>
 <script type="text/javascript"
 	src="/ssm/resources/js/jquery-3.7.0.min.js"></script>
 
@@ -97,21 +121,16 @@
 </head>
 <body>
 	<c:import url="/WEB-INF/views/common/header.jsp" />
-
+	<div style="padding-top : 100px;">
 	<hr>
 	<br>
 	<c:import url="/WEB-INF/views/common/sidebar.jsp" /> 
-	<h1 align="center">발주처 등록</h1>
-	<div style="align: center; text-align: center;">
-		<br> <br> <br>
-	</div>
-
-	<div align="center">
-		<button onclick="insertSelectedGoods();">등록</button>
-	</div>
+	<h1 align="center">발주처 등록</h1>		
 
 	<div style="margin-left: auto; margin-right: auto; width: 1400px;">
-		<br> <br>
+		<div class="listdiv">
+			<button class="listbtn" onclick="insertSelectedGoods();">등록</button>
+		</div>
 		<table align="center" border="1" cellspacing="25" width="100%"
 			id="insertTable">
 			<tr>
@@ -180,6 +199,6 @@
 	<br>
 	<hr>
 	<c:import url="/WEB-INF/views/common/footer.jsp" />
-
+	</div>
 </body>
 </html>

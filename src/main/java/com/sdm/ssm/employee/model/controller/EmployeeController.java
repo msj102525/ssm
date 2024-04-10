@@ -27,7 +27,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sdm.ssm.common.Search;
-import com.sdm.ssm.employee.model.controller.TimeRecordController.TimeRecordData;
 import com.sdm.ssm.employee.model.service.CalendarService;
 import com.sdm.ssm.employee.model.service.CommuteInfoService;
 import com.sdm.ssm.employee.model.service.EmployeeService;
@@ -77,11 +76,10 @@ public class EmployeeController {
     // 여기서는 직원 정보를 가져오는 서비스 레이어 메서드를 호출하여 직원 정보를 가져옵니다.
     List<Employee> employeeList = employeeService.getAllEmployees(id); // employeeService는 실제 서비스 레이어의 이름으로 수정 필요
 	    // 모델에 직원 정보를 추가하여 View로 전달합니다.
-	    model.addAttribute("employeeList", employeeList);
+	model.addAttribute("employeeList", employeeList);
 	    // 직원 정보가 표시되는 페이지로 이동합니다.
-	    return "employee/EmployeeList";
+	return "employee/EmployeeList";
 	}
-
 
 	// 직원 정보 수정페이지 이동
 	@RequestMapping(value = "updateEmployee.do", method = { RequestMethod.POST, RequestMethod.GET })
@@ -91,9 +89,12 @@ public class EmployeeController {
 
 	// 직원 급여 정보 페이지 이동
 	@RequestMapping(value = "selectSalary.do", method = { RequestMethod.POST, RequestMethod.GET })
-	public String moveSalaryPage(SalaryInfo salaryInfo, Model model, HttpServletRequest request) {
-		return "employee/SalaryInfo";
+	public String moveSalaryPage(@RequestParam("id") int id, Model model) {
+	    List<SalaryInfo> list = salaryInfoService.getSalaryDate(id);   
+	    model.addAttribute("employees", list);
+	    return "employee/SalaryInfo";
 	}
+
 
 	// 직원 급여정보 등록 페이지 이동
 	@RequestMapping(value = "insertSalary.do")
@@ -114,7 +115,7 @@ public class EmployeeController {
 	}
 
 	// 출퇴근시간 조회 페이지 이동
-	@RequestMapping(value = "recordTimePage.do" ,method = { RequestMethod.POST, RequestMethod.GET })
+	@RequestMapping(value = "recordTimePage.do",method = { RequestMethod.POST, RequestMethod.GET })
 	public String moveRecordTimePage() {
 		return "employee/CommuteQRPage";
 	}
@@ -131,11 +132,11 @@ public class EmployeeController {
 		return "employee/kakao";
 	}
 	// 직원 정보 수정페이지 이동 및 정보 가져오기
-		@GetMapping("moveUpdateEmpPage.do")
+		@RequestMapping(value="moveUpdateEmpPage.do",method = { RequestMethod.POST, RequestMethod.GET })
 		public String moveUpdateEmpPage(@RequestParam("empId") int empId, Model model) {
-		    Employee employee = employeeService.getEmployeeDetails(empId);
-		    model.addAttribute("employee", employee);
-		    return "employee/upEmployee"; // 수정할 직원 정보를 가져와서 수정 페이지로 이동
+		Employee employee = employeeService.getEmployeeDetails(empId);
+		model.addAttribute("employee", employee);
+		return "employee/upEmployee"; // 수정할 직원 정보를 가져와서 수정 페이지로 이동
 		}
 		
 		//캘린더view Page 이동
@@ -156,8 +157,8 @@ public class EmployeeController {
 	        return null;
 	    }
 	
-	// 상세 조회를 위한 메서드 추가
-    @GetMapping("employeeDetails.do")
+	// 직원 상세 조회를 위한 메서드 추가
+	@RequestMapping(value="employeeDetails.do", method = { RequestMethod.POST, RequestMethod.GET })
     @ResponseBody
     public ResponseEntity<Employee> getEmployeeDetails(@RequestParam("empId") int empId) {
         try {
@@ -231,9 +232,11 @@ public class EmployeeController {
 
 	 // 급여 정보 조회용
     @RequestMapping("selectSalary.do")
-    public String selectSalaryInfoMethod(@RequestParam("empId") int empId, Model model) {
-        ArrayList<SalaryInfo> list = salaryInfoService.selectSalaryInfoMethod(empId);
-        model.addAttribute("salaryInfos", list);
+    public String selectSalaryInfoMethod(@RequestParam("empId") int empId, 
+    		@RequestParam("id") int id, Model model) {
+    	SalaryInfo list = salaryInfoService.selectSalaryInfoByEmpId(id);
+        ArrayList<SalaryInfo> elist = salaryInfoService.selectSalaryInfoMethod(empId);
+        model.addAttribute("salaryInfos", elist);
         return "employee/SalaryInfo";
     }
    
@@ -260,37 +263,38 @@ public class EmployeeController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-
-		
-    @PostMapping("recordTimeData.do")
-    public ResponseEntity<String> recordTime(@RequestBody TimeRecordData recordTimeData) {
-        try {
-            String id = recordTimeData.getUsername();
-            CommuteInfo commuteInfo = recordTimeData.getCommuteInfo();
-            List<Employee> employees = employeeService.searchEmployeeByName(id);
-            if (!employees.isEmpty()) {
-                int empId = employees.get(0).getId();
-                commuteInfo.setEmpId(empId);
-                
-                // 현재 시간을 한국 시간대로 가져오기
-                ZonedDateTime koreanTime = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
-                String formattedTime = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(koreanTime);
-                
-                // 출퇴근 정보 저장
-                boolean success = commuteInfoService.recordCommuteInfo(commuteInfo);
-                if (success) {
-                    return ResponseEntity.ok("출퇴근 정보 저장 성공 - " + formattedTime);
-                } else {
-                    return ResponseEntity.badRequest().body("출퇴근 정보 저장 실패");
-                }
-            } else {
-                return ResponseEntity.notFound().build(); // 해당 직원을 찾을 수 없는 경우
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 오류 발생");
-        }
+    @RequestMapping("recordTimeData.do")
+    public String recordMethod(Employee emp) {
+    	logger.info(emp.toString());
+    	recordTimeService.insertTime(emp);
+    	return "employee/CommuteQRPage";
     }
+	
+	
+	/*
+	 * @RequestMapping(value = "recordTimeData.do", method = { RequestMethod.POST,
+	 * RequestMethod.GET }) public ResponseEntity<String>
+	 * recordTime(HttpServletRequest request) { try { String empName =
+	 * request.getParameter("empName"); // 사용자 이름 받기 List<Employee> employees
+	 * =employeeService.searchEmployeeByName(empName); if (!employees.isEmpty()) {
+	 * int empId = employees.get(0).getId(); String action =
+	 * request.getParameter("action"); // 출퇴근 유형 받기 CommuteInfo commuteInfo = new
+	 * CommuteInfo(); commuteInfo.setEmpId(empId); commuteInfo.setAction(action);
+	 * 
+	 * // 현재 시간을 한국 시간대로 가져오기 ZonedDateTime koreanTime =
+	 * ZonedDateTime.now(ZoneId.of("Asia/Seoul")); String formattedTime =
+	 * DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(koreanTime).
+	 * toString(); commuteInfo.setKoreanTime(formattedTime);
+	 * 
+	 * // 출퇴근 정보 저장 boolean success =
+	 * commuteInfoService.recordCommuteInfo(commuteInfo); if (success) { return
+	 * ResponseEntity.ok("출퇴근 정보 저장 성공 - " + formattedTime); } else { return
+	 * ResponseEntity.badRequest().body("출퇴근 정보 저장 실패"); } } else { return
+	 * ResponseEntity.notFound().build(); // 해당 직원을 찾을 수 없는 경우 } } catch (Exception
+	 * e) { e.printStackTrace(); return
+	 * ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 오류 발생"); } }
+	 */
+	 
 
     
     	
@@ -311,9 +315,11 @@ public class EmployeeController {
 	    
 	    // 시급 입력 폼 처리
 		@RequestMapping(value="calculateSalary", method= { RequestMethod.POST , RequestMethod.GET })
-	    public String calculateSalary(@RequestParam("hourlyWage") double hourlyWage, Model model) {
-	        model.addAttribute("hourlyWage", hourlyWage);
-	        return "employee/salaryInfo"; // 시급을 입력하는 페이지로 이동
+	    public String calculateSalary(@RequestParam("hourlyWage") double hourlyWage, 
+	    		Model model) {
+	        
+			model.addAttribute("hourlyWage", hourlyWage);
+	        return "employee/SalaryInfo"; // 시급을 입력하는 페이지로 이동
 	    }
 		
 		// 직원 급여명세서 페이지로 이동

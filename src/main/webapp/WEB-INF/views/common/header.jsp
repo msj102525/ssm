@@ -8,6 +8,12 @@
 <meta charset="UTF-8">
 <link rel="stylesheet" href="${pageContext.servletContext.contextPath }/resources/css/common/header.css" />
 <script type="text/javascript" src="/ssm/resources/js/jquery-3.7.0.min.js"></script>
+
+<link rel="stylesheet"
+	href="/ssm/resources/css/jquery-ui-themes-1.13.2/themes/base/jquery-ui.css" />
+<script type="text/javascript"
+	src="/ssm/resources/css/jquery-ui-1.13.2/jquery-ui.min.js"></script>
+
 <script type="text/javascript">
 	$(()=> {
 		

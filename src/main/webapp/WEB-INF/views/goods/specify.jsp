@@ -16,42 +16,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="resources/css/goods/specify.css" />
 <title>goodsListView</title>
-
-<script type="text/javascript" src="/ssm/resources/js/jquery-3.7.0.min.js"></script>
-<script type="text/javascript">
-
-</script>
-
-<script>
-    var pdName = '';
-    var pdAddress = '';
-    
-    <c:forEach items="${list}" var="goodsPrint">
-        pdName = '${goodsPrint.pdName}';
-        pdAddress = '${goodsPrint.pdAddress}';
-        // 필요한 경우 다른 속성도 동일한 방식으로 설정할 수 있습니다.
-    </c:forEach>
-
-    // 페이지 로드 시 실행되는 함수
-    window.onload = function() {
-        // 알림으로 성명과 주소 표시
-        document.getElementById('pdNameSpan').innerText = pdName;
-        document.getElementById('pdAddressSpan').innerText = pdAddress;
-    };
-</script>
-
-</head>
-<body>
-<c:import url="/WEB-INF/views/common/header.jsp" />
-
-<hr>
-<br>
-<c:import url="/WEB-INF/views/common/sidebar.jsp" />
-<h1 style="text-align: center;">발주 명세서</h1>
-<div style="align:center;text-align:center;">
-<br>
-
-</div>
 <style>
 .searchdiv {
 	margin: 0 auto; /* 좌우 마진을 자동으로 설정하여 가운데 정렬 */
@@ -74,6 +38,66 @@
 	}
 }
 </style>
+<style type="text/css">
+	.buttons>button {
+		width: 150px;
+		height: 40px;
+		border: none;
+		background: rgb(250, 180, 49);
+		color: #ffffff;
+		font-size: 16px;
+	}
+	.searchbtn {
+	width: 50px;
+	height: 35px;
+	border: none;
+	background: rgb(250, 180, 49);
+	color: #ffffff;
+	font-size: 16px;
+	}
+</style>
+
+<script type="text/javascript" src="/ssm/resources/js/jquery-3.7.0.min.js"></script>
+<script type="text/javascript">
+
+</script>
+<script>
+    var pdName = '';
+    var pdAddress = '';
+    
+    <c:forEach items="${list}" var="goodsPrint">
+        pdName = '${goodsPrint.pdName}';
+        pdAddress = '${goodsPrint.pdAddress}';
+        // 필요한 경우 다른 속성도 동일한 방식으로 설정할 수 있습니다.
+    </c:forEach>
+
+    // 페이지 로드 시 실행되는 함수
+    window.onload = function() {
+        // 알림으로 성명과 주소 표시
+        document.getElementById('pdNameSpan').innerText = pdName;
+        document.getElementById('pdAddressSpan').innerText = pdAddress;
+        
+        var today = new Date();
+
+        // 날짜 입력란에 오늘 날짜 설정
+        document.getElementById("date").value = today.toISOString().substr(0, 10);
+        
+    };
+</script>
+
+</head>
+<body>
+<c:import url="/WEB-INF/views/common/header.jsp" />
+<div style="padding-top : 100px;">
+<hr>
+<br>
+<c:import url="/WEB-INF/views/common/sidebar.jsp" />
+<h1 style="text-align: center;">발주 명세서</h1>
+<div style="align:center;text-align:center;">
+<br>
+
+</div>
+
 <div class="searchdiv">
 	<form method="get" id="searchForm">
 		<input type="hidden" id = "id" name="id" value="${ loginUser.id }">
@@ -97,18 +121,11 @@
         } else if (action === "pdName") {
             form.action = "pdNameSearch.do"; // 발주처 검색을 처리하는 URL로 변경
         }
-
+        
         form.submit();
     }
 </script>
-<br>
-	
-<div style="text-align: center;">
-	<button onclick="exportToExcel()">엑셀로 저장</button>&nbsp;
-	<button onclick="printTable()">인쇄 및 pdf로 저장</button>&nbsp;
-	<button onclick="insertTable()">발주 금액 저장</button>&nbsp;
-</div>
-<br>	
+
 
 
 <div style="margin-left: auto; margin-right: auto; width: 1400px;">	
@@ -173,7 +190,7 @@
             	<td style="text-align: center; white-space: nowrap;"></td>
             	<td id="sum" style="text-align: center; white-space: nowrap;">
             		<div id="buttonDisplay">
-            			<button onclick="calcSum();">합계</button>
+            			<button class="sum" onclick="calcSum();">합계</button>
             		</div>
             	<form action="sinsert.do" method="post" id="sinsert">
             		<div id="sumDisplay" style="display:none;"></div>
@@ -185,7 +202,11 @@
         </table>
         <div id="idDisplay" style="display:none;">${ loginUser.id }</div>
 </div>
-
+<div class="buttons" style="text-align: center;">
+	<button onclick="exportToExcel()">엑셀로 저장</button>&nbsp;
+	<button onclick="printTable()">인쇄 및 pdf로 저장</button>&nbsp;
+	<button onclick="insertTable()">발주 금액 저장</button>&nbsp;
+</div>
 <script>
 function setSelectedDate() {
     // input 요소에서 선택한 날짜 가져오기
@@ -349,5 +370,6 @@ document.getElementById('sumDisplay').addEventListener('click', function() {
 <br>
 <hr>
 <c:import url="/WEB-INF/views/common/footer.jsp" />
+</div>
 </body>
 </html>
