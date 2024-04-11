@@ -8,22 +8,6 @@
 <link rel="stylesheet" href="resources/css/user/enroll.css">
 <script type="text/javascript" src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.7.0.min.js"></script>
 <script type="text/javascript">
-const validateForm = () => {
-	if (!$("#userId").val()) {
-	    alert("아이디를 입력해 주세요.");
-	    return false;
-	} else if (!$("#email").val()) {
-	    alert("이메일을 입력해 주세요.");
-	    return false;
-	} else if (!$("#chkEmailAuth").val()) {
-	    alert("이메일 인증을 해주세요.");
-	    return false;
-	}
-    return true; 
-}
-
-let code = "" ;
-
 const emailAuth = () => {
 	$.ajax({
 		url: "emailAuth.do",
@@ -41,6 +25,42 @@ const emailAuth = () => {
 			console.log(code);
 			$("#submitBtn").prop("disabled", true);
 			alert("인증 코드가 입력하신 이메일로 전송 되었습니다");
+			
+			$("li.chkEmailAuth").css("display", "block");
+		},
+		error: (jqXHR, textStatus, errorThrown) => {
+			console.log("error : " + jqXHR + ", " + textStatus + ", " + errorThrown);
+		}
+	}) // ajax
+}
+
+const validateForm = () => {
+	if (!$("#userId").val()) {
+	    alert("아이디를 입력해 주세요.");
+	    return false;
+	} else if (!$("#email").val()) {
+	    alert("이메일을 입력해 주세요.");
+	    return false;
+	} else if (!$("#chkEmailAuth").val()) {
+	    alert("이메일 인증을 해주세요.");
+	    return false;
+	}
+    return true; 
+}
+
+let code = "" ;
+
+const sendNewPw = () => {
+	alert("새로운 암호가 입력하신 이메일로 전송 되었습니다");
+	$.ajax({
+		url: "searchPw.do",
+		data: {userEmail : $("#email").val()},
+		type : "post",
+		dataType : "json",
+		success : (data) => {
+			console.log("result : " + data);
+			
+			$("#submitBtn").prop("disabled", true);
 			
 			$("li.chkEmailAuth").css("display", "block");
 		},
@@ -114,7 +134,7 @@ $("#chkEmailAuth").on("keyup", () => {
 							<input type="text"  id="chkEmailAuth" placeholder="인증번호">
 						</li>
 						<li>
-							<input type="submit" value="비밀번호 찾기" class="searchPw">
+							<input type="submit" value="비밀번호 찾기" class="searchPw" onclick="sendNewPw();">
 						</li>
 					</ul>
 				</form>
