@@ -68,7 +68,6 @@ section .inner-section .left-section {
 }
 
 section.sec2 .inner-section .left-section {
-	box-shadow: 0px 0px 1px 1px grey;
 }
 
 section.sec2 .inner-section .right-section #contents {
