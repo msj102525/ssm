@@ -129,13 +129,13 @@ function onChangeMonth() {
                 	for (var i = 0; i < dataArray.length; i++) {
                         var data = dataArray[i];
                         if (data.monthlycost !== undefined) {
-                            document.getElementById("monthlyCost").placeholder = data.monthlycost;
+                            document.getElementById("monthlyCost").value = data.monthlycost;
                         }
                         if (data.monthlytax !== undefined) {
-                            document.getElementById("montlyTax").placeholder = data.monthlytax;
+                            document.getElementById("montlyTax").value = data.monthlytax;
                         }
                         if (data.monthlyrent !== undefined) {
-                            document.getElementById("monthlyRent").placeholder = data.monthlyrent;
+                            document.getElementById("monthlyRent").value = data.monthlyrent;
                         }
                         if (data.monthlysale !== undefined) {
                             document.getElementById("monthlySales").textContent = data.monthlysale;
@@ -143,9 +143,9 @@ function onChangeMonth() {
                     }
                 	var sumDisplay = document.getElementById("sumDisplay");
                 	sumDisplay.textContent = document.getElementById("monthlySales").textContent 
-                			- document.getElementById("monthlyRent").placeholder
-                			- document.getElementById("montlyTax").placeholder
-                		    - document.getElementById("monthlyCost").placeholder;
+                			- document.getElementById("monthlyRent").value
+                			- document.getElementById("montlyTax").value
+                		    - document.getElementById("monthlyCost").value;
                 },
                 error: function(request, status, errorData) {
                     console.log("error code : " + request.status
