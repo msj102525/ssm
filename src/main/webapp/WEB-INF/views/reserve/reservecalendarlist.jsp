@@ -260,6 +260,7 @@ span#ui-id-1 {
 	var diaLogOpt = {
 		modal : true, ////모달대화상자
 		resizable : false, ////크기 조절 못하게
+		/* width : "570", // dialog 넓이 지정 */
 		width : "570", // dialog 넓이 지정
 		/* height: "470" */// dialog 높이 지정
 		height : "480" // dialog 높이 지정
@@ -965,9 +966,9 @@ span#ui-id-1 {
 	//// 입력 모드 설정 함수(2024.04.11)
 	function setLanguage(language) {
 	    if (language === 'ko') {
-	        document.getElementById("name").lang = "ko"; // 한글 입력 모드로 설정
+	        document.getElementById("rsrvName").lang = "ko"; // 한글 입력 모드로 설정
 	    } else if (language === 'en') {
-	        document.getElementById("email").lang = "en"; // 영문 입력 모드로 설정
+	        ////document.getElementById("email").lang = "en"; // 영문 입력 모드로 설정
 	    }
 	}
 </script>
