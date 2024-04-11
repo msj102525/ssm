@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%-- <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui" %> --%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
@@ -15,15 +14,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<script type="text/javascript"
-	src="/ssm/resources/js/jquery-3.7.0.min.js"></script>
+<script type="text/javascript" src="/ssm/resources/js/jquery-3.7.0.min.js"></script>
 
-<link href="/ssm/resources/js/fullcalendar-5.0.1/lib/main.css"
-	rel="stylesheet" />
-<script type="text/javascript"
-	src="/ssm/resources/js/fullcalendar-5.0.1/lib/main.js"></script>
-<script type="text/javascript"
-	src="/ssm/resources/js/fullcalendar-5.0.1/lib/locales/ko.js"></script>
+<link href="/ssm/resources/js/fullcalendar-5.0.1/lib/main.css" rel="stylesheet" />
+<script type="text/javascript" src="/ssm/resources/js/fullcalendar-5.0.1/lib/main.js"></script>
+<script type="text/javascript" src="/ssm/resources/js/fullcalendar-5.0.1/lib/locales/ko.js"></script>
 
 <!-- <link rel="stylesheet" href="/ssm/resources/css/jquery-ui-1.13.2/jquery-ui.min.css" /> -->
 <link rel="stylesheet"
@@ -103,13 +98,15 @@ section .inner-section {
 	-ms-box-sizing: border-box;
 	box-sizing: border-box;
 	/* border: 3px solid rgba(0,0,0,0); */
-	border: 3px solid;
+	/* border: 3px solid; */
+	border: 1px solid;
 }
 
 .feedback-input:focus {
 	background: #fff;
 	box-shadow: 0;
-	border: 3px solid #3498db;
+	/* border: 3px solid #3498db; */
+	border: 1px solid #3498db;
 	border-color: #3498db;
 	color: #3498db;
 	/* outline: none; */
@@ -146,13 +143,22 @@ section .inner-section {
 	background-repeat: no-repeat;
 }
 
+#rsrvMemo {
+	/* background-image: url(http://rexkirby.com/kirbyandson/images/comment.svg); */
+	/* 이미지 없음(2024.04.07) */
+	background-size: 30px 30px;
+	background-position: 11px 8px;
+	background-repeat: no-repeat;
+}
+
+
 textarea {
-	/* width: 100%; */
-	width: 90%;
+	width: 100%;
+	/* width: 90%; */
 	/* height: 150px; */
 	height: 50px; /* 2024.04.07 modify */
-	/* line-height: 150%; */
-	line-height: 110%; /* 2024.04.07 modify */
+	line-height: 150%;
+	/* line-height: 110%;  *//* 2024.04.07 modify */
 	resize: vertical;
 }
 
@@ -214,6 +220,19 @@ input:hover, textarea:hover, input:focus, textarea:focus {
 /* modal title (일정관리) */
 span#ui-id-1 {
     font-size: 14px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+.form-group label {
+    display: inline-block;
+    width: 80px; /* 조정 가능한 너비 */
+    text-align: left;
+    margin-right: 10px;
+}
+.form-group textarea {
+    width: calc(100% - 80px); /* label의 너비만큼 뺀 나머지 */
 }
 
 </style>
@@ -601,6 +620,75 @@ span#ui-id-1 {
 		$("#xwriteDate").val(""); //// 작성일자
 	}
 
+	//// 핸드폰번호 유효성 체크
+    $(function() {
+        $("#rsrvTelno").blur(function() {
+            // 입력된 전화번호 가져오기
+            var phoneNumber = $("#rsrvTelno").val();
+            if(phoneNumber) {
+                // 정규식을 사용하여 형식 검사
+                var regex = /^(01[0-9]{1}-?[0-9]{4}-?[0-9]{4}|01[0-9]{8})$/;
+
+                if (regex.test(phoneNumber)) {
+                    // 올바른 형식일 경우
+                } else {
+                    // 잘못된 형식일 경우
+                    alert("잘못된 형식의 전화번호 입니다.");
+                    $("#rsrvTelno").val("");
+                    return false;
+                }
+
+                var pcs = phoneNumber;
+
+                // 입력된 문자열에서 하이픈('-')을 제거하여 숫자만 추출
+                var pcs = pcs.replace(/[^0-9]/g, '');
+
+                // 전화번호 형식 (010-1234-5678)으로 변환
+                if (pcs.length === 10) {
+                    pcs = pcs.substring(0, 3) + '-' + pcs.substring(3, 7) + '-' + pcs.substring(7, 11);
+                } else if (pcs.length === 11) {
+                    pcs = pcs.substring(0, 3) + '-' + pcs.substring(3, 7) + '-' + pcs.substring(7, 11);
+                }
+
+                $("#rsrvTelno").val(pcs);
+            }
+        });
+        
+        //시간
+        $("#rsrvTime").blur(function() {
+            // 입력된 전화번호 가져오기
+            var reserveTime = $("#rsrvTime").val();
+            if(reserveTime) {
+                // 정규식을 사용하여 형식 검사
+				var regex = /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
+
+                if (regex.test(reserveTime)) {
+                    // 올바른 형식일 경우
+                } else {
+                    // 잘못된 형식일 경우
+                    alert("잘못된 형식의 시간 입니다.");
+                    $("#rsrvTime").val("");
+                    return false;
+                }
+
+                var timecnv = reserveTime;
+
+                // 입력된 문자열에서 하이픈(':')을 제거하여 숫자만 추출
+                var timecnv = timecnv.replace(/[^0-9]/g, '');
+
+				// 시간 형식 (09:00)으로 변환
+                if (timecnv.length === 3) {
+					timecnv = timecnv.substring(0, 2) + ':' + timecnv.substring(2, 4);
+                } else if (timecnv.length === 4) {
+                    timecnv = timecnv.substring(0, 2) + ':' + timecnv.substring(2, 4);
+                }
+
+                $("#rsrvTime").val(timecnv);
+            }
+        });        
+        
+    });
+    
 	//=========================================== function =========================================== 
 
 	//관리자만 ,주,일 옵션 뷰
@@ -843,51 +931,41 @@ span#ui-id-1 {
 									<!-- C:등록 U:수정 D:삭제 -->
 									<input type="hidden" name="rsrvNum" id="rsrvNum" value="" />
 								</div>
-								<div class="email">
-									<label for="rsrvDate" style="width: 90px;">예약일자</label> <input
-										type="text" name="rsrvDate" id="rsrvDate" readonly="readonly" />
-									<!-- <input type="text" name="rsrvDate" id="rsrvDate" readonly="readonly"/> -->
+								<p class="email">
+									<label for="rsrvDate" style="width: 80px;">예약일자</label> 
+									<input type="text" name="rsrvDate" id="rsrvDate" readonly="readonly" disabled style="border:none;"/>
 									<!-- <input type="text" name="rsrvdate" readonly="readonly" class="validate[required,custom[email]] feedback-input" placeholder="선택된날짜 및 시간" /> -->
-								</div>
+								</p>
 								<div class="email">
-									<label for="rsrvName" style="width: 90px;">예약자명</label> <input
-										type="text" name="rsrvName" id="rsrvName">
+									<label for="rsrvName" style="width: 80px;">예약자명</label>
+									<input type="text" name="rsrvName" id="rsrvName">
 									<!-- <input type="text" name="rsrvName" id="rsrvName" class="validate[required,custom[email]] feedback-input" /> -->
-									<!-- <input type="text" name="rsrvName" id="rsrvName" value="" /> -->
 									<!-- <input type="text" name="rsrvName" id="rsrvName" placeholder="홍길동" /> -->
 									<!-- <input type="text" name="rsrvdate" readonly="readonly" class="validate[required,custom[email]] feedback-input" placeholder="선택된날짜 및 시간" /> -->
 								</div>
 								<div class="email">
-									<label for="rsrvTelno" style="width: 90px">연락처</label> <input
-										type="text" name="rsrvTelno" id="rsrvTelno"
-										placeholder="010-1234-5678" />
+									<label for="rsrvTelno" style="width: 80px">연락처</label>
+									<input type="text" name="rsrvTelno" id="rsrvTelno" placeholder="010-1234-5678" />
 								</div>
 								<div class="email">
-									<label for="rsrvTime" style="width: 90px;">예약시간</label> <input
-										type="text"   name="rsrvTime"   id="rsrvTime"
-										  placeholder="10:00"   />
+									<label for="rsrvTime" style="width: 80px;">예약시간</label>
+									<input type="text"   name="rsrvTime"   id="rsrvTime"  placeholder="10:00" />
 								</div>
 								<div>
-									<label for="rsrvInwon" style="width: 90px">인원</label>
-									<input type="number"   name="rsrvInwon"   id="rsrvInwon"   value="1" />
+									<label for="rsrvInwon" style="width: 80px">인원</label>
+									<input type="number" name="rsrvInwon" id="rsrvInwon" />
 								</div>
 								<div>
-									<label for="rsrvSubject" style="width: 90px">제목</label> <input
-										type="text" name="rsrvSubject" id="rsrvSubject" placeholder="" />
-									<!-- <input type="text" name="rsrvSubject" id="rsrvSubject" placeholder=""/> -->
+									<label for="rsrvSubject" style="width: 80px">제목</label>
+									<input type="text" name="rsrvSubject" id="rsrvSubject" />
 								</div>
-								<div class="text">
-									<label for="rsrvMemo" style="width: 90px">메모</label>
+								<div class="form-group">  <!-- style="width: 80px" -->
+									<label for="rsrvMemo">메모</label>
 									<textarea name="rsrvMemo" id="rsrvMemo"></textarea>
 								</div>
 								<div>
-									<label for="xwriteDate" style="width: 90px;">작성일자</label>
+									<label for="xwriteDate" style="width: 80px;">작성일자</label>
 									<input type="text" name="xwriteDate" id="xwriteDate" style="border:none;"/>
-									<!-- <span type="text" name="xwriteDate" id="xwriteDate" style="border: none;"></span> -->
-									<!-- <span type="text" name="xwriteDate" id="xwriteDate"></span> -->
-									<!-- <input type="text" name="xwriteDate" id="xwriteDate"/> -->
-									<!-- <input type="text" name="xwriteDate" id="xwriteDate"/> -->
-									<!-- <sapn type="text" name="xwriteDate" id="xwriteDate"></sapn> -->
 								</div>
 							</form>
 						</div>
