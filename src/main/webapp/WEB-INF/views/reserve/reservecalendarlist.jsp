@@ -61,7 +61,6 @@ section .inner-section {
 	-webkit-border-radius: 7px;
 }
 
-/* */
 /* #dialog { font-size: 25px; } */
 #dialog {
 	font-size: 12px;
@@ -81,6 +80,10 @@ section .inner-section {
 }
 
 #dialog .input-field {
+  padding-left: 3px;
+}
+
+#dialog .textarea-field {
   padding-left: 3px;
 }
 
@@ -155,15 +158,14 @@ section .inner-section {
 	background-repeat: no-repeat;
 }
 
-
 textarea {
-	width: 100%;
+	/* width: 100%; */
 	/* width: 90%; */
 	/* height: 150px; */
-	height: 120px; /* 2024.04.07 modify */
-	line-height: 150%;
+	/* height: 120px; */ /* 2024.04.07 modify */
+	/* line-height: 150%; */
 	/* line-height: 110%;  *//* 2024.04.07 modify */
-	resize: vertical;
+	/* resize: vertical; */
 }
 
 input:hover, textarea:hover, input:focus, textarea:focus {
@@ -226,18 +228,12 @@ span#ui-id-1 {
     font-size: 14px;
 }
 
-.form-group {
-    margin-bottom: 15px;
-}
-.form-group label {
-    display: inline-block;
-    width: 80px; /* 조정 가능한 너비 */
-    text-align: left;
-    margin-right: 10px;
+#dialog #textareameno label {
+  float: left; /* label을 왼쪽으로 띄웁니다. */
 }
 
-.form-group textarea {
-    width: calc(100% - 80px); /* label의 너비만큼 뺀 나머지 */
+#dialog #textareameno textarea {
+  margin-left: 55px;
 }
 
 </style>
@@ -261,9 +257,9 @@ span#ui-id-1 {
 		modal : true, ////모달대화상자
 		resizable : false, ////크기 조절 못하게
 		/* width : "570", // dialog 넓이 지정 */
-		width : "570", // dialog 넓이 지정
+		width : "515", // dialog 넓이 지정
 		/* height: "470" */// dialog 높이 지정
-		height : "480" // dialog 높이 지정
+		height : "380" // dialog 높이 지정
 	};
 
 	//=========================================== function ===========================================
@@ -1023,9 +1019,9 @@ span#ui-id-1 {
 									<label for="rsrvSubject" style="width: 80px">제목</label>
 									<input type="text" name="rsrvSubject" id="rsrvSubject" class="input-field" maxlength="20" />
 								</div>
-								<div class="form-group">  <!-- style="width: 80px" -->
+								<div id="textareameno">
 									<label for="rsrvMemo">메모</label>
-									<textarea name="rsrvMemo" id="rsrvMemo" rows="4" cols="50" maxlength="50" onfocus="setLanguage('ko')"></textarea>
+									<textarea name="rsrvMemo" id="rsrvMemo" class="textarea-field" rows="4" cols="50" maxlength="50" onfocus="setLanguage('ko')"></textarea>
 								</div>
 								<div>
 									<label for="xwriteDate" style="width: 80px;">작성일자</label>
