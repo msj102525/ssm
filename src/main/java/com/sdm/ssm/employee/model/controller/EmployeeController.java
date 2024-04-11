@@ -110,10 +110,10 @@ public class EmployeeController {
 	// 직원 정보 수정 페이지로 이동하고 직원 정보를 가져오는 메서드
 	@RequestMapping(value = "moveAndUpdateEmployeePage.do", method = RequestMethod.GET)
 	public String moveAndUpdateEmployeePage(
-			Employee employee,@RequestParam("empId") int empId,
+			Employee employee, /* @RequestParam("empId") int empId, */
 			@RequestParam("id") int id, Model model) {
 	    // 여기서는 특정 직원의 정보를 가져오는 프로시저를 호출하여 직원 정보를 가져옵니다.
-		employee = employeeService.selectEmpInfo(employee.getEmpName());	    
+		employee = employeeService.selectEmpInfo(employee.getId(),employee.getEmpName());	
 	    // 가져온 직원 정보가 null이 아니면
 	    if (employee != null) {
 	        model.addAttribute("employee", employee); // 수정할 직원 정보를 모델에 추가
@@ -181,32 +181,57 @@ public class EmployeeController {
 	        return "employee/EmployeeList";
 	    }
 	//급여 관련처리들------------------
-	// 직원 급여 정보 페이지 이동
-	@RequestMapping(value = "selectSalary.do", method = RequestMethod.GET)
-	public String moveSalaryPage(
-	        @RequestParam(value = "hourlyWage", required = false, defaultValue = "0") int hourlyWage,
-	        @RequestParam("id") int id, Model model) {
-	    List<SalaryInfo> list = salaryInfoService.getSalaryDate(id);
-	    // 시급을 모델에 추가
-	    model.addAttribute("hourlyWage", hourlyWage);
-	    List<Integer> monthlySalaries = new ArrayList<>();
-	    for (SalaryInfo salaryInfo : list) {
-	        try {
-	            // 시급과 해당 직원의 정보를 사용하여 월급을 계산하고 리스트에 추가
-	        	int monthlySalary = (int) (Integer.parseInt(salaryInfo.getTotalWorkingHours()) * hourlyWage
-	                    - Integer.parseInt(salaryInfo.getPremium()) - Integer.parseInt(salaryInfo.getTax()));
-	            monthlySalaries.add(monthlySalary);
-	        } catch (NumberFormatException e) {
-	            // 숫자로 변환할 수 없는 값이 있을 경우 처리
-	            // 예외 처리를 하거나 해당 값을 기본값으로 대체하거나 필요에 따라 다른 처리를 수행할 수 있습니다.
-	            e.printStackTrace(); // 현재는 예외를 출력하는 방식으로 처리합니다.
+	    
+	 // 직원 급여 정보 페이지 이동 (GET 방식)
+	    @RequestMapping(value = "selectSalary.do", method = RequestMethod.GET)
+	    public String moveSalaryPage(
+	            @RequestParam(value = "hourlyWage", required = false, defaultValue = "0") int hourlyWage,
+	            @RequestParam("id") int id, Model model) {
+	        List<SalaryInfo> list = salaryInfoService.getSalaryDate(id);
+	        // 시급을 모델에 추가
+	        model.addAttribute("hourlyWage", hourlyWage);
+	        List<Integer> monthlySalaries = new ArrayList<>();
+	        for (SalaryInfo salaryInfo : list) {
+	            try {
+	                // 시급과 해당 직원의 정보를 사용하여 월급을 계산하고 리스트에 추가
+	            	int monthlySalary = (int) (Integer.parseInt(salaryInfo.getTotalWorkingHours()) * hourlyWage
+	                        - Integer.parseInt(salaryInfo.getPremium()) - Integer.parseInt(salaryInfo.getTax()));
+	                monthlySalaries.add(monthlySalary);
+	            } catch (NumberFormatException e) {
+	                // 숫자로 변환할 수 없는 값이 있을 경우 처리
+	                // 예외 처리를 하거나 해당 값을 기본값으로 대체하거나 필요에 따라 다른 처리를 수행할 수 있습니다.
+	                e.printStackTrace(); // 현재는 예외를 출력하는 방식으로 처리합니다.
+	            }
 	        }
+	        model.addAttribute("monthlySalaries", monthlySalaries);
+	        model.addAttribute("employees", list);
+	        return "employee/SalaryInfo";
 	    }
+	// 직원 급여 정보 페이지 이동
+	/*
+	 * @RequestMapping(value = "selectSalary.do", method = RequestMethod.GET) public
+	 * String moveSalaryPage(
+	 * 
+	 * @RequestParam(value = "hourlyWage", required = false, defaultValue = "0") int
+	 * hourlyWage,
+	 * 
+	 * @RequestParam("id") int id, Model model) { List<SalaryInfo> list =
+	 * salaryInfoService.getSalaryDate(id); // 시급을 모델에 추가
+	 * model.addAttribute("hourlyWage", hourlyWage); List<Integer> monthlySalaries =
+	 * new ArrayList<>(); for (SalaryInfo salaryInfo : list) { try { // 시급과 해당 직원의
+	 * 정보를 사용하여 월급을 계산하고 리스트에 추가 int monthlySalary = (int)
+	 * (Integer.parseInt(salaryInfo.getTotalWorkingHours()) * hourlyWage -
+	 * Integer.parseInt(salaryInfo.getPremium()) -
+	 * Integer.parseInt(salaryInfo.getTax())); monthlySalaries.add(monthlySalary); }
+	 * catch (NumberFormatException e) { // 숫자로 변환할 수 없는 값이 있을 경우 처리 // 예외 처리를 하거나
+	 * 해당 값을 기본값으로 대체하거나 필요에 따라 다른 처리를 수행할 수 있습니다. e.printStackTrace(); // 현재는 예외를
+	 * 출력하는 방식으로 처리합니다. } }
+	
 	    model.addAttribute("monthlySalaries", monthlySalaries);
 	    model.addAttribute("employees", list);
 	    return "employee/SalaryInfo";
 	}
-	
+	*/
 	// 급여정보 검색하는 폼
 	@RequestMapping(value = "selectSalary.do", method = RequestMethod.POST)
 	public String selectSalaryPage(
@@ -267,7 +292,7 @@ public class EmployeeController {
 	}
 
 	// 직원 급여 정보 수정 페이지 이동
-	@RequestMapping("updateSalaryInfo.do")
+	@RequestMapping(value="updateSalaryInfo.do",method = { RequestMethod.POST, RequestMethod.GET })
 	public String moveUpdateSalaryPage(SalaryInfo salaryInfo, Model model, HttpServletRequest request) {
 		return "employee/salaryInfoDate";
 	}

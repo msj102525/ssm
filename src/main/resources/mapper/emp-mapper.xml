@@ -118,24 +118,24 @@
 	</delete>
 
 	<!-- 직원 월급 계산 -->
-<select id="totalSalact" parameterType="map" resultMap="resultSalaryInfoList">
-    SELECT
-        e.EMP_ID,
-        e.EMP_NAME,
-        e.POSITION,
-        s.BANK_NAME,
-        s.BANK_ACCOUNT_NO,
-        s.ACCOUNT_HOLDER,
-        (
-            SELECT (TO_NUMBER(w.TOTAL_WORKING_HOURS) * ${hourlyWage}) - TO_NUMBER(s.PREMIUM) - TO_NUMBER(s.TAX) AS MONTHLY_SALARY
-            FROM TB_EMPLOYEE_${id} e
-            JOIN TB_SALARY_INFO_${id} s ON e.EMP_ID = s.EMP_ID
-        )
-    FROM
-        TB_EMPLOYEE_${id} e
-    JOIN
-        TB_SALARY_INFO_${id} s ON e.EMP_ID = s.EMP_ID
-</select>
+	<select id="totalSalact" parameterType="map" resultMap="resultSalaryInfoList">
+		SELECT
+		e.EMP_ID,
+		e.EMP_NAME,
+		e.POSITION,
+		s.BANK_NAME,
+		s.BANK_ACCOUNT_NO,
+		s.ACCOUNT_HOLDER,
+		(
+		SELECT (TO_NUMBER(w.TOTAL_WORKING_HOURS) * ${hourlyWage}) -
+		TO_NUMBER(s.PREMIUM) - TO_NUMBER(s.TAX) AS MONTHLY_SALARY
+		FROM TB_EMPLOYEE_${id} e
+		JOIN TB_SALARY_INFO_${id} s ON e.EMP_ID = s.EMP_ID )
+		FROM
+		TB_EMPLOYEE_${id} e
+		JOIN
+		TB_SALARY_INFO_${id} s ON e.EMP_ID = s.EMP_ID
+	</select>
 
 		
 	<!-- 출퇴근 정보 -->
@@ -164,8 +164,7 @@
 	</select>
 
 	<!-- 출퇴근 정보 등록 -->
-	<insert id="insertCommuteInfo" parameterType="CommuteInfo">
-		
+	<insert id="insertCommuteInfo" parameterType="CommuteInfo">		
 		INSERT INTO TB_COMMUTE_INFO_${ id } (EMP_ID, START_TIME, WORK_DAY, END_TIME,
 		WORKING_HOURS, LATE_FLAG, LEAVE_EARLY, ABSENTEEISM)
 		VALUES (#{empId}, #{startTime}, #{workDay}, #{endTime}, #{workingHours},
@@ -200,19 +199,18 @@
 
 	<insert id="insertStartTime" parameterType="Employee">
 	INSERT INTO tb_commute_info_${id} (EMP_ID, START_TIME) VALUES (
-	(SELECT EMP_ID FROM tb_employee_${id} WHERE EMP_NAME = #{empName}),
+	(SELECT
+	EMP_ID FROM tb_employee_${id} WHERE EMP_NAME = #{empName}),
 	SYSTIMESTAMP)
+
 	</insert>
 
 	<update id="updateEndTime" parameterType="Employee">
-		UPDATE tb_commute_info_${id}
-		SET END_TIME = SYSTIMESTAMP
-		WHERE EMP_ID = (SELECT EMP_ID
-		FROM tb_employee_${id}
-		WHERE EMP_NAME = #{empName}
-		) AND END_TIME IS NULL
-		ORDER BY START_TIME DESC
-		FETCH FIRST 1 ROWS ONLY
+	UPDATE tb_commute_info_${id}
+	SET END_TIME = SYSTIMESTAMP
+	WHERE EMP_ID = (SELECT EMP_ID FROM tb_employee_${id} 
+	WHERE EMP_NAME =#{empName})
+	AND END_TIME IS NULL		
 	</update>
 
 	<!-- 캘린더클래스 매핑 -->
@@ -223,12 +221,12 @@
 	</resultMap>	
 	
 	<!-- 직원 스케줄 조회 -->		
-	<select id="selectCalendar" parameterType="String" >
+	<select id="selectCalendar" parameterType="Employee" resultMap="resultCalendarList">
 	SELECT E.EMP_NAME, CI.WORK_DAY, CI.START_TIME
 	FROM TB_CALENDAR_${id} C
 	JOIN TB_EMPLOYEE_${id} E ON C.EMP_ID = E.EMP_ID
 	JOIN TB_COMMUTE_INFO_${id} CI ON C.EMP_ID = CI.EMP_ID
-	ORDER BY CI.WORK_DAY;
+	ORDER BY CI.WORK_DAY
 	</select>
 	
 	

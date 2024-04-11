@@ -18,10 +18,10 @@ body {
 }
 
 .container {
-    max-width: 960px;
+    max-width: 1050px;
     margin: 0px auto;
     padding-top: 200px;
-    background-color: #fff; /* 배경색 변경 */
+  /*   background-color: #fff; */
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
@@ -108,19 +108,19 @@ input[type="submit"]:hover {
 <body>
 	<div class="container">
 		<!-- 검색 폼 -->
-		<form id="searchForm">
-        <fieldset id="es">
+	<!-- 	<form id="searchForm"> -->
+       <!--  <fieldset id="es">
             <legend>직원 검색</legend>
             <input type="search" id="keyword" placeholder="직원 이름을 입력하세요">
-            <!-- 검색 버튼 클릭 시 search 함수 호출 -->
+            검색 버튼 클릭 시 search 함수 호출
             <input type="button" value="검색" onclick="search()">
-        </fieldset>
-    </form>
+        </fieldset> -->
+    <!-- </form> -->
     
 
 		<!-- 직원 정보 표시 -->
 		 <h2>직원 정보</h2>
-    <h4 align="center">직원 수 : <span id="employeeCount">0</span> 명</h4>
+<!--     <h4 align="center">직원 수 : <span id="employeeCount">0</span> 명</h4> -->
     <!-- 검색 결과가 비어있는지 확인하고, 비어 있다면 알림을 표시하는 영역 -->
     <div id="emptyMessage" style="text-align: center; color: #ff0000; font-size: 18px; display: none;"></div>
 
@@ -211,7 +211,7 @@ input[type="submit"]:hover {
 			<!-- 등록 페이지 이동 버튼 -->
 			<button onclick="location.href='insertemp.do?id=${loginUser.id}'">직원 등록</button>
 			<!-- 수정 페이지로 이동 버튼 -->
-			<button onclick="location.href='updateEmployee.do${selectedEmployee.empId}'">수정하기</button>			
+			<button onclick="location.href='updateEmployee.do?id=?${ id }(${selectedEmployee.empId})'">수정하기</button>			
 			<%-- <button onclick="moveAndUpdateEmployeePage.do?(${selectedEmployee.empId})">수정하기</button> --%>
 			<!-- 직원 삭제 버튼 -->
 			<button onclick="deleteEmployee('${selectedEmployee.empId}')">삭제하기</button>			
@@ -227,7 +227,7 @@ var selectedEmployee;
 function loadEmployeeDetails(empId) {	
 	 // 선택된 직원의 option 엘리먼트를 가져옴
     var selectedOption = document.getElementById("employeeSelect").options[document.getElementById("employeeSelect").selectedIndex];
-
+	
     // 선택된 직원 정보를 저장
     selectedEmployee = {
         empId: selectedOption.value,
@@ -253,7 +253,7 @@ function loadEmployeeDetails(empId) {
     document.getElementById("detailEmpGender").innerHTML = selectedEmployee.empGender == 'M' ? '남자' : '여자';
 
     // 상세 정보를 보여줌
-    document.getElementById("getEmployeeDetails").style.display = "table";
+    document.getElementById("employeeSelect").style.display = "table";
 }
 </script>
 <script type="text/javascript">

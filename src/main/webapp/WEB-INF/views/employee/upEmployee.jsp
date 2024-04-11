@@ -75,7 +75,7 @@
 <div class="container">
     <h2>직원 정보 수정</h2>
 
-    <form id="updateForm" action="moveAndUpdateEmployeePage.do" method="post">
+     <form id="updateForm" action="updateEmployee.do" method="post"> 
     <input type="hidden" name="empId" value="${employee.empId}">
     
     <label for="empName">이름:</label>
@@ -102,7 +102,7 @@
     </select><br><br>
 
     <input type="submit" value="수정">
-    <button type="button" onclick="location.href='selectemp.do?id=${loginUser.id}'">목록</button>
+   <button type="button" onclick="location.href='selectemp.do?id=${loginUser.id}'">목록</button>
 </form>
 
 </div>

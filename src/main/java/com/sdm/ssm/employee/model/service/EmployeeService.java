@@ -28,7 +28,8 @@ public interface EmployeeService {
 
 	int updateEmployee(int id, Employee employee);
 
-	Employee selectEmpInfo(String empName);
+	Employee selectEmpInfo(int id,String empName);
+
 
 
 }
