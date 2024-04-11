@@ -113,6 +113,7 @@ public class GoodsPrintController {
 		model.addAttribute("paging", paging);
 		model.addAttribute("currentPage", currentPage);
 		model.addAttribute("action", action);
+		model.addAttribute("keyword", search.getKeyword());
 
 		if (list != null && list.size() > 0) {
 			return "goods/goodsListView";
