@@ -257,6 +257,22 @@
 	</update>
 	
 	
+	<select id="searchId" parameterType="Search" resultType="int">
+	select GOODS_NO
+	from TB_GOODS_${id}
+	WHERE GOODS_NAME = #{goodsName}
+	</select>
 	
+	<update id="updatePdQuantity" parameterType="goodsPrint" >
+	UPDATE TB_INVENTORY_${id} 
+	SET PD_QUANTITY = #{pdQuantity}
+	WHERE GOODS_NO = #{ goodsNo }
+	</update>
+	
+	<select id="originQuantity" parameterType="Search" resultType="int">
+	select PD_QUANTITY
+	from TB_INVENTORY_${id}
+	WHERE GOODS_NO = #{goodsNo}
+	</select>
 	
 </mapper>

@@ -1,11 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%-- <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui" %> --%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<%-- <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %> --%>
-<%-- <%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %> --%>
-<%-- <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %> --%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <c:set var="path" value="${ pageContext.servletContext.contextPath }" />
@@ -26,15 +22,11 @@
 	src="/ssm/resources/js/fullcalendar-5.0.1/lib/locales/ko.js"></script>
 
 <!-- <link rel="stylesheet" href="/ssm/resources/css/jquery-ui-1.13.2/jquery-ui.min.css" /> -->
-<link rel="stylesheet"
-	href="/ssm/resources/css/jquery-ui-themes-1.13.2/themes/base/jquery-ui.css" />
-<script type="text/javascript"
-	src="/ssm/resources/css/jquery-ui-1.13.2/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="/ssm/resources/css/jquery-ui-themes-1.13.2/themes/base/jquery-ui.css" />
+<script type="text/javascript" src="/ssm/resources/css/jquery-ui-1.13.2/jquery-ui.min.js"></script>
 
-<!-- <link rel="stylesheet"
-	href="/ssm/resources/css/bootstrap-4.4.1-dist/css/bootstrap.min.css" />
-<script type="text/javascript"
-	src="/ssm/resources/css/bootstrap-4.4.1-dist/js/bootstrap.bundle.min.js"></script> -->
+<!-- <link rel="stylesheet" href="/ssm/resources/css/bootstrap-4.4.1-dist/css/bootstrap.min.css" />
+<script type="text/javascript" src="/ssm/resources/css/bootstrap-4.4.1-dist/js/bootstrap.bundle.min.js"></script> -->
 
 <link rel="stylesheet" href="resources/css/common/main.css" />
 
@@ -226,6 +218,7 @@ section.sec2 .right-section section::after {
 }
 
 </style>
+
 <script type="text/javascript">
 	$(()=> {
 		$("header").css("position", "static");	
@@ -629,58 +622,24 @@ section.sec2 .right-section section::after {
 	document.addEventListener('DOMContentLoaded', function() {
 
 		var calendarEl = document.getElementById('calendar');
+		
+		var itemCountEl = document.getElementById('itemCount');
 
 		var calendar = new FullCalendar.Calendar(calendarEl, {
 			headerToolbar : {
-				left : 'prev, next today',
-				center : 'title' //,
-				//right : 'dayGridMonth' + rightm
+				left : 'prev,next today',
+				center : 'title',
+				right : ''
 			},
 			allDay : false,
-			theme : true,
-			themeSystem : 'bootstrap',
+			theme : false,
+			//themeSystem : 'bootstrap',
 			locale : 'ko',
 			timeZone : 'Asia/Seoul',
-			navLinks : true, //// can click day/week names to navigate views
+			navLinks : false, //// can click day/week names to navigate views
 			selectable : true,
 			selectMirror : true,
 			select : function(arg) {
-
-				/// alert("등록 여부 : " + isAdm);
-
-				if (isAdm == 0) {
-					return false;
-				}
-
-				var xObj = calFunc.calcDate(arg, calendar); //// get event data
-
-				//================ dialog 옵션 추가 ===================
-				var btnOpt = {
-					"저장" : function() {
-						//////////////////////////////////////////////
-						//////////////////////////////////////////////
-						createClnd(calendar, xObj); //// 저장 클릭시 액션 함수
-						$(this).dialog("close");
-					},
-					"취소" : function() {
-						$(this).dialog("close");
-					}
-				}
-
-				var dOpt = diaLogOpt;
-				dOpt.buttons = btnOpt;
-
-				//////////////////////////////////////////////////////////////////
-				/// object clear
-				//////////////////////////////////////////////////////////////////
-				funDiaFormClear();
-
-				//================ dialog 옵션 추가 ===================
-				//calFunc.formDsbFalse(); //// Form data disabeld false
-
-				$('#dialog').dialog(dOpt); //// 다이얼로그 오픈
-
-				calFunc.setDateRangeView(xObj); //// SET Form data
 
 				calendar.unselect();
 			},
@@ -689,47 +648,6 @@ section.sec2 .right-section section::after {
 			/////////////////////////////////////////////////////////////
 			eventClick : function(calEvent, jsEvent) {
 
-				var xObj = calFunc.calcDate(calEvent.event, calendar); //// get event data
-
-				//console.log("이벤트 : " + JSON.stringify(calEvent));
-
-				//================ dialog 옵션 추가 ===================
-				var btnOpt = {
-					"삭제" : function() {
-						deleteClnd(calendar, xObj); //삭제클릭시 액션 함수
-						$(this).dialog("close");
-					},
-					"수정" : function() {
-						updateClnd(calendar, xObj); //수정클릭시 액션 함수
-						$(this).dialog("close");
-					},
-					"닫기" : function() {
-						$(this).dialog("close");
-					}
-				}
-				//================ dialog 옵션 추가 ===================
-
-				//======================관리자 =======================
-				if (isAdm == 1) {
-					calFunc.formDsbFalse(); //Form data disabeld false
-				} else {
-					calFunc.formDsbTrue(); //// Form data disabeld true
-					delete btnOpt['수정']; //// 일반사용자 수정 히든 처리
-					delete btnOpt['삭제']; //// 일반사용자 삭제 히든 처리
-				}
-
-				//======================관리자 =======================
-
-				//================ dialog 옵션 추가 ===================
-				var dOpt = diaLogOpt;
-				dOpt.buttons = btnOpt;
-				//================ dialog 옵션 추가 ===================
-
-				//================ 실행  ===================
-				$("#dialog").dialog(dOpt); //// 다이얼로그 오픈
-				calFunc.setDataForm(xObj); //// SET Form Data
-
-				//================ 실행 ===================
 			},
 			//// 클릭 함수 [e]
 			editable : edit, //관리자 외 false
@@ -744,10 +662,8 @@ section.sec2 .right-section section::after {
 				var end2 = fetchInfo.end.toISOString().slice(0, 10);
 				var param = "";
 
-				//console.log("start : " + fetchInfo.start.toISOString()); //년월만 전달...
-				//console.log("end : " + fetchInfo.end.toISOString()); //년월만 전달...
-				console.log("start2 : " + start2); //// 년월만 전달...
-				console.log("end2 : " + end2); //// 년월만 전달...
+				//console.log("start2 : " + start2); //// 년월만 전달...
+				//console.log("end2 : " + end2); //// 년월만 전달...
 
 				param += "start=" + start2;
 				param += "&end=" + end2;
@@ -771,28 +687,40 @@ section.sec2 .right-section section::after {
 				});
 			},
 			eventDrop : function(info) {
-				var xObj = calFunc.calcDate(info.event, calendar); //get event data
-
-				calFunc.setDataForm(xObj); //// Set Form Data
-
-				updateClnd(calendar, xObj, info);
-
 			},
 			eventResize : function(info) {
-				var xObj = calFunc.calcDate(info.event, calendar); //// get event data
-
-				calFunc.setDataForm(xObj); //// Set Form Data
-
-				updateClnd(calendar, xObj, info);
 			},
 			eventTimeFormat : {
 				hour : '2-digit',
 				minute : '2-digit',
 				hour12 : false
 			},
+		    datesRender: function(info) {
+		        // 캘린더가 렌더링될 때 실행되는 함수
+		        // 모든 일자 요소에 클릭 이벤트를 비활성화합니다.
+		        disableDateClickEvents();
+			},
+		    dateClick: function(info) {
+		        // 클릭된 일자를 처리하는 함수
+		        // 기본 동작을 막습니다.
+		        info.jsEvent.preventDefault(); // 기본 동작 방지
+		      }
 		});
 
 		calendar.render();
+
+		function disableDateClickEvents() {
+			    // FullCalendar에서 생성된 모든 일자 요소를 선택합니다.
+			    var dayElements = document.querySelectorAll('.fc-day');
+
+			    // 각 일자 요소에 대해 클릭 이벤트를 비활성화합니다.
+			    dayElements.forEach(function(dayElement) {
+			      dayElement.addEventListener('click', function(event) {
+			        event.stopPropagation(); // 이벤트 전파 중지
+			        event.preventDefault(); // 기본 동작 방지
+			      });
+			    });
+		}
 
 		//$("span.fa-chevron-left").html("이전달");
 		//$("span.fa-chevron-right").html("다음달");

@@ -230,19 +230,20 @@ $(function() {
 		var monthlyRent = document.getElementById('monthlyRent').textContent;
 		var monthlyTax = document.getElementById('monthlyTax').textContent;
 		var monthlyCost = document.getElementById('monthlyCost').textContent;
-		
+		var monthlySales = document.getElementById('monthlySales').textContent;
+		var profit = monthlySales - monthlyPdPrice - monthlyRent - monthlyTax - monthlyCost;
 	
         var data = new google.visualization.DataTable();
         data.addColumn('string', '항목');
         data.addColumn('number', '금액');
         data.addRows([
         
+          ['매출', parseInt(monthlySales)],
           ['발주액', parseInt(monthlyPdPrice)],
-      
           ['월세', parseInt(monthlyRent)],
           ['세금', parseInt(monthlyTax)],
           ['기타비용', parseInt(monthlyCost)],
-       
+          ['수익', parseInt(profit)]
         ]);
 
         // Set chart options
@@ -322,8 +323,8 @@ function drawAxisTickColors() {
       chart.draw(data, options);
     }
       
-      // 발주액 가져오기
-      function onChangeMonth() {  
+// 발주액 가져오기
+function onChangeMonth() {  
     var jarr = new Array();
     var job = new Object();
     
@@ -359,32 +360,47 @@ function drawAxisTickColors() {
                 contentType: "application/json; charset=utf-8",
                 success: function(response) {
                 	var dataArray = JSON.parse(response); // JSON 배열을 JavaScript 배열로 변환
-                	for (var i = 0; i < dataArray.length; i++) {
-                        var data = dataArray[i];
-                        if (data.monthlycost !== undefined) {
-                            document.getElementById("monthlyCost").textContent = data.monthlycost;
-                        }
-                        if (data.monthlytax !== undefined) {
-                            document.getElementById("monthlyTax").textContent = data.monthlytax;
-                        }
-                        if (data.monthlyrent !== undefined) {
-                            document.getElementById("monthlyRent").textContent = data.monthlyrent;
-                        }
-                    }
-                    drawChart3();
-                },
-                error: function(request, status, errorData) {
-                    console.log("error code : " + request.status
-                        + "\nMessage : " + request.responseText
-                        + "\nError : " + errorData);
-                } 
-            }); 
             
-            
-            
-            
-            
-        
+            // 변수 초기화
+            var monthlySales = 0;
+            var monthlyPdPrice = 0;
+            var monthlyTax = 0;
+            var monthlyRent = 0;
+            var monthlyCost = 0;
+
+            // 값 설정
+            for (var i = 0; i < dataArray.length; i++) {
+                var data = dataArray[i];
+                if (data.monthlycost !== undefined) {
+                    monthlyCost = data.monthlycost;
+                    document.getElementById("monthlyCost").textContent = monthlyCost;
+                }
+                if (data.monthlytax !== undefined) {
+                    monthlyTax = data.monthlytax;
+                    document.getElementById("monthlyTax").textContent = monthlyTax;
+                }
+                if (data.monthlyrent !== undefined) {
+                    monthlyRent = data.monthlyrent;
+                    document.getElementById("monthlyRent").textContent = monthlyRent;
+                }
+                if (data.monthlysale !== undefined) {
+                    monthlySales = data.monthlysale;
+                    document.getElementById("monthlySales").textContent = monthlySales;
+                }
+            }
+
+            // 수익 계산
+            var profit = monthlySales - monthlyPdPrice - monthlyTax - monthlyRent - monthlyCost;
+            document.getElementById("profit").textContent = profit;
+
+            drawChart3();
+        },
+        error: function(request, status, errorData) {
+            console.log("error code : " + request.status
+                + "\nMessage : " + request.responseText
+                + "\nError : " + errorData);
+        } 
+    }); 
 }
       
       

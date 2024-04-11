@@ -127,6 +127,23 @@ public class GoodsPrintServiceImpl implements GoodsPrintService{
 		return goodsPrintDao.insertFirstGoods(goodsPrint);
 	}
 
+	@Override
+	public int searchId(GoodsPrint goodsPrint) {
+		return goodsPrintDao.searchId(goodsPrint);
+	}
+
+	@Override
+	public int updatePdQuantity(GoodsPrint goodsPrint) {
+		return goodsPrintDao.updatePdQuantity(goodsPrint);
+	}
+
+	@Override
+	public int originQuantity(GoodsPrint goodsPrint) {
+		return goodsPrintDao.originQuantity(goodsPrint);
+	}
+
+	
+
 	
 
 	
