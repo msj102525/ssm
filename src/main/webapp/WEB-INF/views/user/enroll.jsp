@@ -125,7 +125,7 @@ $(() => {
 						<li class="auth relative">
 							<p></p>
 							<input type="text" name="accountNumber" id="accountNumber" placeholder="계좌번호">
-							<input type="button" value="계좌인증" id="accountNumBtn" onclick="accountNumChk();">
+							<!-- <input type="button" value="계좌인증" id="accountNumBtn" onclick="accountNumChk();"> -->
 						</li>
 						<li>
 							<input type="submit" value="회원가입" class="enroll" id="submitBtn">

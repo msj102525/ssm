@@ -5,13 +5,6 @@ const busicessNoChk = () => {
 	const businessNoVal = $("#businessNo").val();
 	const businessNoRmSpace = businessNoVal.replace(/\s/g, "");
 	
-	console.log(businessNoVal);
-	console.log(businessNoRmSpace);
-	console.log(!!businessNoVal);
-	console.log(!businessNoVal);
-	console.log(typeof businessNoVal);
-	
-	console.log(`${businessNoRmSpace}`);
 	
 	if(!!businessNoVal && businessNoVal !=""){
 		$.ajax({
