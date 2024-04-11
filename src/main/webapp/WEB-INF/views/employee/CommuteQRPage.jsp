@@ -140,6 +140,7 @@ input[type="text"] {
 </head>
 <body>
 	<c:import url="/WEB-INF/views/common/header.jsp" />
+	<c:import url="/WEB-INF/views/common/sidebar.jsp" />
 	<hr>
 	<div class="centered">
 		<div class="container">

@@ -21,10 +21,9 @@
         }
 
         form {
-            background: #fff;
+           
             padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;         
             margin-top: 20px; /* Adjusted margin top */
         }
 
@@ -80,7 +79,7 @@
 
         div.button-group button {
             padding: 10px 20px;
-            background-color: #007bff;
+           /*  background-color: #007bff; */
             color: white;
             border: none;
             border-radius: 5px;
@@ -96,9 +95,9 @@
             max-width: 800px;
             margin: 150px auto; /* Center align container */
             padding: 20px;
-            background-color: #fff;
+           /*  background-color: #fff; */
             border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
         }
 
         /* Detail table */

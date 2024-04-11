@@ -11,7 +11,7 @@ body {
     font-family: Arial, sans-serif;
     margin-top : 20% auto;
     padding: 50px;
-    background-color: #f9f9f9; /* 배경색 변경 */
+   /*  background-color: #f9f9f9; */ /* 배경색 변경 */
     font-size: 16px;
     color: #333;
     max-width: 800px auto;
@@ -23,7 +23,7 @@ body {
     padding-top: 200px;
   /*   background-color: #fff; */
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  /*   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
 }
 
 h2 {
@@ -34,7 +34,7 @@ h2 {
 
 table {
     margin-top: 20px;
-    border-collapse: collapse;
+   /*  border-collapse: collapse; */
     width: 100%;
 }
 
@@ -80,7 +80,6 @@ input[type="submit"]:hover {
 
 #employeeDetails {
     margin-top: 20px;
-    display: none;
 }
 
 .button-group {
@@ -103,7 +102,8 @@ input[type="submit"]:hover {
 }
 </style>
 <c:import url="/WEB-INF/views/common/header.jsp" />
-<c:import url="/WEB-INF/views/common/sidebar.jsp" />	
+<c:import url="/WEB-INF/views/common/sidebar.jsp" />
+<script type="text/javascript" src="/ssm/resources/js/jquery-3.7.0.min.js"></script>	
 </head>
 <body>
 	<div class="container">
@@ -125,10 +125,10 @@ input[type="submit"]:hover {
     <div id="emptyMessage" style="text-align: center; color: #ff0000; font-size: 18px; display: none;"></div>
 
     <!-- 선택 상자 -->
-    <select id="employeeSelect" onchange="loadEmployeeDetails(this.value)">
+    <select id="employeeSelect" onchange="loadEmployeeDetails(this.value);">
     <option value="">직원 선택</option>
     <c:forEach items="${employeeList}" var="employee">
-        <option value="${employee.empId}">${employee.empName}</option>
+    <option value="${employee.empId}">${employee.empName}</option>
     </c:forEach>
 </select>
     
@@ -169,43 +169,42 @@ input[type="submit"]:hover {
 			<tbody>
 				<tr>
 					<th>직원 번호</th>
-					<td id="detailEmpId"></td>
+					<td id="detailEmpId">${empDetail.empId}</td>
 				</tr>
 				<tr>
 					<th>이름</th>
-					<td id="detailEmpName"></td>
+					<td id="detailEmpName">${empDetail.empName}</td>
 				</tr>
 				<tr>
 					<th>직급</th>
-					<td id="detailPosition"></td>
+					<td id="detailPosition">${empDetail.position }</td>
 				</tr>
 				<tr>
 					<th>입사날짜</th>
-					<td id="detailEmpHireDate"></td>
+					<td id="detailEmpHireDate">${empDetail.empHireDate }</td>
 				</tr>
 				<tr>
 					<th>전화번호</th>
-					<td id="detailEmpPhone"></td>
+					<td id="detailEmpPhone">${empDetail.empPhone }</td>
 				</tr>
 				<tr>
 					<th>이메일</th>
-					<td id="detailEmpEmail"></td>
+					<td id="detailEmpEmail">${empDetail.empEmail }</td>
 				</tr>
 				<tr>
 					<th>주소</th>
-					<td id="detailEmpAddress"></td>
+					<td id="detailEmpAddress">${empDetail.empAddress }</td>
 				</tr>
 				<tr>
 					<th>생년월일</th>
-					<td id="detailEmpBirthDate"></td>
+					<td id="detailEmpBirthDate">${empDetail.empBirthDate }</td>
 				</tr>
 				<tr>
 					<th>성별</th>
-					<td id="detailEmpGender"></td>
+					<td id="detailEmpGender">${empDetail.empGender }</td>
 				</tr>
 			</tbody>
 		</table>
-
 		<!-- 선택된 직원의 상세 정보 아래에 버튼 추가 -->
 		<div class="button-group">
 			<!-- 등록 페이지 이동 버튼 -->
@@ -218,18 +217,20 @@ input[type="submit"]:hover {
 			<!-- 목록으로 돌아가기 버튼 -->
 			<!-- <button onclick="location.href='mvwelcom.do?'">목록으로 돌아가기</button> -->
 		</div>
+		<input type="hidden" id="userId"value="${loginUser.id }">
 	</div>
 
-<script type="text/javascript">
+ <script type="text/javascript">
 // 선택된 직원 정보를 저장하는 변수
 var selectedEmployee;
 //직원 정보를 조회하는 함수
-function loadEmployeeDetails(empId) {	
+function loadEmployeeDetails(empId) {
 	 // 선택된 직원의 option 엘리먼트를 가져옴
-    var selectedOption = document.getElementById("employeeSelect").options[document.getElementById("employeeSelect").selectedIndex];
-	
-    // 선택된 직원 정보를 저장
-    selectedEmployee = {
+	 var userId = $('#userId').val();
+    //var selectedOption = document.getElementById("employeeSelect").options[document.getElementById("employeeSelect").selectedIndex];
+   location.href="employeeDetails.do?id="+userId+"&empId=" + empId;
+	 // 선택된 직원 정보를 저장
+    /* selectedEmployee = {
         empId: selectedOption.value,
         empName: selectedOption.text,
         position: selectedOption.getAttribute("data-position"),
@@ -253,7 +254,7 @@ function loadEmployeeDetails(empId) {
     document.getElementById("detailEmpGender").innerHTML = selectedEmployee.empGender == 'M' ? '남자' : '여자';
 
     // 상세 정보를 보여줌
-    document.getElementById("employeeSelect").style.display = "table";
+    document.getElementById("employeeSelect").style.display = "table"; */
 }
 </script>
 <script type="text/javascript">

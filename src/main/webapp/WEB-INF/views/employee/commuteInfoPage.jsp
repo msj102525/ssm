@@ -11,7 +11,7 @@
 /* 공통 스타일 */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+  /*   background-color: #f4f4f4; */
     margin: 0;
     padding: 0;
 }
@@ -19,9 +19,9 @@ body {
 .container {
     max-width: 800px;
     padding: 200px;
-    background-color: #fff;
+   /*  background-color: #fff; */
     border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  /*   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
     margin: 20px auto;
 }
 
@@ -86,14 +86,6 @@ input[type="submit"]:hover, button:hover {
 .detail-info-table th {
     background-color: #007bff;
     color: #fff;
-}
-
-.detail-info-table tbody tr:nth-child(even) {
-    background-color: #f2f2f2;
-}
-
-.detail-info-table tbody tr:hover {
-    background-color: #ddd;
 }
 
 .button-container {

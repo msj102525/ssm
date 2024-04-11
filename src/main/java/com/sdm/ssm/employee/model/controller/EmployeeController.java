@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.RequestScope;
 
 import com.sdm.ssm.common.Search;
 import com.sdm.ssm.employee.model.service.CalendarService;
@@ -71,41 +72,48 @@ public class EmployeeController {
 	 
 	// 직원 등록 페이지에서 직원 정보를 저장하는 메서드
     @RequestMapping(value = "insertEmp.do", method = { RequestMethod.POST, RequestMethod.GET })
-    public String insertEmployee(HttpServletRequest request, 
-    		@RequestBody Employee employee) {
+    public String insertEmployee(Employee employee) {
         logger.info("insertEmployee" + "0000000000000000000000");
         // 세션에서 로그인한 사용자 정보를 가져옴
-        User loggedInUser = getLoggedInUser(request);
-        if (loggedInUser != null) {
-            // 세션에 저장된 사용자의 ID를 직원의 사용자 ID로 설정
-            employee.setId(loggedInUser.getId());
-            logger.info("loggedInUser" + "11111");
-            // 직원 등록 처리
-            int result = employeeService.insertEmployee(employee);
-            logger.info(employee + "22222");
-            if (result > 0) {
-                logger.info(result + "333333");
-                // 직원 등록 성공 시 목록 페이지로 리다이렉트
-                return "employee/selectemp.do?id=${loginUser.id}"; 
-            } else {
-                logger.info("4444444");
-                // 등록 실패 시 다시 등록 페이지로 이동
-                return "employee/insertEmp.do?id=${loginUser.id}";
-            }
-        }
-		return null; 
+        logger.info(employee.getId()+"");	  
+		  // 직원 등록 처리 
+		  int result = employeeService.insertEmployee(employee);
+		  logger.info(employee + "22222"); if (result > 0) { 
+			  logger.info(result +  "333333");
+			  // 직원 등록 성공 시 목록 페이지로 리다이렉트 
+		  return "redirect:selectemp.do?id="+ employee.getId(); } 
+		  else { logger.info("4444444");
+		  return "employee/EmployeeRegister"; } 
     }
 	// 직원 목록 페이지로 이동
 	@RequestMapping(value = "selectemp.do", method = { RequestMethod.POST, RequestMethod.GET })
-	public String moveSelectEmpPage(@RequestParam("id") int id, Model model) {
+	public String moveSelectEmpPage(@RequestParam("id") int id, @RequestParam(name="empId", required=false) String empId, Model model) {
 		//유저 아이디로 테이블 조회
     // 여기서는 직원 정보를 가져오는 서비스 레이어 메서드를 호출하여 직원 정보를 가져옵니다.
     List<Employee> employeeList = employeeService.getAllEmployees(id);
 	    // 모델에 직원 정보를 추가하여 View로 전달합니다.
+    if(empId!=null && empId.length()>0) {
+    	Employee emp = employeeService.getEmployeeDetails(id, Integer.parseInt(empId));
+    	model.addAttribute("empDetail", emp);
+    	model.addAttribute("employeeList", employeeList);
+    	return "employee/EmployeeList";
+    }
+    
 	model.addAttribute("employeeList", employeeList);
 	    // 직원 정보가 표시되는 페이지로 이동합니다.
 	return "employee/EmployeeList";
 	}
+	
+	// 직원 상세조회
+	@RequestMapping(value = "employeeDetails.do", method = { RequestMethod.POST, RequestMethod.GET })
+	public String employeeDetails(@RequestParam("id") int id,@RequestParam("empId") int empId, Model model) {
+	    // 선택된 직원의 상세 정보 조회
+		model.addAttribute("empId", empId);
+		model.addAttribute("id", id);
+
+		return "redirect:selectemp.do";
+	}
+
 
 	// 직원 정보 수정 페이지로 이동하고 직원 정보를 가져오는 메서드
 	@RequestMapping(value = "moveAndUpdateEmployeePage.do", method = RequestMethod.GET)
@@ -138,22 +146,7 @@ public class EmployeeController {
 	    }
 	}
 
-	 // 직원 상세 조회를 위한 메서드 추가
-    @RequestMapping(value = "employeeDetails.do", method = { RequestMethod.POST, RequestMethod.GET })
-    @ResponseBody
-    public ResponseEntity<Employee> getEmployeeDetails(@RequestParam("empId") int empId,
-                                                        @RequestParam("id") int id) {
-        try {
-            Employee employee = employeeService.getEmployeeDetails(id, empId);
-            if (employee != null) {
-                return ResponseEntity.ok(employee);
-            } else {
-                return ResponseEntity.notFound().build();
-            }
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
+	
 
 		//직원 삭제
 	    @RequestMapping(value = "deleteEmployee.do", method = { RequestMethod.POST, RequestMethod.GET })
