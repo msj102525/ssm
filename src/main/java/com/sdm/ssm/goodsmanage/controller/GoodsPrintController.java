@@ -234,6 +234,7 @@ public class GoodsPrintController {
 			goodsPrint.setPdName(job.get("pdName").toString());
 			goodsPrint.setPdPhone(job.get("pdPhone").toString());
 			goodsPrint.setNation(job.get("nation").toString());
+			goodsPrint.setPdQuantity(Integer.parseInt(job.get("pdQuantity").toString()));
 			
 			int result = goodsPrintService.insertGoods(goodsPrint);
 

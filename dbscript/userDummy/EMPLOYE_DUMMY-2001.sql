@@ -30,8 +30,8 @@ INSERT INTO TB_CALENDAR_2001 VALUES
 DROP TABLE TB_COMMUTE_INFO_2001;
 
 DECLARE
-    start_date DATE := TO_DATE('2024-01-01', 'YYYY-MM-DD');
-    end_date DATE := TO_DATE('2024-01-30', 'YYYY-MM-DD');
+    start_date DATE := TO_DATE( 'YYYY-MM-DD');
+    end_date DATE := TO_DATE( 'YYYY-MM-DD');
     cur_date DATE := start_date;
 BEGIN
     WHILE cur_date <= end_date LOOP

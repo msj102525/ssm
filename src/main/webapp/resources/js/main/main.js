@@ -363,7 +363,7 @@ function onChangeMonth() {
             
             // 변수 초기화
             var monthlySales = 0;
-            var monthlyPdPrice = 0;
+            var monthlyPdPrice = document.getElementById("monthlyPdPrice").textContent;
             var monthlyTax = 0;
             var monthlyRent = 0;
             var monthlyCost = 0;
