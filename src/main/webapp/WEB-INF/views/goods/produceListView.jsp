@@ -192,7 +192,7 @@ $('#checkBoxAll').click(function () {
         if (confirm(confirmMessage)) {
             $.ajax({
                 type: "POST",
-                url: "gdelete.do",
+                url: "pdelete.do",
                 data: JSON.stringify(jarr),
                 contentType: "application/json; charset=utf-8",
                 success: function(result) {

@@ -70,7 +70,7 @@ $(function(){
 	}
 	button.listbtn {
 		position: absolute;
-		right: 250px;
+		right: 200px;
 	}
     div.searchdiv {
 		height: 80px;
@@ -83,11 +83,11 @@ $(function(){
 	}
     .searchdiv>button.savebutton {
 		position: absolute;
-		right: 470px;
+		right: 200px;
 	}
 	.searchdiv>button.deletebutton {
 		position: absolute;
-		right: 400px;
+		right: 200px;
 	}
 	button {
 		width: 50px;
@@ -307,14 +307,14 @@ $('#checkBoxAll').click(function () {
 					value="${goodsPrint.goodsNo}">
 			</c:forEach>			
 			</form>	
-		
-		
-</div>
-<div>
+		<div>
 			<button class="savebutton" onclick="updateSelectedGoods();">저장</button>			
 			<button class="deletebutton"onclick="deleteSelectedGoods();">삭제</button>
-		</div>	
-<br>
+		</div>
+		
+</div>
+			
+
 <c:import url="/WEB-INF/views/common/pagingView.jsp" />
 
 <hr>

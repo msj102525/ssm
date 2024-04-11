@@ -122,7 +122,29 @@ public class GoodsPrintController {
 		}
 	}
 
+	
+	@RequestMapping(value = "gdelete.do", method = RequestMethod.POST)
+	public ResponseEntity<String> goodsdeleteMethod(@RequestBody String param) throws ParseException {
 
+		JSONParser jparser = new JSONParser();
+		JSONArray jarr = (JSONArray) jparser.parse(param);
+
+		for (int i = 0; i < jarr.size(); i++) {
+			JSONObject job = (JSONObject) jarr.get(i);
+
+			GoodsPrint goodsPrint = new GoodsPrint();
+			goodsPrint.setId(Integer.parseInt(job.get("id").toString()));
+			goodsPrint.setGoodsNo(Integer.parseInt(job.get("goodsNo").toString()));
+			
+			int result = goodsPrintService.deleteProduce(goodsPrint);
+
+			
+			if (result <= 0) {
+				return new ResponseEntity<String>("failed", HttpStatus.REQUEST_TIMEOUT);
+			}
+		}
+		return new ResponseEntity<String>("success", HttpStatus.OK);
+	}
 
 	
 	@RequestMapping("gmoveinsert.do")

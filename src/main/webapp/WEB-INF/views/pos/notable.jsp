@@ -24,10 +24,6 @@ function resetBasket() {
         basketTable.deleteRow(1); // 테이블의 첫 번째 행을 제외한 나머지 행 삭제
     }
 }
-
-document.querySelector('.delete').addEventListener('click', function() {
-    resetBasket(); // 취소 버튼 클릭 시 테이블 초기화
-});
 </script>
 <script>
 function updateGoods() {
@@ -35,49 +31,19 @@ function updateGoods() {
     var rows = basketTable.getElementsByTagName('tr');
 
     // 두 번째 테이블의 각 행을 순회하며 상품 이름과 수량을 출력
-    for (var i = 0; i < rows.length; i++) {
+    for (var i = 1; i < rows.length; i++) {
         var cells = rows[i].cells;
         var productName = cells[0].textContent; // 상품 이름
-        /* var inputQuantity = cells[1].getElementsByTagName('input')[0].value; // 수량 input 태그
-        var quantity = inputQuantity.value; // 수량 */
+        var inputQuantity = cells[1].getElementsByTagName('input')[1]; // 수량 input 태그
+       /*  var quantity = inputQuantity.value;  */// 수량 
 
-        console.log("상품 이름:", productName, "수량:", );
+        console.log("상품 이름:", productName, "수량:", inputQuantity);
     }
 }
 </script>
-<script>
-    function displayInfo() {
-        var basketTable = document.querySelector('.basket');
-        var rows = basketTable.querySelectorAll('tr');
-
-        // 두 번째 테이블의 각 행을 순회하며 상품 이름과 수량을 가져와서 출력
-        var infoText = "두 번째 테이블 정보:\n";
-        rows.forEach(function(row) {
-            var cells = row.cells;
-            var productName = cells[0].textContent; // 상품명
-            var quantity = cells[1].getElementsByTagName('input')[0].innerHTML; 
-            infoText += "상품명: " + productName + ", 수량: " + quantity + "\n";
-            
-        });
-
-        // 알림창으로 정보 출력
-        alert(infoText);
-    }
-</script>
 
 
-<script>
-function checkQuantity() {
-    var quantityInput = document.getElementById('quantityInput');
-    var quantity = quantityInput.value;
 
-    if (quantity !== null && !isNaN(quantity)) {
-        alert('수량: ' + quantity);
-    } else {
-        alert('올바른 수량을 입력하세요.');
-    }
-}
-</script>
 <script>
 function addBasket(rowIndex) {
     // 결과를 표시할 테이블
@@ -154,16 +120,17 @@ function addBasket(rowIndex) {
 }
 
 .header {
+	font-size: 30px;
 	background-color: orange;
 	width: 100%;
-	height: 10vh;
-	font-size: 30px;
+	height: 10vh;	
 	text-align: center;
 	display: flex;
 	flex-wrap: nowrap;
 	justify-content: center;
 	align-items: center;
 	font-weight: 700;
+	position: relative;
 }
 
 .body, .footer {
@@ -172,7 +139,7 @@ function addBasket(rowIndex) {
 }
 
 .body {
-	height: 80vh;
+	height: 60vh;
 	display: flex;
 	position: relative;
 }
@@ -196,19 +163,25 @@ table.bascket {
 	position: relative;
 }
 
-.body .buttonList {
-	width: 50%;
-	height: 60%;
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-end;
-	padding-right: 5px;
-	parring-bottom: 5px;
+.buttonList{
+	background-color: lightgray;
+	text-align: right;
 }
+
 
 .title p {
 	color: black;
 	font-weight: bolder;
+	padding-right: 20px; 
+}
+.header a{
+	color:black;
+	font-size: 15px;
+	position: absolute;
+	left: 10px;
+	top: 50%;
+	transform: translateY(-50%);
+	cursor: pointer;
 }
 
 .button {
@@ -259,22 +232,21 @@ table.bascket {
 <body>
 	<div class="wrap">
 		<div class="header">
-			<p class="title">SSM 웹 포스기</p>
+			<a href="${pageContext.servletContext.contextPath }/glist.do?page=1&id=${loginUser.id}">재고 페이지</a>	
+			<p class="title">SSM 웹 포스기</p>					
 		</div>
 		 
 		<div class="body">
-			<div style="margin-left: auto; margin-right: auto; width: 600px;">
-				<input type="hidden" id="id" name="id" value="${ loginUser.id }">
-				
+			<div class="table1" style="margin-left: auto; margin-right: auto; width: 500px;">
+				<input type="hidden" id="id" name="id" value="${ loginUser.id }">			
 				<table class="goods" align="center" border="1" cellspacing="25"
-					width="70%">
+					width="60%">
 					<tr>
 						<th style="text-align: center; white-space: nowrap;">번호</th>
 						<th style="text-align: center; white-space: nowrap;">상품명</th>
 						<th style="text-align: center; white-space: nowrap;">남은 수량</th>
 						<th style="text-align: center; white-space: nowrap;">판매가격</th>
-					</tr>
-					
+					</tr>					
 					<c:forEach items="${requestScope.list}" var="goodsPrint"
 						varStatus="loop">
 						<tr id="row_${loop.index}">
@@ -286,32 +258,25 @@ table.bascket {
 								onclick="addBasket(${loop.index})">${goodsPrint.pdQuantity}</td>
 							<td align="center" style="white-space: nowrap;"
 								onclick="addBasket(${loop.index})">${goodsPrint.salePrice}</td>
-						</tr>
-						
+						</tr>					
 					</c:forEach>
-				</table>
-				
-			</div>
-			
-			<div>			
-				<table class="basket" align="center" border="1" cellspacing="25"
-					width="20%">
+				</table>				
+			</div>	<!-- div 표1 -->	
+			<div class="table2" >			
+				<table class="basket"  border="1" cellspacing="25"width="30%">
 					<tr>
 						<th style="text-align: center; white-space: nowrap;">상품명</th>
 						<th style="text-align: center; white-space: nowrap;">수량</th>
 						<th style="text-align: center; white-space: nowrap;">판매가격</th>
 					</tr>
-
 				</table>
-				
-				<div class="buttonList">
-					<button class="button add" onclick="updateGoods()">계산</button>
-					<button class="button delete" onclick="resetBasket()">취소</button>
-					<input type="hidden" id="userId" value="${loginUser.id }">
-				</div>
-			</div>
-
-		</div>
-	</div>
+			</div> <!-- div 표2 -->			
+		</div> <!-- div class="body" -->
+		<div class="buttonList">
+			<button align="right" class="button add" onclick="updateGoods()">계산</button>
+			<button align="right" class="button delete" onclick="resetBasket()">취소</button>
+			<input type="hidden" id="userId" value="${loginUser.id }">
+		</div>	
+	</div> <!-- 전체 -->
 </body>
 </html>
