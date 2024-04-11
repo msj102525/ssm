@@ -162,6 +162,9 @@ body, ul, li {
 .fa-cat::before {
 	content: "";
 }
+aside.side-bar {
+	z-index: 998;
+}
 </style>
 <title>Insert title here</title>
 </head>
