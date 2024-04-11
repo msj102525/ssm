@@ -966,9 +966,9 @@ span#ui-id-1 {
 	//// 입력 모드 설정 함수(2024.04.11)
 	function setLanguage(language) {
 	    if (language === 'ko') {
-	        document.getElementById("rsrvName").lang = "ko"; // 한글 입력 모드로 설정
+	        document.getElementById("rsrvName").lang = "ko"; //// 한글 입력 모드로 설정
 	    } else if (language === 'en') {
-	        ////document.getElementById("email").lang = "en"; // 영문 입력 모드로 설정
+	        ////document.getElementById("email").lang = "en"; //// 영문 입력 모드로 설정
 	    }
 	}
 </script>
@@ -994,16 +994,16 @@ span#ui-id-1 {
 									<input type="text" name="rsrvDate" id="rsrvDate" class="input-field" readonly="readonly" disabled style="border:none;"/>
 									<!-- <input type="text" name="rsrvdate" readonly="readonly" class="validate[required,custom[email]] feedback-input" placeholder="선택된날짜 및 시간" /> -->
 								</div>
-								<div class="email">
+								<div>
 									<label for="rsrvName" style="width: 80px;">예약자명</label>
 									<input type="text" name="rsrvName" id="rsrvName" class="input-field" maxlength="10" required onfocus="setLanguage('ko')"> <!-- 한글 입력 모드로 설정 -->
 									<!-- <input type="text" name="rsrvName" id="rsrvName" class="validate[required,custom[email]] feedback-input" /> -->
 								</div>
-								<div class="email">
+								<div>
 									<label for="rsrvTelno" style="width: 80px">연락처</label>
-									<input type="text" name="rsrvTelno" id="rsrvTelno" class="input-field" maxlength="11" placeholder="010-1234-5678" />
+									<input type="text" name="rsrvTelno" id="rsrvTelno" class="input-field" maxlength="13" placeholder="010-1234-5678" />
 								</div>
-								<div class="email">
+								<div>
 									<label for="rsrvTime" style="width: 80px;">예약시간</label>
 									<input type="text"   name="rsrvTime" id="rsrvTime" class="input-field" maxlength="5" placeholder="10:00" />
 								</div>
