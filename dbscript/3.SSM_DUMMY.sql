@@ -15,7 +15,7 @@ INSERT INTO TB_USER
             ,null, 'N'
             ,'N', 'Y'
             ,default
-            ,SYSDATE + 30
+            ,null
             ,'123456', 'ssm12');
 INSERT INTO TB_USER
             (ID
