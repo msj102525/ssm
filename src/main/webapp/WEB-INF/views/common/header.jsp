@@ -22,8 +22,13 @@
 	}); // document ready
 	
 	const logout = () => {
-		location.href='logout.do';
-		alert("로그아웃");
+		
+		if(confirm("로그아웃 하시겠습니까?")) {
+			location.href='logout.do';		
+		} else {
+			return false;
+		}
+		
 	}
 </script>
 </head>

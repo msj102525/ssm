@@ -68,8 +68,6 @@ $(() => {
     
 }); //doc ready;
 
-
-
 </script>
 </head>
 <body>

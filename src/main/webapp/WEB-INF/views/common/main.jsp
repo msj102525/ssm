@@ -87,14 +87,35 @@
 						<section class="sec4">
 							section4
 							<div class="inner-section">
-								<div class="left-section">left</div>
+								<div class="left-section">
+									<div class="img-flex">
+										<div class="img-box">
+											<img alt="메인 이미지 4-1" src="#">
+										</div>
+										<div class="img-box">
+											<img alt="메인 이미지 4-2" src="#">
+										</div>
+										<div class="img-box">
+											<img alt="메인 이미지 4-3" src="#">
+										</div>
+										<div class="img-box padding-top">
+											<img alt="메인 이미지 4-4" src="#">
+										</div>
+										<div class="img-box padding-top">
+											<img alt="메인 이미지 4-5" src="#">
+										</div>
+										<div class="img-box padding-top">
+											<img alt="메인 이미지 4-6" src="#">
+										</div>
+									</div>
+								</div>
 								<div class="right-section">
 									<div class="description">
 										<p>다양한 편의 기능 제공</p>
 										<div class="description-botton">
 											<p>SSM은 다른 부가 프로그램을</p>
 											<p>사용할 필요 없이</p>
-											<p>다양한 쳔의 기능을 사용할 수 있습니다.</p>
+											<p>다양한 편의 기능을 사용할 수 있습니다.</p>
 										</div>
 									</div>
 								</div>
