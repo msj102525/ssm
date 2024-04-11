@@ -40,7 +40,8 @@ import com.sdm.ssm.user.model.vo.UserFinkOut;
 @Controller
 public class UserController {
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
-
+	private final String setFrom = "msj102525@naver.com"; // 2단계 인증 x, 메일 설정에서 POP/IMAP 사용 설정에서 POP/SMTP 사용함으로 설정o
+	
 	@Autowired
 	private UserService userService;
 
@@ -62,30 +63,28 @@ public class UserController {
 	public UserController() {
 		super();
 	}
+	
+	private void addAuthURLsMethod(Model model, HttpSession session) {
+        String kakaoAuthURL = kakaologinAuth.getAuthorizationUrl(session);
+        String naverAuthURL = naverloginAuth.getAuthorizationUrl(session);
+        String googleAuthURL = googleloginAuth.getAuthorizationUrl(session);
+
+        model.addAttribute("kakaourl", kakaoAuthURL);
+        model.addAttribute("naverurl", naverAuthURL);
+        model.addAttribute("googleurl", googleAuthURL);
+    }
 
 	// 뷰 페이지 내보내기
 	@RequestMapping(value="goLogin.do", method={RequestMethod.GET, RequestMethod.POST})
 	public String goLogin(Model model, HttpSession session) {
-		String kakaoAuthURL = kakaologinAuth.getAuthorizationUrl(session);
-		String naverAuthURL = naverloginAuth.getAuthorizationUrl(session);
-		String googleAuthURL = googleloginAuth.getAuthorizationUrl(session);
-		
-		model.addAttribute("kakaourl", kakaoAuthURL);
-		model.addAttribute("naverurl", naverAuthURL);
-		model.addAttribute("googleurl", googleAuthURL);
+		addAuthURLsMethod(model, session);
 		
 		return "user/login";
 	}
 
 	@RequestMapping(value="goEnroll.do", method= {RequestMethod.GET, RequestMethod.POST})
 	public String goEnroll(Model model, HttpSession session) {
-		String kakaoAuthURL = kakaologinAuth.getAuthorizationUrl(session);
-		String naverAuthURL = naverloginAuth.getAuthorizationUrl(session);
-		String googleAuthURL = googleloginAuth.getAuthorizationUrl(session);
-		
-		model.addAttribute("kakaourl", kakaoAuthURL);
-		model.addAttribute("naverurl", naverAuthURL);
-		model.addAttribute("googleurl", googleAuthURL);
+		addAuthURLsMethod(model, session);
 		
 		return "user/enroll";
 	}
@@ -98,7 +97,7 @@ public class UserController {
 			session.invalidate();
 			return "common/main";
 		} else {
-			model.addAttribute("message", "로그인 세션 없거나 만료");
+			model.addAttribute("message", "로그인 세션이 없거나 만료됐습니다");
 			return "common/error";
 		}
 	}
@@ -163,56 +162,59 @@ public class UserController {
 	    OAuth2AccessToken node = naverloginAuth.getAccessToken(session, code, state); 
 	    // 이제 accessToken을 사용하여 사용자 정보를 가져와서 JsonObject를 만들거나 다른 작업을 수행할 수 있습니다.
 	    logger.info("1. ncallback.do : " + node);
+	    if(node == null) {
+	    	model.addAttribute("message", "Naver Token Error 브라우저 캐시를 지우고 다시 시도해 주세요");
+	    	return "common/error";
+	    } else {
+	    	 // 2. accessToken에 사용자의 로그인한 모든 정보가 들어있음
+		    apiResult = naverloginAuth.getUserProfile(node);
+			logger.info("2. ncallback.do : " + apiResult);
+			
+			// 3. String형식인 apiResult를 json형태로 바꿈
+			JSONParser parser = new JSONParser();
+			Object obj = parser.parse(apiResult);
+			JSONObject jsonObj = (JSONObject) obj;
+			
+			// 4. 데이터 파싱
+			// Top레벨 단계 _response 파싱
+			JSONObject response_obj = (JSONObject)jsonObj.get("response");
+			String nickname = (String)response_obj.get("nickname");
+			String email = (String)response_obj.get("email");
+			String birthyear = (String)response_obj.get("birthyear");
+			String birthday = (String)response_obj.get("birthday");
+			String phone = (String)response_obj.get("mobile");
+			
+			String birth = birthyear + birthday.replaceAll("-", "");
+			
+			logger.info("3. nickname : " + nickname);
+			logger.info("3. email : " + email);
+			logger.info("3. birthyear : " + birthyear);
+			logger.info("3. birthday : " + birthday);
+			logger.info("3. phone : " + phone);
+			logger.info("3. birth : " + birth);
+			
+			// 유저 테이블에서 회원 정보 조회해 오기
+			User loginUser = null;
+			User nUser = userService.selectUserById(email);
+			
+			if(nUser == null) {
+				return "redirect:goEnroll.do?id="
+							+ email
+							+ "&email=" + email
+							+ "&birth=" + birth
+							+ "&phone=" + phone
+							+ "&passWd=DefaultSSMPassword!";
+			} else {
+				loginUser = nUser;
+				session.setAttribute("loginUser", loginUser);
+				status.setComplete();
+				return "redirect:main.do";
+			}
+	    }
 	    
-		 // 2. accessToken에 사용자의 로그인한 모든 정보가 들어있음
-	    apiResult = naverloginAuth.getUserProfile(node);
-		logger.info("2. ncallback.do : " + apiResult);
-		
-		// 3. String형식인 apiResult를 json형태로 바꿈
-		JSONParser parser = new JSONParser();
-		Object obj = parser.parse(apiResult);
-		JSONObject jsonObj = (JSONObject) obj;
-		
-		// 4. 데이터 파싱
-		// Top레벨 단계 _response 파싱
-		JSONObject response_obj = (JSONObject)jsonObj.get("response");
-		String nickname = (String)response_obj.get("nickname");
-		String email = (String)response_obj.get("email");
-		String birthyear = (String)response_obj.get("birthyear");
-		String birthday = (String)response_obj.get("birthday");
-		String phone = (String)response_obj.get("mobile");
-		
-		String birth = birthyear + birthday.replaceAll("-", "");
-		
-		logger.info("3. nickname : " + nickname);
-		logger.info("3. email : " + email);
-		logger.info("3. birthyear : " + birthyear);
-		logger.info("3. birthday : " + birthday);
-		logger.info("3. phone : " + phone);
-		logger.info("3. birth : " + birth);
-		
-		// 유저 테이블에서 회원 정보 조회해 오기
-		User loginUser = null;
-		User nUser = userService.selectUserById(email);
-		
-		if(nUser == null) {
-			return "redirect:goEnroll.do?id="
-						+ email
-						+ "&email=" + email
-						+ "&birth=" + birth
-						+ "&phone=" + phone
-						+ "&passWd=DefaultSSMPassword!";
-		} else {
-			loginUser = nUser;
-			session.setAttribute("loginUser", loginUser);
-			status.setComplete();
-			return "redirect:main.do";
-		}
 	}
 	
 	// 구글
-	
-	
 	public UserController(GoogleLoginAuth googleLoginAuth) {
 		this.googleLoginAuth = googleLoginAuth;
 	}
@@ -226,37 +228,42 @@ public class UserController {
 	    OAuth2AccessToken node = googleloginAuth.getAccessToken(session, code, state); 
 	    logger.info("1. gcallbackgcallback.do : " + node);
 	    
-	    apiResult = googleloginAuth.getUserProfile(node);
-		logger.info("2. gcallback.do : " + apiResult);
-		
-		JSONParser parser = new JSONParser();
-		Object obj = parser.parse(apiResult);
-		JSONObject jsonObj = (JSONObject) obj;
-		
-		logger.info("2.5 jsonObj : " + jsonObj.toString());
-		
-		String name = (String)jsonObj.get("name");
-		String id = (String)jsonObj.get("id");
-		String email = (String)jsonObj.get("email");
-		
-		logger.info("3. name : " + name);
-		logger.info("3. id : " + id);
-		logger.info("3. email : " + email);
-		
-		
-		User loginUser = null;
-		User gUser = userService.selectUserById(email);
+	    if(node == null) {
+	    	model.addAttribute("message", "google Token Error 브라우저 캐시를 지우고 다시 시도해 주세요");
+	    	return "common/error";
+	    } else {
+	    	apiResult = googleloginAuth.getUserProfile(node);
+			logger.info("2. gcallback.do : " + apiResult);
+			
+			JSONParser parser = new JSONParser();
+			Object obj = parser.parse(apiResult);
+			JSONObject jsonObj = (JSONObject) obj;
+			
+			logger.info("2.5 jsonObj : " + jsonObj.toString());
+			
+			String name = (String)jsonObj.get("name");
+			String id = (String)jsonObj.get("id");
+			String email = (String)jsonObj.get("email");
+			
+			logger.info("3. name : " + name);
+			logger.info("3. id : " + id);
+			logger.info("3. email : " + email);
+			
+			
+			User loginUser = null;
+			User gUser = userService.selectUserById(email);
 
-		if (gUser == null) {
-			return "redirect:goEnroll.do?id=" + email 
-					+ "&email=" + email
-					+ "&passWd=DefaultSSMPassword!";
-		} else {
-			loginUser = gUser;
-			session.setAttribute("loginUser", loginUser);
-			status.setComplete();
-			return "redirect:main.do";
-		}
+			if (gUser == null) {
+				return "redirect:goEnroll.do?id=" + email 
+						+ "&email=" + email
+						+ "&passWd=DefaultSSMPassword!";
+			} else {
+				loginUser = gUser;
+				session.setAttribute("loginUser", loginUser);
+				status.setComplete();
+				return "redirect:main.do";
+			}
+	    }
 		 
 	}
 	
@@ -372,7 +379,6 @@ public class UserController {
 		int checkNum = random.nextInt(888888) + 111111;
 
 		// 이메일 보낼 양식
-		String setFrom = "msj102525@naver.com"; // 2단계 인증 x, 메일 설정에서 POP/IMAP 사용 설정에서 POP/SMTP 사용함으로 설정o
 		String toMail = email;
 		String title = "회원가입 인증 이메일 입니다.";
 		String content = "인증 코드는 " + checkNum + " 입니다." + "<br>" + "해당 인증 코드를 인증 코드 확인란에 기입하여 주세요.";
@@ -505,7 +511,6 @@ public class UserController {
 		    }
 
 			// 이메일 보낼 양식
-			String setFrom = "msj102525@naver.com"; 
 			String toMail = user.getEmail();
 			String title = "임시 비밀번호 입니다.";
 			String content = "임시 비밀번호는 " + newPw + " 입니다." + "<br>" + "해당 비밀번호로 로그인 해주세요.";
@@ -575,7 +580,5 @@ public class UserController {
 		}
 		
 	}
-
-	
 
 }
