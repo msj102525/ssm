@@ -5,14 +5,14 @@
 <head>
     <meta charset="UTF-8">
     <title>직원 급여 정보</title>
-<style type="text/css">
+    <c:import url="/WEB-INF/views/common/header.jsp"/>
+ <style type="text/css">
         /* Common styles */
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #f4f4f4;
+       
             margin: 10px auto;
             padding: 20px;
-            padding-top: 100px;
             color: #333;
         }
 
@@ -21,11 +21,10 @@
         }
 
         form {
-            background: #fff;
+           
             padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            margin-top: 200px; /* Adjusted margin top */
+            border-radius: 8px;         
+            margin-top: 20px; /* Adjusted margin top */
         }
 
         label {
@@ -64,12 +63,12 @@
             border: 1px solid black;
             padding: 8px;
             text-align: left;
-            margin-top: 0px
+            margin-top: 0px;
         }
 
         th {
             background-color: #f2f2f2;
-            margin-top: 0px
+            margin-top: 0px;
         }
 
         /* Center align buttons and adjust margin */
@@ -80,7 +79,7 @@
 
         div.button-group button {
             padding: 10px 20px;
-            background-color: #007bff;
+           /*  background-color: #007bff; */
             color: white;
             border: none;
             border-radius: 5px;
@@ -94,23 +93,29 @@
         /* Container styles */
         .container {
             max-width: 800px;
-            margin-top: 150px auto;
-            padding: 60px;
-           	padding-top: 300px;
-            background-color: #fff;
-            border-radius: 8px;  			
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: 150px auto; /* Center align container */
+            padding: 20px;
+           /*  background-color: #fff; */
+            border-radius: 8px;
+            /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
         }
 
         /* Detail table */
         #loadSalaryInfoDetails {
             display: none;
         }
-
+        header {
+   		 position: fixed; /* 페이지 스크롤에 관계없이 고정 위치 */
+    		top: 0; /* 화면 상단에 배치 */
+    left: 0;
+    width: 100%; /* 전체 너비를 차지하도록 설정 */
+    z-index: 1000; /* 다른 요소 위에 표시되도록 설정 */
+}
+        
     </style>
 </head>
 <body>
-<c:import url="/WEB-INF/views/common/header.jsp"/>
+
 <c:import url="/WEB-INF/views/common/sidebar.jsp"/>
 <div class="container">
     <h2>직원 급여 정보</h2>
@@ -203,13 +208,13 @@ function loadSalaryInfoDetails(empId) {
 
     // 서버에 직원의 상세 정보 요청
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', '/selectSalary.do?empId=' + empId, true); // 변경된 부분
+    xhr.open('GET', '/selectSalary.do?empId=' + empId, true);
     xhr.onload = function () {
         if (xhr.status === 200) {
             var salaryDetails = JSON.parse(xhr.responseText);
 
             // 서버에서 받은 상세 정보를 표시
-            document.getElementById('detailEmpId').innerText = salaryDetails.empId;
+            document.getElementById('detailEmpId').innerText = salaryDetails.empId; // 변경된 부분
             document.getElementById('detailAccountHolder').innerText = salaryDetails.accountHolder;
             document.getElementById('detailBankName').innerText = salaryDetails.bankName;
             document.getElementById('detailBankAccountNo').innerText = salaryDetails.bankAccountNo;
@@ -228,6 +233,7 @@ function loadSalaryInfoDetails(empId) {
     };
     xhr.send();
 }
+
 </script>
 <script type="text/javascript">
 //월급 계산 요청을 서버로 전송하는 함수

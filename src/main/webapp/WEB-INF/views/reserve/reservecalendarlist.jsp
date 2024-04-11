@@ -21,10 +21,8 @@
 <script type="text/javascript" src="/ssm/resources/js/fullcalendar-5.0.1/lib/locales/ko.js"></script>
 
 <!-- <link rel="stylesheet" href="/ssm/resources/css/jquery-ui-1.13.2/jquery-ui.min.css" /> -->
-<link rel="stylesheet"
-	href="/ssm/resources/css/jquery-ui-themes-1.13.2/themes/base/jquery-ui.css" />
-<script type="text/javascript"
-	src="/ssm/resources/css/jquery-ui-1.13.2/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="/ssm/resources/css/jquery-ui-themes-1.13.2/themes/base/jquery-ui.css" />
+<script type="text/javascript" src="/ssm/resources/css/jquery-ui-1.13.2/jquery-ui.min.js"></script>
 
 <link rel="stylesheet" href="/ssm/resources/css/bootstrap-4.4.1-dist/css/bootstrap.min.css" />
 <script type="text/javascript" src="/ssm/resources/css/bootstrap-4.4.1-dist/js/bootstrap.bundle.min.js"></script>
@@ -74,12 +72,18 @@ section .inner-section {
 }
 
 #dialog div {
-	font-size: 12px;
+	/* font-size: 12px; */
+	font-size: 14px;
 }
 
 #dialog div.bigger {
 	font-size: 150%;
 }
+
+#dialog .input-field {
+  padding-left: 3px;
+}
+
 /* #dialog p { font-size: x-small; background-color: blue; } */
 .feedback-input {
 	color: #3c3c3c;
@@ -156,7 +160,7 @@ textarea {
 	width: 100%;
 	/* width: 90%; */
 	/* height: 150px; */
-	height: 50px; /* 2024.04.07 modify */
+	height: 120px; /* 2024.04.07 modify */
 	line-height: 150%;
 	/* line-height: 110%;  *//* 2024.04.07 modify */
 	resize: vertical;
@@ -231,6 +235,7 @@ span#ui-id-1 {
     text-align: left;
     margin-right: 10px;
 }
+
 .form-group textarea {
     width: calc(100% - 80px); /* label의 너비만큼 뺀 나머지 */
 }
@@ -255,9 +260,10 @@ span#ui-id-1 {
 	var diaLogOpt = {
 		modal : true, ////모달대화상자
 		resizable : false, ////크기 조절 못하게
+		/* width : "570", // dialog 넓이 지정 */
 		width : "570", // dialog 넓이 지정
 		/* height: "470" */// dialog 높이 지정
-		height : "400" // dialog 높이 지정
+		height : "480" // dialog 높이 지정
 	};
 
 	//=========================================== function ===========================================
@@ -691,10 +697,6 @@ span#ui-id-1 {
             
             if (reserveTime) {
                 // 정규식을 사용하여 형식 검사
-				//var regex = /^(?:[01]\d|2[0-3])(?::[0-5]\d)?$/;
-                //var regex = /^(?:[01]\d|2[0-3])(?::[0-5]\d)?$/;
-                //var regex = /^(?:[01]?[0-9]|2[0-3])(?:[0-5]?[0-9])?$/;
-                //var regex = /^(?:[01]?[0-9]|2[0-3])(?::(?:[0-5]?[0-9]))?$/;
                 var regex = /^(?:[01]?[0-9]|2[0-3])(?::?[0-5]?[0-9])?$/;
 
                 if (regex.test(reserveTime)) {
@@ -869,8 +871,8 @@ span#ui-id-1 {
 
 				//console.log("start : " + fetchInfo.start.toISOString()); //년월만 전달...
 				//console.log("end : " + fetchInfo.end.toISOString()); //년월만 전달...
-				console.log("start2 : " + start2); //// 년월만 전달...
-				console.log("end2 : " + end2); //// 년월만 전달...
+				//console.log("start2 : " + start2); //// 년월만 전달...
+				//console.log("end2 : " + end2); //// 년월만 전달...
 
 				param += "start=" + start2;
 				param += "&end=" + end2;
@@ -964,9 +966,9 @@ span#ui-id-1 {
 	//// 입력 모드 설정 함수(2024.04.11)
 	function setLanguage(language) {
 	    if (language === 'ko') {
-	        document.getElementById("name").lang = "ko"; // 한글 입력 모드로 설정
+	        document.getElementById("rsrvName").lang = "ko"; // 한글 입력 모드로 설정
 	    } else if (language === 'en') {
-	        document.getElementById("email").lang = "en"; // 영문 입력 모드로 설정
+	        ////document.getElementById("email").lang = "en"; // 영문 입력 모드로 설정
 	    }
 	}
 </script>
@@ -987,29 +989,27 @@ span#ui-id-1 {
 									<!-- C:등록 U:수정 D:삭제 -->
 									<input type="hidden" name="rsrvNum" id="rsrvNum" value="" />
 								</div>
-								<p class="email">
+								<div>
 									<label for="rsrvDate" style="width: 80px;">예약일자</label> 
-									<input type="text" name="rsrvDate" id="rsrvDate" readonly="readonly" disabled style="border:none;"/>
+									<input type="text" name="rsrvDate" id="rsrvDate" class="input-field" readonly="readonly" disabled style="border:none;"/>
 									<!-- <input type="text" name="rsrvdate" readonly="readonly" class="validate[required,custom[email]] feedback-input" placeholder="선택된날짜 및 시간" /> -->
-								</p>
+								</div>
 								<div class="email">
 									<label for="rsrvName" style="width: 80px;">예약자명</label>
-									<input type="text" name="rsrvName" id="rsrvName" maxlength="10" onfocus="setLanguage('ko')"> <!-- 한글 입력 모드로 설정 -->
+									<input type="text" name="rsrvName" id="rsrvName" class="input-field" maxlength="10" required onfocus="setLanguage('ko')"> <!-- 한글 입력 모드로 설정 -->
 									<!-- <input type="text" name="rsrvName" id="rsrvName" class="validate[required,custom[email]] feedback-input" /> -->
-									<!-- <input type="text" name="rsrvName" id="rsrvName" placeholder="홍길동" /> -->
-									<!-- <input type="text" name="rsrvdate" readonly="readonly" class="validate[required,custom[email]] feedback-input" placeholder="선택된날짜 및 시간" /> -->
 								</div>
 								<div class="email">
 									<label for="rsrvTelno" style="width: 80px">연락처</label>
-									<input type="text" name="rsrvTelno" id="rsrvTelno" maxlength="11" placeholder="010-1234-5678" />
+									<input type="text" name="rsrvTelno" id="rsrvTelno" class="input-field" maxlength="11" placeholder="010-1234-5678" />
 								</div>
 								<div class="email">
 									<label for="rsrvTime" style="width: 80px;">예약시간</label>
-									<input type="text"   name="rsrvTime" id="rsrvTime" maxlength="5" placeholder="10:00" />
+									<input type="text"   name="rsrvTime" id="rsrvTime" class="input-field" maxlength="5" placeholder="10:00" />
 								</div>
 								<div>
 									<label for="rsrvInwon" style="width: 80px">인원</label>
-									<input type="number" name="rsrvInwon" id="rsrvInwon" min="1" max="10" />
+									<input type="number" name="rsrvInwon" id="rsrvInwon" class="input-field" min="1" max="10" />
 									<script type="text/javascript">
 										document.getElementById("rsrvInwon").addEventListener("input", function() {
 										    var maxDigits = 2; //// 최대 입력 길이
@@ -1021,7 +1021,7 @@ span#ui-id-1 {
 								</div>
 								<div>
 									<label for="rsrvSubject" style="width: 80px">제목</label>
-									<input type="text" name="rsrvSubject" id="rsrvSubject" maxlength="20" />
+									<input type="text" name="rsrvSubject" id="rsrvSubject" class="input-field" maxlength="20" />
 								</div>
 								<div class="form-group">  <!-- style="width: 80px" -->
 									<label for="rsrvMemo">메모</label>
@@ -1029,7 +1029,7 @@ span#ui-id-1 {
 								</div>
 								<div>
 									<label for="xwriteDate" style="width: 80px;">작성일자</label>
-									<input type="text" name="xwriteDate" id="xwriteDate" style="border:none;"/>
+									<input type="text" name="xwriteDate" id="xwriteDate" class="input-field"  style="border:none;"/>
 								</div>
 							</form>
 						</div>

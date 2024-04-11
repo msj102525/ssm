@@ -88,7 +88,7 @@ $(() => {
 						<li class="profile-img">
 							<div class="img-box">
     							<c:if test="${empty loginUser.profileUrl }">
-									<img src="resources/images/profile.png" alt="프로필" class="photo">
+									<img src="${pageContext.servletContext.contextPath }/resources/images/common/profile.png" alt="프로필" class="photo">
 								</c:if>
 								<c:if test="${!empty loginUser.profileUrl }">
 									<img src="resources/user_upfiles/${loginUser.profileUrl}" alt="프로필" class="photo">

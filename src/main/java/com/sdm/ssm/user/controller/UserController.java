@@ -308,7 +308,7 @@ public class UserController {
 
 	// 서비스 메소드 실행
 	// 로그인
-	@RequestMapping(value = "login.do", method = RequestMethod.POST)
+	@RequestMapping("login.do")
 	public String loginMethod(User user, HttpSession session, SessionStatus status, Model model) {
 		User loginUser = userService.selectUserById(user.getUserId());
 		

@@ -72,8 +72,16 @@ public class EmployeeDao {
         return sqlSessionTemplate.update("employeeMapper.updateemp", params);
     }
 
-	public Employee selectEmpInfo(String empName) {
-		return sqlSessionTemplate.selectOne("employeeMapper.selectEmpname", empName);
+	public Employee selectEmpInfo(int id, String empName) {
+		Map<String, Object> params = new HashMap<>();
+        params.put("id", id);
+        params.put("employee", empName);
+		return sqlSessionTemplate.selectOne("employeeMapper.selectEmpname", params);
+	}
+
+	public List<Employee> selectemployee(int id) {
+		// TODO Auto-generated method stub
+		return sqlSessionTemplate.selectList("employeeMapper.select;",id);
 	}
 
 

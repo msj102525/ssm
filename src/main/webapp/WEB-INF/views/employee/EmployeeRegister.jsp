@@ -50,7 +50,7 @@
 <div class="center-container"> 
     <h2>직원 등록</h2>
     <br>
-    <form action="insertemp.do" method="post" >
+    <form action="insertEmp.do" method="post" >
         <table>
         <div>
             <label for="empName">이름:</label>

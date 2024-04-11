@@ -12,7 +12,7 @@ public interface EmployeeService {
 	// 직원 목록
 	List<Employee> getAllEmployees(int id);
 
-	Employee getEmployeeDetails(int empId,int id);
+	Employee getEmployeeDetails(int id,int empId);
 
 	int insertEmployee(Employee employee);
 
@@ -28,7 +28,11 @@ public interface EmployeeService {
 
 	int updateEmployee(int id, Employee employee);
 
-	Employee selectEmpInfo(String empName);
+	Employee selectEmpInfo(int id,String empName);
+
+	List<Employee> selectemployee(int id);
+
+
 
 
 }
