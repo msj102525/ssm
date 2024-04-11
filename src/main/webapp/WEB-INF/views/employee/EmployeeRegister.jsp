@@ -45,35 +45,13 @@
         background-color: #4cae4c;
     }
 </style>  
- <script>
-        // 페이지가 로드될 때 실행되는 함수
-        window.onload = function() {
-            // URL에 successMessage 파라미터가 있는지 확인
-            const urlParams = new URLSearchParams(window.location.search);
-            const successMessage = urlParams.get('successMessage');
-            
-            // successMessage가 존재하면 알림 창 표시
-            if (successMessage) {
-                alert(successMessage);
-            }
-
-            // 유저 번호 필드에 로그인한 사용자의 번호를 자동으로 입력
-            const loggedInUserId = 'document.getElementById('id').value';
-            document.getElementById('id').value = loggedInUserId;
-        };
-    </script>
 </head>
-
 <body>
 <div class="center-container"> 
     <h2>직원 등록</h2>
     <br>
     <form action="insertemp.do" method="post" >
         <table>
-         <div>
-            <label for="id">유저 번호:</label>
-            <input type="number" id="id" name="id" required>
-        </div>
         <div>
             <label for="empName">이름:</label>
             <input type="text" id="empName" name="empName"required>
@@ -111,8 +89,9 @@
             </select>
         </div>           
          <hr>
+         <input type="hidden" name="id" value="${loginUser.id}">
         <input type="submit" value="등록"/>
-    <button onclick="location.href='selectemp.do?id=${loginUser.id}'">목록으로 돌아가기</button>
+    <button type="button" onclick="location.href='selectemp.do?id=${loginUser.id}'">목록으로 돌아가기</button>
        </table> 
     </form>
 	</div> 

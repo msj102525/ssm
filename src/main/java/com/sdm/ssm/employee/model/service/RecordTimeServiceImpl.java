@@ -17,4 +17,10 @@ public class RecordTimeServiceImpl implements RecordTimeService{
 		recordTimeDao.insertTime(emp);
 		
 	}
+
+	@Override
+	public void updateTime(Employee emp) {
+		recordTimeDao.updateTime(emp);
+		
+	}
 }

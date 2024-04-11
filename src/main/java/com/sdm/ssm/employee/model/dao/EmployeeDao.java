@@ -1,7 +1,9 @@
 package com.sdm.ssm.employee.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -36,7 +38,7 @@ public class EmployeeDao {
     }
 
     public int insertEmployee(Employee employee) {
-        return sqlSessionTemplate.insert("employeeMapper.insertEmployee", employee);
+        return sqlSessionTemplate.insert("employeeMapper.insertemployee", employee);
     }
 
     public int updateEmployee(Employee employee) {
@@ -48,8 +50,11 @@ public class EmployeeDao {
     }
 
 
-    public Employee getEmployeeDetails(int empId) {
-        return sqlSessionTemplate.selectOne("employeMapper.getEmployeeDetails", empId);
+    public Employee getEmployeeDetails(int id, int empId) {
+    	Map<String, Object> params = new HashMap<>();
+    	params.put("id", id);
+        params.put("empId", empId);
+        return sqlSessionTemplate.selectOne("employeeMapper.getEmployeeDetails", params);
     }
 
 	public List<Employee> getAllEmployees(int id) {
@@ -59,4 +64,17 @@ public class EmployeeDao {
 	public List<Employee> searchEmployeeByName(@Param("empName") String empName) {
 	    return sqlSessionTemplate.selectList("employeeMapper.searchEmployeeByName", empName);
 	}
+
+	public int updateEmployee(int id, Employee employee) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("id", id);
+        params.put("employee", employee);
+        return sqlSessionTemplate.update("employeeMapper.updateemp", params);
+    }
+
+	public Employee selectEmpInfo(String empName) {
+		return sqlSessionTemplate.selectOne("employeeMapper.selectEmpname", empName);
+	}
+
+
 }

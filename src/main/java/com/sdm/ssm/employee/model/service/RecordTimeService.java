@@ -6,4 +6,6 @@ public interface RecordTimeService {
 
 	void insertTime(Employee emp);
 
+	void updateTime(Employee emp);
+
 }

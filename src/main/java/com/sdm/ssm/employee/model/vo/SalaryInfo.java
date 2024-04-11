@@ -6,19 +6,22 @@ public class SalaryInfo implements java.io.Serializable {
 
 	private int empId;
 	private String bankName;
-	private String bankAccountNo;	
+	private String bankAccountNo;
 	private String accountHolder;
 	private String premium;
 	private String tax;
-		
+
 	private int id;
-	
+	private int hourlyWage;
+	private String totalWorkingHours;
+
+
 	public SalaryInfo() {
 		super();
 	}
 
 	public SalaryInfo(int empId, String bankName, String bankAccountNo, String accountHolder, String premium,
-			String tax, int id) {
+			String tax, int id, int hourlyWage) {
 		super();
 		this.empId = empId;
 		this.bankName = bankName;
@@ -27,8 +30,24 @@ public class SalaryInfo implements java.io.Serializable {
 		this.premium = premium;
 		this.tax = tax;
 		this.id = id;
+		this.hourlyWage = hourlyWage;
 	}
+	
 
+	public SalaryInfo(int empId, String bankName, String bankAccountNo, String accountHolder, String premium,
+			String tax, int id, int hourlyWage, String totalWorkingHours) {
+		super();
+		this.empId = empId;
+		this.bankName = bankName;
+		this.bankAccountNo = bankAccountNo;
+		this.accountHolder = accountHolder;
+		this.premium = premium;
+		this.tax = tax;
+		this.id = id;
+		this.hourlyWage = hourlyWage;
+		this.totalWorkingHours = totalWorkingHours;
+	}
+	
 	public int getEmpId() {
 		return empId;
 	}
@@ -84,6 +103,22 @@ public class SalaryInfo implements java.io.Serializable {
 	public void setId(int id) {
 		this.id = id;
 	}
+	
+	public int getHourlyWage() {
+		return hourlyWage;
+	}
+
+	public void setHourlyWage(int hourlyWage) {
+		this.hourlyWage = hourlyWage;
+	}
+
+	public String getTotalWorkingHours() {
+		return totalWorkingHours;
+	}
+
+	public void setTotalWorkingHours(String totalWorkingHours) {
+		this.totalWorkingHours = totalWorkingHours;
+	}
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
@@ -92,9 +127,9 @@ public class SalaryInfo implements java.io.Serializable {
 	@Override
 	public String toString() {
 		return "SalaryInfo [empId=" + empId + ", bankName=" + bankName + ", bankAccountNo=" + bankAccountNo
-				+ ", accountHolder=" + accountHolder + ", premium=" + premium + ", tax=" + tax + ", id=" + id + "]";
+				+ ", accountHolder=" + accountHolder + ", premium=" + premium + ", tax=" + tax + ", id=" + id
+				+ ", hourlyWage=" + hourlyWage + ", totalWorkingHours=" + totalWorkingHours + "]";
 	}
 
 	
-
 }
