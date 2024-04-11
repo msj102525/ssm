@@ -191,7 +191,7 @@ body, ul, li {
         <li><a href="${pageContext.servletContext.contextPath}/commuteInfoPage.do?id=${loginUser.id}">근태정보</a></li>
         <li><a href="${pageContext.servletContext.contextPath}/QRController.do">QR 페이지</a></li>
         <li><a href="${pageContext.servletContext.contextPath}/recordTimePage.do">QR 출퇴근페이지</a></li>     
-        <li><a href="${pageContext.servletContext.contextPath}/calendarPage.do?id${loginUser.id}">직원 스케줄</a></li>
+        <li><a href="${pageContext.servletContext.contextPath}/calendarPage.do?id=${loginUser.id}">직원 스케줄</a></li>
         <li><a href="${pageContext.servletContext.contextPath}/kakaoM.do">메시지</a></li>
       </ul>
     </li>
