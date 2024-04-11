@@ -33,7 +33,7 @@
     <c:if test="<%= isLoggedIn %>">
         <input type="hidden" name="id" value="${loginUser.id}">
         
-        <c:if test="${ empty action }">
+        <c:if test="${ empty action and empty keyword}">
 <div style="text-align:center;">
 	<%-- 첫 페이지로 이동 --%>	
 	<c:if test="${ currentPage eq 1 }">
@@ -86,9 +86,9 @@
 
 
 <%-- 검색(제목, 작성자, 내용) 페이징 처리 --%>
-<c:if test="${ !empty action and !empty keyword }">
+
 <div style="text-align:center;">
-	
+	<c:if test="${ not empty action and not empty keyword}">
 	<c:if test="${ currentPage eq 1 }">
 		[맨처음] &nbsp;
 	</c:if>	
@@ -137,9 +137,9 @@
 	<c:if test="${ currentPage < maxPage }">
 		<a href="/ssm/${ urlMapping }?page=${ maxPage }&action=${ action }&keyword=${ keyword }&id=${loginUser.id}">[맨끝]</a> &nbsp;
 	</c:if>
-	
+	</c:if>
 </div>
-</c:if>
+
 
 <%-- 검색(등록날짜) 페이징 처리 --%>
 <c:if test="${ !empty action and action eq 'date' or action eq 'enrolldate' }">
