@@ -60,6 +60,12 @@ public interface GoodsPrintService {
 	int firstGoods(int id);
 
 	int insertFirstGoods(GoodsPrint goodsPrint);
+
+	int searchId(GoodsPrint goodsPrint);
+
+	int updatePdQuantity(GoodsPrint goodsPrint);
+
+	int originQuantity(GoodsPrint goodsPrint);
 	
 
 }

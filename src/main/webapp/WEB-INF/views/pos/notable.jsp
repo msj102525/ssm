@@ -27,18 +27,68 @@ function resetBasket() {
 </script>
 <script>
 function updateGoods() {
-    var basketTable = document.querySelector('.basket');
+	var jarr = new Array();
+   
+	var basketTable = document.querySelector('.basket');
     var rows = basketTable.getElementsByTagName('tr');
+    
+    // 두 번째 테이블의 각 행을 순회하며 상품 이름, 수량 및 오늘 날짜를 출력
+    var today = new Date(); // 오늘 날짜
+    var formattedDate = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2); // YYYY-MM 형식으로 변환
 
-    // 두 번째 테이블의 각 행을 순회하며 상품 이름과 수량을 출력
     for (var i = 1; i < rows.length; i++) {
         var cells = rows[i].cells;
         var productName = cells[0].textContent; // 상품 이름
-        var inputQuantity = cells[1].getElementsByTagName('input')[1]; // 수량 input 태그
-       /*  var quantity = inputQuantity.value;  */// 수량 
-
-        console.log("상품 이름:", productName, "수량:", inputQuantity);
+        var inputQuantity = cells[1].querySelector('input').value; // 수량 input 태그
+        var salePrice = cells[2].textContent;
+        var id= $("#testid").val()
+        console.log("판매가, " + salePrice + "상품 이름:" + productName + "수량:" + inputQuantity + "날짜:" + formattedDate);
+    
+        var productInfo = {
+        		id: id,
+                name: productName,
+                quantity: inputQuantity,
+                date: formattedDate,
+                salePrice: salePrice
+            };
+        jarr.push(productInfo);   
     }
+    console.log(JSON.stringify(jarr));
+    
+    
+    $.ajax({
+        type: "POST",
+        url: "saleinsert.do",
+        data: JSON.stringify(jarr),
+        contentType: "application/json; charset=utf-8",
+        success: function(result) {
+        	alert("계산 성공")
+            location.reload();  
+        },
+        error: function(request, status, errorData) {
+            console.log("error code : " + request.status
+                + "\nMessage : " + request.responseText
+                + "\nError : " + errorData);
+        } 
+    });  
+    
+    
+    $.ajax({
+        type: "POST",
+        url: "gupdatebyname.do",
+        data: JSON.stringify(jarr),
+        contentType: "application/json; charset=utf-8",
+        success: function(result) {
+            location.reload();  
+        },
+        error: function(request, status, errorData) {
+            console.log("error code : " + request.status
+                + "\nMessage : " + request.responseText
+                + "\nError : " + errorData);
+        } 
+    });  
+    
+    
 }
 </script>
 
@@ -278,5 +328,7 @@ table.bascket {
 			<input type="hidden" id="userId" value="${loginUser.id }">
 		</div>	
 	</div> <!-- 전체 -->
+	
+	<input type="hidden" id ="testid" name="id" value="${ loginUser.id }">
 </body>
 </html>

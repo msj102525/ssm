@@ -35,5 +35,9 @@ public class AccountDao {
 	public int calRent(Account account) {
 		return sqlSessionTemplate.selectOne("accountMapper.calRent", account);
 	}
+
+	public int calSale(Account account) {
+		return sqlSessionTemplate.selectOne("accountMapper.calSale", account);
+	}
 	
 }

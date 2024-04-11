@@ -185,6 +185,35 @@ public class GoodsPrintController {
 		return new ResponseEntity<String>("success", HttpStatus.OK);
 	}
 
+	@RequestMapping(value = "gupdatebyname.do", method = RequestMethod.POST)
+	public ResponseEntity<String> goodsupdatebynameMethod(@RequestBody String param) throws ParseException {
+
+		JSONParser jparser = new JSONParser();
+		JSONArray jarr = (JSONArray) jparser.parse(param);
+
+		for (int i = 0; i < jarr.size(); i++) {
+			JSONObject job = (JSONObject) jarr.get(i);
+
+			GoodsPrint goodsPrint = new GoodsPrint();
+			goodsPrint.setId(Integer.parseInt(job.get("id").toString()));
+			goodsPrint.setGoodsName(job.get("name").toString());
+			
+			int no = goodsPrintService.searchId(goodsPrint);
+			goodsPrint.setGoodsNo(no);
+			
+			int a = goodsPrintService.originQuantity(goodsPrint);
+			goodsPrint.setPdQuantity(a - Integer.parseInt(job.get("quantity").toString()));
+			
+			int result1= goodsPrintService.updatePdQuantity(goodsPrint);
+
+			
+			if (result1 <= 0 ) {
+				return new ResponseEntity<String>("failed", HttpStatus.REQUEST_TIMEOUT);
+			}
+		}
+		return new ResponseEntity<String>("success", HttpStatus.OK);
+	}
+	
 	
 	@RequestMapping(value = "ginsert.do", method = RequestMethod.POST)
 	public ResponseEntity<String> goodsinsertMethod(@RequestBody String param) throws ParseException {

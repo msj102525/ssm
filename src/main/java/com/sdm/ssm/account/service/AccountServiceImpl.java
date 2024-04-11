@@ -43,6 +43,11 @@ public class AccountServiceImpl implements AccountService{
 	public int calRent(Account account) {
 		return accountDao.calRent(account);
 	}
+
+	@Override
+	public int calSale(Account account) {
+		return accountDao.calSale(account);
+	}
 	
 	
 	

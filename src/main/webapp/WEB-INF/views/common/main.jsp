@@ -152,9 +152,14 @@
 							<table id="myTable" class="monthlySale"border="1" width="80%" style="height: 400px;">
 								<tr style="height: 10px;">
 									<th style="text-align: center; white-space: nowrap;">항목</th>
-									<th style="text-align: center; white-space: nowrap;">금액</th>
+									<th>금액</th>
 								</tr>
-								
+								<tr>
+									<td>월 매출</td>
+									<td style="text-align: center; white-space: nowrap;">
+											<span id="monthlySales" ></span>
+									</td>
+								</tr>
 								<tr>
 									<td  style="white-space: nowrap;">월 발주 금액</td>
 				    				<td  style="white-space: nowrap;">						
@@ -178,6 +183,12 @@
 									<td style="white-space: nowrap;">기타비용</td>
 									<td  style="white-space: nowrap;">
 										<span id="monthlyCost" ></span>
+									</td>
+								</tr>	
+								<tr>
+									<td style="white-space: nowrap;">수익</td>
+									<td  style="white-space: nowrap;">
+										<span id="profit" ></span>
 									</td>
 								</tr>				
 								

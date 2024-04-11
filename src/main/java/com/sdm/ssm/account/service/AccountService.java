@@ -16,4 +16,6 @@ public interface AccountService {
 
 	int calRent(Account account);
 
+	int calSale(Account account);
+
 }

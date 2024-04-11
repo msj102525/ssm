@@ -114,6 +114,20 @@ public class GoodsPrintDao {
 	}
 
 	
+
+	public int searchId(GoodsPrint goodsPrint) {
+		return sqlSessionTemplate.selectOne("goodsMapper.searchId", goodsPrint);
+	}
+
+	public int updatePdQuantity(GoodsPrint goodsPrint) {
+		return sqlSessionTemplate.update("goodsMapper.updatePdQuantity", goodsPrint);
+	}
+
+	public int originQuantity(GoodsPrint goodsPrint) {
+		return sqlSessionTemplate.selectOne("goodsMapper.originQuantity", goodsPrint);
+	}
+
+	
 	
 
 	

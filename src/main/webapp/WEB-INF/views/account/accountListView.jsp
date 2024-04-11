@@ -137,6 +137,9 @@ function onChangeMonth() {
                         if (data.monthlyrent !== undefined) {
                             document.getElementById("monthlyRent").placeholder = data.monthlyrent;
                         }
+                        if (data.monthlysale !== undefined) {
+                            document.getElementById("monthlySales").textContent = data.monthlysale;
+                        }
                     }
                 },
                 error: function(request, status, errorData) {
@@ -204,7 +207,7 @@ function onChangeMonth() {
 				<tr>
 					<td align="center" style="white-space: nowrap;">월 매출</td>
 					<td align="center" style="white-space: nowrap;">
-						<span id="monthlySales">월 매출 출력칸</span>
+						<span id="monthlySales"></span>
 					</td>
 				</tr>	
 				<tr>
