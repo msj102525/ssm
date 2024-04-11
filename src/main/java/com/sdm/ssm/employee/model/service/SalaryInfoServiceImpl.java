@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.sdm.ssm.common.Search;
 import com.sdm.ssm.employee.model.dao.SalaryInfoDao;
 import com.sdm.ssm.employee.model.vo.SalaryInfo;
 
@@ -36,6 +37,11 @@ public class SalaryInfoServiceImpl implements SalaryInfoService {
 	@Override
 	public int insertSalaryPage(int id) {
 		return salaryInfoDao.insertSalaryPage(id);
+	}
+	@Override
+	public List<SalaryInfo> searchSalary(Search search) {
+		// TODO Auto-generated method stub
+		return salaryInfoDao.searchSalary(search);
 	}
 	
 }

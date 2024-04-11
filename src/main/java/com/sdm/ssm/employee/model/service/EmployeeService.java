@@ -9,14 +9,12 @@ import com.sdm.ssm.employee.model.vo.Employee;
 
 public interface EmployeeService {
 
-	//직원 목록
+	// 직원 목록
 	List<Employee> getAllEmployees(int id);
 
-	Employee getEmployeeDetails(int empId);
+	Employee getEmployeeDetails(int empId,int id);
 
 	int insertEmployee(Employee employee);
-
-	int updateEmployee(Employee employee);
 
 	int deleteEmployee(int empId);
 
@@ -27,6 +25,10 @@ public interface EmployeeService {
 	List<Employee> selectEmpList();
 
 	ArrayList<Employee> employeeListMethod();
+
+	int updateEmployee(int id, Employee employee);
+
+	Employee selectEmpInfo(String empName);
 
 
 }

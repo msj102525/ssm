@@ -1,4 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,8 +14,13 @@
         padding: 20px;
         color: #333;
     }
-    h2, h4 {
+    .container {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+    h2 {
         color: #444;
+        margin-bottom: 20px;
     }
     form {
         background: #fff;
@@ -25,8 +32,11 @@
         display: block;
         margin-top: 20px;
         margin-bottom: 5px;
+        font-weight: bold;
     }
-    input[type="number"], input[type="text"], input[type="submit"], select {
+    input[type="text"],
+    input[type="email"],
+    select {
         width: 100%;
         padding: 10px;
         margin-bottom: 20px;
@@ -34,21 +44,38 @@
         border: 1px solid #ddd;
         box-sizing: border-box; 
     }
-    input[type="submit"] {
-        background-color: rgb(255, 221, 102);
-        color: white;
+    input[type="submit"],
+    button {
+        width: 100%;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
         cursor: pointer;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+    input[type="submit"] {
+        background-color: #FFDD66;
+        color: white;
     }
     input[type="submit"]:hover {
         background-color: #4cae4c;
+    }
+    button {
+        background-color: #4cae4c;
+        color: white;
+    }
+    button:hover {
+        background-color: #45a049;
     }
 </style>
 </head>
 <body>
 
-<h2>직원 정보 수정</h2>
+<div class="container">
+    <h2>직원 정보 수정</h2>
 
-<form action="updateEmployee.do" method="post" onsubmit="submitForm(event)">
+    <form id="updateForm" action="moveAndUpdateEmployeePage.do" method="post">
     <input type="hidden" name="empId" value="${employee.empId}">
     
     <label for="empName">이름:</label>
@@ -59,11 +86,6 @@
     <label for="position">직급:</label>
     <input type="text" id="position" name="position" value="${employee.position}" required><br><br>
     
-    <label for="empHireDate">입사 날짜:</label>
-    <input type="date" id="empHireDate" name="empHireDate" value="${employee.empHireDate}" disabled required><br><br>
-    <!-- 입사 날짜 값을 서버로 전송하기 위한 hidden 필드 추가 -->
-    <input type="hidden" name="empHireDate" value="${employee.empHireDate}">
-    
     <label for="empPhone">전화번호:</label>
     <input type="text" id="empPhone" name="empPhone" value="${employee.empPhone}" required><br><br>
     
@@ -73,11 +95,6 @@
     <label for="empAddress">주소:</label>
     <input type="text" id="empAddress" name="empAddress" value="${employee.empAddress}" required><br><br>
     
-    <label for="empBirthDate">생년월일:</label>
-    <input type="date" id="empBirthDate" name="empBirthDate" value="${employee.empBirthDate}" disabled required><br><br>
-    <!-- 생년월일 값을 서버로 전송하기 위한 hidden 필드 추가 -->
-    <input type="hidden" name="empBirthDate" value="${employee.empBirthDate}">
-    
     <label for="empGender">성별:</label>
     <select id="empGender" name="empGender" required>
         <option value="m" ${employee.empGender == 'm' ? 'selected' : ''}>남자</option>
@@ -85,32 +102,10 @@
     </select><br><br>
 
     <input type="submit" value="수정">
-    <br>
-    <button onclick="location.href='selectemp.do?id=${loginUser.id}'">목록</button>
+    <button type="button" onclick="location.href='selectemp.do?id=${loginUser.id}'">목록</button>
 </form>
 
-<script>
-function submitForm(event) {
-    event.preventDefault();
-    var form = event.target;
-
-    var formData = new FormData(form);
-
-    fetch(form.action, {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.text())
-    .then(result => {
-        alert(result);
-        window.location.href = 'selectemp.do'; // 수정 완료 후 목록 페이지로 이동
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('수정 실패'); // 오류 발생 시 알림
-    });
-}
-</script>
+</div>
 
 </body>
 </html>

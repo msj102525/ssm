@@ -26,7 +26,9 @@ const validateForm = () => {
 			<div class="logo-box">
 				<h1 class="logo">
 					<c:url var="callMain" value="main.do" />
-					<a href="${ callMain }"> <img src="/ssm/resources/images/logo.png" alt="logo" /></a>
+					<a href="${ callMain }">
+						 <img src="${pageContext.servletContext.contextPath }/resources/images/common/logo.png" alt="logo" />
+					 </a>
 				</h1>
 			</div>
 			<div class="form-box">
@@ -56,17 +58,17 @@ const validateForm = () => {
 						<ul class="sns">
 							<li>
 						 		<a href="${ kakaourl }"> 
-									 <img src="/ssm/resources/images/kakaoLB.png" alt="카카오로고" />
+									 <img src="${pageContext.servletContext.contextPath }/resources/images/snsLogin/kakaoLB.png" alt="카카오로고" />
 								</a>
 							</li>
 							<li>
 						 		<a href="${ naverurl }"> 
-									<img src="/ssm/resources/images/naverLB.png" alt="네이버로고" />
+									<img src="${pageContext.servletContext.contextPath }/resources/images/snsLogin/naverLB.png" alt="네이버로고" />
 								</a>
 							</li>
 							<li>
 						 		<a href="${ googleurl }"> 
-								 	<img src="/ssm/resources/images/googleLB.png" alt="구글로고" />
+								 	<img src="${pageContext.servletContext.contextPath }/resources/images/snsLogin/googleLB.png" alt="구글로고" />
 								</a>
 							</li>
 						</ul>

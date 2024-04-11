@@ -85,12 +85,13 @@ function mvTablePos(){
 	window.open('mvTablePos.do?id='+${loginUser.id}, '_blank');
 }
 function mvNoTablePos(){
-	window.open('mvNoTablePos.do', '_blank');
+	window.location.href = '${pageContext.servletContext.contextPath}/mvNoTablePos.do?id=${loginUser.id}';
 }
 </script>
 </head>
 <body>
 <c:import url="/WEB-INF/views/common/header.jsp" />
+<div style="padding-top : 100px;">
 <c:import url="/WEB-INF/views/common/sidebar.jsp" />
 <div class="main-container" style="padding-top:100px;">
 <div class="container">
@@ -116,5 +117,6 @@ function mvNoTablePos(){
 
 </div>
 <c:import url="footer.jsp" />
+</div>
 </body>
 </html>

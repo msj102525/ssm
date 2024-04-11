@@ -70,7 +70,7 @@ public class GoogleLoginAuth {
 		String sessionState = getSession(session);
 		
 		// 매개변수로 받은 값과 세션에 저장된 값이 다른 경우
-		if (StringUtils.pathEquals(sessionState, state)) {
+		if (sessionState != null && state != null && sessionState.equals(state)) {
 			OAuth20Service oauthService = new ServiceBuilder()
 															.apiKey(CLIENT_ID)
 															.apiSecret(CLIENT_SECRET)
@@ -81,9 +81,10 @@ public class GoogleLoginAuth {
 			/* Scribe에서 제공하는 AccessToken 획득 기능으로 네아로 Access Token을 획득 */
 			OAuth2AccessToken accessToken = oauthService.getAccessToken(code);
 			return accessToken;
+		} else {
+			return null;
 		}
 		
-		return null;
 	}
 	
 	// 사용자 접근 토큰을 사용해 사요아의 프로필을 제공하는 api 호출

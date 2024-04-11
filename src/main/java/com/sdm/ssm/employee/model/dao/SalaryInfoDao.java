@@ -9,6 +9,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.sdm.ssm.common.Search;
 import com.sdm.ssm.employee.model.vo.SalaryInfo;
 
 @Repository("salaryInfoDao")
@@ -44,5 +45,10 @@ public class SalaryInfoDao {
 
 	public int insertSalaryPage(int id) {
 		return sqlSessionTemplate.insert("employeeMapper.insertSalaryInfo", id);
+	}
+
+	public List<SalaryInfo> searchSalary(Search search) {
+		// TODO Auto-generated method stub
+		return sqlSessionTemplate.selectList("employeeMapper.selectAllSalaryInfos",search);
 	}
 }

@@ -85,16 +85,36 @@
 						</div>
 						<%-- section4 --%>
 						<section class="sec4">
-							section4
 							<div class="inner-section">
-								<div class="left-section">left</div>
+								<div class="left-section">
+									<div class="img-flex">
+										<div class="img-box">
+											<img alt="메인 이미지 4-1" src="${pageContext.servletContext.contextPath }/resources/images/main/main4_1.png">
+										</div>
+										<div class="img-box">
+											<img alt="메인 이미지 4-2" src="${pageContext.servletContext.contextPath }/resources/images/main/main4_2.png">
+										</div>
+										<div class="img-box">
+											<img alt="메인 이미지 4-3" src="${pageContext.servletContext.contextPath }/resources/images/main/main4_3.png">
+										</div>
+										<div class="img-box padding-top">
+											<img alt="메인 이미지 4-4" src="${pageContext.servletContext.contextPath }/resources/images/main/main4_4.png">
+										</div>
+										<div class="img-box padding-top">
+											<img alt="메인 이미지 4-5" src="${pageContext.servletContext.contextPath }/resources/images/main/main4_5.png">
+										</div>
+										<div class="img-box padding-top">
+											<img alt="메인 이미지 4-6" src="${pageContext.servletContext.contextPath }/resources/images/main/main4_6.png">
+										</div>
+									</div>
+								</div>
 								<div class="right-section">
 									<div class="description">
 										<p>다양한 편의 기능 제공</p>
 										<div class="description-botton">
 											<p>SSM은 다른 부가 프로그램을</p>
 											<p>사용할 필요 없이</p>
-											<p>다양한 쳔의 기능을 사용할 수 있습니다.</p>
+											<p>다양한 편의 기능을 사용할 수 있습니다.</p>
 										</div>
 									</div>
 								</div>
@@ -126,8 +146,8 @@
 				    <option value="2024-11">2024-11</option>
 				    <option value="2024-12">2024-12</option>
 				</select> 
-				</div>
-					<div class="inner-section z-index-1" style="height: 400px;">
+				</div>				
+					<div class="inner-section" style="height: 400px;">
 						<div class="left-section" style="height: 400px;">
 							<table id="myTable" class="monthlySale"border="1" width="80%" style="height: 400px;">
 								<tr style="height: 10px;">

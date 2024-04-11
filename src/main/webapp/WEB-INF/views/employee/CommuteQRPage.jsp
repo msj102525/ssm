@@ -6,86 +6,111 @@
 <head>
 <meta charset="UTF-8">
 <title>출퇴근 페이지</title>
-<script type="text/javascript"
-	src="/ssm/resources/js/jquery-3.7.0.min.js"></script>
-	<script>
-	function recordTime(action) {
-		location.href = "recordTimeData.do?id=" + $('#id').val() + "&empName=" + $('#empName').val();
+<script type="text/javascript" src="/ssm/resources/js/jquery-3.7.0.min.js"></script>
+<script>
+    function recordTime(action) {
+        var url = "";
+        if (action === '퇴근') {
+            url = "recordEndTime.do"; // 퇴근 버튼 클릭 시 사용할 URL
+        } else {
+            url = "recordTimeData.do"; // 출근 버튼 클릭 시 사용할 URL
+        }
+        location.href = url + "?id=" + $('#id').val() + "&empName=" + $('#empName').val();
+    };
+</script>
 
-	};
-	</script>
+	
 <style type="text/css">
 /* 입력 폼과 버튼을 포함한 컨테이너 스타일 */
-.container {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center; /* 수직 가운데 정렬을 위해 추가 */
-	padding: 20px;
-	border: 1px solid #ccc;
-	border-radius: 10px;
-	background-color: #f9f9f9;
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-	margin-bottom: 20px;
-	max-width: 800px;
-	margin: auto; /* 가운데 정렬을 위해 추가 */
-	margin-top: 150px;
+body {
+    font-family: 'Noto Sans', sans-serif; /* 깔끔하고 현대적인 폰트 설정 */
+    background-color: #f5f6fa; /* 부드러운 배경색 */
+    color: #333; /* 글자색 */
+    margin: 0;
+    padding: 0;
+   
 }
 
-/* 버튼 스타일 */
+/* 중앙 정렬을 위한 컨테이너 */
+.centered {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+     padding-top: 200px;
+}
+
+/* 제목 스타일 */
+h2 {
+    color: #007bff; /* 파란색 계열로 통일감 */
+    margin-bottom: 10px; /* 여백 추가 */
+    padding-top: 10px;
+}
+
+/* 입력 필드 스타일 */
+input[type="text"] {
+    padding: 10px;
+    margin: 10px 0; /* 상하 여백 추가 */
+    border: 1px solid #ccc;
+    border-radius: 5px; /* 모서리 둥글게 */
+    width: calc(100% - 22px); /* 패딩과 보더 고려한 너비 설정 */
+}
+
+/* 컨테이너 내 버튼 개선 */
 .container button {
-	padding: 10px 20px;
-	border: none;
-	border-radius: 5px;
-	background-color: #007bff;
-	color: #fff;
-	font-size: 16px;
-	cursor: pointer;
-	margin-top: 10px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s; /* 부드러운 색상 변화 */
 }
 
 .container button:hover {
-	background-color: #0056b3;
+    background-color: #0056b3; /* 호버 시 색상 변화 */
 }
 
-/* 출퇴근 정보 테이블 스타일 */
-#commuteInfoSection {
-	text-align: center;
-	margin: auto;
-	max-width: 800px;
-	margin-top: 20px; /* 출퇴근 정보와 폼 사이의 간격을 위해 추가 */
-}
-
+/* 테이블 스타일 개선 */
 #commuteInfoSection table {
-	width: 100%;
-	border-collapse: collapse;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+    background-color: #fff; /* 배경색 */
+    margin-top: 40px; /* 상단 여백 */
 }
 
-#commuteInfoSection th, #commuteInfoSection td {
-	padding: 8px;
-	border-bottom: 1px solid #ddd;
-}
-
+/* 테이블 헤더 스타일 */
 #commuteInfoSection th {
-	background-color: #007bff;
-	color: #fff;
+    background-color: #007bff;
+    color: #fff;
+    padding: 12px 8px; /* 패딩 추가 */
 }
 
+/* 테이블 바디 스타일 */
+#commuteInfoSection td {
+    padding: 10px 8px; /* 패딩 추가 */
+}
+
+/* 테이블 행 스타일 */
 #commuteInfoSection tbody tr:nth-child(even) {
-	background-color: #f2f2f2;
+    background-color: #f2f2f2; /* 짝수 행 배경색 */
 }
 
 #commuteInfoSection tbody tr:hover {
-	background-color: #ddd;
+    background-color: #ddd; /* 호버 시 배경색 */
 }
 
-/* 출퇴근 정보를 표시할 div 스타일 */
-#commuteInfoDiv {
-	max-width: 900px;
-	margin: 20px auto; /
-	display: flex; 
-	justify-content: center; 
-	text-align: center;
+/* 반응형 디자인을 위한 미디어 쿼리 */
+@media (max-width: 768px) {
+    .container, #commuteInfoSection {
+        width: 95%; /* 모바일에서 너비 조정 */
+        margin: 20px auto; /* 상단 여백 조정 */
+    }
+
+    input[type="text"] {
+        width: calc(100% - 22px); /* 모바일에서 입력 필드 너비 조정 */
+    }
 }
 </style>
 
@@ -122,54 +147,6 @@
 			</table>
 		</div>
 	</div>
-<script>
 
-/* function recordTime(action) {
-    var empId = document.getElementById('empId').value;
-    console.log(empId); */
-   /*  var empName = document.getElementById('empName').value;       
-    var currentTime = new Date();
-    var serverTime = new Date(currentTime.getTime() + currentTime.getTimezoneOffset() * 60000); // 로컬 시간을 서버 시간대로 변환합니다.
-    var koreanTime = serverTime.toLocaleString('en-US', { timeZone: 'Asia/Seoul' });
-    var commuteInfo = {
-        empId: empId,
-        username: empName, 
-        action: action,
-        koreanTime: koreanTime
-    }; */
-
-    /* fetch('recordTimeData.do', { 
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ // 요청하는 데이터를 { username, commuteInfo } 형식으로 수정
-            username: empName,
-            commuteInfo: commuteInfo
-        })
-    })
-    .then(response => {
-        if (response.ok) {
-            return response.json();
-        } else {
-            throw new Error('서버 응답에 문제가 있습니다.');
-        }
-    })
-    .then(data => {
-        if (data.success) {
-            console.log(empName + "님이 " + action + "했습니다."); // 변수명을 empName으로 수정
-            alert(empName + "님이 " + action + "했습니다!");
-            // 출퇴근 정보를 테이블에 추가합니다.
-            addCommuteInfoToTable(data.commuteInfo);
-        } else {
-            alert('서버에서 오류가 발생했습니다.');
-        }
-    })
-    .catch(error => {
-        console.error('오류:', error);
-        alert('오류가 발생했습니다.');
-    }); */
-}
-</script>
 </body>
 </html>

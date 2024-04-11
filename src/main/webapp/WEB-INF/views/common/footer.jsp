@@ -86,7 +86,7 @@ $(()=> {
                 <div class="footer-down">
                     <div class="footer-down-con">
                         <div class="adress">
-                            <p>㈜SSM | 대표이사 : 남길현, 한지웅, 장세민, 이유리, 김시온, 문승종 </p>
+                            <p>SSM | 대표이사 : 남길현, 한지웅, 장세민, 이유리, 김시온, 문승종 </p>
                             <p>서울특별시 서초구 서초대로77길 41, 4층 (서초동, 대동Ⅱ)</p>
                             <p>사업자등록번호 : 123-45-67890 | 개인정보보호책임자 : 문승종</p>
                             <p>고객상담 1234-5678(사이트) | 123-456-789(제품 및 매장외)</p>
@@ -116,7 +116,7 @@ $(()=> {
                             © copyright@ict.org &nbsp; 지능형 도우미 서비스 융합 웹 개발자과정
                         </p>
                         <div class="w3c">
-                            <p>
+                            <!-- <p>
                                 <a href="http://validator.kldp.org/check?uri=referer"
                                   onclick="this.href=this.href.replace(/referer$/,encodeURIComponent(document.URL))"><img
                                   src="//validator.kldp.org/w3cimgs/validate/html5-blue.png" alt="Valid HTML 5" height="15" width="80"></a>
@@ -132,7 +132,7 @@ $(()=> {
                                     <img style="border:0;width:88px;height:31px"
                                         src="http://jigsaw.w3.org/css-validator/images/vcss-blue" alt="올바른 CSS입니다!" />
                                 </a>
-                            </p>
+                            </p> -->
                         </div>
                     </div>
                 </div>

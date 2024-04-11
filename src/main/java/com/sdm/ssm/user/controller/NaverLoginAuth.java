@@ -68,7 +68,7 @@ public class NaverLoginAuth {
 	public OAuth2AccessToken getAccessToken(HttpSession session, String code, String state) throws IOException {
 		/* Callback으로 전달받은 세선검증용 난수값과 세션에 저장되어있는 값이 일치하는지 확인 */
 		String sessionState = getSession(session);
-		if (StringUtils.pathEquals(sessionState, state)) {
+		if (sessionState != null && state != null && sessionState.equals(state)) {
 			OAuth20Service oauthService = new ServiceBuilder()
 															.apiKey(CLIENT_ID)
 															.apiSecret(CLIENT_SECRET)

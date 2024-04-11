@@ -153,14 +153,13 @@ function onChangeMonth() {
 </head>
 <body>
 <c:import url="/WEB-INF/views/common/header.jsp" />
-
+<div style="padding-top : 100px;">
 
 <br>
 <c:import url="/WEB-INF/views/common/sidebar.jsp" />
 <h1 style="text-align: center;">월 매출</h1>
 <div style="align:center;text-align:center;">
-<br>
-<br>
+
 
 <select style="height: 35px; width: 80px;" 
 				id="monthSelect" onchange="onChangeMonth()">
@@ -260,5 +259,6 @@ function onChangeMonth() {
 <br>
 
 <c:import url="/WEB-INF/views/common/footer.jsp" />
+</div>
 </body>
 </html>

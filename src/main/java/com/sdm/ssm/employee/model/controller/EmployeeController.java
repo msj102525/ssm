@@ -1,9 +1,6 @@
 package com.sdm.ssm.employee.model.controller;
 
 import java.io.IOException;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,6 +30,7 @@ import com.sdm.ssm.employee.model.service.CommuteInfoService;
 import com.sdm.ssm.employee.model.service.EmployeeService;
 import com.sdm.ssm.employee.model.service.RecordTimeService;
 import com.sdm.ssm.employee.model.service.SalaryInfoService;
+import com.sdm.ssm.employee.model.vo.Calendar;
 import com.sdm.ssm.employee.model.vo.CommuteInfo;
 import com.sdm.ssm.employee.model.vo.Employee;
 import com.sdm.ssm.employee.model.vo.SalaryInfo;
@@ -56,113 +55,96 @@ public class EmployeeController {
 	@Autowired
 	private RecordTimeService recordTimeService;
 	
-
-	// 직원 관리 메인 페이지 이동
-	@RequestMapping(value = "mainEmpPage.do", method = { RequestMethod.POST, RequestMethod.GET })
-	public String emplyeeMainPage(Employee employee, Model model) {
-		return "employee/employeeMainPage";
-	}
+//직원 관리-----------------------
+//	// 직원 관리 메인 페이지 이동
+//	@RequestMapping(value = "mainEmpPage.do", method = { RequestMethod.POST, RequestMethod.GET })
+//	public String emplyeeMainPage(Employee employee, Model model) {
+//		return "employee/employeeMainPage";
+//	}
 
 	// 직원 정보 등록 페이지로 이동
 	@RequestMapping(value = "insertemp.do", method = { RequestMethod.POST, RequestMethod.GET })
-	public String moveEmployeePage() {
-		return "employee/EmployeeRegister";
+	public String moveEmployeePage(@RequestParam("id") int id) {		
+	
+	return "employee/EmployeeRegister";
 	}
-
+	 
+	// 직원 등록 페이지에서 직원 정보를 저장하는 메서드
+    @RequestMapping(value = "insertEmp.do", method = { RequestMethod.POST, RequestMethod.GET })
+    public String insertEmployee(HttpServletRequest request, 
+    		@RequestBody Employee employee) {
+        logger.info("insertEmployee" + "0000000000000000000000");
+        // 세션에서 로그인한 사용자 정보를 가져옴
+        User loggedInUser = getLoggedInUser(request);
+        if (loggedInUser != null) {
+            // 세션에 저장된 사용자의 ID를 직원의 사용자 ID로 설정
+            employee.setId(loggedInUser.getId());
+            logger.info("loggedInUser" + "11111");
+            // 직원 등록 처리
+            int result = employeeService.insertEmployee(employee);
+            logger.info(employee + "22222");
+            if (result > 0) {
+                logger.info(result + "333333");
+                // 직원 등록 성공 시 목록 페이지로 리다이렉트
+                return "employee/selectemp.do?id=${loginUser.id}"; 
+            } else {
+                logger.info("4444444");
+                // 등록 실패 시 다시 등록 페이지로 이동
+                return "employee/insertEmp.do?id=${loginUser.id}";
+            }
+        }
+		return null; 
+    }
 	// 직원 목록 페이지로 이동
 	@RequestMapping(value = "selectemp.do", method = { RequestMethod.POST, RequestMethod.GET })
-	public String moveSelectEmpPage(@RequestParam("id") int id,Model model) {
+	public String moveSelectEmpPage(@RequestParam("id") int id, Model model) {
 		//유저 아이디로 테이블 조회
     // 여기서는 직원 정보를 가져오는 서비스 레이어 메서드를 호출하여 직원 정보를 가져옵니다.
-    List<Employee> employeeList = employeeService.getAllEmployees(id); // employeeService는 실제 서비스 레이어의 이름으로 수정 필요
+    List<Employee> employeeList = employeeService.getAllEmployees(id);
 	    // 모델에 직원 정보를 추가하여 View로 전달합니다.
 	model.addAttribute("employeeList", employeeList);
 	    // 직원 정보가 표시되는 페이지로 이동합니다.
 	return "employee/EmployeeList";
 	}
 
-	// 직원 정보 수정페이지 이동
-	@RequestMapping(value = "updateEmployee.do", method = { RequestMethod.POST, RequestMethod.GET })
-	public String moveUpdateEmpPage(Employee employee, Model model, HttpServletRequest request) {
-		return "employee/upEmployee";
-	}
-
-	// 직원 급여 정보 페이지 이동
-	@RequestMapping(value = "selectSalary.do", method = { RequestMethod.POST, RequestMethod.GET })
-	public String moveSalaryPage(@RequestParam("id") int id, Model model) {
-	    List<SalaryInfo> list = salaryInfoService.getSalaryDate(id);   
-	    model.addAttribute("employees", list);
-	    return "employee/SalaryInfo";
-	}
-
-
-	// 직원 급여정보 등록 페이지 이동
-	@RequestMapping(value = "insertSalary.do")
-	public String moveInsertSalaryPage(HttpServletRequest request, Employee employee) {
-		return "employee/salaryInfoDate";
-	}
-
-	// 직원 급여 정보 수정 페이지 이동
-	@RequestMapping("updateSalaryInfo.do")
-	public String moveUpdateSalaryPage(SalaryInfo salaryInfo, Model model, HttpServletRequest request) {
-		return "employee/salaryInfoDate";
-	}
-
-	// 근태관리 페이지로 이동
-	@RequestMapping(value = "commuteInfoPage.do",method = { RequestMethod.POST, RequestMethod.GET })
-	public String moveSelectCommutelnPage() {
-		return "employee/commuteInfoPage";
-	}
-
-	// 출퇴근시간 조회 페이지 이동
-	@RequestMapping(value = "recordTimePage.do",method = { RequestMethod.POST, RequestMethod.GET })
-	public String moveRecordTimePage() {
-		return "employee/CommuteQRPage";
-	}
-
-	// QR 페이지 이동
-	@RequestMapping(value="QRimages.do",method = { RequestMethod.POST, RequestMethod.GET })
-	public String moveQRPage() {
-		return "employee/QRcommuteInfo"; 
-	}
-
-	// 메세지 페이지 이동
-	@RequestMapping("kakaoM.do")
-	public String moveKakaoMessagePage(Model model, HttpServletRequest request) {
-		return "employee/kakao";
-	}
-	// 직원 정보 수정페이지 이동 및 정보 가져오기
-		@RequestMapping(value="moveUpdateEmpPage.do",method = { RequestMethod.POST, RequestMethod.GET })
-		public String moveUpdateEmpPage(@RequestParam("empId") int empId, Model model) {
-		Employee employee = employeeService.getEmployeeDetails(empId);
-		model.addAttribute("employee", employee);
-		return "employee/upEmployee"; // 수정할 직원 정보를 가져와서 수정 페이지로 이동
-		}
-		
-		//캘린더view Page 이동
-		@RequestMapping(value="calendarPage.do", method ={ RequestMethod.POST, RequestMethod.GET })
-		public String moveCalendarPage() {
-		    return "employee/calendarPage";
-		}
-		
-
-	// 처리용----------------------------------------------------------------------------
-	
-		 // 세션에 저장된 사용자 정보를 가져오는 메서드
-	    public User getLoggedInUser(HttpServletRequest request) {
-	        HttpSession session = request.getSession(false);
-	        if (session != null) {
-	            return (User) session.getAttribute("loggedInUser");
-	        }
-	        return null;
+	// 직원 정보 수정 페이지로 이동하고 직원 정보를 가져오는 메서드
+	@RequestMapping(value = "moveAndUpdateEmployeePage.do", method = RequestMethod.GET)
+	public String moveAndUpdateEmployeePage(
+			Employee employee,@RequestParam("empId") int empId,
+			@RequestParam("id") int id, Model model) {
+	    // 여기서는 특정 직원의 정보를 가져오는 프로시저를 호출하여 직원 정보를 가져옵니다.
+		employee = employeeService.selectEmpInfo(employee.getEmpName());	    
+	    // 가져온 직원 정보가 null이 아니면
+	    if (employee != null) {
+	        model.addAttribute("employee", employee); // 수정할 직원 정보를 모델에 추가
+	        return "employee/upEmployee.do?id=${loginUser.id}"; // 직원 정보 수정 페이지로 이동
+	    } else {
+	        // 해당 직원이 존재하지 않을 경우 처리
+	        // 적절한 에러 페이지로 이동하거나 다른 처리를 수행할 수 있음
+	        return "employee/selectemp.do?id=${loginUser.id}"; // 목록 페이지로 리다이렉트
 	    }
-	
-	// 직원 상세 조회를 위한 메서드 추가
-	@RequestMapping(value="employeeDetails.do", method = { RequestMethod.POST, RequestMethod.GET })
+	}
+
+	//직원 수정 처리
+	@RequestMapping(value="updateEmployee.do", method = {RequestMethod.GET, RequestMethod.POST})
+	public ResponseEntity<String> updateEmployee(
+			@RequestParam("id") int id,
+			@ModelAttribute Employee employee) {
+	    int result = employeeService.updateEmployee(id,employee);
+	    if (result > 0) {
+	        return new ResponseEntity<>("직원 정보 수정 성공", HttpStatus.OK);
+	    } else {
+	        return new ResponseEntity<>("직원 정보 수정 실패", HttpStatus.INTERNAL_SERVER_ERROR);
+	    }
+	}
+
+	 // 직원 상세 조회를 위한 메서드 추가
+    @RequestMapping(value = "employeeDetails.do", method = { RequestMethod.POST, RequestMethod.GET })
     @ResponseBody
-    public ResponseEntity<Employee> getEmployeeDetails(@RequestParam("empId") int empId) {
+    public ResponseEntity<Employee> getEmployeeDetails(@RequestParam("empId") int empId,
+                                                        @RequestParam("id") int id) {
         try {
-            Employee employee = employeeService.getEmployeeDetails(empId);
+            Employee employee = employeeService.getEmployeeDetails(id, empId);
             if (employee != null) {
                 return ResponseEntity.ok(employee);
             } else {
@@ -173,82 +155,146 @@ public class EmployeeController {
         }
     }
 
-    // 직원 등록 페이지에서 직원 정보를 저장하는 메서드
-    @PostMapping("insertEmp.do")
-    public ResponseEntity<String> insertEmployee(HttpServletRequest request, @RequestBody Employee employee) {
-        // 세션에서 로그인한 사용자 정보를 가져옴
-        User loggedInUser = getLoggedInUser(request);
-        if (loggedInUser != null) {
-            // 세션에 저장된 사용자의 ID를 직원의 사용자 ID로 설정
-            employee.setId(loggedInUser.getId()); // 또는 다른 필드를 선택하여 설정할 수 있습니다.
-            // 직원 등록 처리
-            int result = employeeService.insertEmployee(employee);
-            if (result > 0) {
-                return new ResponseEntity<>("직원 등록 성공", HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>("직원 등록 실패", HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        } else {
-            return new ResponseEntity<>("로그인이 필요합니다", HttpStatus.UNAUTHORIZED);
-        }
-    }
+		//직원 삭제
+	    @RequestMapping(value = "deleteEmployee.do", method = { RequestMethod.POST, RequestMethod.GET })
+	    public ResponseEntity<String> deleteEmployee(@RequestParam("empId") int empId, HttpServletResponse response) {
+	        int result = employeeService.deleteEmployee(empId);
+	        if (result > 0) {
+	            // 직원 삭제 후 목록 페이지로 Redirect
+	            try {
+	                response.sendRedirect("employee/EmployeeList");
+	            } catch (IOException e) {
+	                e.printStackTrace();
+	                return new ResponseEntity<>("페이지 이동 실패", HttpStatus.INTERNAL_SERVER_ERROR);
+	            }
+	            return new ResponseEntity<>("직원 삭제 성공", HttpStatus.OK);
+	        } else {
+	            return new ResponseEntity<>("직원 삭제 실패", HttpStatus.INTERNAL_SERVER_ERROR);
+	        }
+	    }
+
+		 // 직원 검색
+	    @PostMapping("employeessearch.do")
+	    public String employeeSearchMethod(@RequestBody Search search, Model model) {
+	        List<Employee> list = employeeService.employeeSearchMethod(search);
+	        model.addAttribute("employees", list);
+	        return "employee/EmployeeList";
+	    }
+	//급여 관련처리들------------------
+	// 직원 급여 정보 페이지 이동
+	@RequestMapping(value = "selectSalary.do", method = RequestMethod.GET)
+	public String moveSalaryPage(
+	        @RequestParam(value = "hourlyWage", required = false, defaultValue = "0") int hourlyWage,
+	        @RequestParam("id") int id, Model model) {
+	    List<SalaryInfo> list = salaryInfoService.getSalaryDate(id);
+	    // 시급을 모델에 추가
+	    model.addAttribute("hourlyWage", hourlyWage);
+	    List<Integer> monthlySalaries = new ArrayList<>();
+	    for (SalaryInfo salaryInfo : list) {
+	        try {
+	            // 시급과 해당 직원의 정보를 사용하여 월급을 계산하고 리스트에 추가
+	        	int monthlySalary = (int) (Integer.parseInt(salaryInfo.getTotalWorkingHours()) * hourlyWage
+	                    - Integer.parseInt(salaryInfo.getPremium()) - Integer.parseInt(salaryInfo.getTax()));
+	            monthlySalaries.add(monthlySalary);
+	        } catch (NumberFormatException e) {
+	            // 숫자로 변환할 수 없는 값이 있을 경우 처리
+	            // 예외 처리를 하거나 해당 값을 기본값으로 대체하거나 필요에 따라 다른 처리를 수행할 수 있습니다.
+	            e.printStackTrace(); // 현재는 예외를 출력하는 방식으로 처리합니다.
+	        }
+	    }
+	    model.addAttribute("monthlySalaries", monthlySalaries);
+	    model.addAttribute("employees", list);
+	    return "employee/SalaryInfo";
+	}
 	
-	 // 직원 정보 수정 처리
-    @PostMapping("updateEmployee.do")
-    public ResponseEntity<String> updateEmployee(@RequestBody Employee employee) {
-        int result = employeeService.updateEmployee(employee);
-        if (result > 0) {
-            return new ResponseEntity<>("직원 정보 수정 성공", HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("직원 정보 수정 실패", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+	// 급여정보 검색하는 폼
+	@RequestMapping(value = "selectSalary.do", method = RequestMethod.POST)
+	public String selectSalaryPage(
+			@RequestParam(value = "hourlyWage", required = false, defaultValue = "0") int hourlyWage,
+			@ModelAttribute Search search, Model model) {
+	    // Search 객체를 사용하여 급여 정보를 검색하고, 검색 결과를 모델에 추가
+	    // 이후에는 적절한 뷰를 반환하도록 수정해야 합니다.
+	    List<SalaryInfo> searchResult = salaryInfoService.searchSalary(search);
+	    List<Integer> monthlySalaries = new ArrayList<>();
+	    for (SalaryInfo salaryInfo : searchResult) {
+	        if (salaryInfo.getPremium() != null && salaryInfo.getTax() != null) {
+	            try {
+	                // 값이 null이 아닌 경우에만 변환 및 계산
+	                int premium = Integer.parseInt(salaryInfo.getPremium());
+	                int tax = Integer.parseInt(salaryInfo.getTax());
+	                int monthlySalary = (int) (Integer.parseInt(salaryInfo.getTotalWorkingHours()) * hourlyWage
+	                        - premium - tax);
+	                monthlySalaries.add(monthlySalary);
+	            } catch (NumberFormatException e) {
+	                e.printStackTrace();
+	                // 예외 처리를 추가하거나, 해당 값을 무시하거나, 기본값을 설정할 수 있습니다.
+	            }
+	        } else {
+	            // premium 또는 tax 값이 null인 경우에 대한 처리를 추가
+	            // 예를 들어, 기본값을 설정하거나, 해당 값을 무시할 수 있습니다.
+	        }
+	    }
+	    model.addAttribute("monthlySalaries", monthlySalaries);
+	    model.addAttribute("searchResult", searchResult);
+	    return "employee/SalaryInfo"; // 적절한 뷰의 이름을 반환
+	}
+	
+	//시급 입력폼 처리용
+	@PostMapping("/calculateMonthlySalary")
+    @ResponseBody
+    public String calculateMonthlySalary(@RequestParam("hourlyWage") double hourlyWage) {
+        // 시급을 기반으로 월급 계산 로직을 작성
+        // 예를 들어, 시급 * 근무시간 * 월 평균 근무일 수 등을 계산하여 월급을 구함
 
- // 직원 삭제
-    @RequestMapping(value="deleteEmployee.do" , method = { RequestMethod.POST, RequestMethod.GET })
-    public ResponseEntity<String> deleteEmployee(@RequestParam("empId") int empId, HttpServletResponse response) {
-        int result = employeeService.deleteEmployee(empId);
-        if (result > 0) {
-            // 직원 삭제 후 목록 페이지로 Redirect
-            try {        	
-                response.sendRedirect("employee/EmployeeList");
-            } catch (IOException e) {
-                e.printStackTrace();
-                return new ResponseEntity<>("페이지 이동 실패", HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-            return new ResponseEntity<>("직원 삭제 성공", HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("직원 삭제 실패", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+        double monthlySalary = hourlyWage * 8 * 20; // 간단한 예시로 월급을 계산
 
-	 // 직원 검색
-    @PostMapping("employeessearch.do")
-    public String employeeSearchMethod(@RequestBody Search search, Model model) {
-        List<Employee> list = employeeService.employeeSearchMethod(search);
-        model.addAttribute("employees", list);
-        return "employee/EmployeeList";
+        // 결과를 JSON 형식으로 반환
+        return "{\"monthlySalary\": " + monthlySalary + "}";
     }
-
-	 // 급여 정보 조회용
+	 // 급여 정보 상세조회용
     @RequestMapping("selectSalary.do")
-    public String selectSalaryInfoMethod(@RequestParam("empId") int empId, 
-    		@RequestParam("id") int id, Model model) {
-    	SalaryInfo list = salaryInfoService.selectSalaryInfoByEmpId(id);
+    public String selectSalaryInfoMethod(@RequestParam("empId") int empId, Model model) {
+        // empId를 사용하여 직원의 급여 정보를 조회
         ArrayList<SalaryInfo> elist = salaryInfoService.selectSalaryInfoMethod(empId);
         model.addAttribute("salaryInfos", elist);
-        return "employee/SalaryInfo";
+        return "employee/SalaryInfo"; 
     }
-   
-    
-    //급여정보 검색하는 폼
-    @RequestMapping (value="selectcommutePage.do", method={ RequestMethod.POST, RequestMethod.GET })
-    public String selectcommutePage(@RequestBody Search search) {
-		return "employee/commutInfoPage";
-    	
-    }
-    
-    
+
+	// 직원 급여정보 등록 페이지 이동
+	@RequestMapping(value = "insertSalary.do", method = { RequestMethod.POST, RequestMethod.GET })
+	public String moveInsertSalaryPage(HttpServletRequest request, Employee employee) {
+		return "employee/salaryInfoDate";
+	}
+
+	// 직원 급여 정보 수정 페이지 이동
+	@RequestMapping("updateSalaryInfo.do")
+	public String moveUpdateSalaryPage(SalaryInfo salaryInfo, Model model, HttpServletRequest request) {
+		return "employee/salaryInfoDate";
+	}
+	
+	
+	//근태-------------------------------
+	// 근태관리 페이지로 이동
+	@RequestMapping(value = "commuteInfoPage.do",method = { RequestMethod.POST, RequestMethod.GET })
+	public String moveSelectCommutelnPage() {	
+		return "employee/commuteInfoPage";
+	}
+
+	// 출퇴근시간 조회 페이지 이동
+	@RequestMapping(value = "recordTimePage.do",method = { RequestMethod.POST, RequestMethod.GET })
+	public String moveRecordTimePage() {
+		return "employee/CommuteQRPage";
+	}
+	
+	 // 세션에 저장된 사용자 정보를 가져오는 메서드
+    public User getLoggedInUser(HttpServletRequest request) {
+    	HttpSession session = request.getSession(false);
+	    if (session != null) {
+	    return (User) session.getAttribute("loggedInUser");
+	        }
+	        return null;
+	    }
+	    
 	// 특정 직원의 이름으로 출퇴근 정보 검색
     @PostMapping("searchCommuteInfoByName.do")
     public ResponseEntity<List<CommuteInfo>> searchCommuteInfoByName(@RequestParam("empName") String empName) {
@@ -263,15 +309,24 @@ public class EmployeeController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+    
+    //출근시간
     @RequestMapping("recordTimeData.do")
     public String recordMethod(Employee emp) {
     	logger.info(emp.toString());
     	recordTimeService.insertTime(emp);
     	return "employee/CommuteQRPage";
     }
+    //퇴근시간
+    @RequestMapping("recordEndTime.do")
+    public String emdTimeMethod(Employee emp) {
+    	logger.info(emp.toString());
+    	recordTimeService.updateTime(emp);
+    	return "employee/CommuteQRPage";
+    }
 	
 	
-	/*
+	/* 
 	 * @RequestMapping(value = "recordTimeData.do", method = { RequestMethod.POST,
 	 * RequestMethod.GET }) public ResponseEntity<String>
 	 * recordTime(HttpServletRequest request) { try { String empName =
@@ -294,10 +349,7 @@ public class EmployeeController {
 	 * e) { e.printStackTrace(); return
 	 * ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 오류 발생"); } }
 	 */
-	 
-
-    
-    	
+	    	
 	// 특정 직원의 급여 정보 조회
 	    @GetMapping("selectEmpSalary.do")
 	    public ResponseEntity<List<SalaryInfo>> selectSalaryInfoByEmpId(@RequestParam("empId") int empId , @RequestParam("id") int id) {
@@ -328,4 +380,24 @@ public class EmployeeController {
 			return "account/payStub";
 		}
 	    
+		// QR 페이지 이동
+		@RequestMapping(value="QRimages.do",method = { RequestMethod.POST, RequestMethod.GET })
+		public String moveQRPage() {
+			return "employee/QRcommuteInfo"; 
+		}
+
+		// 메세지 페이지 이동
+		@RequestMapping("kakaoM.do")
+		public String moveKakaoMessagePage(Model model, HttpServletRequest request) {
+			return "employee/kakao";
+		}
+
+		//직원 스케줄 조회 페이지 이동
+		@RequestMapping(value="calendarPage.do", method ={ RequestMethod.POST, RequestMethod.GET })
+		public String moveCalendarPage(Employee employee, Model model) {
+		List<Calendar> schedules = calendarService.getAllcalendar(employee.getId()); 
+		model.addAttribute("schedules", schedules);
+		return "employee/calendarPage";
+		}
+				
 }

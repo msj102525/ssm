@@ -24,7 +24,9 @@ $(() => {
 			<div class="logo-box">
 				<h1 class="logo">
 					<c:url var="callMain" value="main.do" />
-					<a href="${ callMain }"> <img src="/ssm/resources/images/logo.png" alt="logo" /></a>
+					<a href="${ callMain }"> 
+						<img src="${pageContext.servletContext.contextPath }/resources/images/common/logo.png" alt="logo" />
+					</a>
 				</h1>
 			</div>
 			<div class="form-box">
@@ -32,19 +34,18 @@ $(() => {
 					<li>
 						<ul class="sns">
 							<li>
-								<%-- <c:url var="kakaoLogin" value="kakaoAuth.do" /> --%>
-						 		<a href=" ${kakaourl}"> 
-									 <img src="/ssm/resources/images/kakaoLB.png" alt="카카오로고"/>
+						 		<a href="${ kakaourl }"> 
+									 <img src="${pageContext.servletContext.contextPath }/resources/images/snsLogin/kakaoLB.png" alt="카카오로고" />
 								</a>
 							</li>
 							<li>
-								<a href="${ naverurl }">
-									<img src="/ssm/resources/images/naverLB.png" alt="네이버로고" />
+						 		<a href="${ naverurl }"> 
+									<img src="${pageContext.servletContext.contextPath }/resources/images/snsLogin/naverLB.png" alt="네이버로고" />
 								</a>
 							</li>
 							<li>
-								<a href="${ googleurl }">
-								 	<img src="/ssm/resources/images/googleLB.png" alt="구글로고" />
+						 		<a href="${ googleurl }"> 
+								 	<img src="${pageContext.servletContext.contextPath }/resources/images/snsLogin/googleLB.png" alt="구글로고" />
 								</a>
 							</li>
 						</ul>
@@ -124,7 +125,7 @@ $(() => {
 						<li class="auth relative">
 							<p></p>
 							<input type="text" name="accountNumber" id="accountNumber" placeholder="계좌번호">
-							<input type="button" value="계좌인증" id="accountNumBtn" onclick="accountNumChk();">
+							<!-- <input type="button" value="계좌인증" id="accountNumBtn" onclick="accountNumChk();"> -->
 						</li>
 						<li>
 							<input type="submit" value="회원가입" class="enroll" id="submitBtn">

@@ -10,7 +10,7 @@ import com.sdm.ssm.common.Search;
 import com.sdm.ssm.employee.model.dao.EmployeeDao;
 import com.sdm.ssm.employee.model.vo.Employee;
 
-@Service
+@Service("EmployeeService")
 public class EmployeeServiceImpl implements EmployeeService {
     
     @Autowired
@@ -29,18 +29,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public List<Employee> employeeSearchMethod(Search search) {
         return employeeDao.employeeSearchMethod(search);
-    }
-
- 
+    } 
     
     @Override
     public int insertEmployee(Employee employee) {
         return employeeDao.insertEmployee(employee);
-    }
-
-    @Override
-    public int updateEmployee(Employee employee) {
-        return employeeDao.updateEmployee(employee);
     }
 
     @Override
@@ -54,19 +47,24 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
 	@Override
-	public Employee getEmployeeDetails(int empId) {
-		return employeeDao.getEmployeeDetails(empId);
+	public Employee getEmployeeDetails(int id,int empId) {
+		return employeeDao.getEmployeeDetails(id,empId);
 	}
 
 	@Override
 	public List<Employee> getAllEmployees(int id) {
-		// TODO Auto-generated method stub
 		return employeeDao.getAllEmployees(id);
 	}
 
+	@Override
+	public int updateEmployee(int id, Employee employee) {
+	    return employeeDao.updateEmployee(id, employee);
+	}
 
+	@Override
+	public Employee selectEmpInfo(String empName) {
+		return employeeDao.selectEmpInfo(empName);
+	}
 
-	
-
-	
 }
+

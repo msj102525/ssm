@@ -117,12 +117,34 @@ public class GoodsPrintController {
 		if (list != null && list.size() > 0) {
 			return "goods/goodsListView";
 		} else {
-			model.addAttribute("message", search.getKeyword() + "議고쉶 �떎�뙣!");
+			model.addAttribute("message", search.getKeyword() + "해당 상품 없음");
 			return "common/error";
 		}
 	}
 
+	
+	@RequestMapping(value = "gdelete.do", method = RequestMethod.POST)
+	public ResponseEntity<String> goodsdeleteMethod(@RequestBody String param) throws ParseException {
 
+		JSONParser jparser = new JSONParser();
+		JSONArray jarr = (JSONArray) jparser.parse(param);
+
+		for (int i = 0; i < jarr.size(); i++) {
+			JSONObject job = (JSONObject) jarr.get(i);
+
+			GoodsPrint goodsPrint = new GoodsPrint();
+			goodsPrint.setId(Integer.parseInt(job.get("id").toString()));
+			goodsPrint.setGoodsNo(Integer.parseInt(job.get("goodsNo").toString()));
+			
+			int result = goodsPrintService.deleteProduce(goodsPrint);
+
+			
+			if (result <= 0) {
+				return new ResponseEntity<String>("failed", HttpStatus.REQUEST_TIMEOUT);
+			}
+		}
+		return new ResponseEntity<String>("success", HttpStatus.OK);
+	}
 
 	
 	@RequestMapping("gmoveinsert.do")
@@ -227,7 +249,7 @@ public class GoodsPrintController {
 			model.addAttribute("limit", limit);
 			return "goods/produceListView";
 		} else {
-			model.addAttribute("message", currentPage + " �럹�씠吏� 紐⑸줉 議고쉶 �떎�뙣!");
+			model.addAttribute("message", currentPage + " 해당 발주처 없음!");
 			return "common/error";
 		}
 	}
@@ -359,4 +381,56 @@ public class GoodsPrintController {
 		return "goods/specify";
 
 	}
+	
+	
+	
+	@RequestMapping(value = "psearch.do", method = RequestMethod.GET)
+	public String produceNameSearch(@RequestParam(name = "id", required = false) int id,
+			@RequestParam("action") String action, Search search,
+			@RequestParam(name = "page", required = false) String page, Model model) {
+
+		
+		int currentPage = 1;
+		if (page != null) {
+			currentPage = Integer.parseInt(page);
+		}
+
+		
+		int listCount = 0;
+		Paging paging = new Paging(listCount, currentPage, 10, "gsearch.do");
+		paging.calculate();
+		search.setId(id);
+		ArrayList<GoodsPrint> list = null;
+
+		if (action.equals("goodsName")) {
+			listCount = goodsPrintService.selectSearchGoodsNameCount(search);
+			paging.setListCount(listCount);
+			paging.calculate();
+
+			search.setStartRow(paging.getStartRow());
+			search.setEndRow(paging.getEndRow());
+			list = goodsPrintService.selectSearchGoodsName(search);
+
+		} else if (action.equals("pdName")) {
+			listCount = goodsPrintService.selectSearchPdNameCount(search);
+			paging.setListCount(listCount);
+			paging.calculate();
+			search.setStartRow(paging.getStartRow());
+			search.setEndRow(paging.getEndRow());
+			list = goodsPrintService.selectSearchPdName(search);
+		}
+
+		model.addAttribute("list", list);
+		model.addAttribute("paging", paging);
+		model.addAttribute("currentPage", currentPage);
+		model.addAttribute("action", action);
+
+		if (list != null && list.size() > 0) {
+			return "goods/goodsListView";
+		} else {
+			model.addAttribute("message", search.getKeyword() + "해당 상품 없음");
+			return "common/error";
+		}
+	}
+	
 }

@@ -189,10 +189,10 @@ body, ul, li {
        <li><a href="${pageContext.servletContext.contextPath}/selectemp.do?id=${loginUser.id}">직원 정보</a></li>
         <li><a href="${pageContext.servletContext.contextPath}/selectSalary.do?id=${loginUser.id}">직원 급여정보</a></li>
         <li><a href="${pageContext.servletContext.contextPath}/commuteInfoPage.do?id=${loginUser.id}">근태정보</a></li>
-        <li><a href="${pageContext.servletContext.contextPath}/QRController.do">QR 출퇴근페이지</a></li>
-        <li><a href="${pageContext.servletContext.contextPath}/recordTimePage.do">QR 출퇴근버튼페이지</a></li>     
-        <li><a href="#">text3</a></li>
-        <li><a href="#">text4</a></li>
+        <li><a href="${pageContext.servletContext.contextPath}/QRController.do">QR 페이지</a></li>
+        <li><a href="${pageContext.servletContext.contextPath}/recordTimePage.do">QR 출퇴근페이지</a></li>     
+        <li><a href="${pageContext.servletContext.contextPath}/calendarPage.do?id${loginUser.id}">직원 스케줄</a></li>
+        <li><a href="${pageContext.servletContext.contextPath}/kakaoM.do">메시지</a></li>
       </ul>
     </li>
     <li>
@@ -204,12 +204,8 @@ body, ul, li {
     <li>
       <a href="#">회계 관리</a>
       <ul>
-        <li><a href="#">text1</a></li>
-        <li><a href="#">text2</a></li>
-        <li><a href="${pageContext.servletContext.contextPath}/mvPayStub.do">급여명세서</a></li>
+        
         <li><a href="${pageContext.servletContext.contextPath }/account.do">매출보기</a></li>
-        <li><a href="${pageContext.servletContext.contextPath}/mvPayStub.do">급여명세서</a></li>
-        <li><a href="#">text4</a></li>
       </ul>
     </li>
   </ul>

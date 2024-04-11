@@ -22,35 +22,45 @@
 	<select id="getAllEmployees" parameterType="_int" resultMap="resultList">
 		SELECT * FROM TB_EMPLOYEE_${id}
 	</select>
-
+	<!-- 직원 상세조회 -->
+	<select id="getEmployeeDetails" parameterType="int" resultMap="resultList">
+    SELECT EMP_ID, EMP_NAME, POSITION, EMP_HIREDATE, EMP_PHONE, EMP_EMAIL, EMP_ADDRESS, EMP_BIRTHDATE, EMP_GENDER
+    FROM TB_EMPLOYEE_${id}
+    WHERE EMP_ID = #{empId}
+	</select>
+	<!-- 직원이름으로 조회 -->
+	<select id="selectEmpname" parameterType="Employee">
+	select *  from tb_employee_${id}
+	WHERE EMP_NAME =#{empName}
+	</select>
 	<!-- 아이디 조회 -->
-	<select id="selectempId" parameterType="int"
-		resultMap="resultList">
+	<select id="selectempId" parameterType="int" resultMap="resultList">
 		SELECT * FROM TB_EMPLOYEE_${id} WHERE EMP_ID = #{empId}
 	</select>
-	
+		
 	<!-- 직원 이름으로 검색 -->
 	<select id="searchEmployeeByName" parameterType="String" resultMap="resultList">		
     SELECT * FROM TB_EMPLOYEE_${id} WHERE EMP_NAME LIKE '%' || #{empName} || '%'
 	</select>
 	
 	<!-- 직원정보 등록 -->
-	<insert id="insertemp" parameterType="Employee">
-		INSERT INTO TB_EMPLOYEE_${id} (TB_EMPLOYEE_${id}_EMP_ID_SEQ.NEXTVAL, EMP_NAME, POSITION, EMP_HIREDATE,
-		EMP_PHONE, EMP_EMAIL,
-		EMP_ADDRESS, EMP_BIRTHDATE, EMP_GENDER) VALUES (#{empName}, #{position},
-		#{empHireDate}, #{empPhone}, #{empEmail},
-		#{empAddress}, #{empBirthDate}, #{empGender})
+	<insert id="insertemployee" parameterType="Employee">
+    INSERT INTO TB_EMPLOYEE_${id} (EMP_ID, EMP_NAME, POSITION, EMP_HIREDATE, EMP_PHONE, EMP_EMAIL, EMP_ADDRESS, EMP_BIRTHDATE, EMP_GENDER)
+    VALUES (TB_EMPLOYEE_${id}_EMP_ID_SEQ.NEXTVAL, #{empName}, #{position}, #{empHireDate}, #{empPhone}, #{empEmail}, #{empAddress}, #{empBirthDate}, #{empGender})
 	</insert>
 
+	
 	<!-- 직원정보 수정 -->
-	<update id="updateemp"
-		parameterType="Employee">
-		UPDATE TB_EMPLOYEE_${id} SET EMP_NAME=#{empName}, POSITION=#{position},
-		EMP_HIREDATE=#{empHireDate}, EMP_PHONE=#{empPhone},
-		EMP_EMAIL=#{empEmail}, EMP_ADDRESS=#{empAddress},
-		EMP_BIRTHDATE=#{empBirthDate}, EMP_GENDER=#{empGender}
-		WHERE EMP_ID_${id}_SEQ.NEXTVAL=#{empId}
+	<update id="updateemp" parameterType="Employee">
+		UPDATE TB_EMPLOYEE_${id}
+		SET EMP_NAME = #{empName},
+		POSITION = #{position},
+		EMP_PHONE = #{empPhone},
+		EMP_EMAIL = #{empEmail},
+		EMP_ADDRESS = #{empAddress},
+		EMP_BIRTHDATE=#{empBirthDate},
+		EMP_GENDER = #{empGender}
+		WHERE EMP_ID = #{empId}
 	</update>
 
 	<!-- 직원 정보 삭제 -->
@@ -67,6 +77,8 @@
 		<result property="premium" column="PREMIUM" />
 		<result property="tax" column="TAX" />
 		<result property="id" column="ID" />
+		<result property="hourlyWage" column="hourlyWage" /><!-- 월급 -->
+		<result property="totalWorkingHours" column="totalWorkingHours" />
 	</resultMap>
 	
 	<!-- 직원 급여 정보 등록 -->
@@ -104,15 +116,28 @@
 	<delete id="deleteSalaryInfo" parameterType="int">
 		DELETE FROM TB_SALARY_INFO_${ id }  WHERE EMP_ID=#{empid}
 	</delete>
-	
-	<select id="totalSalact" parameterType="map" resultMap="resultSalaryInfoList">	
-	SELECT 
-    EMP_ID=#{empId} ,(SELECT  ( * WORKING_HOURS) - (PREMIUM + TAX) AS totalSalact    
-    FROM TB_SALARY_INFO_${ id }       
-    WHERE EMP_ID = #{empId}) AS TOTALSALARY       
-	FROM TB_EMPLOYEE_${ id }     
-	WHERE EMP_ID = #{empId};	
-	</select>	
+
+	<!-- 직원 월급 계산 -->
+<select id="totalSalact" parameterType="map" resultMap="resultSalaryInfoList">
+    SELECT
+        e.EMP_ID,
+        e.EMP_NAME,
+        e.POSITION,
+        s.BANK_NAME,
+        s.BANK_ACCOUNT_NO,
+        s.ACCOUNT_HOLDER,
+        (
+            SELECT (TO_NUMBER(w.TOTAL_WORKING_HOURS) * ${hourlyWage}) - TO_NUMBER(s.PREMIUM) - TO_NUMBER(s.TAX) AS MONTHLY_SALARY
+            FROM TB_EMPLOYEE_${id} e
+            JOIN TB_SALARY_INFO_${id} s ON e.EMP_ID = s.EMP_ID
+        )
+    FROM
+        TB_EMPLOYEE_${id} e
+    JOIN
+        TB_SALARY_INFO_${id} s ON e.EMP_ID = s.EMP_ID
+</select>
+
+		
 	<!-- 출퇴근 정보 -->
 	<resultMap type="CommuteInfo" id="resultCommuteInfoList">
 		<result property="empId" column="EMP_ID" />
@@ -173,21 +198,40 @@
 		SELECT * FROM TB_COMMUTE_INFO_${ id } WHERE EMP_ID_${id}_SEQ.NEXTVAL=#{empId}
 	</select>
 
-	 <!-- TB_CALENDAR 정보 -->
-	<!--<resultMap type="Calendar" id="resultCalendarList">
+	<insert id="insertStartTime" parameterType="Employee">
+	INSERT INTO tb_commute_info_${id} (EMP_ID, START_TIME) VALUES (
+	(SELECT EMP_ID FROM tb_employee_${id} WHERE EMP_NAME = #{empName}),
+	SYSTIMESTAMP)
+	</insert>
+
+	<update id="updateEndTime" parameterType="Employee">
+		UPDATE tb_commute_info_${id}
+		SET END_TIME = SYSTIMESTAMP
+		WHERE EMP_ID = (SELECT EMP_ID
+		FROM tb_employee_${id}
+		WHERE EMP_NAME = #{empName}
+		) AND END_TIME IS NULL
+		ORDER BY START_TIME DESC
+		FETCH FIRST 1 ROWS ONLY
+	</update>
+
+	<!-- 캘린더클래스 매핑 -->
+	<resultMap type="Calendar" id="resultCalendarList">
 		<result property="empId" column="EMP_ID" />
 		<result property="remarks" column="REMARKS" />
 		<result property="id" column="ID" />
-	</resultMap>
+	</resultMap>	
 	
-
-		Calendar 클래스와 TB_CALENDAR 테이블 간의 매핑
-	<select id="selectCalendarInfoByEmpId" parameterType="int"
-		resultMap="resultCalendarList">
-		SELECT * FROM TB_CALENDAR_${id} WHERE EMP_ID=#{empId}
-	</select> -->
-	<insert id="testEmployee" parameterType="Employee">
-	insert into tb_commute_info_${id}(EMP_ID, START_TIME) VALUES((select emp_id from tb_employee_${id} where emp_name=#{empName}), sysdate)
-	</insert>
+	<!-- 직원 스케줄 조회 -->		
+	<select id="selectCalendar" parameterType="String" >
+	SELECT E.EMP_NAME, CI.WORK_DAY, CI.START_TIME
+	FROM TB_CALENDAR_${id} C
+	JOIN TB_EMPLOYEE_${id} E ON C.EMP_ID = E.EMP_ID
+	JOIN TB_COMMUTE_INFO_${id} CI ON C.EMP_ID = CI.EMP_ID
+	ORDER BY CI.WORK_DAY;
+	</select>
+	
+	
+	
 </mapper>
     

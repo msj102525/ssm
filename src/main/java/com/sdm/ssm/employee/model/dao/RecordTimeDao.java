@@ -13,7 +13,12 @@ public class RecordTimeDao {
 	private SqlSessionTemplate sqlSessionTemplate;
 
 	public void insertTime(Employee emp) {
-		sqlSessionTemplate.insert("employeeMapper.testEmployee", emp);
+		sqlSessionTemplate.insert("employeeMapper.insertStartTime", emp);
+		
+	}
+
+	public void updateTime(Employee emp) {
+		sqlSessionTemplate.update("employeeMapper.updateEndTime",emp);
 		
 	}
 }

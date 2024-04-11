@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Service;
 
+import com.sdm.ssm.common.Search;
 import com.sdm.ssm.employee.model.vo.SalaryInfo;
 
 public interface SalaryInfoService {
@@ -20,5 +21,7 @@ public interface SalaryInfoService {
 	int updateSalary(int id);
 
 	int insertSalaryPage(int id);
+
+	List<SalaryInfo> searchSalary(Search search);
 	
 }
