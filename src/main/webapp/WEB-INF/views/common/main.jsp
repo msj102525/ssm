@@ -85,27 +85,26 @@
 						</div>
 						<%-- section4 --%>
 						<section class="sec4">
-							section4
 							<div class="inner-section">
 								<div class="left-section">
 									<div class="img-flex">
 										<div class="img-box">
-											<img alt="메인 이미지 4-1" src="#">
+											<img alt="메인 이미지 4-1" src="${pageContext.servletContext.contextPath }/resources/images/main/main4_1.png">
 										</div>
 										<div class="img-box">
-											<img alt="메인 이미지 4-2" src="#">
+											<img alt="메인 이미지 4-2" src="${pageContext.servletContext.contextPath }/resources/images/main/main4_2.png">
 										</div>
 										<div class="img-box">
-											<img alt="메인 이미지 4-3" src="#">
+											<img alt="메인 이미지 4-3" src="${pageContext.servletContext.contextPath }/resources/images/main/main4_3.png">
 										</div>
 										<div class="img-box padding-top">
-											<img alt="메인 이미지 4-4" src="#">
+											<img alt="메인 이미지 4-4" src="${pageContext.servletContext.contextPath }/resources/images/main/main4_4.png">
 										</div>
 										<div class="img-box padding-top">
-											<img alt="메인 이미지 4-5" src="#">
+											<img alt="메인 이미지 4-5" src="${pageContext.servletContext.contextPath }/resources/images/main/main4_5.png">
 										</div>
 										<div class="img-box padding-top">
-											<img alt="메인 이미지 4-6" src="#">
+											<img alt="메인 이미지 4-6" src="${pageContext.servletContext.contextPath }/resources/images/main/main4_6.png">
 										</div>
 									</div>
 								</div>

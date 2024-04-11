@@ -76,7 +76,9 @@ $(() => {
 			<div class="logo-box">
 				<h1 class="logo">
 					<c:url var="callMain" value="main.do" />
-					<a href="${ callMain }"> <img src="/ssm/resources/images/logo.png" alt="logo" /></a>
+					<a href="${ callMain }"> 
+						<img src="${pageContext.servletContext.contextPath }/resources/images/common/logo.png" alt="logo" />
+					</a>
 				</h1>
 			</div>
 			<div class="form-box">

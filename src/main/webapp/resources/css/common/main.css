@@ -321,12 +321,12 @@ p.title {
 .n-login section.sec4 .inner-section .img-flex {
 	display: flex;
 	flex-wrap: wrap;
-	justify-content: space-between;
+	justify-content: space-around;
 }
 
 .n-login section.sec4 .inner-section .img-box{
-	width: 240px;	
-	height: 240px;
+	width: 220px;	
+	height: 220px;
 }
 
 .n-login section.sec4 .inner-section .img-box.padding-top {
@@ -336,10 +336,9 @@ p.title {
 
 
 .n-login section.sec4 .inner-section .img-box img{
-	border: 1px solid #000;
 	display: block;
 	width: 100%;	
-	height: 240px;
+	height: auto;
 }
 
 .n-login section.sec4 .inner-section .description {

@@ -41,7 +41,7 @@
 					<h1 class="logo">
 					<c:url var="callMain" value="main.do" />
 						<a href= "${ callMain }"> 
-							<img src="/ssm/resources/images/logo.png" alt="logo" />
+							<img src="${pageContext.servletContext.contextPath }/resources/images/common/logo.png" alt="logo" />
 						</a>
 					</h1>
 					<div class="gnb">
@@ -70,7 +70,7 @@
 					<h1 class="logo">
 						<c:url var="callMain" value="main.do" />
 						<a href= "${ callMain }">
-							<img src="/ssm/resources/images/logo.png" alt="logo" />
+							<img src="${pageContext.servletContext.contextPath }/resources/images/common/logo.png" alt="logo" />
 						</a>
 					</h1>
 					</h1>
@@ -90,7 +90,7 @@
 							</c:url>
 							<a href="${ goMyPage }">
 								<c:if test="${empty loginUser.profileUrl }">
-									<img src="resources/images/profile.png" alt="프로필" class="photo">
+									<img src="${pageContext.servletContext.contextPath }/resources/images/common/profile.png" alt="프로필" class="photo">
 								</c:if>
 								<c:if test="${!empty loginUser.profileUrl }">
 									<img src="resources/user_upfiles/${loginUser.profileUrl}" alt="프로필" class="photo">
@@ -114,7 +114,7 @@
 					<h1 class="logo">
 						<c:url var="callMain" value="main.do" />
 						<a href= "${ callMain }"> 
-							<img src="/ssm/resources/images/logo.png" alt="logo" />
+							<img src="${pageContext.servletContext.contextPath }/resources/images/common/logo.png" alt="logo" />
 						</a>
 					</h1>
 					<div class="gnb">
@@ -132,7 +132,7 @@
 							</c:url>
 							<a href="${ goMyPage }">
 								<c:if test="${empty loginUser.profileUrl }">
-									<img src="resources/images/profile.png" alt="프로필" class="photo">
+									<img src="${pageContext.servletContext.contextPath }/resources/images/common/profile.png" alt="프로필" class="photo">
 								</c:if>
 								<c:if test="${!empty loginUser.profileUrl }">
 									<img src="resources/user_upfiles/${loginUser.profileUrl}" alt="프로필" class="photo">
