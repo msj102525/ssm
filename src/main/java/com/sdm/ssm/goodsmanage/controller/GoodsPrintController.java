@@ -117,7 +117,7 @@ public class GoodsPrintController {
 		if (list != null && list.size() > 0) {
 			return "goods/goodsListView";
 		} else {
-			model.addAttribute("message", search.getKeyword() + "議고쉶 �떎�뙣!");
+			model.addAttribute("message", search.getKeyword() + "해당 상품 없음");
 			return "common/error";
 		}
 	}
@@ -249,7 +249,7 @@ public class GoodsPrintController {
 			model.addAttribute("limit", limit);
 			return "goods/produceListView";
 		} else {
-			model.addAttribute("message", currentPage + " �럹�씠吏� 紐⑸줉 議고쉶 �떎�뙣!");
+			model.addAttribute("message", currentPage + " 해당 발주처 없음!");
 			return "common/error";
 		}
 	}
@@ -428,7 +428,7 @@ public class GoodsPrintController {
 		if (list != null && list.size() > 0) {
 			return "goods/goodsListView";
 		} else {
-			model.addAttribute("message", search.getKeyword() + "해당 상품 X");
+			model.addAttribute("message", search.getKeyword() + "해당 상품 없음");
 			return "common/error";
 		}
 	}
