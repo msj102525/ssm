@@ -154,24 +154,14 @@
 									<th style="text-align: center; white-space: nowrap;">항목</th>
 									<th style="text-align: center; white-space: nowrap;">금액</th>
 								</tr>
-								<tr>
-									<td  style="white-space: nowrap;">월 매출</td>
-									<td  style="white-space: nowrap;">
-										<span id="monthlySales">월 매출 출력칸</span>
-									</td>
-								</tr>	
+								
 								<tr>
 									<td  style="white-space: nowrap;">월 발주 금액</td>
 				    				<td  style="white-space: nowrap;">						
 										<span id="monthlyPdPrice" ></span>						
 									</td>
 								</tr>	
-								<tr>
-									<td  style="white-space: nowrap;">월 급여</td>
-									<td  style="white-space: nowrap;">
-										<span id="monthlySalary">월 급여 총합 출력칸</span>	
-									</td>
-								</tr>	
+								
 								<tr>
 									<td  style="white-space: nowrap;">월세</td>
 									<td  style="white-space: nowrap;">
@@ -190,17 +180,11 @@
 										<span id="monthlyCost" ></span>
 									</td>
 								</tr>				
-								<tr>
-									<td  style="white-space: nowrap;">월 수익</td>
-									<td  style="white-space: nowrap;">
-										<div id="buttonDisplay"></div>	
-									</td>
-								</tr>	
+								
 							</table>
 						</div>
 						<div id="idDisplay" style="display:none;">${ loginUser.id }</div>
 						<div class="right-section" id="chart_div_sale" style="height: 400px;">그래프</div>
-						<div id="chart_div_year"></div>
 					</div>
 				</section>
 				<%-- section2 --%>

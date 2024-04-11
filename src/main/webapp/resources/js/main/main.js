@@ -236,13 +236,13 @@ $(function() {
         data.addColumn('string', '항목');
         data.addColumn('number', '금액');
         data.addRows([
-          ['매출', 3000],
+        
           ['발주액', parseInt(monthlyPdPrice)],
-          ['급여', 100],
+      
           ['월세', parseInt(monthlyRent)],
           ['세금', parseInt(monthlyTax)],
           ['기타비용', parseInt(monthlyCost)],
-          ['수익', 2487]
+       
         ]);
 
         // Set chart options
