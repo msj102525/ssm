@@ -159,6 +159,9 @@ body, ul, li {
 /* 사이드바 끝 */
 
 /* 커스텀 끝 */
+.fa-cat::before {
+	content: "";
+}
 </style>
 <title>Insert title here</title>
 </head>
