@@ -37,50 +37,8 @@ public class ReserveServiceImpl implements ReserveService {
 		return reserveDao.selectRsrvDetail(reserve);
 	}
 	
-	@Override /// 2024.04.04
+	@Override //// 2024.04.04
 	public ArrayList<Reserve> selectRsrvList(SerachDateStr serachDateStr) {
 		return reserveDao.selectRsrvList(serachDateStr);
 	}
-	
-	@Override //// 2024.04.04
-	public ArrayList<Reserve> selectRsrvList2(SerachDateStr serachDateStr) {
-		return reserveDao.selectRsrvList2(serachDateStr);
-	}
-
-	/////////////////////////////////////////////////////////////////////////////////
-	/////////////////////////////////////////////////////////////////////////////////
-	//// 2024.04.02
-	@Override
-	public ArrayList<ScheduleDto> selectScheduleList(DateData dateData) {
-		return reserveDao.selectScheduleList(dateData);
-	}
-
-	//// 2024.04.02
-	@Override
-	public int before_schedule_add_search(ScheduleDto scheduleDto) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	//// 2024.04.02
-	@Override
-	public int update(ScheduleDto scheduleDto) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	//// 2024.04.02
-	@Override
-	public int delete(ScheduleDto scheduleDto) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	//2024.04.02(조회)
-	@Override
-	public ScheduleDto selectReserveget(int idx) {
-		return reserveDao.selectReserveget(idx);
-	}
-
-
 }

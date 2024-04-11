@@ -1,23 +1,37 @@
 package com.sdm.ssm.reserve.controller;
 
+import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sdm.ssm.admin.model.vo.Notice;
 import com.sdm.ssm.common.Paging;
 import com.sdm.ssm.common.SerachDateStr;
 import com.sdm.ssm.reserve.model.service.ReserveService;
 import com.sdm.ssm.reserve.model.vo.Reserve;
+import com.sdm.ssm.user.model.vo.User;
 
 @Controller //설정 xml 에 해당 클래스를 Controller 로 자동 등록해 줌
 public class ReserveController {
@@ -28,269 +42,233 @@ public class ReserveController {
 	@Autowired
 	private ReserveService reserveService;
 	
-	
-	//예약이동 페이지
-	@RequestMapping("moveRsrvPage.do")
-	public String moveWritePage() {
-		//return "reserve/reserve_input";
-		return "reserve/reservecalendar";
-	}
-
-	//예약등록
-	@RequestMapping(value="rsrvinsert.do", method=RequestMethod.POST)
-	public String reserveInsertMethod(Reserve reserve, 
-					Model model) {
-
-		Reserve rsrv = new Reserve();
-		
-		//rsrv.setRsrvNum(1);
-		rsrv.setRsrvName(reserve.getRsrvName());
-		rsrv.setRsrvDate(reserve.getRsrvDate());
-		rsrv.setRsrvInwon(reserve.getRsrvInwon());
-		
-		rsrv.setId(200);
-		
-		if(reserveService.insertReserve(rsrv) > 0) {
-			//return "redirect:blist.do?page=" + page;
-			return "redirect:moveRsrvPage.do";
-		} else {
-			model.addAttribute("message", "예약 등록 실패");
-			return "common/error";
-		}
-	}
-	
-	//예약수정
-	@RequestMapping(value="rsrvupdate.do", method=RequestMethod.POST)
-	public String reserveUpdateMethod(Reserve reserve, 
-					Model model) {
-		if(reserveService.updateReserve(reserve) > 0) {
-			//return "redirect:blist.do?page=" + page;
-			return "";
-		} else {
-			model.addAttribute("message", "예약 수정 실패");
-			return "common/error";
-		}
-	}
-
-	//예약삭제
-	@RequestMapping(value="rsrvdelete.do", method=RequestMethod.POST)
-	public String reserveDeleteMethod(Reserve reserve, 
-					Model model) {
-		
-		if(reserveService.deleteReserve(reserve) > 0) {
-			//return "redirect:blist.do?page=" + page;
-			return "";
-		} else {
-			model.addAttribute("message", "예약 수정 실패");
-			return "common/error";
-		}
-	}
-	
-	//예약 목록 조회
-	@RequestMapping(value="rsrvlist.do", method= RequestMethod.GET)
-	public String reserveselectRsrvListMethod(
-			@RequestParam(name="keyword", required=false) String keyword,
-			@RequestParam(name="limit", required=false) String slimit,
-			@RequestParam(name="page", required=false) String page,
-			Model model
+	//////////////////////////////////////////////////////////
+	///// 예약관리로 이동
+	//////////////////////////////////////////////////////////
+	@RequestMapping("moveRsrvCalPage.do")
+	public String moveCalWritePage(
+			HttpServletRequest request,
+			HttpServletResponse res
 			) {
+		return "reserve/reservecalendarlist";
+	}
+	
+	//// 달력 데이터 조회
+	@RequestMapping(value= "read_ajx.do", method = {RequestMethod.POST, RequestMethod.GET})
+	@ResponseBody
+	public String getCalDataMethod (
+			@ModelAttribute("searchVO") SerachDateStr searchVO,
+			HttpServletRequest request,
+			HttpServletResponse res,
+			ModelMap model) throws Exception {
+
+		HttpSession session = request.getSession();
+		User loginUser = (User)session.getAttribute("loginUser");
+
+		String sdate = searchVO.getStart().replace("-", "");
+		String edate = searchVO.getEnd().replace("-", "");
 		
-		int currentPage = 1;
-		if (page != null) {
-			currentPage = Integer.parseInt(page);
-		}
-		
-		//한 페이지 공지 10개씩 출력되게 한다면
-		int limit = 10;
-		if (slimit != null) {
-			limit = Integer.parseInt(slimit);
-		}
-		
-		//총 페이지 수 계산을 위한 공지글 총갯수 조회
-		//int listCount = reserveService.selectListCount();
-		//페이지 관련 항목 계산 처리
-		//Paging paging = new Paging(listCount, currentPage, limit, "rsrvlist.do");
-		//paging.calculate();
-		
+		//// 조회 조건을 설정하기 위한 방법
 	    SerachDateStr serachDateStr = new SerachDateStr();
+	    serachDateStr.setSdate(sdate);
+	    serachDateStr.setEdate(edate);
 	    
-	    //// 목록 조회(2024.04.04)
-		ArrayList<Reserve> list = reserveService.selectRsrvList(serachDateStr);
+	    serachDateStr.setId(loginUser.getId());
+	    
+	    ArrayList<Reserve> list = reserveService.selectRsrvList(serachDateStr);
+	    
+		res.setContentType("text/html; charset=UTF-8");
 		
-		return "";
-	}
-	
-	//예약 상세
-	@RequestMapping(value="rsrvdetail.do", method=RequestMethod.POST)
-	public String reserveselectRsrvDetailMethod(Reserve rsrv,
-			Model model) {
-		//서비스 메소드로 아이디 전달하고, 해당 회원정보 받기
-		String userId = null;
+		//// 리턴된 list 를 json 배열에 옮겨 담기
+		JSONArray jarr = new JSONArray();
 		
-		Reserve reserve = reserveService.selectRsrvDetail(rsrv);
+		int sortidx = 0;
 		
-		if(reserve != null) {
-			model.addAttribute("reserve", reserve);
-			//return "member/myInfoPage";
-			return "";
-		}else {
-			model.addAttribute("message", userId + "에 대한 회원 정보 조회 실패");
-			return "common/error";
+		if (list.size() > 0) {
+			sortidx = list.size(); 
 		}
+		
+		for(Reserve reserve : list) {
+			//reserve 값들을 저장할 js
+			JSONObject job = new JSONObject();
+			
+			job.put("groupId", reserve.getRsrvNum());
+			
+			job.put("title", reserve.getRsrvSubject());
+			
+			//날짜는 반드시 문자열로 바꿔서 저장할 것(fullcalendar에서 받을 format으로 변경
+			String start = reserve.getRsrvDate().substring(0, 4) + "-" 
+							+ reserve.getRsrvDate().substring(4, 6) + "-" 
+							+ reserve.getRsrvDate().substring(6, 8);
+
+			job.put("start", start);
+			
+			job.put("sortIdx", sortidx);   /// 일정을 순서대로 보이게 하기 위함(2024.04.04)
+			
+			/////////////////////////////////////////////////////////////
+			//// 추가(2024.04.05)
+			/////////////////////////////////////////////////////////////
+			job.put("rsrvname", reserve.getRsrvName());  //// 예약자명 2024.04.05
+			job.put("rsrvtelno", reserve.getRsrvTelno());  //// 연락처 2024.04.05
+			job.put("rsrvtime", reserve.getRsrvTime());  //// 예약시간 2024.04.05
+			job.put("rsrvinwon", reserve.getRsrvInwon());  //// 인원 2024.04.05
+			job.put("rsrvmemo", reserve.getRsrvMemo());  //// 메모 2024.04.05
+			job.put("writedate", reserve.getWriteDate().toString());  //// 작성일자 2024.04.10 
+
+			jarr.add(job);
+			
+			sortidx = sortidx - 1;
+			
+		} //// for
+
+		JSONObject obj = new JSONObject();
+
+	    PrintWriter out = res.getWriter();
+
+	    obj.put("success", "ok");
+	    
+	    obj.put("list", jarr);
+	    
+	    out.print(obj);
+	    out.close();
+	    
+	    return null;
 	}
 	
-    public String showCalendar(Model model) {
-        LocalDate today = LocalDate.now();
-        int year = today.getYear();
-        int month = today.getMonthValue();
-        List<LocalDate> dates = getDatesOfMonth(year, month);
-        
-        model.addAttribute("dates", dates);
-        return "calendar";
-    }
+	/////////////////////////////////////////////////////
+	//// 달력 데이터등록 화면
+	/////////////////////////////////////////////////////
+	@RequestMapping(value = "create_ajx.do", method = RequestMethod.POST)
+	@ResponseBody
+	public String createAction(
+	        @RequestBody String filterJSON,
+	        HttpServletRequest request,
+	        HttpServletResponse res,
+	        ModelMap model) throws Exception {
+			
+		HttpSession session = request.getSession();
+		User loginUser = (User)session.getAttribute("loginUser");
+			
+	    JSONObject obj = new JSONObject();
+	    
+	    ////////////////////////////////////////////
+	    ////////////////////////////////////////////
+	    res.setContentType("text/html; charset=UTF-8");
+	    
+	    PrintWriter out = res.getWriter();
+	 
+	    //================================ json Object parse ============================
+	    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+	    //// com.fasterxml.jackson.core/jackson-databind --> 사용 library import시 주의(2024.04.05)
+	    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+	    ObjectMapper mapper = new ObjectMapper();            
+	    Reserve rsrv = (Reserve)mapper.readValue(filterJSON, new TypeReference<Reserve>(){ });
+	    //================================ json Object parse ============================
+	    
+	    String rsrvDate = rsrv.getRsrvDate().replace("-", "");   //// 예약일자 format 제거(2024.04.05)
+	    rsrv.setRsrvDate(rsrvDate);
+	    
+	    int id = 0;
+	    id = loginUser.getId();
+	     
+	    rsrv.setId(id);
+	    rsrv.setWriter(id);
 
-    private List<LocalDate> getDatesOfMonth(int year, int month) {
-        List<LocalDate> dates = new ArrayList<>();
-        LocalDate date = LocalDate.of(year, month, 1);
-        while (date.getMonthValue() == month) {
-            dates.add(date);
-            date = date.plusDays(1);
-        }
-        return dates;
-    }
-	
-	@RequestMapping(value = "callist.do", method = RequestMethod.GET)
-	public String callist(Model model) {
-		model.addAttribute("doc_title", "일정관리");
-		return "callist.tiles";
-	};
-	
-//	@RequestMapping(value = "callistData.do", method = RequestMethod.GET)
-//	@ResponseBody
-//	public List<CalendarDto> callistData(String year, String month, HttpServletRequest req) {
-//		System.out.println("year : "+year+ " month : "+month);
-//		//MemberDto mDto = (MemberDto)req.getSession().getAttribute("login");
-//		//CalParam param = new CalParam(mDto.getId(), year+UtilEx.two(month));
-//		List<CalendarDto> list = calService.getCalList(param);
-//		
-//		return list;
-//	}
-	
-//	@RequestMapping(value = "calDetail.do", method = { RequestMethod.GET, RequestMethod.POST })
-//	public String calDetail(Model model, Integer seq) {
-//		
-//		if(seq == null) seq = 0;
-//		System.out.println("seq : "+seq);
-//		CalendarDto dto = calService.calDetail(seq);
-//		model.addAttribute("cal", dto);
-//		model.addAttribute("doc_title", "일정 상세페이지");
-//		return "calDetail.tiles";
-//	}
-	
-//	@RequestMapping(value = "calWrite.do", method = { RequestMethod.GET, RequestMethod.POST })
-//	public String calWrite(Model model, CalParam param) {
-//		model.addAttribute("doc_title", "일정쓰기");
-//		model.addAttribute("param", param);
-//		Calendar cal = Calendar.getInstance();
-//		int year = Integer.parseInt(param.getYear());
-//		int month = Integer.parseInt(param.getMonth());
-//		cal.set(year, month-1, 1);
-//		int maxDay = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
-//		//System.out.println(year+"년 "+month+"월의 일수 : "+maxDay);
-//		model.addAttribute("maxDay", maxDay);
-//		
-//		return "calWrite.tiles";
-//	}
-	
-//	@RequestMapping(value = "calWriteAf.do", method = { RequestMethod.GET, RequestMethod.POST })
-//	public String calWriteAf(CalendarDto dto, CalParam param) {
-//		
-//		String rdate = param.getYear()+UtilEx.two(param.getMonth())
-//						+UtilEx.two(param.getDay())+UtilEx.two(param.getHour())+UtilEx.two(param.getMin());
-//		System.out.println("글쓴시간 : "+rdate);
-//		System.out.println(dto.toString());
-//		dto.setRdate(rdate);
-//
-//		int write = calService.calWrite(dto);
-//		if(write > 0 ) {
-//			System.out.println("글쓰기 성공");
-//			return "redirect:/callist.do";
-//		} else {
-//			System.out.println("글쓰기 실패");
-//			return "redirect:/calWrite.do";
-//		}
-//	}
-	
-	
-//	@RequestMapping(value = "calDelete.do", method = RequestMethod.GET) 
-//	public String calDelete(int seq) {
-//		
-//		//int del = calService.calDelete(seq);
-//		
-//		if(del > 0 ) {
-//			System.out.println("삭제 성공");
-//		} else {
-//			System.out.println("삭제 실패");
-//		}
-//		
-//		return "redirect:/callist.do";
-//	}
-	
-	
-//	@RequestMapping(value = "calUpdate.do", method = { RequestMethod.GET, RequestMethod.POST })
-//	public String calUpdate(Model model, int seq) {
-//		model.addAttribute("doc_title", "일정수정");
-//		
-//		CalendarDto dto = calService.calDetail(seq);
-//		CalParam param = new CalParam(null, null, 
-//									dto.getRdate().substring(0, 4),
-//									dto.getRdate().substring(4, 6),
-//									dto.getRdate().substring(6, 8),
-//									dto.getRdate().substring(8, 10),
-//									dto.getRdate().substring(10, 12));
-//		System.out.println(param.toString());
-//		System.out.println(dto.toString());
-//		model.addAttribute("param1", param);
-//		model.addAttribute("cal", dto);
-//		
-//		return "calUpdate.tiles";
-//	}
+		if (reserveService.insertReserve(rsrv) > 0) {
+		    obj.put("success", "ok");
+		}else {
+		    obj.put("success", "fail");
+		}
+			
+	    out.print(obj);
+	    
+	    return null;
+	}
 
-	
-//	@RequestMapping(value = "calUpdateAf.do", method = { RequestMethod.GET, RequestMethod.POST })
-//	public String calUpdateAf(CalendarDto dto, CalParam param) {
-//		
-//		String rdate = param.getYear()+UtilEx.two(param.getMonth())
-//						+UtilEx.two(param.getDay())+UtilEx.two(param.getHour())+UtilEx.two(param.getMin());
-//		System.out.println("글쓴시간 : "+rdate);
-//		dto.setRdate(rdate);
-//		System.out.println(dto.toString());
-//
-//		int update = calService.calUpdate(dto);
-//		if(update > 0 ) {
-//			System.out.println("수정 성공");
-//			return "redirect:/callist.do";
-//		} else {
-//			System.out.println("수정 실패");
-//			return "redirect:/calWrite.do";
-//		}
-//	}
-	
-	
-//	@RequestMapping(value = "calDayList.do", method = { RequestMethod.GET, RequestMethod.POST })
-//	public String calDayList(Model model, @ModelAttribute("param2")CalParam param, HttpSession session) {
-//		model.addAttribute("doc_title", "하루 일정");
-//		MemberDto mDto = (MemberDto)session.getAttribute("login");
-//		
-//		param.setId(mDto.getId());
-//		param.setYyyyMMdd(param.getYear()+UtilEx.two(param.getMonth())+UtilEx.two(param.getDay()));
-//		
-//		System.out.println(param.toString());
-//		//List<CalendarDto> list = calService.getDayList(param);
-//		
-//		model.addAttribute("dayList", list);
-//		
-//		return "calDayList.tiles";
-//	}
+	//// 달력 데이터 업데이트
+	@RequestMapping(value="update_ajx.do", method=RequestMethod.POST)
+	@ResponseBody
+	public String updateAction(
+	        @RequestBody String filterJSON,
+	        HttpServletRequest request,
+	        HttpServletResponse res,
+	        ModelMap model) throws Exception {
+		
+		HttpSession session = request.getSession();
+		User loginUser = (User)session.getAttribute("loginUser");
 
+	    JSONObject obj = new JSONObject();
+	    
+	    res.setContentType("text/html; charset=UTF-8");
+	    
+	    PrintWriter out = res.getWriter();
+	 
+	    //================================ json Object parse ============================
+	    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+	    //// com.fasterxml.jackson.core/jackson-databind --> 사용 library import시 주의(2024.04.05)
+	    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+	    ObjectMapper mapper = new ObjectMapper();            
+	    Reserve rsrv = (Reserve)mapper.readValue(filterJSON, new TypeReference<Reserve>(){ });
+	    //================================ json Object parse ============================
+	    
+	    String rsrvDate = rsrv.getRsrvDate().replace("-", "");   //// 예약일자 format 제거(2024.04.05)
+	    rsrv.setRsrvDate(rsrvDate);
+	    
+	    int id = 0;
+	    id = loginUser.getId();
+	     
+	    rsrv.setId(id);
+	    rsrv.setWriter(id);
+    
+		if(reserveService.updateReserve(rsrv) > 0) {
+		    obj.put("success", "ok");
+		}else {
+		    obj.put("success", "fail");
+		}
+
+	    out.print(obj);
+	    
+	    return null;
+	}
+
+	////////////////////////////////////////////////////
+	//// 달력 데이터 삭제
+	////////////////////////////////////////////////////
+	@RequestMapping(value = "delete_ajx.do", method=RequestMethod.POST)
+	@ResponseBody
+	public String deleteAction(
+	        @RequestBody String filterJSON,
+	        HttpServletRequest request,
+	        HttpServletResponse res,
+	        ModelMap model) throws Exception {
+		
+		HttpSession session = request.getSession();
+		User loginUser = (User)session.getAttribute("loginUser");
+
+	    JSONObject obj = new JSONObject();
+	    
+	    res.setContentType("text/html; charset=UTF-8");
+
+	    PrintWriter out = res.getWriter();
+
+	    //================================ json Object parse ============================
+	    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+	    //// com.fasterxml.jackson.core/jackson-databind --> 사용 library import시 주의(2024.04.05)
+	    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+	    ObjectMapper mapper = new ObjectMapper();
+	    Reserve rsrv = (Reserve)mapper.readValue(filterJSON, new TypeReference<Reserve>(){ });
+	    //================================ json Object parse ============================
+	    
+	    rsrv.setId(loginUser.getId());
+	    
+	    if (reserveService.deleteReserve(rsrv) > 0) {
+	    	obj.put("success", "ok");
+		}else {
+			obj.put("success", "fail");
+		}
+
+	    out.print(obj);
+	    
+	    return null;
+	}
 }

@@ -21,24 +21,4 @@ public interface ReserveService {
 	
 	/// 예약목록 조회
 	ArrayList<Reserve> selectRsrvList(SerachDateStr serachDateStr);
-	
-	ArrayList<Reserve> selectRsrvList2(SerachDateStr serachDateStr);
-	
-	//달력 추가
-	ArrayList<ScheduleDto> selectScheduleList(DateData dateData);
-
-	//스케쥴 count
-	int before_schedule_add_search(ScheduleDto scheduleDto);
-
-	//스케쥴 update
-	int update(ScheduleDto scheduleDto);
-
-	//스케쥴 삭제
-	int delete(ScheduleDto scheduleDto);
-
-	//스케쥴 조회
-	ScheduleDto selectReserveget(int idx);
-
-
-
 }

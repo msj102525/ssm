@@ -17,22 +17,22 @@
 		<result property="writeDate" column="WRITE_DATE" />
 	</resultMap>
 	
-	<resultMap type="com.sdm.ssm.reserve.model.vo.ScheduleDto" id="resultScheduleList">
-		<result property="schedule_idx" column="SCHEDULE_IDX" />
-		<result property="schedule_num" column="SCHEDULE_NUM" />
-		<result property="schedule_subject" column="SCHEDULE_SUBJECT" />
-		<result property="schedule_desc" column="SCHEDULE_DESC" />
-		<result property="schedule_date" column="SCHEDULE_DATE" />
-		<result property="schedule_share" column="SCHEDULE_SHARE" />
-		<result property="schedule_mycolor" column="SCHEDULE_MYCOLOR" />
-	</resultMap>
-
+	<select id="selectRsrvList" parameterType="com.sdm.ssm.common.SerachDateStr" resultMap="resultList">
+		SELECT rsrv_num, rsrv_date, rsrv_time
+				,rsrv_name, rsrv_telno, rsrv_inwon
+				,rsrv_subject, rsrv_memo
+				,writer, write_date
+		FROM (SELECT * FROM TB_RESERVATION_${ id }
+				WHERE rsrv_date BETWEEN #{ sdate } AND #{ edate }
+		     ORDER BY rsrv_date desc, rsrv_time desc, rsrv_num desc)
+	</select>
+	
 	<select id="selectRsrvListCount" resultType="_int">
 		SELECT count(*) FROM TB_RESERVATION_${ id }
 		WHERE rsrv_date = #{ rsrvDate }
 	</select>
 	
-	<select id="selectRsrvList" parameterType="Search" resultMap="resultList">
+	<select id="selectRsrvList_old" parameterType="Search" resultMap="resultList">
 		SELECT *
 		FROM
 		(SELECT rownum rnum, rsrv_num
@@ -44,16 +44,6 @@
 				WHERE rsrv_date = #{ keyword }
 		     ORDER BY rsrv_date desc, rsrv_time desc))
 		WHERE rnum BETWEEN #{ startRow } AND #{ endRow }
-	</select>
-	
-	<select id="selectRsrvList2" parameterType="com.sdm.ssm.common.SerachDateStr" resultMap="resultList">
-		SELECT rsrv_num, rsrv_date, rsrv_time
-				,rsrv_name, rsrv_telno, rsrv_inwon
-				,rsrv_subject, rsrv_memo
-				,writer, write_date
-		FROM (SELECT * FROM TB_RESERVATION_${ id }
-				WHERE rsrv_date BETWEEN #{ sdate } AND #{ edate }
-		     ORDER BY rsrv_date desc, rsrv_time desc, rsrv_num desc)
 	</select>
 	
 	<select id="selectRsrvDetail" parameterType="Reserve" resultMap="resultList">
@@ -78,21 +68,6 @@
 				,#{ writer }, default)
 	</insert>
 	
-	<!-- old version -->
-	<insert id="insertReserve_old" parameterType="Reserve">
-		INSERT INTO TB_RESERVATION_${ id }
-					(rsrv_num
-					,rsrv_date, rsrv_time
-					,rsrv_name, rsrv_telno, rsrv_inwon
-					,rsrv_subject, rsrv_memo
-					,writer, write_date)
-		VALUES ((SELECT nvl(max(rsrv_num), 0) + 1 FROM TB_RESERVATION_${ id })
-				,#{ rsrvDate }, #{ rsrvTime }
-				,#{ rsrvName }, #{ rsrvTelno }, #{ rsrvInwon }
-				,#{ rsrvSubject }, #{ rsrvMemo }
-				,#{ writer }, default)
-	</insert>
-	
 	<update id="updateReserve" parameterType="Reserve">
 		UPDATE TB_RESERVATION_${ id }
 		   SET rsrv_date = #{ rsrvDate }
@@ -111,19 +86,5 @@
 		DELETE FROM TB_RESERVATION_${ id } 
 		WHERE rsrv_num = #{ rsrvNum }
 	</delete>
-	
-	<select id="selectScheduleList" parameterType="com.sdm.ssm.reserve.model.vo.DateData" resultMap="resultScheduleList">
-		<![CDATA[
-		SELECT * FROM SCHEDULE 
-		WHERE SCHEDULE_DATE BETWEEN #{ db_startDate } AND #{ db_endDate }
-		ORDER BY SCHEDULE_DATE, SCHEDULE_NUM, SCHEDULE_IDX
-		]]>
-	</select>  
-	<!-- 리스트 가져오기 -->
-	<select id="selectReserveget" parameterType="_int" resultMap="resultScheduleList">
-		<![CDATA[
-		SELECT * FROM SCHEDULE WHERE SCHEDULE_IDX = #{schedule_idx}
-		]]>
-	</select>
 	
 </mapper>

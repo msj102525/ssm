@@ -1,32 +1,19 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-
-<c:set var="path" value="${ pageContext.servletContext.contextPath }" />
-
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<script type="text/javascript"
-	src="/ssm/resources/js/jquery-3.7.0.min.js"></script>
+<script type="text/javascript" src="/ssm/resources/js/jquery-3.7.0.min.js"></script>
 
-<link href="/ssm/resources/js/fullcalendar-5.0.1/lib/main.css"
-	rel="stylesheet" />
-<script type="text/javascript"
-	src="/ssm/resources/js/fullcalendar-5.0.1/lib/main.js"></script>
-<script type="text/javascript"
-	src="/ssm/resources/js/fullcalendar-5.0.1/lib/locales/ko.js"></script>
+<link href="/ssm/resources/js/fullcalendar-5.0.1/lib/main.css" 	rel="stylesheet" />
+<script type="text/javascript" src="/ssm/resources/js/fullcalendar-5.0.1/lib/main.js"></script>
+<script type="text/javascript" src="/ssm/resources/js/fullcalendar-5.0.1/lib/locales/ko.js"></script>
 
-<!-- <link rel="stylesheet" href="/ssm/resources/css/jquery-ui-1.13.2/jquery-ui.min.css" /> -->
 <link rel="stylesheet" href="/ssm/resources/css/jquery-ui-themes-1.13.2/themes/base/jquery-ui.css" />
 <script type="text/javascript" src="/ssm/resources/css/jquery-ui-1.13.2/jquery-ui.min.js"></script>
-
-<!-- <link rel="stylesheet" href="/ssm/resources/css/bootstrap-4.4.1-dist/css/bootstrap.min.css" />
-<script type="text/javascript" src="/ssm/resources/css/bootstrap-4.4.1-dist/js/bootstrap.bundle.min.js"></script> -->
 
 <link rel="stylesheet" href="resources/css/common/main.css" />
 
@@ -59,7 +46,6 @@ section .inner-section {
 	-webkit-border-radius: 7px;
 }
 
-/* */
 /* #dialog { font-size: 25px; } */
 #dialog {
 	font-size: 12px;
@@ -76,7 +62,7 @@ section .inner-section {
 #dialog div.bigger {
 	font-size: 150%;
 }
-/* #dialog p { font-size: x-small; background-color: blue; } */
+
 .feedback-input {
 	color: #3c3c3c;
 	font-family: Helvetica, Arial, sans-serif;
@@ -110,41 +96,6 @@ section .inner-section {
 .focused {
 	color: #30aed6;
 	border: #30aed6 solid 3px;
-}
-
-/* Icons */
-#name {
-	/* background-image: url(http://rexkirby.com/kirbyandson/images/name.svg); */
-	/* 이미지 없음(2024.04.07) */
-	background-size: 30px 30px;
-	background-position: 11px 8px;
-	background-repeat: no-repeat;
-}
-
-#email {
-	/* background-image: url(http://rexkirby.com/kirbyandson/images/email.svg); */
-	/* 이미지 없음(2024.04.07) */
-	background-size: 30px 30px;
-	background-position: 11px 8px;
-	background-repeat: no-repeat;
-}
-
-#comment {
-	/* background-image: url(http://rexkirby.com/kirbyandson/images/comment.svg); */
-	/* 이미지 없음(2024.04.07) */
-	background-size: 30px 30px;
-	background-position: 11px 8px;
-	background-repeat: no-repeat;
-}
-
-textarea {
-	/* width: 100%; */
-	width: 90%;
-	/* height: 150px; */
-	height: 50px; /* 2024.04.07 modify */
-	/* line-height: 150%; */
-	line-height: 110%; /* 2024.04.07 modify */
-	resize: vertical;
 }
 
 input:hover, textarea:hover, input:focus, textarea:focus {
@@ -586,9 +537,8 @@ section.sec2 .right-section section::after {
 		}).fail(function(e) {
 			alert("실패하였습니다." + e);
 		}).always(function() {
+			//// 값 초기화
 			funDiaFormClear();
-			//$("#name").val("");
-			//$("#comment").val("");
 		});
 	}
 
@@ -662,9 +612,6 @@ section.sec2 .right-section section::after {
 				var end2 = fetchInfo.end.toISOString().slice(0, 10);
 				var param = "";
 
-				//console.log("start2 : " + start2); //// 년월만 전달...
-				//console.log("end2 : " + end2); //// 년월만 전달...
-
 				param += "start=" + start2;
 				param += "&end=" + end2;
 
@@ -721,10 +668,6 @@ section.sec2 .right-section section::after {
 			      });
 			    });
 		}
-
-		//$("span.fa-chevron-left").html("이전달");
-		//$("span.fa-chevron-right").html("다음달");
-
 	});
 	//////////////////////////////////////////////////////////////////
 	//// 달력 생성 [e]-end

@@ -37,31 +37,11 @@ public class ReserveDao {
 	public Reserve selectRsrvDetail(Reserve reserve) {
 		return sqlSessionTemplate.selectOne("reserveMapper.selectRsrvDetail", reserve);
 	}
-	
+
 	//// 목록 조회(2024.04.04)
 	public ArrayList<Reserve> selectRsrvList(SerachDateStr serachDateStr) {
-		return sqlSessionTemplate.selectOne("reserveMapper.selectRsrvList", serachDateStr);
-	}
-
-	//// 목록 조회2(2024.04.04)
-	public ArrayList<Reserve> selectRsrvList2(SerachDateStr serachDateStr) {
-		List<Reserve> list = sqlSessionTemplate.selectList("reserveMapper.selectRsrvList2", serachDateStr);
+		List<Reserve> list = sqlSessionTemplate.selectList("reserveMapper.selectRsrvList", serachDateStr);
 		return (ArrayList<Reserve>)list;
 	}
-
-	//////////////////////////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////////////////////////
-	//schedule 조회(2024.04.02)
-	public ScheduleDto selectReserveget(int idx) {
-		return sqlSessionTemplate.selectOne("reserveMapper.selectReserveget", idx);
-	}
-
-	//schedule list
-	public ArrayList<ScheduleDto> selectScheduleList(DateData dateData) {
-		List<ScheduleDto> list = sqlSessionTemplate.selectList("reserveMapper.selectScheduleList", dateData);
-		return (ArrayList<ScheduleDto>)list;
-	}
-
-
 
 }
