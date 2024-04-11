@@ -27,9 +27,6 @@
 
 #calendar {
 	/* max-width: 1100px; */
-	/* max-width: 900px; */
-	/* max-width: 800px; */
-	/* max-width: 500px; */
 	margin: 0 auto;
 }
 
@@ -45,6 +42,7 @@ section .inner-section {
 	-moz-border-radius: 7px;
 	-webkit-border-radius: 7px;
 }
+
 
 /* #dialog { font-size: 25px; } */
 #dialog {
