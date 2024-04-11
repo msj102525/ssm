@@ -85,7 +85,7 @@ public class ReserveCalController {
 		//return "reserve/calendarfull040701";
 	}
 	
-	//달력 기본 화면
+	//// 달력 기본 화면
 	@RequestMapping(value = "/adms/calendar/management/list.do")
 	public String lnb04List(RedirectAttributes redirectAttributes, 
 					HttpServletRequest request, 
@@ -114,22 +114,13 @@ public class ReserveCalController {
 			HttpServletResponse res,
 			ModelMap model) throws Exception {
 
-		//logger.info("=========================================================");
-		//logger.info("조회 일자 : " + searchVO.getStart());
-		//logger.info("조회 일자 : " + searchVO.getEnd());
-		//logger.info("조회 일자 : " + searchVO.getStart().replace("-", ""));
-		//logger.info("조회 일자 : " + searchVO.getEnd().replace("-", ""));
-		//logger.info("=========================================================");
-		
 		HttpSession session = request.getSession();
 		User loginUser = (User)session.getAttribute("loginUser");
 
-		//logger.info("ID-02 : " + loginUser.getId());
-		
 		String sdate = searchVO.getStart().replace("-", "");
 		String edate = searchVO.getEnd().replace("-", "");
 		
-		/// 조회 조건을 설정하기 위한 방법
+		//// 조회 조건을 설정하기 위한 방법
 	    SerachDateStr serachDateStr = new SerachDateStr();
 	    serachDateStr.setSdate(sdate);
 	    serachDateStr.setEdate(edate);
@@ -240,8 +231,12 @@ public class ReserveCalController {
 	    rsrv.setRsrvDate(rsrvDate);
 	    
 	    //rsrv.setId(200);
-	    rsrv.setId(loginUser.getId());
-	    
+	    int id = 0;
+	    id = loginUser.getId();
+	     
+	    rsrv.setId(id);
+	    rsrv.setWriter(id);
+
 		if (reserveService.insertReserve(rsrv) > 0) {
 		    obj.put("success", "ok");
 		}else {
@@ -290,7 +285,12 @@ public class ReserveCalController {
 	    rsrv.setRsrvDate(rsrvDate);
 	    
 	    //rsrv.setId(200);
-	    rsrv.setId(loginUser.getId());
+	    //rsrv.setId(200);
+	    int id = 0;
+	    id = loginUser.getId();
+	     
+	    rsrv.setId(id);
+	    rsrv.setWriter(id);
     
 		if(reserveService.updateReserve(rsrv) > 0) {
 		    obj.put("success", "ok");
