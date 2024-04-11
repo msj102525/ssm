@@ -69,13 +69,13 @@
         background-color: #45a049;
     }
 </style>
+<script type="text/javascript" src="/ssm/resources/js/jquery-3.7.0.min.js"></script>
 </head>
 <body>
-
-<div class="container">
+<div class="container" id="moveUpdateEmployee.do">
     <h2>직원 정보 수정</h2>
 
-     <form id="updateForm" action="updateEmployee.do" method="post"> 
+    <form id="updateForm" action="updateEmployee.do?id=${loginUser.id}" method="post"> 
     <input type="hidden" name="empId" value="${employee.empId}">
     
     <label for="empName">이름:</label>
@@ -97,15 +97,19 @@
     
     <label for="empGender">성별:</label>
     <select id="empGender" name="empGender" required>
-        <option value="m" ${employee.empGender == 'm' ? 'selected' : ''}>남자</option>
-        <option value="f" ${employee.empGender == 'f' ? 'selected' : ''}>여자</option>
+        <option value="M" ${employee.empGender == 'M' ? 'selected' : ''}>남자</option>
+        <option value="F" ${employee.empGender == 'F' ? 'selected' : ''}>여자</option>
     </select><br><br>
 
     <input type="submit" value="수정">
    <button type="button" onclick="location.href='selectemp.do?id=${loginUser.id}'">목록</button>
 </form>
-
 </div>
 
+
+	<script type="text/javascript">
+	var userId = $('#userId').val(); 
+   location.href="employeeDetails.do?id="+userId+"&empId=" + empId;
+   </script>
 </body>
 </html>

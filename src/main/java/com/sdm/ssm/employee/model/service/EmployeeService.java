@@ -16,7 +16,7 @@ public interface EmployeeService {
 
 	int insertEmployee(Employee employee);
 
-	int deleteEmployee(int empId);
+	int deleteEmployee(Employee employee);
 
 	List<Employee> employeeSearchMethod(Search search);
 
@@ -26,9 +26,9 @@ public interface EmployeeService {
 
 	ArrayList<Employee> employeeListMethod();
 
-	int updateEmployee(int id, Employee employee);
+	int updateEmployee(Employee employee);
 
-	Employee selectEmpInfo(int id,String empName);
+	Employee selectEmpInfo(Employee emp);
 
 	List<Employee> selectemployee(int id);
 

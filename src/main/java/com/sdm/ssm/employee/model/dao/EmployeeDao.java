@@ -42,11 +42,11 @@ public class EmployeeDao {
     }
 
     public int updateEmployee(Employee employee) {
-        return sqlSessionTemplate.update("employeeMapper.updateEmployee", employee);
+        return sqlSessionTemplate.update("employeeMapper.updateemp", employee);
     }
 
-    public int deleteEmployee(int empId) {
-        return sqlSessionTemplate.delete("employeeMapper.deleteEmployee", empId);
+    public int deleteEmployee(Employee employee) {
+        return sqlSessionTemplate.delete("employeeMapper.deleteemp", employee);
     }
 
 
@@ -65,23 +65,13 @@ public class EmployeeDao {
 	    return sqlSessionTemplate.selectList("employeeMapper.searchEmployeeByName", empName);
 	}
 
-	public int updateEmployee(int id, Employee employee) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("id", id);
-        params.put("employee", employee);
-        return sqlSessionTemplate.update("employeeMapper.updateemp", params);
-    }
-
-	public Employee selectEmpInfo(int id, String empName) {
-		Map<String, Object> params = new HashMap<>();
-        params.put("id", id);
-        params.put("employee", empName);
-		return sqlSessionTemplate.selectOne("employeeMapper.selectEmpname", params);
+	public Employee selectEmpInfo(Employee emp) {
+		return sqlSessionTemplate.selectOne("employeeMapper.selectEmpname", emp);
 	}
 
 	public List<Employee> selectemployee(int id) {
 		// TODO Auto-generated method stub
-		return sqlSessionTemplate.selectList("employeeMapper.select;",id);
+		return sqlSessionTemplate.selectList("employeeMapper.getEmployeeDetails",id);
 	}
 
 

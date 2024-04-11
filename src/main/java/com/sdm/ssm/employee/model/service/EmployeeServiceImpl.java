@@ -37,8 +37,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public int deleteEmployee(int empId) {
-        return employeeDao.deleteEmployee(empId);
+    public int deleteEmployee(Employee employee) {
+        return employeeDao.deleteEmployee(employee);
     }
 
     @Override
@@ -57,18 +57,18 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 	@Override
-	public int updateEmployee(int id, Employee employee) {
-	    return employeeDao.updateEmployee(id, employee);
+	public Employee selectEmpInfo(Employee employee) {
+		return employeeDao.selectEmpInfo(employee);
 	}
 
 	@Override
-	public Employee selectEmpInfo(int id,String empName) {
-		return employeeDao.selectEmpInfo(id, empName);
-	}
-
-	@Override
-	public List<Employee> selectemployee(int id) {
+	public List<Employee> selectemployee(int id) {	
 		return employeeDao.selectemployee(id);
+	}
+
+	@Override
+	public int updateEmployee(Employee employee) {
+		return employeeDao.updateEmployee( employee);
 	}
 
 

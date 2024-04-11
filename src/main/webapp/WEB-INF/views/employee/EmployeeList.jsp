@@ -210,10 +210,13 @@ input[type="submit"]:hover {
 			<!-- 등록 페이지 이동 버튼 -->
 			<button onclick="location.href='insertemp.do?id=${loginUser.id}'">직원 등록</button>
 			<!-- 수정 페이지로 이동 버튼 -->
-			<button onclick="location.href='updateEmployee.do?id=?${ id }(${selectedEmployee.empId})'">수정하기</button>			
-			<%-- <button onclick="moveAndUpdateEmployeePage.do?(${selectedEmployee.empId})">수정하기</button> --%>
+			<script type="text/javascript">			
+			function moveUpEmp(empName){
+			location.href = 'moveUpdateEmployee.do?id=${ loginUser.id }&empName=' + empName; }
+			</script>
+			  <button onclick="moveUpEmp('${empDetail.empName}')">수정하기</button> 
 			<!-- 직원 삭제 버튼 -->
-			<button onclick="deleteEmployee('${selectedEmployee.empId}')">삭제하기</button>			
+			<button onclick="deleteEmployee('${empDetail.empId}')">삭제하기</button>			
 			<!-- 목록으로 돌아가기 버튼 -->
 			<!-- <button onclick="location.href='mvwelcom.do?'">목록으로 돌아가기</button> -->
 		</div>
@@ -226,8 +229,8 @@ var selectedEmployee;
 //직원 정보를 조회하는 함수
 function loadEmployeeDetails(empId) {
 	 // 선택된 직원의 option 엘리먼트를 가져옴
-	 var userId = $('#userId').val();
-    //var selectedOption = document.getElementById("employeeSelect").options[document.getElementById("employeeSelect").selectedIndex];
+	//var selectedOption = document.getElementById("employeeSelect").options[document.getElementById("employeeSelect").selectedIndex];
+    var userId = $('#userId').val(); 
    location.href="employeeDetails.do?id="+userId+"&empId=" + empId;
 	 // 선택된 직원 정보를 저장
     /* selectedEmployee = {
@@ -261,7 +264,8 @@ function loadEmployeeDetails(empId) {
 // 직원을 삭제하는 함수
 function deleteEmployee(empId) {
     if(confirm('정말로 삭제하시겠습니까?')) {
-        window.location.href = `/deleteemp?EMP_ID=${empId}`;
+    	var userId = $('#userId').val(); 
+    	location.href="deleteEmployee.do?id="+userId+"&empId=" + empId;
     }
 }
 </script>

@@ -114,58 +114,63 @@ public class EmployeeController {
 		return "redirect:selectemp.do";
 	}
 
-
 	// 직원 정보 수정 페이지로 이동하고 직원 정보를 가져오는 메서드
-	@RequestMapping(value = "moveAndUpdateEmployeePage.do", method = RequestMethod.GET)
+	@RequestMapping(value = "updateEmployee.do", method = {RequestMethod.GET, RequestMethod.POST})
 	public String moveAndUpdateEmployeePage(
 			Employee employee, /* @RequestParam("empId") int empId, */
-			@RequestParam("id") int id, Model model) {
+	 Model model) {
 	    // 여기서는 특정 직원의 정보를 가져오는 프로시저를 호출하여 직원 정보를 가져옵니다.
-		employee = employeeService.selectEmpInfo(employee.getId(),employee.getEmpName());	
+		logger.info(employee.toString());
+		employeeService.updateEmployee(employee);
 	    // 가져온 직원 정보가 null이 아니면
-	    if (employee != null) {
-	        model.addAttribute("employee", employee); // 수정할 직원 정보를 모델에 추가
-	        return "employee/upEmployee.do?id=${loginUser.id}"; // 직원 정보 수정 페이지로 이동
-	    } else {
-	        // 해당 직원이 존재하지 않을 경우 처리
-	        // 적절한 에러 페이지로 이동하거나 다른 처리를 수행할 수 있음
-	        return "employee/selectemp.do?id=${loginUser.id}"; // 목록 페이지로 리다이렉트
-	    }
+	        model.addAttribute("id", employee.getId());
+	        return "redirect:selectemp.do"; // 직원 정보 수정 페이지로 이동
 	}
 
 	//직원 수정 처리
-	@RequestMapping(value="updateEmployee.do", method = {RequestMethod.GET, RequestMethod.POST})
-	public ResponseEntity<String> updateEmployee(
-			@RequestParam("id") int id,
-			@ModelAttribute Employee employee) {
-	    int result = employeeService.updateEmployee(id,employee);
-	    if (result > 0) {
-	        return new ResponseEntity<>("직원 정보 수정 성공", HttpStatus.OK);
-	    } else {
-	        return new ResponseEntity<>("직원 정보 수정 실패", HttpStatus.INTERNAL_SERVER_ERROR);
-	    }
+	@RequestMapping(value="moveUpdateEmployee.do", method = {RequestMethod.GET, RequestMethod.POST})
+	public String updateEmployee(
+			Model model, Employee emp) {	
+		Employee emp2 = employeeService.selectEmpInfo(emp);
+		logger.info(emp2.toString());
+		if(emp2 !=null) {
+			model.addAttribute("employee", emp2);
+			model.addAttribute("id", emp.getId());
+			return "employee/upEmployee";	
+		}else {
+			return "employee/EmployeeList";
+		}
 	}
-
-	
-
+	    
 		//직원 삭제
-	    @RequestMapping(value = "deleteEmployee.do", method = { RequestMethod.POST, RequestMethod.GET })
-	    public ResponseEntity<String> deleteEmployee(@RequestParam("empId") int empId, HttpServletResponse response) {
-	        int result = employeeService.deleteEmployee(empId);
-	        if (result > 0) {
-	            // 직원 삭제 후 목록 페이지로 Redirect
-	            try {
-	                response.sendRedirect("employee/EmployeeList");
-	            } catch (IOException e) {
-	                e.printStackTrace();
-	                return new ResponseEntity<>("페이지 이동 실패", HttpStatus.INTERNAL_SERVER_ERROR);
-	            }
-	            return new ResponseEntity<>("직원 삭제 성공", HttpStatus.OK);
-	        } else {
-	            return new ResponseEntity<>("직원 삭제 실패", HttpStatus.INTERNAL_SERVER_ERROR);
-	        }
-	    }
-
+//	    @RequestMapping(value = "deleteEmployee.do", method = { RequestMethod.POST, RequestMethod.GET })
+//	    public ResponseEntity<String> deleteEmployee(@RequestParam("empId") int empId, HttpServletResponse response) {
+//	        int result = employeeService.deleteEmployee(empId);
+//	        if (result > 0) {
+//	            // 직원 삭제 후 목록 페이지로 Redirect
+//	            try {
+//	                response.sendRedirect("employee/EmployeeList");
+//	            } catch (IOException e) {
+//	                e.printStackTrace();
+//	                return new ResponseEntity<>("페이지 이동 실패", HttpStatus.INTERNAL_SERVER_ERROR);
+//	            }
+//	            return new ResponseEntity<>("직원 삭제 성공", HttpStatus.OK);
+//	        } else {
+//	            return new ResponseEntity<>("직원 삭제 실패", HttpStatus.INTERNAL_SERVER_ERROR);
+//	        }
+//	    }
+	    	
+	    @RequestMapping(value = "deleteEmployee.do", method = {RequestMethod.GET, RequestMethod.POST})
+		public String deleteEmployee(
+				Employee employee, /* @RequestParam("empId") int empId, */
+		 Model model) {
+		    // 여기서는 특정 직원의 정보를 가져오는 프로시저를 호출하여 직원 정보를 가져옵니다.
+			logger.info(employee.toString());
+			employeeService.deleteEmployee(employee);
+		    // 가져온 직원 정보가 null이 아니면
+		        model.addAttribute("id", employee.getId());
+		        return "redirect:selectemp.do";
+		}
 		 // 직원 검색
 	    @PostMapping("employeessearch.do")
 	    public String employeeSearchMethod(@RequestBody Search search, Model model) {

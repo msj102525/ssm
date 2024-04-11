@@ -29,7 +29,7 @@
     WHERE EMP_ID = #{empId}
 	</select>
 	<!-- 직원이름으로 조회 -->
-	<select id="selectEmpname" parameterType="Employee">
+	<select id="selectEmpname" parameterType="Employee" resultMap="resultList">
 	select *  from tb_employee_${id}
 	WHERE EMP_NAME =#{empName}
 	</select>
@@ -58,14 +58,13 @@
 		EMP_PHONE = #{empPhone},
 		EMP_EMAIL = #{empEmail},
 		EMP_ADDRESS = #{empAddress},
-		EMP_BIRTHDATE=#{empBirthDate},
 		EMP_GENDER = #{empGender}
 		WHERE EMP_ID = #{empId}
 	</update>
 
 	<!-- 직원 정보 삭제 -->
-	<delete id="deleteemp" parameterType="int">
-		DELETE FROM TB_EMPLOYEE_${id} WHERE EMP_ID_${id}_SEQ.NEXTVAL=#{empId}
+	<delete id="deleteemp" parameterType="Employee">
+		DELETE FROM TB_EMPLOYEE_${id} WHERE EMP_ID=#{empId}
 	</delete>
 
 	<!-- SalaryInfo 클래스에 대한 resultMap -->
