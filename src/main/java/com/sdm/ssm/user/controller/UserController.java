@@ -457,9 +457,7 @@ public class UserController {
 	@RequestMapping(value = "searchPw.do", method = RequestMethod.POST)
 	public String searchPwMethod(User user, Model model) {
 		User findUser = null;
-		logger.info(user.toString());
 		findUser = userService.selectUserByEmailId(user);
-		logger.info(findUser.toString());
 
 		if (findUser != null) {
 			//소문자, 대문자, 숫자 
@@ -514,10 +512,6 @@ public class UserController {
 			@RequestParam("userId") String userId, Model model,
 			@RequestParam("id") int id,
 			@RequestParam("email") String email) {
-		
-		logger.info("탈퇴할 회원 아이디!!!!!!!!!" + id);
-		logger.info("탈퇴할 회원 유저 아이디!!!!!!!!!" + userId);
-		logger.info("탈퇴할 회원 유저 이메일!!!!!!!!!" + email);
 		
 		UserFinkOut userFO = new UserFinkOut();
 		
