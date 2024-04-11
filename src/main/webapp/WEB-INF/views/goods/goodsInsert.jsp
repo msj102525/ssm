@@ -104,7 +104,9 @@
                 contentType: "application/json; charset=utf-8",
                 success: function(result) {
                 	alert("등록 성공")
-                    location.reload();  
+                	var redirectUrl = "glist.do?page=1&id=${loginUser.id}";
+                    // 지정된 URL로 이동
+                    location.href = redirectUrl; 
                 },
                 error: function(request, status, errorData) {
                     console.log("error code : " + request.status

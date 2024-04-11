@@ -26,15 +26,15 @@ function sum() {
     const table = document.getElementById('myTable');
 
 	// 2번 행의 값을 초기 값으로 설정
-	/* let sum = Number(table.rows[2].cells[1].textContent); */
-	let sum = 1500;
-	// 3, 4, 5행의 값을 빼기
-	/* for (let i = 3; i <= 5; i++) {
-    	sum -= Number(table.rows[i].cells[1].textContent);
-	} */
+	let sum = Number(table.rows[2].cells[1].textContent); 
 
-	// 6행부터 마지막 이전 행까지의 input 요소의 값을 빼기
-	for (let i = 6; i < table.rows.length - 1; i++) {
+	// 3, 4행의 값을 빼기
+	 for (let i = 3; i <= 4; i++) {
+    	sum -= Number(table.rows[i].cells[1].textContent);
+	}
+
+	// 5행부터 마지막 이전 행까지의 input 요소의 값을 빼기
+	for (let i = 5; i < table.rows.length - 1; i++) {
     	sum -= Number(table.rows[i].cells[1].querySelector('input').value);
 	}
     
@@ -141,6 +141,11 @@ function onChangeMonth() {
                             document.getElementById("monthlySales").textContent = data.monthlysale;
                         }
                     }
+                	var sumDisplay = document.getElementById("sumDisplay");
+                	sumDisplay.textContent = document.getElementById("monthlySales").textContent 
+                			- document.getElementById("monthlyRent").placeholder
+                			- document.getElementById("montlyTax").placeholder
+                		    - document.getElementById("monthlyCost").placeholder;
                 },
                 error: function(request, status, errorData) {
                     console.log("error code : " + request.status
@@ -154,7 +159,7 @@ function onChangeMonth() {
 </script>
 
 </head>
-<body>
+<body onload="onChangeMonth()">
 <c:import url="/WEB-INF/views/common/header.jsp" />
 <div style="padding-top : 100px;">
 
@@ -215,39 +220,30 @@ function onChangeMonth() {
     				<td align="center" style="white-space: nowrap;">						
 						<span id="monthlyPdPrice" ></span>						
 					</td>
-				</tr>	
-				<tr>
-					<td align="center" style="white-space: nowrap;">월 급여</td>
-					<td align="center" style="white-space: nowrap;">
-						<span id="monthlySalary">월 급여 총합 출력칸</span>	
-					</td>
-				</tr>	
+				</tr>		
 				<tr>
 					<td align="center" style="white-space: nowrap;">월세</td>
 					<td align="center" style="white-space: nowrap;">
-						<input id="monthlyRent" type="number" placeholder="월세 입력">
+						<input id="monthlyRent" type="number" placeholder="월세 입력 단위 원">
 					</td>
 				</tr>	
 				<tr>
 					<td align="center" style="white-space: nowrap;">세금</td>
 					<td align="center" style="white-space: nowrap;">
-						<input id="montlyTax" type="number" placeholder="세금 입력">
+						<input id="montlyTax" type="number" placeholder="세금 입력 단위 원">
 					</td>
 				</tr>		
 				<tr>
 					<td align="center" style="white-space: nowrap;">기타비용</td>
 					<td align="center" style="white-space: nowrap;">
-						<input id="monthlyCost" type="number" placeholder="기타비용 입력">
+						<input id="monthlyCost" type="number" placeholder="기타비용 입력 단위 원">
 					</td>
 				</tr>				
 				
 				<tr>
 					<td align="center" style="white-space: nowrap;">월 수익</td>
-					<td align="center" style="white-space: nowrap;">
-						<div id="buttonDisplay">
-            				<button onclick="sum();">합계</button>
-            			</div>
-            			<div id="sumDisplay" style="display:none;"></div> 		
+					<td align="center" style="white-space: nowrap;">				
+            			<div id="sumDisplay"></div> 		
 					</td>
 				</tr>	
 			</table>
@@ -258,6 +254,9 @@ function onChangeMonth() {
 <br>
 <div id="idDisplay" style="display:none;">${ loginUser.id }</div>
 
+<div id="buttonDisplay" style="text-align: center;">
+    <button onclick="sum();">변경 사항 저장</button>
+</div>
 <br>
 <br>
 
