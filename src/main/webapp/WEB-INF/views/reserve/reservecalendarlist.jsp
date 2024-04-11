@@ -452,7 +452,7 @@ span#ui-id-1 {
 			var $obj = new Object();
 
 			/////////////////////////////////////////////////////////////////////
-			/// 변경 검토
+			/// object 값 생성하기
 			/////////////////////////////////////////////////////////////////////
 			$("form#diaForm")
 					.find("input,textarea,select")
@@ -500,16 +500,6 @@ span#ui-id-1 {
 			$("form#diaForm").find("input[name='rsrvSubject']").val(xobj.title); //// 제목
 			$("form#diaForm").find("textarea[name='rsrvMemo']").val(xobj.rsrvmemo);
 			$("form#diaForm").find("input[name='xwriteDate']").val(xobj.writedate); /// 작성일자
-
-			/* 
-			$("form#diaForm").find("input[name='rsrvdate']").val(dispStr);
-			$("form#diaForm").find("input[name='start']").val(xobj.start);
-			$("form#diaForm").find("input[name='end']").val(xobj.end);
-			
-			$("form#diaForm").find("input[name='id']").val(xobj.id);
-			$("form#diaForm").find("input[name='title']").val(xobj.title);
-			$("form#diaForm").find("textarea[name='xcontent']").val(xobj.xcontent); 
-			 */
 		}
 	};
 	//calFunc[e]---- ojbect create end
@@ -518,13 +508,31 @@ span#ui-id-1 {
 	//// 등록 액션
 	//////////////////////////////////////////////////
 	function createClnd(cal, xobj) {
-		if (!confirm("일정을 등록 하시겠습니까?")) {
+		//// 등록을 위해서 넘겨줘야 할 값
+		var $obj = calFunc.getFormValue();
+		
+		//// 필수 입력 사항 check..
+		if ($obj.rsrvName == "" || $obj.rsrvName == "undefined" || $obj.rsrvName == null) {
+			alert("예약자명을 입력하세요.");
+			return false;
+		}
+		
+		if ($obj.rsrvTime == "" || $obj.rsrvTime == "undefined" || $obj.rsrvTime == null) {
+			alert("시간을 입력하세요.");
+			return false;
+		}
+		
+		///alert("제목 : " + $obj.rsrvSubject);
+		
+		if ($obj.rsrvSubject == "" || $obj.rsrvSubject == "undefined" || $obj.rsrvSubject == null) {
+			alert("제목을 입력하세요.");
 			return false;
 		}
 
-		//// 등록을 위해서 넘겨줘야 할 값
-		var $obj = calFunc.getFormValue();
-
+		if (!confirm("일정을 등록 하시겠습니까?")) {
+			return false;
+		}
+		
 		$.ajax({
 			//url: ctx + "/adms/calendar/management/create_ajx.do", 
 			url : "create_ajx.do",
@@ -545,20 +553,38 @@ span#ui-id-1 {
 			//$("#name").val("");
 			//$("#comment").val("");
 		});
+		
+		return true;
 	}
 
 	//////////////////////////////////////////////////
 	//// 수정 액션
 	//////////////////////////////////////////////////
 	function updateClnd(cal, xobj, event) {
+		//// 수정을 위해서 넘겨줘야 할 값
+		var $obj = calFunc.getFormValue();
+		
+		if ($obj.rsrvName == "" || $obj.rsrvName == "undefined" || $obj.rsrvName == null) {
+			alert("예약자명을 입력하세요.");
+			return false;
+		}
+		
+		if ($obj.rsrvTime == "" || $obj.rsrvTime == "undefined" || $obj.rsrvTime == null) {
+			alert("시간을 입력하세요.");
+			return false;
+		}
+		
+		if ($obj.rsrvSubject == "" || $obj.rsrvSubject == "undefined" || $obj.rsrvSubject == null) {
+			alert("제목을 입력하세요.");
+			return false;
+		}
+		
 		if (!confirm("해당 일정을 정말로 수정 하시겠습니까?")) {
 			if (event != undefined) {
 				event.revert();
 			}
 			return false;
 		}
-
-		var $obj = calFunc.getFormValue();
 
 		$.ajax({
 			url : "update_ajx.do",
@@ -575,9 +601,12 @@ span#ui-id-1 {
 		}).always(function() {
 			///////////////////////////////////////////////////
 			///////////////////////////////////////////////////
-			$("#name").val("");
-			$("#comment").val("");
+			funDiaFormClear();
+			////$("#name").val("");
+			////$("#comment").val("");
 		});
+		
+		return true;
 	}
 	///////////////////////////////////////////////////
 	/// 삭제 액션
@@ -635,6 +664,7 @@ span#ui-id-1 {
                     // 잘못된 형식일 경우
                     alert("잘못된 형식의 전화번호 입니다.");
                     $("#rsrvTelno").val("");
+                    this.focus();
                     return false;
                 }
 
@@ -654,13 +684,15 @@ span#ui-id-1 {
             }
         });
         
-        //시간
+        //// 시간
         $("#rsrvTime").blur(function() {
             // 입력된 전화번호 가져오기
             var reserveTime = $("#rsrvTime").val();
-            if(reserveTime) {
+            
+            if (reserveTime) {
                 // 정규식을 사용하여 형식 검사
-				var regex = /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
+				//var regex = /^(?:[01]\d|2[0-3])(?::[0-5]\d)?$/;
+                var regex = /^(?:[01]\d|2[0-3])(?::[0-5]\d)?$/;
 
                 if (regex.test(reserveTime)) {
                     // 올바른 형식일 경우
@@ -668,6 +700,7 @@ span#ui-id-1 {
                     // 잘못된 형식일 경우
                     alert("잘못된 형식의 시간 입니다.");
                     $("#rsrvTime").val("");
+                    this.focus();
                     return false;
                 }
 
@@ -684,8 +717,11 @@ span#ui-id-1 {
                 }
 
                 $("#rsrvTime").val(timecnv);
+            } else {
+				this.focus();
+				return false;
             }
-        });        
+        });
         
     });
     
@@ -735,8 +771,11 @@ span#ui-id-1 {
 					"저장" : function() {
 						//////////////////////////////////////////////
 						//////////////////////////////////////////////
-						createClnd(calendar, xObj); //// 저장 클릭시 액션 함수
-						$(this).dialog("close");
+						var result = false;
+						result = createClnd(calendar, xObj); //// 저장 클릭시 액션 함수
+						if (result == true) {
+							$(this).dialog("close");
+						}
 					},
 					"취소" : function() {
 						$(this).dialog("close");
@@ -776,8 +815,13 @@ span#ui-id-1 {
 						$(this).dialog("close");
 					},
 					"수정" : function() {
-						updateClnd(calendar, xObj); //수정클릭시 액션 함수
-						$(this).dialog("close");
+						var result = false;
+						
+						result = updateClnd(calendar, xObj); //// 수정 클릭시 액션 함수
+						
+						if (result == true) {
+							$(this).dialog("close");
+						}
 					},
 					"닫기" : function() {
 						$(this).dialog("close");
@@ -913,8 +957,17 @@ span#ui-id-1 {
 			locale : 'ko'
 		});
 	}
+	
+	//// 입력 모드 설정 함수(2024.04.11)
+	function setLanguage(language) {
+	    if (language === 'ko') {
+	        document.getElementById("name").lang = "ko"; // 한글 입력 모드로 설정
+	    } else if (language === 'en') {
+	        document.getElementById("email").lang = "en"; // 영문 입력 모드로 설정
+	    }
+	}
 </script>
-<title>calendar3</title>
+<title>RERVATION-Calendar</title>
 </head>
 <body>
 	<c:import url="/WEB-INF/views/common/header.jsp" />
@@ -938,30 +991,38 @@ span#ui-id-1 {
 								</p>
 								<div class="email">
 									<label for="rsrvName" style="width: 80px;">예약자명</label>
-									<input type="text" name="rsrvName" id="rsrvName">
+									<input type="text" name="rsrvName" id="rsrvName" maxlength="10" onfocus="setLanguage('ko')"> <!-- 한글 입력 모드로 설정 -->
 									<!-- <input type="text" name="rsrvName" id="rsrvName" class="validate[required,custom[email]] feedback-input" /> -->
 									<!-- <input type="text" name="rsrvName" id="rsrvName" placeholder="홍길동" /> -->
 									<!-- <input type="text" name="rsrvdate" readonly="readonly" class="validate[required,custom[email]] feedback-input" placeholder="선택된날짜 및 시간" /> -->
 								</div>
 								<div class="email">
 									<label for="rsrvTelno" style="width: 80px">연락처</label>
-									<input type="text" name="rsrvTelno" id="rsrvTelno" placeholder="010-1234-5678" />
+									<input type="text" name="rsrvTelno" id="rsrvTelno" maxlength="11" placeholder="010-1234-5678" />
 								</div>
 								<div class="email">
 									<label for="rsrvTime" style="width: 80px;">예약시간</label>
-									<input type="text"   name="rsrvTime"   id="rsrvTime"  placeholder="10:00" />
+									<input type="text"   name="rsrvTime" id="rsrvTime" maxlength="5" placeholder="10:00" />
 								</div>
 								<div>
 									<label for="rsrvInwon" style="width: 80px">인원</label>
-									<input type="number" name="rsrvInwon" id="rsrvInwon" />
+									<input type="number" name="rsrvInwon" id="rsrvInwon" min="1" max="10" />
+									<script type="text/javascript">
+										document.getElementById("rsrvInwon").addEventListener("input", function() {
+										    var maxDigits = 2; //// 최대 입력 길이
+										    if (this.value.length > maxDigits) {
+										        this.value = this.value.substring(0, maxDigits); //// 최대 길이를 초과하는 경우 입력을 제한합니다.
+										    }
+										});
+									</script>
 								</div>
 								<div>
 									<label for="rsrvSubject" style="width: 80px">제목</label>
-									<input type="text" name="rsrvSubject" id="rsrvSubject" />
+									<input type="text" name="rsrvSubject" id="rsrvSubject" maxlength="20" />
 								</div>
 								<div class="form-group">  <!-- style="width: 80px" -->
 									<label for="rsrvMemo">메모</label>
-									<textarea name="rsrvMemo" id="rsrvMemo"></textarea>
+									<textarea name="rsrvMemo" id="rsrvMemo" rows="4" cols="50" maxlength="50" onfocus="setLanguage('ko')"></textarea>
 								</div>
 								<div>
 									<label for="xwriteDate" style="width: 80px;">작성일자</label>
