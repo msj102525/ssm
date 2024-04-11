@@ -61,7 +61,6 @@ section.sec2 .inner-section {
 
 section .inner-section .left-section {
 	flex: 1;
-	/* 	border: 1px solid #000; */
 	display: flex;
 	flex-wrap: nowrap;
 	flex-direction: column;
@@ -286,7 +285,6 @@ p.title {
 
 .n-login section.sec3 .inner-section .img-box img {
 	margin: 0 auto;
-	border: 1px solid #000;
 	display: block;
 	width: 400px;	
 	height: auto;
@@ -325,7 +323,7 @@ p.title {
 }
 
 .n-login section.sec4 .inner-section .img-box{
-	width: 220px;	
+	width: 28%;	
 	height: 220px;
 }
 
