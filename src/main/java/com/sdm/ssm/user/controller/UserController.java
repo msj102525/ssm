@@ -106,29 +106,22 @@ public class UserController {
 	@RequestMapping(value="kcallback.do", produces="application/json",
 			method= {RequestMethod.GET, RequestMethod.POST})
 	public String kakaoLogin(@RequestParam String code, Model model, HttpSession session, SessionStatus status) {
-		logger.info("0. kcallback.do" + code);
 		
 		// 로그인 결과값을 node에 담기
 		JsonObject node = kakaologinAuth.getAccessToken(code);
-		logger.info("1. kcallback.do : " + node);
 		
 		// accessToken에 사용자의 로그인한 모든 정보가 들어있음
 		JsonPrimitive accessToken = node.getAsJsonPrimitive("access_token");
-		logger.info("2. kcallback.do : " + accessToken);
 		
 		// 사용자 정보 추출
 		JsonObject userInfo = kakaologinAuth.getKakaoUserInfo(node.getAsJsonPrimitive("access_token"));
-		logger.info("3. kcallback.do : " + userInfo);
 		
 		// db table 에 기록할 회원정보 추출함 : 카카오 회원가입시
 		//userInfo 에서 properties 정보 추출
 		JsonObject properties = (JsonObject) node.get("properties");
-		logger.info("4. kcallback.do : " + properties);
 		
 		JsonObject kakao_account = (JsonObject) userInfo.get("kakao_account");
 		String id = userInfo.get("id").getAsString();
-		logger.info("5. kcallback.do : " + kakao_account);
-
 		
 		// 유저 테이블에서 회원 정보 조회해 오기
 		User loginUser = null;
@@ -156,19 +149,16 @@ public class UserController {
 	
 	@RequestMapping(value="ncallback.do", method= {RequestMethod.GET, RequestMethod.POST})
 	public String naverLogin(@RequestParam String code, @RequestParam String state, Model model, HttpSession session, SessionStatus status) throws IOException, ParseException {
-	    logger.info("0. ncallback.do" + code);
 	    
 	    // 1. 코드, 세션 및 상태를 사용하여 getAccessToken을 호출합니다.
 	    OAuth2AccessToken node = naverloginAuth.getAccessToken(session, code, state); 
 	    // 이제 accessToken을 사용하여 사용자 정보를 가져와서 JsonObject를 만들거나 다른 작업을 수행할 수 있습니다.
-	    logger.info("1. ncallback.do : " + node);
 	    if(node == null) {
 	    	model.addAttribute("message", "Naver Token Error 브라우저 캐시를 지우고 다시 시도해 주세요");
 	    	return "common/error";
 	    } else {
 	    	 // 2. accessToken에 사용자의 로그인한 모든 정보가 들어있음
 		    apiResult = naverloginAuth.getUserProfile(node);
-			logger.info("2. ncallback.do : " + apiResult);
 			
 			// 3. String형식인 apiResult를 json형태로 바꿈
 			JSONParser parser = new JSONParser();
@@ -185,13 +175,6 @@ public class UserController {
 			String phone = (String)response_obj.get("mobile");
 			
 			String birth = birthyear + birthday.replaceAll("-", "");
-			
-			logger.info("3. nickname : " + nickname);
-			logger.info("3. email : " + email);
-			logger.info("3. birthyear : " + birthyear);
-			logger.info("3. birthday : " + birthday);
-			logger.info("3. phone : " + phone);
-			logger.info("3. birth : " + birth);
 			
 			// 유저 테이블에서 회원 정보 조회해 오기
 			User loginUser = null;
@@ -223,32 +206,22 @@ public class UserController {
 	
 	@RequestMapping(value="gcallback.do", method= {RequestMethod.GET, RequestMethod.POST})
 	public String googleLogin(@RequestParam String code, @RequestParam String state, Model model, HttpSession session, SessionStatus status) throws IOException, ParseException {
-	    logger.info("0. gcallback.do" + code);
 	    
 	    OAuth2AccessToken node = googleloginAuth.getAccessToken(session, code, state); 
-	    logger.info("1. gcallbackgcallback.do : " + node);
 	    
 	    if(node == null) {
 	    	model.addAttribute("message", "google Token Error 브라우저 캐시를 지우고 다시 시도해 주세요");
 	    	return "common/error";
 	    } else {
 	    	apiResult = googleloginAuth.getUserProfile(node);
-			logger.info("2. gcallback.do : " + apiResult);
 			
 			JSONParser parser = new JSONParser();
 			Object obj = parser.parse(apiResult);
 			JSONObject jsonObj = (JSONObject) obj;
 			
-			logger.info("2.5 jsonObj : " + jsonObj.toString());
-			
 			String name = (String)jsonObj.get("name");
 			String id = (String)jsonObj.get("id");
 			String email = (String)jsonObj.get("email");
-			
-			logger.info("3. name : " + name);
-			logger.info("3. id : " + id);
-			logger.info("3. email : " + email);
-			
 			
 			User loginUser = null;
 			User gUser = userService.selectUserById(email);
@@ -312,14 +285,7 @@ public class UserController {
 	public String loginMethod(User user, HttpSession session, SessionStatus status, Model model) {
 		User loginUser = userService.selectUserById(user.getUserId());
 		
-		logger.info("userID!!!!!!!!!!!!!!!" + loginUser.getUserId());
-		
-		logger.info("user.getPassWd() : " + user.getPassWd());
-		logger.info("loginUser.getPassWd() : " + loginUser.getPassWd());
-		logger.info("loginUser.getLoginOk() : " + loginUser.getLoginOk());
-		
 		String loginOk = loginUser.getLoginOk();
-		logger.info("loginOk : " + loginOk);
 		
 		if(loginUser != null && 
 				this.bcryptPwEncoder.matches(	user.getPassWd(), loginUser.getPassWd())) {
@@ -330,7 +296,6 @@ public class UserController {
 			}else {
 				session.setAttribute("loginUser", loginUser);
 				status.setComplete();  //로그인 성공 요청 결과로 HttpStatus code 200 보냄
-				logger.info("성공!!!!!!!!!!!!!!!");
 				return "common/main";
 			}
 			
