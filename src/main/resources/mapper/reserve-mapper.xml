@@ -24,7 +24,7 @@
 				,writer, write_date
 		FROM (SELECT * FROM TB_RESERVATION_${ id }
 				WHERE rsrv_date BETWEEN #{ sdate } AND #{ edate }
-		     ORDER BY rsrv_date desc, rsrv_time desc, rsrv_num desc)
+		     ORDER BY rsrv_date desc, rsrv_time asc, rsrv_num asc)
 	</select>
 	
 	<select id="selectRsrvListCount" resultType="_int">
