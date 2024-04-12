@@ -310,13 +310,6 @@ span#ui-id-1 {
 					rsrvname = arg.extendedProps.rsrvname;
 				}
 
-				//// 전화번호
-				if (arg.extendedProps.rsrvtelno != ""
-						&& arg.extendedProps.rsrvtelno != null
-						&& arg.extendedProps.rsrvtelno != undefined) {
-					rsrvtelno = arg.extendedProps.rsrvtelno;
-				}
-
 				//// 연락처
 				if (arg.extendedProps.rsrvtelno != ""
 						&& arg.extendedProps.rsrvtelno != null
@@ -493,7 +486,7 @@ span#ui-id-1 {
 			return false;
 		}
 		
-		if ($obj.rsrvtelno == "" || $obj.rsrvtelno == "undefined" || $obj.rsrvtelno == null) {
+		if ($obj.rsrvTelno == "" || $obj.rsrvTelno == "undefined" || $obj.rsrvTelno == null) {
 			alert("연락처를 입력하세요.");
 			return false;
 		}
@@ -548,7 +541,7 @@ span#ui-id-1 {
 			return false;
 		}
 		
-		if ($obj.rsrvtelno == "" || $obj.rsrvtelno == "undefined" || $obj.rsrvtelno == null) {
+		if ($obj.rsrvTelno == "" || $obj.rsrvTelno == "undefined" || $obj.rsrvTelno == null) {
 			alert("연락처를 입력하세요.");
 			return false;
 		}
