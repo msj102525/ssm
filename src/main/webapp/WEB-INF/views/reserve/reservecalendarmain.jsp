@@ -461,8 +461,7 @@ section.sec2 .right-section section::after {
 		var $obj = calFunc.getFormValue();
 
 		$.ajax({
-			//url: ctx + "/adms/calendar/management/create_ajx.do", 
-			url : "create_ajx.do",
+			url : "rsrvinsert.do",
 			type : "POST",
 			contentType : "application/json;charset=UTF-8",
 			data : JSON.stringify($obj)
@@ -496,7 +495,7 @@ section.sec2 .right-section section::after {
 		var $obj = calFunc.getFormValue();
 
 		$.ajax({
-			url : "update_ajx.do",
+			url : "rsrvupdate.do",
 			type : "POST",
 			contentType : "application/json;charset=UTF-8",
 			data : JSON.stringify($obj)
@@ -525,7 +524,7 @@ section.sec2 .right-section section::after {
 		var $obj = calFunc.getFormValue();
 
 		$.ajax({
-			url : "delete_ajx.do",
+			url : "rsrvdelete.do",
 			type : "POST",
 			contentType : "application/json;charset=UTF-8",
 			data : JSON.stringify($obj)
@@ -614,7 +613,7 @@ section.sec2 .right-section section::after {
 				param += "&end=" + end2;
 
 				$.ajax({
-					url : "read_ajx.do",
+					url : "rsrvlist.do",
 					type : "POST",
 					data : param
 				}).done(function(data) {
