@@ -5,13 +5,14 @@
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="resources/css/common/header.css" />
+<link rel="stylesheet" href="resources/css/common/reset.css" />
 <title>직원 등록</title>
 <style>
     body {
         font-family: 'Arial', sans-serif;
         background-color: #f4f4f4;
         margin: 0;
-        padding: 20px;
+        padding: 0;
         color: #333;
     }
     h2, h4 {
@@ -44,9 +45,16 @@
     input[type="submit"]:hover {
         background-color: #4cae4c;
     }
+    .center-container{
+    width : 40%;
+    margin : 0 auto;
+    padding : 100px;
+    }
+    
 </style>  
 </head>
 <body>
+<div class="main-container">
 <div class="center-container"> 
     <h2>직원 등록</h2>
     <br>
@@ -95,5 +103,6 @@
        </table> 
     </form>
 	</div> 
+	</div>
 </body>
 </html>
