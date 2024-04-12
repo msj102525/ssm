@@ -422,7 +422,8 @@ span#ui-id-1 {
 
 			$("form#diaForm").find("input[name='actType']").val("C"); //// 등록
 
-			$("form#diaForm").find("input[name='rsrvDate']").val(xobj.rsrvdate); //// 예약일자
+			$("form#diaForm").find("input[name='rsrvDate']").val(xobj.start.substring(0, 10)); //// 예약일자
+			
 		},
 		//// form안에 name값을 $obj에 주입
 		getFormValue : function() {
