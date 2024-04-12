@@ -287,14 +287,14 @@ span#ui-id-1 {
 			if (arg.id != "" && arg.id != null && arg.id != undefined) {
 				id = arg.id;
 			}
-
+			
 			if (arg.title != "" && arg.title != null && arg.title != undefined) {
 				title = arg.title;
 			}
-
+			
 			////console.log("custome : " + JSON.stringify(arg.extendedProps));
 
-			//event외에 값들
+			//// event외에 값들
 			if (arg.extendedProps != undefined) {
 				
 				if (arg._def.extendedProps.xcontent != ""
@@ -303,12 +303,12 @@ span#ui-id-1 {
 					xcontent = arg._def.extendedProps.xcontent;
 				}
 
-				/// 추가(2024.04.12)
-				if (arg.extendedProps.rsrvdate != ""
-					&& arg.extendedProps.rsrvdate != null
-					&& arg.extendedProps.rsrvdate != undefined) {
-					rsrvdate = arg.extendedProps.rsrvdate;
-				}
+				//// 추가(2024.04.12) : 예약일자는 start 일자로 사용
+				//if (arg.extendedProps.rsrvdate != ""
+				//	&& arg.extendedProps.rsrvdate != null
+				//	&& arg.extendedProps.rsrvdate != undefined) {
+				//	rsrvdate = arg.extendedProps.rsrvdate;
+				//}
 				
 				/// 추가(2024.04.05)
 				//// 예약자명
@@ -360,7 +360,9 @@ span#ui-id-1 {
 
 			if (allDay) { //// 하루종일이면
 				var start = arg.start.toISOString().slice(0, 10); //returnCdate(calendar,arg.start);
-
+				//// 이벤트 변경시 처리
+				rsrvdate = start;
+				
 				var end = null;
 				if (arg.end != "" && arg.end != null && arg.end != undefined) {
 					end = arg.end.toISOString().slice(0, 10); //// 실제 데이터는 날짜를 하루 빼지 않는다 
@@ -376,7 +378,8 @@ span#ui-id-1 {
 				}
 			} else { //// 시간이 같이 들어오면
 				start = arg.start.toISOString();
-
+				rsrvdate = arg.start.toISOString().slice(0, 10);  //// 예약일자 설정(2024.04.12)
+				
 				if (arg.end != "" && arg.end != null && arg.end != undefined) {
 					end = arg.end.toISOString();
 				}
@@ -401,6 +404,8 @@ span#ui-id-1 {
 
 			/// add(2024.04.05)
 			rObj.rsrvdate  = rsrvdate;
+						
+
 			rObj.rsrvname = rsrvname;
 			rObj.rsrvtelno = rsrvtelno;
 			rObj.rsrvtime = rsrvtime;
@@ -583,7 +588,8 @@ span#ui-id-1 {
 		
 		if (!confirm("해당 일정을 정말로 수정 하시겠습니까?")) {
 			if (event != undefined) {
-				event.revert();
+				alert("이벤트 처리 되돌리기 : ");
+				event.revert();  /// 이전 상태로 되돌리는 작업을 합니다.
 			}
 			return false;
 		}
@@ -884,7 +890,7 @@ span#ui-id-1 {
 				});
 			},
 			eventDrop : function(info) {
-				var xObj = calFunc.calcDate(info.event, calendar); //get event data
+				var xObj = calFunc.calcDate(info.event, calendar); //// get event data
 
 				calFunc.setDataForm(xObj); //// Set Form Data
 
@@ -920,8 +926,7 @@ span#ui-id-1 {
 		var selectDate = date.split("-");
 		var changeDate = new Date();
 
-		changeDate.setFullYear(selectDate[0], selectDate[1] - 1,
-				selectDate[2] - 1);
+		changeDate.setFullYear(selectDate[0], selectDate[1] - 1, selectDate[2] - 1);
 
 		var y = changeDate.getFullYear();
 		var m = changeDate.getMonth() + 1;
