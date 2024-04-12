@@ -7,9 +7,21 @@
 <meta charset="UTF-8">
 <title>SSM ERROR</title>
 <style type="text/css">
-	.error-container {
-		padding: 100px 20px 450px 20px;;
-	}
+body {
+	position: relative;
+}
+
+footer {
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	width: 100%
+}
+.error-container {
+	padding: 140px 20px 450px 20px;;
+}
+	
+	
 </style>
 </head>
 <body>

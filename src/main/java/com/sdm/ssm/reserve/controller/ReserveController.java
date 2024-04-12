@@ -43,7 +43,7 @@ public class ReserveController {
 	private ReserveService reserveService;
 	
 	//////////////////////////////////////////////////////////
-	///// 예약관리로 이동
+	///// 예약정보 관리 페이지로 이동
 	//////////////////////////////////////////////////////////
 	@RequestMapping("moveRsrvCalPage.do")
 	public String moveCalWritePage(
@@ -53,8 +53,10 @@ public class ReserveController {
 		return "reserve/reservecalendarlist";
 	}
 	
+	/////////////////////////////////////////////////////
 	//// 달력 데이터 조회
-	@RequestMapping(value= "read_ajx.do", method = {RequestMethod.POST, RequestMethod.GET})
+	/////////////////////////////////////////////////////
+	@RequestMapping(value= "rsrvlist.do", method = {RequestMethod.POST, RequestMethod.GET})
 	@ResponseBody
 	public String getCalDataMethod (
 			@ModelAttribute("searchVO") SerachDateStr searchVO,
@@ -136,9 +138,9 @@ public class ReserveController {
 	}
 	
 	/////////////////////////////////////////////////////
-	//// 달력 데이터등록 화면
+	//// 달력 데이터 등록
 	/////////////////////////////////////////////////////
-	@RequestMapping(value = "create_ajx.do", method = RequestMethod.POST)
+	@RequestMapping(value = "rsrvinsert.do", method = RequestMethod.POST)
 	@ResponseBody
 	public String createAction(
 	        @RequestBody String filterJSON,
@@ -185,8 +187,10 @@ public class ReserveController {
 	    return null;
 	}
 
+	/////////////////////////////////////////////////////
 	//// 달력 데이터 업데이트
-	@RequestMapping(value="update_ajx.do", method=RequestMethod.POST)
+	/////////////////////////////////////////////////////
+	@RequestMapping(value="rsrvupdate.do", method=RequestMethod.POST)
 	@ResponseBody
 	public String updateAction(
 	        @RequestBody String filterJSON,
@@ -231,10 +235,10 @@ public class ReserveController {
 	    return null;
 	}
 
-	////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////
 	//// 달력 데이터 삭제
-	////////////////////////////////////////////////////
-	@RequestMapping(value = "delete_ajx.do", method=RequestMethod.POST)
+	/////////////////////////////////////////////////////
+	@RequestMapping(value = "rsrvdelete.do", method=RequestMethod.POST)
 	@ResponseBody
 	public String deleteAction(
 	        @RequestBody String filterJSON,
