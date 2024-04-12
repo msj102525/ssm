@@ -208,6 +208,7 @@ section.sec2 .right-section section::after {
 			var title = null;
 			//// 추가(2024.04.05)
 			var groupId = null;
+			var rsrvdate = null;   //// 2024.04.12 추가
 			var rsrvname = null;
 			var rsrvtelno = null;
 			var rsrvtime = null;
@@ -241,10 +242,16 @@ section.sec2 .right-section section::after {
 					xcontent = arg._def.extendedProps.xcontent;
 				}
 
+				//// 예약일자 추가(2024.04.12)
+				if (arg.extendedProps.rsrvdate != ""
+					&& arg.extendedProps.rsrvdate != null
+					&& arg.extendedProps.rsrvdate != undefined) {
+					rsrvname = arg.extendedProps.rsrvdate;
+				}
+				
 				/// 추가(2024.04.05)
 				//// 예약자명
 				//console.log("예약자명2 : " + arg.rsrvname);
-				
 				if (arg.extendedProps.rsrvname != ""
 						&& arg.extendedProps.rsrvname != null
 						&& arg.extendedProps.rsrvname != undefined) {
@@ -332,7 +339,6 @@ section.sec2 .right-section section::after {
 			rObj.groupId = groupId; /* 2024.04.05 add */
 			rObj.start = start;
 			rObj.end = end;
-			rObj.start = start;
 			rObj.startDisp = startDisp;
 			rObj.endDisp = endDisp;
 			rObj.id = id;
@@ -340,6 +346,7 @@ section.sec2 .right-section section::after {
 			rObj.title = title;
 
 			/// add(2024.04.05)
+			rObj.rsrvdate = rsrvdate;   //// 2024.04.12
 			rObj.rsrvname = rsrvname;
 			rObj.rsrvtelno = rsrvtelno;
 			rObj.rsrvtime = rsrvtime;
@@ -362,20 +369,7 @@ section.sec2 .right-section section::after {
 			$("form#diaForm").find("input[name='actType']").val("C"); //// 등록
 
 			$("form#diaForm").find("input[name='id']").val(xobj.id); //// user id
-			//$("form#diaForm").find("input[name='rsrvNum']").val(xobj.start); ////번호 = groupId
-			$("form#diaForm").find("input[name='rsrvDate']").val(xobj.start); //// 예약일자
-			//$("form#diaForm").find("input[name='rsrvName']").val(xobj.start);  //// 예약자명
-			//$("form#diaForm").find("input[name='rsrvTelno']").val(xobj.start);  //// 연락처
-			//$("form#diaForm").find("input[name='rsrvTime']").val(xobj.start);  //// 예약시간
-			//$("form#diaForm").find("input[name='rsrvInwon']").val(xobj.start);  //// 예약인원
-			//$("form#diaForm").find("input[name='rsrvSubject']").val(xobj.title);  //// 제목
-			//$("form#diaForm").find("textarea[name='rsrvMemo']").val(xobj.xcontent);
-			//$("form#diaForm").find("input[name='xwriteDate']").val(xobj.start);  //// 작성일자
-
-			/* $("form#diaForm").find("input[name='rsrvdate']").val(dispStr);
-			$("form#diaForm").find("input[name='rsrvtime']").val(dispStr);
-			$("form#diaForm").find("input[name='start']").val(xobj.start);
-			$("form#diaForm").find("input[name='end']").val(xobj.end); */
+			$("form#diaForm").find("input[name='rsrvDate']").val(xobj.rsrvdate); //// 예약일자
 
 		},
 		//// form안에 name값을 $obj에 주입
@@ -424,27 +418,17 @@ section.sec2 .right-section section::after {
 			$("form#diaForm").find("input[name='actType']").val("U"); //// 수정
 
 			$("form#diaForm").find("input[name='id']").val(xobj.id); //// user id
-			$("form#diaForm").find("input[name='rsrvNum']").val(xobj.groupId); ////번호 = groupId
-			$("form#diaForm").find("input[name='rsrvDate']").val(xobj.start); ////번호 = groupId
+			$("form#diaForm").find("input[name='rsrvNum']").val(xobj.groupId); //// 번호 = groupId
+			////$("form#diaForm").find("input[name='rsrvDate']").val(xobj.start); //// 예약일자 = start
+			$("form#diaForm").find("input[name='rsrvDate']").val(xobj.rsrvdate); //// 예약일자 = rsrvdate (2024.04.12 변경)
 			$("form#diaForm").find("input[name='rsrvName']").val(xobj.rsrvname); //// 예약자명
-			$("form#diaForm").find("input[name='rsrvTelno']").val(
-					xobj.rsrvtelno); //// 연락처
+			$("form#diaForm").find("input[name='rsrvTelno']").val(xobj.rsrvtelno); //// 연락처
 			$("form#diaForm").find("input[name='rsrvTime']").val(xobj.rsrvtime); //// 예약시간
-			$("form#diaForm").find("input[name='rsrvInwon']").val(
-					xobj.rsrvinwon); //// 예약인원
+			$("form#diaForm").find("input[name='rsrvInwon']").val(xobj.rsrvinwon); //// 예약인원
 			$("form#diaForm").find("input[name='rsrvSubject']").val(xobj.title); //// 제목
 			$("form#diaForm").find("textarea[name='rsrvMemo']").val(xobj.rsrvmemo);
 			$("form#diaForm").find("input[name='xwriteDate']").val(xobj.writedate); /// 작성일자
 
-			/* 
-			$("form#diaForm").find("input[name='rsrvdate']").val(dispStr);
-			$("form#diaForm").find("input[name='start']").val(xobj.start);
-			$("form#diaForm").find("input[name='end']").val(xobj.end);
-			
-			$("form#diaForm").find("input[name='id']").val(xobj.id);
-			$("form#diaForm").find("input[name='title']").val(xobj.title);
-			$("form#diaForm").find("textarea[name='xcontent']").val(xobj.xcontent); 
-			 */
 		}
 	};
 	//calFunc[e]---- ojbect create end
@@ -453,90 +437,30 @@ section.sec2 .right-section section::after {
 	//// 등록 액션
 	//////////////////////////////////////////////////
 	function createClnd(cal, xobj) {
-		if (!confirm("일정을 등록 하시겠습니까?")) {
-			return false;
-		}
-
-		//// 등록을 위해서 넘겨줘야 할 값
-		var $obj = calFunc.getFormValue();
-
-		$.ajax({
-			url : "rsrvinsert.do",
-			type : "POST",
-			contentType : "application/json;charset=UTF-8",
-			data : JSON.stringify($obj)
-		}).done(function(data) {
-			var result = jQuery.parseJSON(data);
-
-			////모든 소스에서 이벤트를 다시 가져와 화면에 다시 렌더링
-			cal.refetchEvents();
-
-		}).fail(function(e) {
-			alert("실패하였습니다." + e);
-		}).always(function() {
-			/// 값 초기화
-			funDiaFormClear();
-			//$("#name").val("");
-			//$("#comment").val("");
-		});
+		//if (!confirm("일정을 등록 하시겠습니까?")) {
+		//	return false;
+		//}
 	}
 
 	//////////////////////////////////////////////////
 	//// 수정 액션
 	//////////////////////////////////////////////////
 	function updateClnd(cal, xobj, event) {
-		if (!confirm("해당 일정을 정말로 수정 하시겠습니까?")) {
-			if (event != undefined) {
-				event.revert();
-			}
-			return false;
-		}
+		//if (!confirm("해당 일정을 정말로 수정 하시겠습니까?")) {
+		//	if (event != undefined) {
+		//		event.revert();
+		//	}
+		//	return false;
+		//}
 
-		var $obj = calFunc.getFormValue();
-
-		$.ajax({
-			url : "rsrvupdate.do",
-			type : "POST",
-			contentType : "application/json;charset=UTF-8",
-			data : JSON.stringify($obj)
-		}).done(function(data) {
-			var result = jQuery.parseJSON(data);
-
-			cal.refetchEvents();
-
-		}).fail(function(e) {
-			alert("실패하였습니다." + e);
-		}).always(function() {
-			///////////////////////////////////////////////////
-			///////////////////////////////////////////////////
-			$("#name").val("");
-			$("#comment").val("");
-		});
 	}
 	///////////////////////////////////////////////////
 	/// 삭제 액션
 	///////////////////////////////////////////////////
 	function deleteClnd(cal, xobj) {
-		if (!confirm("해당일정을 정말로 삭제 하시겠습니까?")) {
-			return false;
-		}
-
-		var $obj = calFunc.getFormValue();
-
-		$.ajax({
-			url : "rsrvdelete.do",
-			type : "POST",
-			contentType : "application/json;charset=UTF-8",
-			data : JSON.stringify($obj)
-		}).done(function(data) {
-			var result = jQuery.parseJSON(data);
-			cal.refetchEvents();
-		}).fail(function(e) {
-			alert("실패하였습니다." + e);
-		}).always(function() {
-			//// 값 초기화
-			funDiaFormClear();
-		});
+		//if (!confirm("해당일정을 정말로 삭제 하시겠습니까?")) {
+		//	return false;
+		//}
 	}
 
 	/// modal popu 화면 값 clear(2024.04.05)

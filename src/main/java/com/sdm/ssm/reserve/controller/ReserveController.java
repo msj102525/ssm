@@ -58,7 +58,7 @@ public class ReserveController {
 	/////////////////////////////////////////////////////
 	@RequestMapping(value= "rsrvlist.do", method = {RequestMethod.POST, RequestMethod.GET})
 	@ResponseBody
-	public String getCalDataMethod (
+	public String reserveselectRsrvListMethod (
 			@ModelAttribute("searchVO") SerachDateStr searchVO,
 			HttpServletRequest request,
 			HttpServletResponse res,
@@ -95,21 +95,24 @@ public class ReserveController {
 			JSONObject job = new JSONObject();
 			
 			job.put("groupId", reserve.getRsrvNum());
-			
 			job.put("title", reserve.getRsrvSubject());
 			
-			//날짜는 반드시 문자열로 바꿔서 저장할 것(fullcalendar에서 받을 format으로 변경
+			//// 날짜는 반드시 문자열로 바꿔서 저장할 것(fullcalendar에서 받을 format으로 변경
 			String start = reserve.getRsrvDate().substring(0, 4) + "-" 
+							+ reserve.getRsrvDate().substring(4, 6) + "-" 
+							+ reserve.getRsrvDate().substring(6, 8) + "T" + reserve.getRsrvTime() + ":00";
+			
+			String rsrvdate = reserve.getRsrvDate().substring(0, 4) + "-" 
 							+ reserve.getRsrvDate().substring(4, 6) + "-" 
 							+ reserve.getRsrvDate().substring(6, 8);
 
 			job.put("start", start);
-			
 			job.put("sortIdx", sortidx);   /// 일정을 순서대로 보이게 하기 위함(2024.04.04)
 			
 			/////////////////////////////////////////////////////////////
 			//// 추가(2024.04.05)
 			/////////////////////////////////////////////////////////////
+			job.put("rsrvdate", rsrvdate); //// 예약일자 2024.04.12
 			job.put("rsrvname", reserve.getRsrvName());  //// 예약자명 2024.04.05
 			job.put("rsrvtelno", reserve.getRsrvTelno());  //// 연락처 2024.04.05
 			job.put("rsrvtime", reserve.getRsrvTime());  //// 예약시간 2024.04.05
@@ -142,7 +145,7 @@ public class ReserveController {
 	/////////////////////////////////////////////////////
 	@RequestMapping(value = "rsrvinsert.do", method = RequestMethod.POST)
 	@ResponseBody
-	public String createAction(
+	public String reserveInsertMethod (
 	        @RequestBody String filterJSON,
 	        HttpServletRequest request,
 	        HttpServletResponse res,
@@ -192,7 +195,7 @@ public class ReserveController {
 	/////////////////////////////////////////////////////
 	@RequestMapping(value="rsrvupdate.do", method=RequestMethod.POST)
 	@ResponseBody
-	public String updateAction(
+	public String reserveUpdateMethod (
 	        @RequestBody String filterJSON,
 	        HttpServletRequest request,
 	        HttpServletResponse res,
@@ -240,7 +243,7 @@ public class ReserveController {
 	/////////////////////////////////////////////////////
 	@RequestMapping(value = "rsrvdelete.do", method=RequestMethod.POST)
 	@ResponseBody
-	public String deleteAction(
+	public String reserveDeleteMethod (
 	        @RequestBody String filterJSON,
 	        HttpServletRequest request,
 	        HttpServletResponse res,

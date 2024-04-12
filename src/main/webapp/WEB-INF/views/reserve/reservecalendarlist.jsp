@@ -268,6 +268,7 @@ span#ui-id-1 {
 			var title = null;
 			//// 추가(2024.04.05)
 			var groupId = null;
+			var rsrvdate = null;   //// 2024.04.12 추가
 			var rsrvname = null;
 			var rsrvtelno = null;
 			var rsrvtime = null;
@@ -295,12 +296,20 @@ span#ui-id-1 {
 
 			//event외에 값들
 			if (arg.extendedProps != undefined) {
+				
 				if (arg._def.extendedProps.xcontent != ""
 						&& arg._def.extendedProps.xcontent != null
 						&& arg._def.extendedProps.xcontent != undefined) {
 					xcontent = arg._def.extendedProps.xcontent;
 				}
 
+				/// 추가(2024.04.12)
+				if (arg.extendedProps.rsrvdate != ""
+					&& arg.extendedProps.rsrvdate != null
+					&& arg.extendedProps.rsrvdate != undefined) {
+					rsrvdate = arg.extendedProps.rsrvdate;
+				}
+				
 				/// 추가(2024.04.05)
 				//// 예약자명
 				//console.log("예약자명2 : " + arg.rsrvname);
@@ -384,7 +393,6 @@ span#ui-id-1 {
 			rObj.groupId = groupId; /* 2024.04.05 add */
 			rObj.start = start;
 			rObj.end = end;
-			rObj.start = start;
 			rObj.startDisp = startDisp;
 			rObj.endDisp = endDisp;
 			rObj.id = id;
@@ -392,6 +400,7 @@ span#ui-id-1 {
 			rObj.title = title;
 
 			/// add(2024.04.05)
+			rObj.rsrvdate  = rsrvdate;
 			rObj.rsrvname = rsrvname;
 			rObj.rsrvtelno = rsrvtelno;
 			rObj.rsrvtime = rsrvtime;
@@ -413,7 +422,7 @@ span#ui-id-1 {
 
 			$("form#diaForm").find("input[name='actType']").val("C"); //// 등록
 
-			$("form#diaForm").find("input[name='rsrvDate']").val(xobj.start); //// 예약일자
+			$("form#diaForm").find("input[name='rsrvDate']").val(xobj.rsrvdate); //// 예약일자
 		},
 		//// form안에 name값을 $obj에 주입
 		getFormValue : function() {
@@ -461,7 +470,8 @@ span#ui-id-1 {
 			$("form#diaForm").find("input[name='actType']").val("U"); //// 수정
 
 			$("form#diaForm").find("input[name='rsrvNum']").val(xobj.groupId); ////번호 = groupId
-			$("form#diaForm").find("input[name='rsrvDate']").val(xobj.start); ////번호 = groupId
+			////$("form#diaForm").find("input[name='rsrvDate']").val(xobj.start); ////예약일자 = start
+			$("form#diaForm").find("input[name='rsrvDate']").val(xobj.rsrvdate); ////예약일자 = rsrvdate(2024.04.12 변경)
 			$("form#diaForm").find("input[name='rsrvName']").val(xobj.rsrvname); //// 예약자명
 			$("form#diaForm").find("input[name='rsrvTelno']").val(xobj.rsrvtelno); //// 연락처
 			$("form#diaForm").find("input[name='rsrvTime']").val(xobj.rsrvtime); //// 예약시간
@@ -493,6 +503,13 @@ span#ui-id-1 {
 		
 		if ($obj.rsrvTime == "" || $obj.rsrvTime == "undefined" || $obj.rsrvTime == null) {
 			alert("시간을 입력하세요.");
+			return false;
+		}
+
+		//// 시간 : 문자열 길이 체크
+		var time_length_chk = $obj.rsrvTime.replace(/:/g, '');
+		if (time_length_chk.length < 4) {
+			alert("시간은 숫자 4자리를 입력하세요.");
 			return false;
 		}
 		
@@ -548,6 +565,13 @@ span#ui-id-1 {
 		
 		if ($obj.rsrvTime == "" || $obj.rsrvTime == "undefined" || $obj.rsrvTime == null) {
 			alert("시간을 입력하세요.");
+			return false;
+		}
+		
+		//// 시간 : 문자열 길이 체크
+		var time_length_chk = $obj.rsrvTime.replace(/:/g, '');
+		if (time_length_chk.length < 4) {
+			alert("시간은 숫자 4자리를 입력하세요.");
 			return false;
 		}
 		
