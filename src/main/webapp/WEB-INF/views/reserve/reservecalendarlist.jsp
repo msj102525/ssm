@@ -420,22 +420,7 @@ span#ui-id-1 {
 
 			$("form#diaForm").find("input[name='actType']").val("C"); //// 등록
 
-			$("form#diaForm").find("input[name='id']").val(xobj.id); //// user id
-			//$("form#diaForm").find("input[name='rsrvNum']").val(xobj.start); ////번호 = groupId
 			$("form#diaForm").find("input[name='rsrvDate']").val(xobj.start); //// 예약일자
-			//$("form#diaForm").find("input[name='rsrvName']").val(xobj.start);  //// 예약자명
-			//$("form#diaForm").find("input[name='rsrvTelno']").val(xobj.start);  //// 연락처
-			//$("form#diaForm").find("input[name='rsrvTime']").val(xobj.start);  //// 예약시간
-			//$("form#diaForm").find("input[name='rsrvInwon']").val(xobj.start);  //// 예약인원
-			//$("form#diaForm").find("input[name='rsrvSubject']").val(xobj.title);  //// 제목
-			//$("form#diaForm").find("textarea[name='rsrvMemo']").val(xobj.xcontent);
-			//$("form#diaForm").find("input[name='xwriteDate']").val(xobj.start);  //// 작성일자
-
-			/* $("form#diaForm").find("input[name='rsrvdate']").val(dispStr);
-			$("form#diaForm").find("input[name='rsrvtime']").val(dispStr);
-			$("form#diaForm").find("input[name='start']").val(xobj.start);
-			$("form#diaForm").find("input[name='end']").val(xobj.end); */
-
 		},
 		//// form안에 name값을 $obj에 주입
 		getFormValue : function() {
@@ -444,7 +429,7 @@ span#ui-id-1 {
 			var $obj = new Object();
 
 			/////////////////////////////////////////////////////////////////////
-			/// object 값 생성하기
+			//// object 값 생성하기
 			/////////////////////////////////////////////////////////////////////
 			$("form#diaForm")
 					.find("input,textarea,select")
@@ -482,7 +467,6 @@ span#ui-id-1 {
 
 			$("form#diaForm").find("input[name='actType']").val("U"); //// 수정
 
-			$("form#diaForm").find("input[name='id']").val(xobj.id); //// user id
 			$("form#diaForm").find("input[name='rsrvNum']").val(xobj.groupId); ////번호 = groupId
 			$("form#diaForm").find("input[name='rsrvDate']").val(xobj.start); ////번호 = groupId
 			$("form#diaForm").find("input[name='rsrvName']").val(xobj.rsrvname); //// 예약자명
@@ -509,12 +493,15 @@ span#ui-id-1 {
 			return false;
 		}
 		
+		if ($obj.rsrvtelno == "" || $obj.rsrvtelno == "undefined" || $obj.rsrvtelno == null) {
+			alert("연락처를 입력하세요.");
+			return false;
+		}
+		
 		if ($obj.rsrvTime == "" || $obj.rsrvTime == "undefined" || $obj.rsrvTime == null) {
 			alert("시간을 입력하세요.");
 			return false;
 		}
-		
-		///alert("제목 : " + $obj.rsrvSubject);
 		
 		if ($obj.rsrvSubject == "" || $obj.rsrvSubject == "undefined" || $obj.rsrvSubject == null) {
 			alert("제목을 입력하세요.");
@@ -526,8 +513,7 @@ span#ui-id-1 {
 		}
 		
 		$.ajax({
-			//url: ctx + "/adms/calendar/management/create_ajx.do", 
-			url : "create_ajx.do",
+			url : "rsrvinsert.do",
 			type : "POST",
 			contentType : "application/json;charset=UTF-8",
 			data : JSON.stringify($obj)
@@ -540,10 +526,10 @@ span#ui-id-1 {
 		}).fail(function(e) {
 			alert("실패하였습니다." + e);
 		}).always(function() {
-			/// 값 초기화
+			/////////////////////////////////////////////
+			//// popup 화면 값 초기화
+			/////////////////////////////////////////////
 			funDiaFormClear();
-			//$("#name").val("");
-			//$("#comment").val("");
 		});
 		
 		return true;
@@ -556,8 +542,14 @@ span#ui-id-1 {
 		//// 수정을 위해서 넘겨줘야 할 값
 		var $obj = calFunc.getFormValue();
 		
+		//// 필수 입력 사항 check..
 		if ($obj.rsrvName == "" || $obj.rsrvName == "undefined" || $obj.rsrvName == null) {
 			alert("예약자명을 입력하세요.");
+			return false;
+		}
+		
+		if ($obj.rsrvtelno == "" || $obj.rsrvtelno == "undefined" || $obj.rsrvtelno == null) {
+			alert("연락처를 입력하세요.");
 			return false;
 		}
 		
@@ -579,7 +571,7 @@ span#ui-id-1 {
 		}
 
 		$.ajax({
-			url : "update_ajx.do",
+			url : "rsrvupdate.do",
 			type : "POST",
 			contentType : "application/json;charset=UTF-8",
 			data : JSON.stringify($obj)
@@ -591,11 +583,10 @@ span#ui-id-1 {
 		}).fail(function(e) {
 			alert("실패하였습니다." + e);
 		}).always(function() {
-			///////////////////////////////////////////////////
-			///////////////////////////////////////////////////
+			/////////////////////////////////////////////
+			//// popup 화면 값 초기화
+			/////////////////////////////////////////////
 			funDiaFormClear();
-			////$("#name").val("");
-			////$("#comment").val("");
 		});
 		
 		return true;
@@ -611,7 +602,7 @@ span#ui-id-1 {
 		var $obj = calFunc.getFormValue();
 
 		$.ajax({
-			url : "delete_ajx.do",
+			url : "rsrvdelete.do",
 			type : "POST",
 			contentType : "application/json;charset=UTF-8",
 			data : JSON.stringify($obj)
@@ -621,9 +612,10 @@ span#ui-id-1 {
 		}).fail(function(e) {
 			alert("실패하였습니다." + e);
 		}).always(function() {
+			/////////////////////////////////////////////
+			//// popup 화면 값 초기화
+			/////////////////////////////////////////////
 			funDiaFormClear();
-			//$("#name").val("");
-			//$("#comment").val("");
 		});
 	}
 
@@ -718,7 +710,7 @@ span#ui-id-1 {
     
 	//=========================================== function =========================================== 
 
-	//관리자만 ,주,일 옵션 뷰
+	//// 관리자만 ,주,일 옵션 뷰
 	var rightm = "";
 	rightm += ',listWeek'; /// 주일정 보이게 하기 위한 설정(2024.04.03 comment 처리)
 
@@ -748,9 +740,6 @@ span#ui-id-1 {
 			selectable : true,
 			selectMirror : true,
 			select : function(arg) {
-
-				//// alert("등록 여부 : " + isAdm);
-
 				if (isAdm == 0) {
 					return false;
 				}
@@ -855,16 +844,11 @@ span#ui-id-1 {
 				var end2 = fetchInfo.end.toISOString().slice(0, 10);
 				var param = "";
 
-				//console.log("start : " + fetchInfo.start.toISOString()); //년월만 전달...
-				//console.log("end : " + fetchInfo.end.toISOString()); //년월만 전달...
-				//console.log("start2 : " + start2); //// 년월만 전달...
-				//console.log("end2 : " + end2); //// 년월만 전달...
-
 				param += "start=" + start2;
 				param += "&end=" + end2;
 
 				$.ajax({
-					url : "read_ajx.do",
+					url : "rsrvlist.do",
 					type : "POST",
 					data : param
 				}).done(function(data) {
@@ -978,12 +962,10 @@ span#ui-id-1 {
 								<div>
 									<label for="rsrvDate" style="width: 80px;">예약일자</label> 
 									<input type="text" name="rsrvDate" id="rsrvDate" class="input-field" readonly="readonly" disabled style="border:none;"/>
-									<!-- <input type="text" name="rsrvdate" readonly="readonly" class="validate[required,custom[email]] feedback-input" placeholder="선택된날짜 및 시간" /> -->
 								</div>
 								<div>
 									<label for="rsrvName" style="width: 80px;">예약자명</label>
 									<input type="text" name="rsrvName" id="rsrvName" class="input-field" maxlength="10" required onfocus="setLanguage('ko')"> <!-- 한글 입력 모드로 설정 -->
-									<!-- <input type="text" name="rsrvName" id="rsrvName" class="validate[required,custom[email]] feedback-input" /> -->
 								</div>
 								<div>
 									<label for="rsrvTelno" style="width: 80px">연락처</label>
