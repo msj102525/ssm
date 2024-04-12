@@ -45,7 +45,7 @@ public class SpeifyController {
 			specify.setPdDate(job.get("pdDate").toString());
 			
 	
-			// 상품 삭제 메소드 작성
+			
 			int result = specifyService.insertSpeify(specify);
 
 			// 에러 발생 시

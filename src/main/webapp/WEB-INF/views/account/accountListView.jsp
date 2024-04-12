@@ -29,12 +29,12 @@ function sum() {
 	let sum = Number(table.rows[2].cells[1].textContent); 
 
 	// 3, 4행의 값을 빼기
-	 for (let i = 3; i <= 4; i++) {
+	 for (let i = 3; i <= 3; i++) {
     	sum -= Number(table.rows[i].cells[1].textContent);
 	}
 
 	// 5행부터 마지막 이전 행까지의 input 요소의 값을 빼기
-	for (let i = 5; i < table.rows.length - 1; i++) {
+	for (let i = 4; i < table.rows.length - 1; i++) {
     	sum -= Number(table.rows[i].cells[1].querySelector('input').value);
 	}
     
@@ -145,7 +145,8 @@ function onChangeMonth() {
                 	sumDisplay.textContent = document.getElementById("monthlySales").textContent 
                 			- document.getElementById("monthlyRent").value
                 			- document.getElementById("montlyTax").value
-                		    - document.getElementById("monthlyCost").value;
+                		    - document.getElementById("monthlyCost").value
+                		    - document.getElementById("monthlyPdPrice").textContent;
                 },
                 error: function(request, status, errorData) {
                     console.log("error code : " + request.status

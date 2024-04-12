@@ -102,8 +102,10 @@
                 data: JSON.stringify(jarr),
                 contentType: "application/json; charset=utf-8",
                 success: function(result) {
-                	alert("저장 성공")
-                    location.reload();  
+                	alert("등록 성공")
+                	var redirectUrl = "plist.do?page=1&id=${loginUser.id}";
+                    // 지정된 URL로 이동
+                    location.href = redirectUrl; 
                 },
                 error: function(request, status, errorData) {
                     console.log("error code : " + request.status

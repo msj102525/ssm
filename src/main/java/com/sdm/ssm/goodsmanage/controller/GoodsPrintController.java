@@ -457,7 +457,7 @@ public class GoodsPrintController {
 		model.addAttribute("action", action);
 
 		if (list != null && list.size() > 0) {
-			return "goods/goodsListView";
+			return "goods/produceListView";
 		} else {
 			model.addAttribute("message", search.getKeyword() + "해당 상품 없음");
 			return "common/error";
