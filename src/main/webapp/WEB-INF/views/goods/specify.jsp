@@ -146,7 +146,7 @@
             <tr>             	
                 <td style="text-align: center; white-space: nowrap;">상호명</td>
                 <td style="text-align: center; white-space: nowrap;">
-					<input type="text" id="storename" name="storename">
+					${loginUser.businessStoreName}
 				</td>
                 <td style="text-align: center; white-space: nowrap;">
 					<input type="text" id="username" name="username">
